@@ -2,7 +2,6 @@ package com.ntubcase.gift;
 
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.GiftListAdapter;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class GiftListFragment extends Fragment {
     private ListView mListView;
     private GiftListAdapter giftListAdapter;
     private List<List<String>> mGiftsList; //禮物清單
+    private FloatingActionButton fab1;
 
     public GiftListFragment() {
         // Required empty public constructor
@@ -39,14 +41,14 @@ public class GiftListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gift_list, container, false);
 
-    /*    //-----新增按鈕----
-        FloatingActionButton fab = view.findViewById(R.id.newGift);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        fab1 = (FloatingActionButton) view.findViewById(R.id.fab1);
+        fab1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Toast.makeText(getActivity(), "新增禮物", Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
 
         mListView = (ListView) view.findViewById(R.id.giftList);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
