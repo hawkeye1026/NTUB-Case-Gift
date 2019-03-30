@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.ntubcase.gift.Adapter.GiftListAdapter;
 
 import java.util.ArrayList;
@@ -39,14 +40,14 @@ public class GiftListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gift_list, container, false);
 
-        //-----新增按鈕----
+    /*    //-----新增按鈕----
         FloatingActionButton fab = view.findViewById(R.id.newGift);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "新增禮物", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         mListView = (ListView) view.findViewById(R.id.giftList);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
