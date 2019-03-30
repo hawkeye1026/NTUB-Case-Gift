@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.ntubcase.gift.Adapter.GiftListAdapter;
 
 import java.util.ArrayList;

@@ -2,10 +2,14 @@
     <string name="app_name">Gift</string>
     <string name="action_settings">Settings</string>
 
+    <!-- 首頁按鈕-->
     <string name="mGift">禮物區</string>
     <string name="mPlan">送禮計畫</string>
     <string name="mFriend">我的好友</string>
     <string name="mystery_gift">神秘禮物區</string>
 
+    <!-- 禮物模式-->
+    <string name="giftPhoto">照片</string>
+    <string name="giftVideo">影片</string>
 
 </resources>
