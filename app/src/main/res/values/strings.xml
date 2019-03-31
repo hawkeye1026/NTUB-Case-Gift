@@ -11,5 +11,6 @@
     <!-- 禮物模式-->
     <string name="giftPhoto">照片</string>
     <string name="giftVideo">影片</string>
+    <string name="giftTicket">兌換券</string>
 
 </resources>

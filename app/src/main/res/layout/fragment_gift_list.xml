@@ -60,6 +60,16 @@
             fab:fab_colorNormal="@color/colorWhite"
             fab:fab_colorPressed="@color/colorPrimaryLight"/>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ticket_24"
+            fab:fab_size="mini"
+            fab:fab_label="@string/giftTicket"
+            fab:fab_colorNormal="@color/colorWhite"
+            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+
     </com.github.clans.fab.FloatingActionMenu>
 
 </FrameLayout>

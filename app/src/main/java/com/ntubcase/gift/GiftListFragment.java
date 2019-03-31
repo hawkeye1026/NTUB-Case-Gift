@@ -1,6 +1,7 @@
 package com.ntubcase.gift;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,7 +30,8 @@ public class GiftListFragment extends Fragment {
     private ListView mListView;
     private GiftListAdapter giftListAdapter;
     private List<List<String>> mGiftsList; //禮物清單
-    private FloatingActionButton fab1;
+    private FloatingActionButton fab1, fab2, fab3;
+    private FloatingActionMenu newGift;
 
     public GiftListFragment() {
         // Required empty public constructor
@@ -41,15 +43,7 @@ public class GiftListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gift_list, container, false);
 
-
-        fab1 = (FloatingActionButton) view.findViewById(R.id.fab1);
-        fab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "新增禮物", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        //---------------------ListView--------------------------------
         mListView = (ListView) view.findViewById(R.id.giftList);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
 
@@ -77,6 +71,17 @@ public class GiftListFragment extends Fragment {
 
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
+
+
+        //------------------------------FAB_newGift----------------------
+        newGift = (FloatingActionMenu) view.findViewById(R.id.newGift);
+        fab1 = (FloatingActionButton) view.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) view.findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) view.findViewById(R.id.fab3);
+        fab1.setOnClickListener(fabClickListener);
+        fab2.setOnClickListener(fabClickListener);
+        fab3.setOnClickListener(fabClickListener);
+
 
         return view;
     }
@@ -131,7 +136,28 @@ public class GiftListFragment extends Fragment {
                 }
             }
         });
-
     }
+
+    // ----------------設定FAB的點擊監聽---------------
+    private View.OnClickListener fabClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            switch (v.getId()) {
+                case R.id.fab1:
+                    intent = new Intent(getActivity(), MakeGiftsActivity.class);
+                    break;
+                case R.id.fab2:
+                    intent = new Intent(getActivity(), MakeGiftsActivity.class);
+                    break;
+                case R.id.fab3:
+                    intent = new Intent(getActivity(), MakeGiftsActivity.class);
+                    break;
+            }
+
+            newGift.close(true);
+            startActivity(intent);
+        }
+    };
 
 }
