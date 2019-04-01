@@ -13,4 +13,9 @@
     <string name="giftVideo">影片</string>
     <string name="giftTicket">兌換券</string>
 
+    <!-- 計畫模式-->
+    <string name="planSurprise">驚喜式</string>
+    <string name="planCalendar">期間式</string>
+    <string name="planQa">問答式</string>
+
 </resources>

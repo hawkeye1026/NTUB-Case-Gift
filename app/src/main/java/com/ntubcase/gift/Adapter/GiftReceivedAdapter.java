@@ -54,13 +54,13 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
 
         switch (item.get(position).get(0).toString()){
             case "1":
-                giftIcon.setImageResource(R.drawable.ic_surprise);
+                giftIcon.setImageResource(R.drawable.ic_plan_surprise);
                 break;
             case "2":
-                giftIcon.setImageResource(R.drawable.ic_calendar);
+                giftIcon.setImageResource(R.drawable.ic_plan_calendar);
                 break;
             case "3":
-                giftIcon.setImageResource(R.drawable.ic_qa);
+                giftIcon.setImageResource(R.drawable.ic_plan_qa);
                 break;
         }
 

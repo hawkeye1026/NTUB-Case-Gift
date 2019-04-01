@@ -52,13 +52,13 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
 
         switch (item.get(position).get(0).toString()){
             case "1":
-                giftIcon.setImageResource(R.drawable.ic_camera);
+                giftIcon.setImageResource(R.drawable.ic_gift_camera);
                 break;
             case "2":
-                giftIcon.setImageResource(R.drawable.ic_video);
+                giftIcon.setImageResource(R.drawable.ic_gift_video);
                 break;
             case "3":
-                giftIcon.setImageResource(R.drawable.ic_ticket);
+                giftIcon.setImageResource(R.drawable.ic_gift_ticket);
                 break;
         }
 
