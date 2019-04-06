@@ -11,6 +11,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -18,7 +19,9 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.GiftListAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -29,7 +32,7 @@ public class GiftListFragment extends Fragment {
     private SearchView mSearchView;
     private ListView mListView;
     private GiftListAdapter giftListAdapter;
-    private List<List<String>> mGiftsList; //禮物清單
+    private List<Map<String, Object>> mGiftsList; //禮物清單
     private FloatingActionButton fab1, fab2, fab3;
     private FloatingActionMenu newGift;
 
@@ -47,7 +50,10 @@ public class GiftListFragment extends Fragment {
         mListView = (ListView) view.findViewById(R.id.giftList);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
 
-        String[][] mGifts = {       //禮物清單內容
+        mGiftsList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> mGifts;
+
+        String[][] mGiftsData = {       //禮物清單內容
                 {"1","小明生日賀卡"},
                 {"2","結婚紀念日"},
                 {"3","跑腿兌換券"},
@@ -57,15 +63,15 @@ public class GiftListFragment extends Fragment {
                 {"4","禮物4"}
         };
 
-        mGiftsList = new ArrayList<List<String>>();
-        for(int i=0; i<mGifts.length; i++){     //將禮物內容放進禮物清單
-            List<String> aListData = new ArrayList<String>();
-            aListData.add(mGifts[i][0]);
-            aListData.add(mGifts[i][1]);
-            mGiftsList.add(aListData);
+        for(int i=0;i<mGiftsData.length;i++) {
+            mGifts = new HashMap<String, Object>();
+            mGifts.put("type", mGiftsData[i][0]);
+            mGifts.put("title", mGiftsData[i][1]);
+            mGiftsList.add(mGifts);
         }
 
         giftListAdapter = new GiftListAdapter(getActivity(), mGiftsList);
+
         mListView.setAdapter(giftListAdapter);
         mListView.setTextFilterEnabled(true);
 
@@ -91,7 +97,7 @@ public class GiftListFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "You Choose "+ position+" listItem", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
             }
         });
 

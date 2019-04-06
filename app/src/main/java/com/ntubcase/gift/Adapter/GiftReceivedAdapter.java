@@ -13,15 +13,17 @@ import android.widget.TextView;
 import com.ntubcase.gift.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
 
-    private List<List<String>> item;
-    private List<List<String>> originalitem;
+    private List<Map<String, Object>> item;
+    private List<Map<String, Object>> originalitem;
     private LayoutInflater mLayout;
 
-    public GiftReceivedAdapter(Context context, List<List<String>> mList){
+    public GiftReceivedAdapter(Context context, List<Map<String, Object>> mList){
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.item = mList;
     }
@@ -41,30 +43,46 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
+    static class ViewHolder{
+        public TextView tvTitle, tvSender;
+        public ImageView ivGiftIcon;
+
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = mLayout.inflate(R.layout.giftreceived_layout,parent,false);
+        ViewHolder viewHolder;
+        if(convertView == null){
+            viewHolder = new ViewHolder();
+            //自定義的list布局
+            convertView = mLayout.inflate(R.layout.giftreceived_layout, parent,false);
 
-        TextView sentBy = (TextView)v.findViewById(R.id.tv_sentBy);
-        TextView title = (TextView)v.findViewById(R.id.tv_giftTitle);
-        ImageView giftIcon = (ImageView) v.findViewById(R.id.iv_giftIcon);
+            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_giftTitle);
+            viewHolder.ivGiftIcon = (ImageView) convertView.findViewById(R.id.iv_giftIcon);
+            viewHolder.tvSender = (TextView) convertView.findViewById(R.id.tv_sender);
 
-        sentBy.setText("From : "+item.get(position).get(2).toString());
-        title.setText(item.get(position).get(1).toString());
+            convertView.setTag(viewHolder); //設置好的布局保存到緩存中，並將其設置在tag裡
+        }else{
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+//-------------------------
 
-        switch (item.get(position).get(0).toString()){
+        viewHolder.tvSender.setText("From : "+item.get(position).get("sender").toString());
+        viewHolder.tvTitle.setText(item.get(position).get("title").toString());
+
+        switch (item.get(position).get("type").toString()){
             case "1":
-                giftIcon.setImageResource(R.drawable.ic_plan_surprise);
+                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_surprise);
                 break;
             case "2":
-                giftIcon.setImageResource(R.drawable.ic_plan_calendar);
+                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_calendar);
                 break;
             case "3":
-                giftIcon.setImageResource(R.drawable.ic_plan_qa);
+                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_qa);
                 break;
         }
 
-        return v;
+        return convertView;
     }
 
     @Override
@@ -76,20 +94,20 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
                 FilterResults result = new FilterResults();
                 if(originalitem == null){
                     synchronized (this){
-                        originalitem = new ArrayList<List<String>>(item);
+                        originalitem = new ArrayList<Map<String, Object>>(item);
                     }
                 }
                 if(constraint != null && constraint.toString().length()>0){
-                    List<List<String>> filteredItem = new ArrayList<List<String>>();
+                    List<Map<String, Object>> filteredItem = new ArrayList<Map<String, Object>>();
                     for(int i=0;i<originalitem.size();i++){
-                        String type = originalitem.get(i).get(0).toString();
-                        String title = originalitem.get(i).get(1).toString();
-                        String sentby = originalitem.get(i).get(2).toString();
+                        String type = originalitem.get(i).get("type").toString();
+                        String title = originalitem.get(i).get("title").toString();
+                        String sender = originalitem.get(i).get("sender").toString();
                         if(title.contains(constraint)){
-                            List<String> filteredItemContent = new ArrayList<String>();
-                            filteredItemContent.add(type);
-                            filteredItemContent.add(title);
-                            filteredItemContent.add(sentby);
+                            Map<String, Object> filteredItemContent = new HashMap<String, Object>();
+                            filteredItemContent.put("type", type);
+                            filteredItemContent.put("title", title);
+                            filteredItemContent.put("sender", sender);
                             filteredItem.add(filteredItemContent);
                         }
                     }
@@ -97,7 +115,7 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
                     result.values = filteredItem;
                 }else{
                     synchronized (this){
-                        List<List<String>> list = new ArrayList<List<String>>(originalitem);
+                        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(originalitem);
                         result.values = list;
                         result.count = list.size();
 
@@ -109,7 +127,7 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                item = (ArrayList<List<String>>)results.values;
+                item = (List<Map<String, Object>>)results.values;
                 if(results.count>0){
                     notifyDataSetChanged();
                 }else{

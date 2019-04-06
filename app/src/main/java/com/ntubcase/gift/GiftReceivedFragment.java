@@ -10,12 +10,15 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.GiftReceivedAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,7 +29,7 @@ public class GiftReceivedFragment extends Fragment {
     private SearchView mSearchView;
     private ListView mListView;
     private GiftReceivedAdapter giftReceivedAdapter;
-    private List<List<String>> rGiftsList; //禮物清單
+    private List<Map<String, Object>> rGiftsList; //禮物清單
 
     public GiftReceivedFragment() {
         // Required empty public constructor
@@ -38,10 +41,14 @@ public class GiftReceivedFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gift_received, container, false);
 
+        //------------------ListView------------------
         mListView = (ListView) view.findViewById(R.id.giftList);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
 
-        String[][] rGifts = {       //禮物清單內容
+        rGiftsList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> rGifts;
+
+        String[][] rGiftsData = {       //禮物清單內容
                 {"1","生日賀卡","林同學"},
                 {"1","結婚紀念照","老婆"},
                 {"2","健身計畫","陳同事"},
@@ -50,16 +57,15 @@ public class GiftReceivedFragment extends Fragment {
                 {"1","禮物3","好友2"}
         };
 
-        rGiftsList = new ArrayList<List<String>>();
-        for(int i=0; i<rGifts.length; i++){     //將禮物內容放進禮物清單
-            List<String> aListData = new ArrayList<String>();
-            aListData.add(rGifts[i][0]);
-            aListData.add(rGifts[i][1]);
-            aListData.add(rGifts[i][2]);
-            rGiftsList.add(aListData);
+        for(int i=0;i<rGiftsData.length;i++) {
+            rGifts = new HashMap<String, Object>();
+            rGifts.put("type", rGiftsData[i][0]);
+            rGifts.put("title", rGiftsData[i][1]);
+            rGifts.put("sender", rGiftsData[i][2]);
+            rGiftsList.add(rGifts);
         }
-
         giftReceivedAdapter = new GiftReceivedAdapter(getActivity(), rGiftsList);
+
         mListView.setAdapter(giftReceivedAdapter);
         mListView.setTextFilterEnabled(true);
 
@@ -74,7 +80,7 @@ public class GiftReceivedFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "You Choose "+ position+" listItem", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
