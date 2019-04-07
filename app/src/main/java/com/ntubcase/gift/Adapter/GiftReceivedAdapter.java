@@ -65,7 +65,6 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-//-------------------------
 
         viewHolder.tvSender.setText("From : "+item.get(position).get("sender").toString());
         viewHolder.tvTitle.setText(item.get(position).get("title").toString());

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="gift_type">
+        <item>全部</item>
+        <item>@string/giftPhoto</item>
+        <item>@string/giftVideo</item>
+        <item>@string/giftTicket</item>
+    </string-array>
+
+</resources>

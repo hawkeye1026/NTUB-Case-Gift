@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,8 @@ public class GiftListFragment extends Fragment {
     private List<Map<String, Object>> mGiftsList; //禮物清單
     private FloatingActionButton fab1, fab2, fab3;
     private FloatingActionMenu newGift;
+    private Spinner mSpinner;
+    private ArrayAdapter spinnerAdapter;
 
     public GiftListFragment() {
         // Required empty public constructor
@@ -77,6 +81,25 @@ public class GiftListFragment extends Fragment {
 
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
+
+        //-----------------------------spinner----------------------
+        mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
+        spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.gift_type, R.layout.spinner_layout);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_itm_layout);
+        mSpinner.setAdapter(spinnerAdapter);
+
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String str = parent.getItemAtPosition(position).toString();
+                Toast.makeText(getActivity(), "Type:  "+ str, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         //------------------------------FAB_newGift----------------------
@@ -121,6 +144,7 @@ public class GiftListFragment extends Fragment {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                giftListAdapter.getFilter().filter(query);
                 mSearchView.clearFocus();
                 return true;
             }
