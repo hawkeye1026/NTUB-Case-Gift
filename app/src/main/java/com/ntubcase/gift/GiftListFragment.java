@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,13 +59,13 @@ public class GiftListFragment extends Fragment {
         Map<String, Object> mGifts;
 
         String[][] mGiftsData = {       //禮物清單內容
-                {"1","小明生日賀卡"},
-                {"2","結婚紀念日"},
-                {"3","跑腿兌換券"},
-                {"1","禮物1"},
-                {"3","禮物2"},
-                {"2","禮物3"},
-                {"4","禮物4"}
+                {"照片","小明生日賀卡"},
+                {"影片","結婚紀念日"},
+                {"兌換券","跑腿兌換券"},
+                {"照片","禮物1"},
+                {"兌換券","禮物2"},
+                {"影片","禮物3"},
+                {"兌換券","禮物4"}
         };
 
         for(int i=0;i<mGiftsData.length;i++) {
@@ -73,7 +74,6 @@ public class GiftListFragment extends Fragment {
             mGifts.put("title", mGiftsData[i][1]);
             mGiftsList.add(mGifts);
         }
-
         giftListAdapter = new GiftListAdapter(getActivity(), mGiftsList);
 
         mListView.setAdapter(giftListAdapter);
@@ -92,7 +92,10 @@ public class GiftListFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String str = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getActivity(), "Type:  "+ str, Toast.LENGTH_SHORT).show();
+
+                giftListAdapter.selectedType=str;
+                String query = mSearchView.getQuery().toString();
+                giftListAdapter.getFilter().filter(query);
             }
 
             @Override
@@ -189,5 +192,6 @@ public class GiftListFragment extends Fragment {
             startActivity(intent);
         }
     };
+
 
 }
