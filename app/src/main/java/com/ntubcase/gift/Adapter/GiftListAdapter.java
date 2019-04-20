@@ -32,7 +32,6 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.item = mList;
 
-
         giftsType = new ArrayList<String>();
         giftsType.add("照片");
         giftsType.add("影片");
@@ -121,7 +120,6 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
                         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(originalitem);
                         result.values = list;
                         result.count = list.size();
-
                     }
                 }
 

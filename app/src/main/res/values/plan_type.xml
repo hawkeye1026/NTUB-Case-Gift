@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="plan_type">
+        <item>全部</item>
+        <item>@string/planSurprise</item>
+        <item>@string/planCalendar</item>
+        <item>@string/planQa</item>
+    </string-array>
+
+</resources>

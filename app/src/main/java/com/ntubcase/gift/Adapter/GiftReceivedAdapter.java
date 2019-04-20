@@ -21,11 +21,19 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
 
     private List<Map<String, Object>> item;
     private List<Map<String, Object>> originalitem;
+    private List<Map<String, Object>> selectedTypeitem;
     private LayoutInflater mLayout;
+    private ArrayList<String> plansType; //所有禮物種類
+    public static String selectedType; //spinner所選取的種類
 
     public GiftReceivedAdapter(Context context, List<Map<String, Object>> mList){
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.item = mList;
+
+        plansType = new ArrayList<String>();
+        plansType.add("驚喜式");
+        plansType.add("期間式");
+        plansType.add("問答式");
     }
 
     @Override
@@ -69,16 +77,13 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
         viewHolder.tvSender.setText("From : "+item.get(position).get("sender").toString());
         viewHolder.tvTitle.setText(item.get(position).get("title").toString());
 
-        switch (item.get(position).get("type").toString()){
-            case "1":
-                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_surprise);
-                break;
-            case "2":
-                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_calendar);
-                break;
-            case "3":
-                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_qa);
-                break;
+        String a =  item.get(position).get("type").toString();
+        if(a.equals(plansType.get(0))){
+            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_surprise);
+        }else if(a.equals(plansType.get(1))){
+            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_calendar);
+        }else if(a.equals(plansType.get(2))){
+            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_qa);
         }
 
         return convertView;
@@ -91,17 +96,42 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
             protected FilterResults performFiltering(CharSequence constraint) {
                 constraint = constraint.toString();
                 FilterResults result = new FilterResults();
+
                 if(originalitem == null){
                     synchronized (this){
                         originalitem = new ArrayList<Map<String, Object>>(item);
                     }
                 }
-                if(constraint != null && constraint.toString().length()>0){
-                    List<Map<String, Object>> filteredItem = new ArrayList<Map<String, Object>>();
-                    for(int i=0;i<originalitem.size();i++){
+
+                if(plansType.contains(selectedType)){ //篩選選取的type
+                    selectedTypeitem = new ArrayList<Map<String, Object>>();
+                    for(int i=0;i<originalitem.size();i++) {
                         String type = originalitem.get(i).get("type").toString();
                         String title = originalitem.get(i).get("title").toString();
                         String sender = originalitem.get(i).get("sender").toString();
+                        if(type.equals(selectedType)){
+                            Map<String, Object> itemContent = new HashMap<String, Object>();
+                            itemContent.put("type", type);
+                            itemContent.put("title", title);
+                            itemContent.put("sender", sender);
+                            selectedTypeitem.add(itemContent);
+                        }
+                    }
+                }else if(!(plansType.contains(selectedType))){  //選取"全部"種類
+                    synchronized (this){
+                        selectedTypeitem = new ArrayList<Map<String, Object>>(originalitem);
+                        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(originalitem);
+                        result.values = list;
+                        result.count = list.size();
+                    }
+                }
+
+                if(constraint != null && constraint.toString().length()>0){
+                    List<Map<String, Object>> filteredItem = new ArrayList<Map<String, Object>>();
+                    for(int i=0;i<selectedTypeitem.size();i++){
+                        String type = selectedTypeitem.get(i).get("type").toString();
+                        String title = selectedTypeitem.get(i).get("title").toString();
+                        String sender = selectedTypeitem.get(i).get("sender").toString();
                         if(title.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
                             filteredItemContent.put("type", type);
@@ -114,7 +144,7 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
                     result.values = filteredItem;
                 }else{
                     synchronized (this){
-                        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(originalitem);
+                        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(selectedTypeitem);
                         result.values = list;
                         result.count = list.size();
 

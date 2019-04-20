@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,8 @@ public class GiftReceivedFragment extends Fragment {
     private ListView mListView;
     private GiftReceivedAdapter giftReceivedAdapter;
     private List<Map<String, Object>> rGiftsList; //禮物清單
+    private Spinner mSpinner;
+    private ArrayAdapter spinnerAdapter;
 
     public GiftReceivedFragment() {
         // Required empty public constructor
@@ -49,12 +53,12 @@ public class GiftReceivedFragment extends Fragment {
         Map<String, Object> rGifts;
 
         String[][] rGiftsData = {       //禮物清單內容
-                {"1","生日賀卡","林同學"},
-                {"1","結婚紀念照","老婆"},
-                {"2","健身計畫","陳同事"},
-                {"1","按摩兌換券","兒子"},
-                {"3","考考你","好友1"},
-                {"1","禮物3","好友2"}
+                {"驚喜式","生日賀卡","林同學"},
+                {"驚喜式","結婚紀念照","老婆"},
+                {"期間式","健身計畫","陳同事"},
+                {"驚喜式","按摩兌換券","兒子"},
+                {"問答式","考考你","好友1"},
+                {"驚喜式","禮物3","好友2"}
         };
 
         for(int i=0;i<rGiftsData.length;i++) {
@@ -71,6 +75,31 @@ public class GiftReceivedFragment extends Fragment {
 
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
+
+
+        //-----------------------------spinner----------------------
+        mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
+        spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.plan_type, R.layout.spinner_layout);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_itm_layout);
+        mSpinner.setAdapter(spinnerAdapter);
+
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String str = parent.getItemAtPosition(position).toString();
+
+                giftReceivedAdapter.selectedType=str;
+                String query = mSearchView.getQuery().toString();
+                giftReceivedAdapter.getFilter().filter(query);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
 
         return view;
     }
@@ -104,6 +133,7 @@ public class GiftReceivedFragment extends Fragment {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                giftReceivedAdapter.getFilter().filter(query);
                 mSearchView.clearFocus();
                 return false;
             }
