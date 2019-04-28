@@ -1,6 +1,8 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +25,21 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
     private List<Map<String, Object>> originalitem;
     private List<Map<String, Object>> selectedTypeitem;
     private LayoutInflater mLayout;
-    private ArrayList<String> plansType; //所有禮物種類
+    private ArrayList<String> plansType; //所有計畫種類
     public static String selectedType; //spinner所選取的種類
 
     public GiftReceivedAdapter(Context context, List<Map<String, Object>> mList){
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.item = mList;
 
+        //---從strings取得所有計畫種類---
+        Resources res = context.getResources();
+        String[] mPlanStrings = res.getStringArray(R.array.plan_type);
+
         plansType = new ArrayList<String>();
-        plansType.add("驚喜式");
-        plansType.add("期間式");
-        plansType.add("問答式");
+        for (int i=0; i<mPlanStrings.length; i++){
+            plansType.add(mPlanStrings[i]);
+        }
     }
 
     @Override

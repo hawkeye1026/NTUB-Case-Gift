@@ -13,9 +13,23 @@
     <string name="giftVideo">影片</string>
     <string name="giftTicket">兌換券</string>
 
+    <!-- 禮物模式Aarray-->
+    <string-array name="gift_type">
+        <item>@string/giftPhoto</item>
+        <item>@string/giftVideo</item>
+        <item>@string/giftTicket</item>
+    </string-array>
+
     <!-- 計畫模式-->
     <string name="planSurprise">驚喜式</string>
     <string name="planCalendar">期間式</string>
     <string name="planQa">問答式</string>
+
+    <!-- 計畫模式Aarray-->
+    <string-array name="plan_type">
+        <item>@string/planSurprise</item>
+        <item>@string/planCalendar</item>
+        <item>@string/planQa</item>
+    </string-array>
 
 </resources>

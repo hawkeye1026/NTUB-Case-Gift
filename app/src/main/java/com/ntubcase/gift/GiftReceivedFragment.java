@@ -79,7 +79,7 @@ public class GiftReceivedFragment extends Fragment {
 
         //-----------------------------spinner----------------------
         mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
-        spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.plan_type, R.layout.spinner_layout);
+        spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_plan_type, R.layout.spinner_layout);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_itm_layout);
         mSpinner.setAdapter(spinnerAdapter);
 

@@ -1,6 +1,8 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +34,15 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.item = mList;
 
+        //---從strings取得所有禮物種類---
+        Resources res = context.getResources();
+        String[] mGiftStrings = res.getStringArray(R.array.gift_type);
+
         giftsType = new ArrayList<String>();
-        giftsType.add("照片");
-        giftsType.add("影片");
-        giftsType.add("兌換券");
+        for (int i=0; i<mGiftStrings.length; i++){
+            giftsType.add(mGiftStrings[i]);
+        }
+
     }
 
     @Override
