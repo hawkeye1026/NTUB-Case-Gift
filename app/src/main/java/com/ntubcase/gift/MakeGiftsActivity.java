@@ -3,9 +3,15 @@ package com.ntubcase.gift;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class MakeGiftsActivity extends AppCompatActivity {
+
+    private Button btn_save, btn_makePlan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +21,26 @@ public class MakeGiftsActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
+
+        //---------------------------------------------------------------------------------
+        btn_save = findViewById(R.id.btn_save);
+        btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
+
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
+        btn_makePlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
 
