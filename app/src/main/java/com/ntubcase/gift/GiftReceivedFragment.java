@@ -52,6 +52,7 @@ public class GiftReceivedFragment extends Fragment {
         rGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> rGifts;
 
+        //------------資料格式(計畫種類,計畫名稱,送禮人)----------
         String[][] rGiftsData = {       //禮物清單內容
                 {"驚喜式","生日賀卡","林同學"},
                 {"驚喜式","結婚紀念照","老婆"},

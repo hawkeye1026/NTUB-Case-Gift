@@ -58,6 +58,7 @@ public class GiftListFragment extends Fragment {
         mGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mGifts;
 
+        //------------資料格式(禮物種類,禮物名稱)----------
         String[][] mGiftsData = {       //禮物清單內容
                 {"照片","小明生日賀卡"},
                 {"影片","結婚紀念日"},
@@ -179,12 +180,15 @@ public class GiftListFragment extends Fragment {
             switch (v.getId()) {
                 case R.id.fab1:
                     intent = new Intent(getActivity(), MakeGiftsActivity.class);
+                    intent.putExtra("giftType", fab1.getLabelText());
                     break;
                 case R.id.fab2:
                     intent = new Intent(getActivity(), MakeGiftsActivity.class);
+                    intent.putExtra("giftType", fab2.getLabelText());
                     break;
                 case R.id.fab3:
                     intent = new Intent(getActivity(), MakeGiftsActivity.class);
+                    intent.putExtra("giftType", fab3.getLabelText());
                     break;
             }
 
