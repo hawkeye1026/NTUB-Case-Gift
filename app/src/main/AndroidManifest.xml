@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MakeGiftsActivity"></activity>
+        <activity android:name=".MakePlansActivity"></activity>
+        <activity android:name=".MakeGiftsActivity" />
         <activity android:name=".PlanActivity" />
         <activity android:name=".GiftActivity" />
         <activity

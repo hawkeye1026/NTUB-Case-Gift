@@ -6,15 +6,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
+import com.ntubcase.gift.Adapter.PlanListAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PlanActivity extends AppCompatActivity {
 
     private FloatingActionButton fab_surprise, fab_calendar, fab_qa;
     private FloatingActionMenu newPlan;
+    private ListView mListView;
+    private List<Map<String, Object>> mPlansList; //計畫清單
+    private Spinner mSpinner;
+    private SearchView mSearchView;
+    private PlanListAdapter planListAdapter;
+    private ArrayAdapter spinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +44,60 @@ public class PlanActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //---------------------ListView--------------------------------
+        mListView = (ListView) findViewById(R.id.planList);
+        mSearchView = (SearchView) findViewById(R.id.mSearch);
+
+        mPlansList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> mPlans;
+
+        //------------資料格式(計畫種類,計畫名稱)----------
+        String[][] mPlansData = {       //計畫清單內容
+                {"驚喜式","小明生日"},
+                {"期間式","結婚紀念日"},
+                {"問答式","猜燈謎"},
+                {"驚喜式","爸爸生日"},
+                {"驚喜式","計畫1"},
+                {"期間式","計畫2"},
+                {"問答式","計畫3"}
+        };
+
+        for(int i=0;i<mPlansData.length;i++) {
+            mPlans = new HashMap<String, Object>();
+            mPlans.put("type", mPlansData[i][0]);
+            mPlans.put("title", mPlansData[i][1]);
+            mPlansList.add(mPlans);
+        }
+        planListAdapter = new PlanListAdapter(this, mPlansList);
+
+        mListView.setAdapter(planListAdapter);
+        mListView.setTextFilterEnabled(true);
+
+        setmListViewListener(); //設定ListView的監聽
+        setSearch_function(); // 設定searchView的文字輸入監聽
+
+        //-----------------------------spinner----------------------
+        mSpinner = (Spinner) findViewById(R.id.mSpinner);
+        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_plan_type, R.layout.spinner_layout);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_itm_layout);
+        mSpinner.setAdapter(spinnerAdapter);
+
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String str = parent.getItemAtPosition(position).toString();
+
+                planListAdapter.selectedType=str;
+                String query = mSearchView.getQuery().toString();
+                planListAdapter.getFilter().filter(query);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         //------------------------------FAB_newGift----------------------
         newPlan = (FloatingActionMenu) findViewById(R.id.newPlan);
@@ -34,30 +107,83 @@ public class PlanActivity extends AppCompatActivity {
         fab_surprise.setOnClickListener(fabClickListener);
         fab_calendar.setOnClickListener(fabClickListener);
         fab_qa.setOnClickListener(fabClickListener);
-
-
     }
+
+    // ----------------設定ListView的監聽---------------
+    private void setmListViewListener(){
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_planTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                mSearchView.clearFocus();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+    }
+
+    // ----------------設定searchView的文字輸入監聽---------------
+    private void setSearch_function(){
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                planListAdapter.getFilter().filter(query);
+                mSearchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                planListAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+        mSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    /*InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);*/
+                    mSearchView.clearFocus();
+                }
+            }
+        });
+    }
+
 
     // ----------------設定FAB的點擊監聽---------------
     private View.OnClickListener fabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            /*Intent intent = new Intent();
+            Intent intent = new Intent();
             switch (v.getId()) {
                 case R.id.fab_surprise:
                     intent = new Intent(PlanActivity.this, MakePlansActivity.class);
+                    intent.putExtra("planType", fab_surprise.getLabelText());
                     break;
                 case R.id.fab_calendar:
                     intent = new Intent(PlanActivity.this, MakePlansActivity.class);
+                    intent.putExtra("planType", fab_calendar.getLabelText());
                     break;
                 case R.id.fab_qa:
                     intent = new Intent(PlanActivity.this, MakePlansActivity.class);
+                    intent.putExtra("planType", fab_qa.getLabelText());
                     break;
             }
 
             newPlan.close(true);
-            startActivity(intent);*/
-            Toast.makeText(PlanActivity.this,"新增計畫",Toast.LENGTH_SHORT).show();
+            startActivity(intent);
         }
     };
 
