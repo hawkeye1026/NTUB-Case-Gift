@@ -1,8 +1,13 @@
 package com.ntubcase.gift;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+//----------------------API
+import com.ntubcase.gift.Common.*;
+import com.ntubcase.gift.MyAsyncTask.giftUpdateAsyncTask;
+//----------------------
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -53,6 +64,27 @@ public class MakeGiftsActivity extends AppCompatActivity {
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         et_giftContent = (EditText) findViewById(R.id.et_giftContent);
 
+        giftUpdateAsyncTask mgiftUpdateAsyncTask = new giftUpdateAsyncTask(new giftUpdateAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try{
+                    JSONObject object = new JSONObject(result);
+                    JSONArray jsonArray = object.getJSONArray("result");
+
+                    for (int i = 0 ; i < jsonArray.length(); i++){
+                        getWorksheet.postRecordDone(jsonArray.getJSONObject(i).getString("record_done"),i);
+                        if((jsonArray.getJSONObject(i).getString("record_done").equals("1") )){
+                            doneChk++;
+                        };
+                    }
+
+
+                }catch (Exception e){
+
+                }
+            }
+        });
+
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +96,7 @@ public class MakeGiftsActivity extends AppCompatActivity {
             }
         });
 
+        //---------------------------------------------------------------------------------
         btn_makePlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,5 +114,14 @@ public class MakeGiftsActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE); //網路
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }
