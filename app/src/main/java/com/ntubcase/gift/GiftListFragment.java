@@ -4,6 +4,7 @@ package com.ntubcase.gift;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,13 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.GiftListAdapter;
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.getterAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftDownloadAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftUpdateAsyncTask;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +48,15 @@ public class GiftListFragment extends Fragment {
     private FloatingActionMenu newGift;
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
+    private static int jslen = 0 ;
+    //-------------------
+    protected static String gift[];
+    protected static String date[];
+    protected static String giftName[];
+    protected static String ownerid[];
+    protected static String type[];
+    //-------------------
+    protected  static String[][] mGiftsData;
 
     public GiftListFragment() {
         // Required empty public constructor
@@ -58,7 +75,50 @@ public class GiftListFragment extends Fragment {
         mGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mGifts;
 
+
+        //------------
+        getterAsyncTask myAsyncTask = new getterAsyncTask(new getterAsyncTask.TaskListener() {
+
+            @Override
+            public void onFinished(String result) {
+                try {
+                    JSONObject object = new JSONObject(result);
+
+                    JSONArray jsonArray = object.getJSONArray("result");
+
+                    Log.v("length",jsonArray.length()+"");
+
+                    jslen = jsonArray.length();
+
+                    for (int i = 0 ; i <jsonArray.length() ; i++){
+                        Log.v("abc",
+                                "10000");
+                        gift[i] = jsonArray.getJSONObject(i).getString("gift");
+                        date[i] = jsonArray.getJSONObject(i).getString("date");
+                        giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
+                        ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
+                        type[i] = jsonArray.getJSONObject(i).getString("type");
+                        Log.v("abc",
+                                jsonArray.getJSONObject(i).getString("gift"));
+                        Log.v("abc",
+                                date[i]);
+                        Log.v("abc",
+                                giftName[i]);
+                        Log.v("abc",
+                                ownerid[i]);
+                        Log.v("abc",
+                                type[i]);
+
+                    }
+                } catch (Exception e) {
+                }
+            }
+        });
+        myAsyncTask.execute(Common.giftList);
+        //------------
+
         //------------資料格式(禮物種類,禮物名稱)----------
+
         String[][] mGiftsData = {       //禮物清單內容
                 {"照片","小明生日賀卡"},
                 {"影片","結婚紀念日"},
@@ -68,6 +128,8 @@ public class GiftListFragment extends Fragment {
                 {"影片","禮物3"},
                 {"兌換券","禮物4"}
         };
+        //getGiftList.getJSON();
+
 
         for(int i=0;i<mGiftsData.length;i++) {
             mGifts = new HashMap<String, Object>();

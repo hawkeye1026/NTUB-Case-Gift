@@ -24,14 +24,22 @@ import com.ntubcase.gift.MyAsyncTask.giftUpdateAsyncTask;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MakeGiftsActivity extends AppCompatActivity {
 
     private Button btn_save, btn_makePlan;
     private ImageView iv_giftIcon;
-    private EditText et_giftName, et_giftContent;
-    private String giftName, giftContent;
+    private static EditText et_giftName, et_giftContent;
+
+    private static String giftName, giftContent;
+
+    protected static String giftType;
+    protected static Date date =new Date();
+    protected static String owner = "wayne";
+    protected static String dateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +48,17 @@ public class MakeGiftsActivity extends AppCompatActivity {
         setTitle("製作禮物");
 
         Intent intent = this.getIntent();
-        String giftType = intent.getStringExtra("giftType"); //取得選擇的禮物種類
+        giftType = intent.getStringExtra("giftType"); //取得選擇的禮物種類
+
+        switch (giftType){
+            case "兌換券":
+                giftType = "2";
+            case "影片":
+                giftType = "1";
+            case "照片":
+                giftType = "0";
+        }
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
@@ -64,32 +82,26 @@ public class MakeGiftsActivity extends AppCompatActivity {
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         et_giftContent = (EditText) findViewById(R.id.et_giftContent);
 
-        giftUpdateAsyncTask mgiftUpdateAsyncTask = new giftUpdateAsyncTask(new giftUpdateAsyncTask.TaskListener() {
-            @Override
-            public void onFinished(String result) {
-                try{
-                    JSONObject object = new JSONObject(result);
-                    JSONArray jsonArray = object.getJSONArray("result");
-
-                    for (int i = 0 ; i < jsonArray.length(); i++){
-                        getWorksheet.postRecordDone(jsonArray.getJSONObject(i).getString("record_done"),i);
-                        if((jsonArray.getJSONObject(i).getString("record_done").equals("1") )){
-                            doneChk++;
-                        };
-                    }
-
-
-                }catch (Exception e){
-
-                }
-            }
-        });
+        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        dateTime = sdFormat.format(date);
+        Log.v("giftName",dateTime);
+        //--------
 
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
                 giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
+
+                Log.v("log",giftContent +"|"+ dateTime + "|"+giftName +"|"+owner +"|"+ giftType);
+
+                giftUpdateAsyncTask mgiftUpdateAsyncTask = new giftUpdateAsyncTask(new giftUpdateAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                    }
+                });
+                mgiftUpdateAsyncTask.execute(Common.giftUpdate , giftContent, dateTime ,giftName ,owner,giftType);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
                 finish();
@@ -100,6 +112,8 @@ public class MakeGiftsActivity extends AppCompatActivity {
         btn_makePlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 
             }
         });

@@ -15,7 +15,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 
-public class giftUpdateAsyncTask extends AsyncTask<String, Integer, String> {
+public class giftDownloadAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -32,7 +32,7 @@ public class giftUpdateAsyncTask extends AsyncTask<String, Integer, String> {
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftUpdateAsyncTask(TaskListener taskListener) {
+    public giftDownloadAsyncTask(TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -51,36 +51,28 @@ public class giftUpdateAsyncTask extends AsyncTask<String, Integer, String> {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         try {
-            URL url = new URL(params[0]); //params[0] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第一個參數
+            URL url = new URL(params[0]);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(100000);
-            conn.setConnectTimeout(150000);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            //conn.setDoInput(true);
+            //conn.setDoOutput(true);
 
-            //----------------------------------------------
-            //  傳給主機的參數(name, amount, deliverDate)
-            //----------------------------------------------
-            //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
-            String args =
-                    "giftContent=" + URLEncoder.encode(params[1], "UTF-8")+
-                    "&dateTime=" + URLEncoder.encode(params[2], "UTF-8" )+
-                    "&giftName=" + URLEncoder.encode(params[3], "UTF-8" )+
-                    "&owner=" + URLEncoder.encode(params[4], "UTF-8" )+
-                    "&giftType=" + URLEncoder.encode(params[5], "UTF-8");
-            Log.v("abc",args);
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(args);
-            writer.flush();
-            writer.close();
-            os.close();
+            int statusCode = conn.getResponseCode();
+
+            Log.v("Test2","statuus:" + statusCode);
 
             conn.connect();
             inputStream = conn.getInputStream();
 
+            if (statusCode >= 200 && statusCode < 400) {
+                // Create an InputStream in order to extract the response object
+                inputStream = conn.getInputStream();
+            }
+            else {
+                inputStream = conn.getErrorStream();
+            }
             BufferedReader bufferedReader=new BufferedReader(
                     new InputStreamReader(inputStream, "utf-8"));
 

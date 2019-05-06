@@ -63,6 +63,7 @@ public class getterAsyncTask extends AsyncTask<String, Integer, String> {
             int statusCode = conn.getResponseCode();
 
             Log.v("Test2","statuus:"+statusCode);
+            Log.v("Test2",params[0]);
 
             conn.connect();
             inputStream = conn.getInputStream();

@@ -12,6 +12,7 @@ public class Common {
     //(2) 若連結現有測試主機
     //--------------------------
     //Get
-    public static String showQuest_en="http://http://140.131.114.156/gift/NTUB_gift_server/giftList.php";
+    public static String giftList="http://140.131.114.156/NTUB_gift_server/giftList.php/";
+    public static String giftUpdate="http://140.131.114.156/NTUB_gift_server/giftUpdate.php?";
 
 }
