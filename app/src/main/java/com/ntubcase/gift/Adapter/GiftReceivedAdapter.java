@@ -60,7 +60,7 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
     static class ViewHolder{
         public TextView tvTitle, tvSender;
         public ImageView ivGiftIcon;
-
+        public TextView tvDate;
     }
 
     @Override
@@ -74,6 +74,7 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
             viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_giftTitle);
             viewHolder.ivGiftIcon = (ImageView) convertView.findViewById(R.id.iv_giftIcon);
             viewHolder.tvSender = (TextView) convertView.findViewById(R.id.tv_sender);
+            viewHolder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
 
             convertView.setTag(viewHolder); //設置好的布局保存到緩存中，並將其設置在tag裡
         }else{
@@ -82,6 +83,7 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
 
         viewHolder.tvSender.setText("From : "+item.get(position).get("sender").toString());
         viewHolder.tvTitle.setText(item.get(position).get("title").toString());
+        viewHolder.tvDate.setText(item.get(position).get("date").toString());
 
         String a =  item.get(position).get("type").toString();
         if(a.equals(plansType.get(0))){
@@ -115,11 +117,13 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
                         String type = originalitem.get(i).get("type").toString();
                         String title = originalitem.get(i).get("title").toString();
                         String sender = originalitem.get(i).get("sender").toString();
+                        String date = originalitem.get(i).get("date").toString();
                         if(type.equals(selectedType)){
                             Map<String, Object> itemContent = new HashMap<String, Object>();
                             itemContent.put("type", type);
                             itemContent.put("title", title);
                             itemContent.put("sender", sender);
+                            itemContent.put("date", date);
                             selectedTypeitem.add(itemContent);
                         }
                     }
@@ -138,11 +142,13 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
                         String type = selectedTypeitem.get(i).get("type").toString();
                         String title = selectedTypeitem.get(i).get("title").toString();
                         String sender = selectedTypeitem.get(i).get("sender").toString();
+                        String date = selectedTypeitem.get(i).get("date").toString();
                         if(title.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
                             filteredItemContent.put("type", type);
                             filteredItemContent.put("title", title);
                             filteredItemContent.put("sender", sender);
+                            filteredItemContent.put("date", date);
                             filteredItem.add(filteredItemContent);
                         }
                     }

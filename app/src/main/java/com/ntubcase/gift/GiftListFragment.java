@@ -58,21 +58,22 @@ public class GiftListFragment extends Fragment {
         mGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mGifts;
 
-        //------------資料格式(禮物種類,禮物名稱)----------
+        //------------範例資料格式(禮物種類,禮物名稱,日期)----------
         String[][] mGiftsData = {       //禮物清單內容
-                {"照片","小明生日賀卡"},
-                {"影片","結婚紀念日"},
-                {"兌換券","跑腿兌換券"},
-                {"照片","禮物1"},
-                {"兌換券","禮物2"},
-                {"影片","禮物3"},
-                {"兌換券","禮物4"}
+                {"照片","小明生日賀卡","2019-01-01"},
+                {"影片","結婚紀念日","2019-01-02"},
+                {"兌換券","跑腿兌換券","2019-02-01"},
+                {"照片","禮物1","2019-02-02"},
+                {"兌換券","禮物2","2019-03-03"},
+                {"影片","禮物3","2019-04-04"},
+                {"兌換券","禮物4","2019-05-05"}
         };
 
         for(int i=0;i<mGiftsData.length;i++) {
             mGifts = new HashMap<String, Object>();
             mGifts.put("type", mGiftsData[i][0]);
             mGifts.put("title", mGiftsData[i][1]);
+            mGifts.put("date", mGiftsData[i][2]);
             mGiftsList.add(mGifts);
         }
         giftListAdapter = new GiftListAdapter(getActivity(), mGiftsList);

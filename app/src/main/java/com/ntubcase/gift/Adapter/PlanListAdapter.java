@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.ntubcase.gift.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +63,7 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
     static class ViewHolder{
         public TextView tvTitle;
         public ImageView ivPlanIcon;
+        public TextView tvDate;
     }
 
     @Override
@@ -73,6 +76,7 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
 
             viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_planTitle);
             viewHolder.ivPlanIcon = (ImageView) convertView.findViewById(R.id.iv_planIcon);
+            viewHolder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
 
             convertView.setTag(viewHolder); //設置好的布局保存到緩存中，並將其設置在tag裡
         }else{
@@ -80,6 +84,7 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
         }
 
         viewHolder.tvTitle.setText(item.get(position).get("title").toString());
+        viewHolder.tvDate.setText(item.get(position).get("date").toString());
 
         String a =  item.get(position).get("type").toString();
         if(a.equals(plansType.get(0))){
@@ -112,10 +117,12 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
                     for(int i=0;i<originalitem.size();i++) {
                         String type = originalitem.get(i).get("type").toString();
                         String title = originalitem.get(i).get("title").toString();
+                        String date = originalitem.get(i).get("date").toString();
                         if(type.equals(selectedType)){
                             Map<String, Object> itemContent = new HashMap<String, Object>();
                             itemContent.put("type", type);
                             itemContent.put("title", title);
+                            itemContent.put("date", date);
                             selectedTypeitem.add(itemContent);
                         }
                     }
@@ -133,10 +140,12 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
                     for(int i=0;i<selectedTypeitem.size();i++){
                         String type = selectedTypeitem.get(i).get("type").toString();
                         String title = selectedTypeitem.get(i).get("title").toString();
+                        String date = selectedTypeitem.get(i).get("date").toString();
                         if(title.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
                             filteredItemContent.put("type", type);
                             filteredItemContent.put("title", title);
+                            filteredItemContent.put("date", date);
                             filteredItem.add(filteredItemContent);
                         }
                     }
