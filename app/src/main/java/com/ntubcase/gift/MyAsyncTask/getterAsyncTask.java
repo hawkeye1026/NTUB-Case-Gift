@@ -57,8 +57,8 @@ public class getterAsyncTask extends AsyncTask<String, Integer, String> {
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("GET");
-            //conn.setDoInput(true);
-            //conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
 
             int statusCode = conn.getResponseCode();
 

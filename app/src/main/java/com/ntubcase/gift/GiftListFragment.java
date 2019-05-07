@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ntubcase.gift.getGiftList.getJSON;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,7 +58,7 @@ public class GiftListFragment extends Fragment {
     protected static String ownerid[];
     protected static String type[];
     //-------------------
-    protected  static String[][] mGiftsData;
+    protected  static String[][] mGiftsData = new String[100][100];
 
     public GiftListFragment() {
         // Required empty public constructor
@@ -75,63 +77,27 @@ public class GiftListFragment extends Fragment {
         mGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mGifts;
 
+        getGiftList.getJSON();
 
-        //------------
-        getterAsyncTask myAsyncTask = new getterAsyncTask(new getterAsyncTask.TaskListener() {
-
-            @Override
-            public void onFinished(String result) {
-                try {
-                    JSONObject object = new JSONObject(result);
-
-                    JSONArray jsonArray = object.getJSONArray("result");
-
-                    Log.v("length",jsonArray.length()+"");
-
-                    jslen = jsonArray.length();
-
-                    for (int i = 0 ; i <jsonArray.length() ; i++){
-                        Log.v("abc",
-                                "10000");
-                        gift[i] = jsonArray.getJSONObject(i).getString("gift");
-                        date[i] = jsonArray.getJSONObject(i).getString("date");
-                        giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
-                        ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
-                        type[i] = jsonArray.getJSONObject(i).getString("type");
-                        Log.v("abc",
-                                jsonArray.getJSONObject(i).getString("gift"));
-                        Log.v("abc",
-                                date[i]);
-                        Log.v("abc",
-                                giftName[i]);
-                        Log.v("abc",
-                                ownerid[i]);
-                        Log.v("abc",
-                                type[i]);
-
-                    }
-                } catch (Exception e) {
-                }
-            }
-        });
-        myAsyncTask.execute(Common.giftList);
-        //------------
-
+        for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
+            mGiftsData[i][0]= getGiftList.getType(i);
+            mGiftsData[i][1]= getGiftList.getGiftName(i);
+        }
+        Log.v("abcd",mGiftsData[0][0] + mGiftsData[0][1]);
         //------------資料格式(禮物種類,禮物名稱)----------
 
-        String[][] mGiftsData = {       //禮物清單內容
-                {"照片","小明生日賀卡"},
-                {"影片","結婚紀念日"},
-                {"兌換券","跑腿兌換券"},
-                {"照片","禮物1"},
-                {"兌換券","禮物2"},
-                {"影片","禮物3"},
-                {"兌換券","禮物4"}
-        };
-        //getGiftList.getJSON();
+//        String[][] mGiftsData = {       //禮物清單內容
+//                {"照片","小明生日賀卡"},
+//                {"影片","結婚紀念日"},
+//                {"兌換券","跑腿兌換券"},
+//                {"照片","禮物1"},
+//                {"兌換券","禮物2"},
+//                {"影片","禮物3"},
+//                {"兌換券","禮物4"}
+//        };
 
 
-        for(int i=0;i<mGiftsData.length;i++) {
+        for(int i=0;i<getGiftList.getGiftLength();i++) {
             mGifts = new HashMap<String, Object>();
             mGifts.put("type", mGiftsData[i][0]);
             mGifts.put("title", mGiftsData[i][1]);
@@ -179,6 +145,18 @@ public class GiftListFragment extends Fragment {
 
 
         return view;
+    }
+
+    //-----------------
+    public void onResume(){
+        getGiftList.getJSON();
+        Log.v("res_length",getGiftList.getGiftLength()+"");
+        for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
+            mGiftsData[i][0]= getGiftList.getType(i);
+            mGiftsData[i][1]= getGiftList.getGiftName(i);
+        }
+
+        super.onResume();
     }
 
     // ----------------設定ListView的監聽---------------

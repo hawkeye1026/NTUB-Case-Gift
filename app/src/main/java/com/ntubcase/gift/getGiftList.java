@@ -10,12 +10,12 @@ import org.json.JSONObject;
 
 public class getGiftList {
 
-    public  static String gift[];
-    public  static String date[];
-    public  static String giftName[];
-    public  static String ownerid[];
-    public  static String type[];
-    private static int jslen = 0 ;
+    public  static String[] gift = new String[100];
+    public  static String[] date = new String[100];
+    public  static String[] giftName= new String[100];
+    public  static String[] ownerid= new String[100];
+    public  static String[] type= new String[100];
+    private static int giftLength = 0 ;
 
     public static void getJSON() {
 
@@ -30,7 +30,7 @@ public class getGiftList {
 
                     Log.v("length",jsonArray.length()+"");
 
-                    jslen = jsonArray.length();
+                    giftLength = jsonArray.length();
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         Log.v("abc",
@@ -40,16 +40,15 @@ public class getGiftList {
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
-                        Log.v("abc",
-                                jsonArray.getJSONObject(i).getString("gift"));
-                        Log.v("abc",
-                                date[i]);
-                        Log.v("abc",
-                                giftName[i]);
-                        Log.v("abc",
-                                ownerid[i]);
-                        Log.v("abc",
-                                type[i]);
+
+                        switch(type[i]){
+                            case "0":
+                                type[i] = "照片";
+                            case "1":
+                                type[i] = "影片";
+                            case "2":
+                                type[i] = "兌換券";
+                        }
 
                     }
                 } catch (Exception e) {
@@ -57,5 +56,17 @@ public class getGiftList {
             }
         });
         myAsyncTask.execute(Common.giftList);
+    }
+
+    public static int getGiftLength(){
+        return giftLength;
+    }
+    public static String getType(int i){
+        Log.v("abc",
+                type[i]);
+        return type[i];
+    }
+    public static String getGiftName(int i){
+        return giftName[i];
     }
 }

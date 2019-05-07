@@ -69,7 +69,7 @@ public class giftUpdateAsyncTask extends AsyncTask<String, Integer, String> {
                     "&giftName=" + URLEncoder.encode(params[3], "UTF-8" )+
                     "&owner=" + URLEncoder.encode(params[4], "UTF-8" )+
                     "&giftType=" + URLEncoder.encode(params[5], "UTF-8");
-            Log.v("abc",args);
+            Log.v("par + arg",params[0] + args);
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

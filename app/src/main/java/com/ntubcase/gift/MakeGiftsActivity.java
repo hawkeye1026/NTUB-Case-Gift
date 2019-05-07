@@ -104,6 +104,7 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 mgiftUpdateAsyncTask.execute(Common.giftUpdate , giftContent, dateTime ,giftName ,owner,giftType);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+
                 finish();
             }
         });
@@ -119,7 +120,10 @@ public class MakeGiftsActivity extends AppCompatActivity {
         });
 
     }
-
+    public void onStop() {
+        getGiftList.getJSON();
+        super.onStop();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
