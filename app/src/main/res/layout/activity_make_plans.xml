@@ -1,11 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MakePlansActivity">
+    android:orientation="vertical"
+    tools:context=".MakePlansActivity"
+    android:padding="20dp">
 
+    <!--計畫名稱-->
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10px">
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="18sp"
+            android:text="計畫名稱：" />
+
+        <EditText
+            android:id="@+id/add_surprise_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="輸入計畫名稱" />
+
+    </LinearLayout>
+    <!--送禮日期-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10px">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="18sp"
+            android:text="送禮日期：" />
+
+        <EditText
+            android:id="@+id/add_surprise_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="none"></EditText>
+
+    </LinearLayout>
+    <!--送禮時間-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10px">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="18sp"
+            android:inputType="time"
+            android:text="送禮時間：" />
+
+        <EditText
+            android:id="@+id/add_surprise_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="none"></EditText>
+
+    </LinearLayout>
+    <!--選擇禮物-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:padding="10px">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="選擇禮物："
+            android:textSize="18sp"/>
+
+        <Spinner
+            android:id="@+id/add_surprise_gift"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="7" />
+    </LinearLayout>
+    <!--收禮人-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:padding="10px">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="18sp"
+            android:text="收禮人：" />
+
+        <Spinner
+            android:id="@+id/add_surprise_friend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="7" />
+
+    </LinearLayout>
+    <!--留言板-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10px">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textSize="18sp"
+            android:text="留言板:" />
+
+        <EditText
+            android:id="@+id/add_surprice_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            />
+
+    </LinearLayout>
+    <!--按鈕-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btn_plan_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:text="儲存"
+            android:textSize="18sp"
+            android:textColor="#FFF"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_normalbutton"/>
+
+        <Button
+            android:id="@+id/btn_plan_send"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:text="送禮"
+            android:textSize="18sp"
+            android:textColor="#FFF"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_normalbutton"/>
+
+    </LinearLayout>
+
+</LinearLayout>
