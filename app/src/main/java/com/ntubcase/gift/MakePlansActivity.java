@@ -55,6 +55,8 @@ public class MakePlansActivity extends AppCompatActivity {
         }
         MakePlanAdapter myAdapter = new MakePlanAdapter(MakePlansActivity.this, 0, listVOs);
         add_surprise_gift.setAdapter(myAdapter);
+
+
         //選擇好友------------------------------------------------------------------------
         final String[] surprise_addfriend = {
                 "選擇好友", "陳源", "王父", "高家", "吳生",

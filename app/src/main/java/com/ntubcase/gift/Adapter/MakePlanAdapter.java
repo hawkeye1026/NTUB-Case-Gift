@@ -20,6 +20,7 @@ public class MakePlanAdapter extends ArrayAdapter<Makeplan_StateVO> {
     private ArrayList<Makeplan_StateVO> listState;
     private MakePlanAdapter myAdapter;
     private boolean isFromView = false;
+    public static boolean chkState = false;
 
     public MakePlanAdapter(Context context, int resource, List<Makeplan_StateVO> objects) {
         super(context, resource, objects);
@@ -58,6 +59,7 @@ public class MakePlanAdapter extends ArrayAdapter<Makeplan_StateVO> {
 
         holder.mTextView.setText(listState.get(position).getTitle());
 
+
         // To check weather checked event fire from getview() or user input
         isFromView = true;
         holder.mCheckBox.setChecked(listState.get(position).isSelected());
@@ -74,6 +76,7 @@ public class MakePlanAdapter extends ArrayAdapter<Makeplan_StateVO> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 int getPosition = (Integer) buttonView.getTag();
+
 
                 if (!isFromView) {
                     listState.get(position).setSelected(isChecked);

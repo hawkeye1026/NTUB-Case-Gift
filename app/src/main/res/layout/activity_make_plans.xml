@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="輸入計畫名稱" />
+            android:hint="輸入計畫名稱"
+            android:inputType="textPersonName" />
 
     </LinearLayout>
     <!--送禮日期-->
@@ -54,6 +54,7 @@
             android:layout_weight="7"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:hint="輸入送禮日期"
             android:inputType="none"></EditText>
 
     </LinearLayout>
@@ -79,6 +80,7 @@
             android:layout_weight="7"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:hint="輸入送禮時間"
             android:inputType="none"></EditText>
 
     </LinearLayout>
@@ -132,7 +134,7 @@
     <!--留言板-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="159dp"
         android:orientation="horizontal"
         android:padding="10px">
 
@@ -140,17 +142,17 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:textSize="18sp"
-            android:text="留言板:" />
+            android:text="留言板:"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/add_surprice_message"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="159dp"
             android:layout_weight="7"
+            android:singleLine="false"
             android:ems="10"
-            android:inputType="textMultiLine"
-            />
+            android:inputType="textMultiLine" />
 
     </LinearLayout>
     <!--按鈕-->
@@ -158,7 +160,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
+        android:padding="10dp"
         android:gravity="center"
         android:layout_alignParentBottom="true">
 
@@ -167,7 +169,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="5dp"
+            android:layout_marginRight="10dp"
             android:text="儲存"
             android:textSize="18sp"
             android:textColor="#FFF"
@@ -179,7 +181,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="5dp"
+
             android:text="送禮"
             android:textSize="18sp"
             android:textColor="#FFF"
