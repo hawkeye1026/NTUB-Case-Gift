@@ -20,6 +20,7 @@ import android.widget.Toast;
 //----------------------API
 import com.ntubcase.gift.Common.*;
 import com.ntubcase.gift.MyAsyncTask.giftUpdateAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.testAsyncTask;
 //----------------------
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -102,6 +103,13 @@ public class MakeGiftsActivity extends AppCompatActivity {
                     }
                 });
                 mgiftUpdateAsyncTask.execute(Common.giftUpdate , giftContent, dateTime ,giftName ,owner,giftType);
+
+                testAsyncTask mtestAsyncTask = new testAsyncTask(new testAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                    }
+                });
+                mtestAsyncTask.execute(Common.test , "1232");
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
 

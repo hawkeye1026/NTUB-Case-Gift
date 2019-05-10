@@ -15,7 +15,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 
-public class giftDownloadAsyncTask extends AsyncTask<String, Integer, String> {
+public class testAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -32,7 +32,7 @@ public class giftDownloadAsyncTask extends AsyncTask<String, Integer, String> {
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftDownloadAsyncTask(TaskListener taskListener) {
+    public testAsyncTask(TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -51,20 +51,23 @@ public class giftDownloadAsyncTask extends AsyncTask<String, Integer, String> {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         try {
-            URL url = new URL(params[0]);
+            URL url = new URL(params[0]); //params[0] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第一個參數
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            //conn.setDoInput(true);
-            //conn.setDoOutput(true);
+            conn.setReadTimeout(100000);
+            conn.setConnectTimeout(150000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
 
+            //----------------------------------------------
+            //  傳給主機的參數(name, amount, deliverDate)
+            //----------------------------------------------
+            //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
+            String args =
+                    "test=" + URLEncoder.encode(params[1], "UTF-8");
             int statusCode = conn.getResponseCode();
 
-            //Log.v("Test2","statuus:" + statusCode);
-
-            conn.connect();
-            inputStream = conn.getInputStream();
+            Log.v("Testasy","statuus:" + statusCode);
 
             if (statusCode >= 200 && statusCode < 400) {
                 // Create an InputStream in order to extract the response object
@@ -73,8 +76,20 @@ public class giftDownloadAsyncTask extends AsyncTask<String, Integer, String> {
             else {
                 inputStream = conn.getErrorStream();
             }
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(args);
+            writer.flush();
+            writer.close();
+            os.close();
+            Log.v("dtr", params[0]+args );
+            conn.connect();
+            inputStream = conn.getInputStream();
+
             BufferedReader bufferedReader=new BufferedReader(
-                    new InputStreamReader(inputStream, "utf-8"));
+                    new InputStreamReader(inputStream, "UTF-8"));
 
             data=bufferedReader.readLine();
         } catch(Exception e) {

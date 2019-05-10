@@ -25,10 +25,15 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.getterAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.giftDownloadAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.giftUpdateAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.testAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,8 +98,8 @@ public class GiftListFragment extends Fragment {
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);
             mGiftsData[i][1]= getGiftList.getGiftName(i);
+            mGiftsData[i][2]= getGiftList.getDate(i);
         }
-        Log.v("abcd",mGiftsData[0][0] + mGiftsData[0][1]);
         //------------資料格式(禮物種類,禮物名稱)----------
 
 //        String[][] mGiftsData = {       //禮物清單內容
@@ -106,6 +111,12 @@ public class GiftListFragment extends Fragment {
 //                {"影片","禮物3"},
 //                {"兌換券","禮物4"}
 //        };
+        testAsyncTask mtestAsyncTask = new testAsyncTask(new testAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+            }
+        });
+        mtestAsyncTask.execute(Common.test , "1232");
 
 
         for(int i=0;i<getGiftList.getGiftLength();i++) {
