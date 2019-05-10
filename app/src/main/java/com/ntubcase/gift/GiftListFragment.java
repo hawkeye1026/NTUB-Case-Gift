@@ -4,6 +4,7 @@ package com.ntubcase.gift;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,20 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.GiftListAdapter;
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.getterAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftDownloadAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftUpdateAsyncTask;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.ntubcase.gift.getGiftList.getJSON;
 
 
 /**
@@ -40,6 +50,15 @@ public class GiftListFragment extends Fragment {
     private FloatingActionMenu newGift;
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
+    private static int jslen = 0 ;
+    //-------------------
+    protected static String gift[];
+    protected static String date[];
+    protected static String giftName[];
+    protected static String ownerid[];
+    protected static String type[];
+    //-------------------
+    protected  static String[][] mGiftsData = new String[100][100];
 
     public GiftListFragment() {
         // Required empty public constructor
@@ -58,21 +77,42 @@ public class GiftListFragment extends Fragment {
         mGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mGifts;
 
-        //------------資料格式(禮物種類,禮物名稱)----------
+        //------------範例資料格式(禮物種類,禮物名稱,日期)----------
         String[][] mGiftsData = {       //禮物清單內容
-                {"照片","小明生日賀卡"},
-                {"影片","結婚紀念日"},
-                {"兌換券","跑腿兌換券"},
-                {"照片","禮物1"},
-                {"兌換券","禮物2"},
-                {"影片","禮物3"},
-                {"兌換券","禮物4"}
+                {"照片","小明生日賀卡","2019-01-01"},
+                {"影片","結婚紀念日","2019-01-02"},
+                {"兌換券","跑腿兌換券","2019-02-01"},
+                {"照片","禮物1","2019-02-02"},
+                {"兌換券","禮物2","2019-03-03"},
+                {"影片","禮物3","2019-04-04"},
+                {"兌換券","禮物4","2019-05-05"}
         };
 
-        for(int i=0;i<mGiftsData.length;i++) {
+        getGiftList.getJSON();
+
+        for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
+            mGiftsData[i][0]= getGiftList.getType(i);
+            mGiftsData[i][1]= getGiftList.getGiftName(i);
+        }
+        Log.v("abcd",mGiftsData[0][0] + mGiftsData[0][1]);
+        //------------資料格式(禮物種類,禮物名稱)----------
+
+//        String[][] mGiftsData = {       //禮物清單內容
+//                {"照片","小明生日賀卡"},
+//                {"影片","結婚紀念日"},
+//                {"兌換券","跑腿兌換券"},
+//                {"照片","禮物1"},
+//                {"兌換券","禮物2"},
+//                {"影片","禮物3"},
+//                {"兌換券","禮物4"}
+//        };
+
+
+        for(int i=0;i<getGiftList.getGiftLength();i++) {
             mGifts = new HashMap<String, Object>();
             mGifts.put("type", mGiftsData[i][0]);
             mGifts.put("title", mGiftsData[i][1]);
+            mGifts.put("date", mGiftsData[i][2]);
             mGiftsList.add(mGifts);
         }
         giftListAdapter = new GiftListAdapter(getActivity(), mGiftsList);
@@ -117,6 +157,18 @@ public class GiftListFragment extends Fragment {
 
 
         return view;
+    }
+
+    //-----------------
+    public void onResume(){
+        getGiftList.getJSON();
+        Log.v("res_length",getGiftList.getGiftLength()+"");
+        for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
+            mGiftsData[i][0]= getGiftList.getType(i);
+            mGiftsData[i][1]= getGiftList.getGiftName(i);
+        }
+
+        super.onResume();
     }
 
     // ----------------設定ListView的監聽---------------

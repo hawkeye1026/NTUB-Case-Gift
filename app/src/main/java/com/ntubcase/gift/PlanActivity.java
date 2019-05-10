@@ -51,21 +51,22 @@ public class PlanActivity extends AppCompatActivity {
         mPlansList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mPlans;
 
-        //------------資料格式(計畫種類,計畫名稱)----------
+        //------------範例資料格式(計畫種類,計畫名稱,日期)----------
         String[][] mPlansData = {       //計畫清單內容
-                {"驚喜式","小明生日"},
-                {"期間式","結婚紀念日"},
-                {"問答式","猜燈謎"},
-                {"驚喜式","爸爸生日"},
-                {"驚喜式","計畫1"},
-                {"期間式","計畫2"},
-                {"問答式","計畫3"}
+                {"驚喜式","小明生日","2019-04-04"},
+                {"期間式","結婚紀念日","2019-04-05"},
+                {"問答式","猜燈謎","2019-04-06"},
+                {"驚喜式","爸爸生日","2019-04-07"},
+                {"驚喜式","計畫1","2019-04-08"},
+                {"期間式","計畫2","2019-04-09"},
+                {"問答式","計畫3","2019-04-10"}
         };
 
         for(int i=0;i<mPlansData.length;i++) {
             mPlans = new HashMap<String, Object>();
             mPlans.put("type", mPlansData[i][0]);
             mPlans.put("title", mPlansData[i][1]);
+            mPlans.put("date", mPlansData[i][2]);
             mPlansList.add(mPlans);
         }
         planListAdapter = new PlanListAdapter(this, mPlansList);

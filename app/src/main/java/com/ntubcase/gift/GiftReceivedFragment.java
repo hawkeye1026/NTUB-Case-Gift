@@ -52,14 +52,14 @@ public class GiftReceivedFragment extends Fragment {
         rGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> rGifts;
 
-        //------------資料格式(計畫種類,計畫名稱,送禮人)----------
+        //------------範例資料格式(計畫種類,計畫名稱,送禮人,日期)----------
         String[][] rGiftsData = {       //禮物清單內容
-                {"驚喜式","生日賀卡","林同學"},
-                {"驚喜式","結婚紀念照","老婆"},
-                {"期間式","健身計畫","陳同事"},
-                {"驚喜式","按摩兌換券","兒子"},
-                {"問答式","考考你","好友1"},
-                {"驚喜式","禮物3","好友2"}
+                {"驚喜式","生日賀卡","林同學","2019-02-02"},
+                {"驚喜式","結婚紀念照","老婆","2019-02-03"},
+                {"期間式","健身計畫","陳同事","2019-02-04"},
+                {"驚喜式","按摩兌換券","兒子","2019-02-05"},
+                {"問答式","考考你","好友1","2019-02-06"},
+                {"驚喜式","禮物3","好友2","2019-02-07"}
         };
 
         for(int i=0;i<rGiftsData.length;i++) {
@@ -67,6 +67,7 @@ public class GiftReceivedFragment extends Fragment {
             rGifts.put("type", rGiftsData[i][0]);
             rGifts.put("title", rGiftsData[i][1]);
             rGifts.put("sender", rGiftsData[i][2]);
+            rGifts.put("date", rGiftsData[i][3]);
             rGiftsList.add(rGifts);
         }
         giftReceivedAdapter = new GiftReceivedAdapter(getActivity(), rGiftsList);
