@@ -1,4 +1,4 @@
-package com.ntubcase.gift;
+package com.ntubcase.gift.data;
 
 import android.util.Log;
 

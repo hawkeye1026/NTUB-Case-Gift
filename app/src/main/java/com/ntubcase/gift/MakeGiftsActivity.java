@@ -1,13 +1,11 @@
 package com.ntubcase.gift;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,13 +18,10 @@ import android.widget.Toast;
 //----------------------API
 import com.ntubcase.gift.Common.*;
 import com.ntubcase.gift.MyAsyncTask.giftUpdateAsyncTask;
-import com.ntubcase.gift.MyAsyncTask.testAsyncTask;
+import com.ntubcase.gift.data.getGiftList;
 //----------------------
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class MakeGiftsActivity extends AppCompatActivity {
@@ -102,14 +97,7 @@ public class MakeGiftsActivity extends AppCompatActivity {
                     public void onFinished(String result) {
                     }
                 });
-                mgiftUpdateAsyncTask.execute(Common.giftUpdate , giftContent, dateTime ,giftName ,owner,giftType);
-
-                testAsyncTask mtestAsyncTask = new testAsyncTask(new testAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-                    }
-                });
-                mtestAsyncTask.execute(Common.test , "1232");
+                mgiftUpdateAsyncTask.execute(Common.insertProtal ,"makeGift", giftContent, dateTime ,giftName ,owner,giftType);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
 

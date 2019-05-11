@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.ntubcase.gift.data.getGiftList;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button mGift, mPlan;

@@ -64,12 +64,12 @@ public class giftUpdateAsyncTask extends AsyncTask<String, Integer, String> {
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "giftContent=" + URLEncoder.encode(params[1], "UTF-8")+
-                    "&dateTime=" + URLEncoder.encode(params[2], "UTF-8" )+
-                    "&giftName=" + URLEncoder.encode(params[3], "UTF-8" )+
-                    "&owner=" + URLEncoder.encode(params[4], "UTF-8" )+
-                    "&giftType=" + URLEncoder.encode(params[5], "UTF-8");
-            Log.v("par + arg",params[0] + args);
+                    "go=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&giftContent=" + URLEncoder.encode(params[2], "UTF-8")+
+                    "&dateTime=" + URLEncoder.encode(params[3], "UTF-8" )+
+                    "&giftName=" + URLEncoder.encode(params[4], "UTF-8" )+
+                    "&owner=" + URLEncoder.encode(params[5], "UTF-8" )+
+                    "&giftType=" + URLEncoder.encode(params[6], "UTF-8");
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -77,7 +77,7 @@ public class giftUpdateAsyncTask extends AsyncTask<String, Integer, String> {
             writer.flush();
             writer.close();
             os.close();
-
+            Log.v("params = ",params[0]+ args);
             int statusCode = conn.getResponseCode();
             
             Log.v("Test2","statuus:" + statusCode);
