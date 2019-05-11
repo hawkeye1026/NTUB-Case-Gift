@@ -62,11 +62,12 @@ public class getGiftList {
         return giftLength;
     }
     public static String getType(int i){
-        Log.v("abc",
-                type[i]);
         return type[i];
     }
     public static String getGiftName(int i){
         return giftName[i];
+    }
+    public static String getDate(int i){
+        return date[i];
     }
 }

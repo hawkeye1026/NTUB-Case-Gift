@@ -78,11 +78,22 @@ public class giftUpdateAsyncTask extends AsyncTask<String, Integer, String> {
             writer.close();
             os.close();
 
+            int statusCode = conn.getResponseCode();
+            
+            Log.v("Test2","statuus:" + statusCode);
+
+            if (statusCode >= 200 && statusCode < 400) {
+                // Create an InputStream in order to extract the response object
+                inputStream = conn.getInputStream();
+            }
+            else {
+                inputStream = conn.getErrorStream();
+            }
             conn.connect();
             inputStream = conn.getInputStream();
 
             BufferedReader bufferedReader=new BufferedReader(
-                    new InputStreamReader(inputStream, "utf-8"));
+                    new InputStreamReader(inputStream, "UTF-8"));
 
             data=bufferedReader.readLine();
         } catch(Exception e) {
