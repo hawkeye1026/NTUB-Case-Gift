@@ -42,11 +42,11 @@ public class getGiftList {
                         type[i] = jsonArray.getJSONObject(i).getString("type");
 
                         switch(type[i]){
-                            case "0":
-                                type[i] = "照片";
                             case "1":
-                                type[i] = "影片";
+                                type[i] = "照片";
                             case "2":
+                                type[i] = "影片";
+                            case "3":
                                 type[i] = "兌換券";
                         }
 
