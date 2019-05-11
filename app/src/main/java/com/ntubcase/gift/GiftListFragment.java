@@ -100,17 +100,7 @@ public class GiftListFragment extends Fragment {
             mGiftsData[i][1]= getGiftList.getGiftName(i);
             mGiftsData[i][2]= getGiftList.getDate(i);
         }
-        //------------資料格式(禮物種類,禮物名稱)----------
 
-//        String[][] mGiftsData = {       //禮物清單內容
-//                {"照片","小明生日賀卡"},
-//                {"影片","結婚紀念日"},
-//                {"兌換券","跑腿兌換券"},
-//                {"照片","禮物1"},
-//                {"兌換券","禮物2"},
-//                {"影片","禮物3"},
-//                {"兌換券","禮物4"}
-//        };
         testAsyncTask mtestAsyncTask = new testAsyncTask(new testAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
