@@ -81,7 +81,6 @@ public class GiftListFragment extends Fragment {
                 {"兌換券","禮物4","2019-05-05"}
         };
         */
-        getGiftList.getJSON();
 
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);

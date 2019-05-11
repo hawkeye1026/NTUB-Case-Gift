@@ -78,10 +78,7 @@ public class MakeGiftsActivity extends AppCompatActivity {
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         et_giftContent = (EditText) findViewById(R.id.et_giftContent);
 
-        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-        dateTime = sdFormat.format(date);
-        Log.v("giftName",dateTime);
+
         //--------
 
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -90,14 +87,18 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
                 giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
 
-                Log.v("log",giftContent +"|"+ dateTime + "|"+giftName +"|"+owner +"|"+ giftType);
+                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+                Date date =new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                dateTime = sdFormat.format(date);
+                Log.v("giftName",dateTime);
 
                 giftUpdateAsyncTask mgiftUpdateAsyncTask = new giftUpdateAsyncTask(new giftUpdateAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
                     }
                 });
-                mgiftUpdateAsyncTask.execute(Common.insertProtal ,"makeGift", giftContent, dateTime ,giftName ,owner,giftType);
+                mgiftUpdateAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
 

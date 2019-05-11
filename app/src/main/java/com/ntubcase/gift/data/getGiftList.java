@@ -61,6 +61,9 @@ public class getGiftList {
     public static int getGiftLength(){
         return giftLength;
     }
+    public static String getGift(int i){
+        return  gift[i];
+    }
     public static String getType(int i){
         return type[i];
     }
@@ -69,5 +72,8 @@ public class getGiftList {
     }
     public static String getDate(int i){
         return date[i];
+    }
+    public static String getOwnerid(){
+        return ownerid[0];
     }
 }
