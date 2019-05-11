@@ -1,6 +1,7 @@
 package com.ntubcase.gift;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -111,7 +112,11 @@ public class GiftReceivedFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent();
+                intent = new Intent(getActivity(), GiftReceivedDetailActivity.class);
+                startActivity(intent);
             }
         });
 

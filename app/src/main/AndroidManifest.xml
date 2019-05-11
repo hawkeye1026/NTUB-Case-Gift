@@ -12,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MakePlansActivity"></activity>
+        <activity android:name=".FriendActivity"></activity>
+        <activity android:name=".PlanDetailActivity" />
+        <activity android:name=".GiftReceivedDetailActivity" />
+        <activity android:name=".GiftDetailActivity" />
+        <activity android:name=".MakePlansActivity" />
         <activity android:name=".MakeGiftsActivity" />
         <activity android:name=".PlanActivity" />
         <activity android:name=".GiftActivity" />

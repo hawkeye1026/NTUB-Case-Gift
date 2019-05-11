@@ -83,14 +83,14 @@ public class GiftListFragment extends Fragment {
         Map<String, Object> mGifts;
 
         //------------範例資料格式(禮物種類,禮物名稱,日期)----------
-        String[][] mGiftsData = {       //禮物清單內容
+        /*String[][] mGiftsData = {       //禮物清單內容
                 {"照片","小明生日賀卡","2019-01-01"},
                 {"影片","結婚紀念日","2019-01-02"},
                 {"兌換券","跑腿兌換券","2019-02-01"},
                 {"照片","禮物1","2019-02-02"},
                 {"兌換券","禮物2","2019-03-03"},
                 {"影片","禮物3","2019-04-04"}
-        };
+        };*/
 
         getGiftList.getJSON();
 
@@ -176,7 +176,11 @@ public class GiftListFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent();
+                intent = new Intent(getActivity(), GiftDetailActivity.class);
+                startActivity(intent);
             }
         });
 

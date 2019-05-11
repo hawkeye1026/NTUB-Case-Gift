@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mGift, mPlan;
+    private Button mGift, mPlan, mFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , PlanActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //-------我的好友 按鈕------
+        mFriend = findViewById(R.id.mFriend);
+        mFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this , FriendActivity.class);
                 startActivity(intent);
             }
         });
