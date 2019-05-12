@@ -23,6 +23,7 @@ import com.ntubcase.gift.Adapter.GiftListAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.data.getGiftList;
 
+import static com.ntubcase.gift.getGiftList.getJSON;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +71,7 @@ public class GiftListFragment extends Fragment {
 
         String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
         //------------範例資料格式(禮物種類,禮物名稱,日期)----------
+        /*String[][] mGiftsData = {       //禮物清單內容
         /*
         String[][] mGiftsData = {       //禮物清單內容
                 {"照片","小明生日賀卡","2019-01-01"},
@@ -77,6 +79,10 @@ public class GiftListFragment extends Fragment {
                 {"兌換券","跑腿兌換券","2019-02-01"},
                 {"照片","禮物1","2019-02-02"},
                 {"兌換券","禮物2","2019-03-03"},
+                {"影片","禮物3","2019-04-04"}
+        };*/
+
+        getGiftList.getJSON();
                 {"影片","禮物3","2019-04-04"},
                 {"兌換券","禮物4","2019-05-05"}
         };
@@ -141,7 +147,8 @@ public class GiftListFragment extends Fragment {
 
     //-----------------
     public void onResume(){
-
+		
+		getGiftList.getJSON();
 
         String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
 
@@ -180,7 +187,11 @@ public class GiftListFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent();
+                intent = new Intent(getActivity(), GiftDetailActivity.class);
+                startActivity(intent);
             }
         });
 

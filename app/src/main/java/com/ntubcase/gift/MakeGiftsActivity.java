@@ -112,9 +112,10 @@ public class MakeGiftsActivity extends AppCompatActivity {
         btn_makePlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
+                Intent intent = new Intent();
+                intent = new Intent(MakeGiftsActivity.this, MakePlansActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
