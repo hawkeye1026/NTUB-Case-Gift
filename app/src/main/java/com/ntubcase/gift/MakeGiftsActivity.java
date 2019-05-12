@@ -101,6 +101,8 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 mgiftUpdateAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                //-------取得資料
+                getGiftList.getJSON();
 
                 finish();
             }
@@ -118,7 +120,6 @@ public class MakeGiftsActivity extends AppCompatActivity {
 
     }
     public void onStop() {
-        getGiftList.getJSON();
         super.onStop();
     }
 

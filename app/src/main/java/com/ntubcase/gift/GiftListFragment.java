@@ -50,7 +50,6 @@ public class GiftListFragment extends Fragment {
     protected static String ownerid[];
     protected static String type[];
     //-------------------
-    protected  static String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
 
     public GiftListFragment() {
         // Required empty public constructor
@@ -69,6 +68,7 @@ public class GiftListFragment extends Fragment {
         mGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mGifts;
 
+        String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
         //------------範例資料格式(禮物種類,禮物名稱,日期)----------
         /*
         String[][] mGiftsData = {       //禮物清單內容
@@ -141,16 +141,21 @@ public class GiftListFragment extends Fragment {
 
     //-----------------
     public void onResume(){
-        getGiftList.getJSON();
+
+
+        String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
 
         Log.v("res_length",getGiftList.getGiftLength()+"");
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);
             mGiftsData[i][1]= getGiftList.getGiftName(i);
+            mGiftsData[i][2]= getGiftList.getDate(i);
         }
+        mGiftsList.clear();
 
         mGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mGifts;
+
         for(int i=0;i<getGiftList.getGiftLength();i++) {
             mGifts = new HashMap<String, Object>();
             mGifts.put("type", mGiftsData[i][0]);
