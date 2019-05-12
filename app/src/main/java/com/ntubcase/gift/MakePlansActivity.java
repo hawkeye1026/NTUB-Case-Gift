@@ -20,13 +20,13 @@ import java.util.Calendar;
 
 public class MakePlansActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-    String[] giftlistItems;
-    boolean[] giftcheckedItems;
-    ArrayList<Integer> giftItems = new ArrayList<>();
+    String[] add_giftlistItems;
+    boolean[] add_giftcheckedItems;
+    ArrayList<Integer> add_giftItems = new ArrayList<>();
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
-    String[] friendlistItems;
-    boolean[] friendcheckedItems;
-    ArrayList<Integer> friendItems = new ArrayList<>();
+    String[] add_friendlistItems;
+    boolean[] add_friendcheckedItems;
+    ArrayList<Integer> add_friendItems = new ArrayList<>();
     //----------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,11 @@ public class MakePlansActivity extends AppCompatActivity {
         EditText add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-        giftlistItems = getResources().getStringArray(R.array.gift_item);
-        giftcheckedItems = new boolean[giftlistItems.length];
+        add_giftlistItems = getResources().getStringArray(R.array.gift_item);
+        add_giftcheckedItems = new boolean[add_giftlistItems.length];
         //選擇好友使用的變數宣告---------------------------------------------------------------------------
-        friendlistItems = getResources().getStringArray(R.array.friend_item);
-        friendcheckedItems = new boolean[friendlistItems.length];
+        add_friendlistItems = getResources().getStringArray(R.array.friend_item);
+        add_friendcheckedItems = new boolean[add_friendlistItems.length];
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
         add_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         add_surprise_gift.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -146,14 +146,14 @@ public class MakePlansActivity extends AppCompatActivity {
     private void Showgiftdialog(){
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlansActivity.this);
-        mBuilder.setTitle(R.string.dialog_title);
-        mBuilder.setMultiChoiceItems(giftlistItems, giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        mBuilder.setTitle("選擇禮物");
+        mBuilder.setMultiChoiceItems(add_giftlistItems, add_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
-                    giftItems.add(position);
+                    add_giftItems.add(position);
                 }else{
-                    giftItems.remove((Integer.valueOf(position)));
+                    add_giftItems.remove((Integer.valueOf(position)));
                 }
             }
         });
@@ -164,9 +164,9 @@ public class MakePlansActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
                 EditText add_surprise_gift = (EditText) findViewById(R.id.add_surprise_gift);
-                for (int i = 0; i < giftItems.size(); i++) {
-                    item = item + giftlistItems[giftItems.get(i)];
-                    if (i != giftItems.size() - 1) {
+                for (int i = 0; i < add_giftItems.size(); i++) {
+                    item = item + add_giftlistItems[add_giftItems.get(i)];
+                    if (i != add_giftItems.size() - 1) {
                         item = item + ", ";
                     }
                 }
@@ -185,9 +185,9 @@ public class MakePlansActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 EditText add_surprise_gift = (EditText) findViewById(R.id.add_surprise_gift);
-                for (int i = 0; i < giftcheckedItems.length; i++) {
-                    giftcheckedItems[i] = false;
-                    giftItems.clear();
+                for (int i = 0; i < add_giftcheckedItems.length; i++) {
+                    add_giftcheckedItems[i] = false;
+                    add_giftItems.clear();
                     add_surprise_gift.setText("");
                 }
             }
@@ -200,14 +200,14 @@ public class MakePlansActivity extends AppCompatActivity {
     private void Showfrienddialog(){
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlansActivity.this);
-        mBuilder.setTitle(R.string.dialog_title);
-        mBuilder.setMultiChoiceItems(friendlistItems, friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        mBuilder.setTitle("選擇好友");
+        mBuilder.setMultiChoiceItems(add_friendlistItems, add_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
-                    friendItems.add(position);
+                    add_friendItems.add(position);
                 }else{
-                    friendItems.remove((Integer.valueOf(position)));
+                    add_friendItems.remove((Integer.valueOf(position)));
                 }
             }
         });
@@ -218,9 +218,9 @@ public class MakePlansActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
                 EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-                for (int i = 0; i < friendItems.size(); i++) {
-                    item = item + friendlistItems[friendItems.get(i)];
-                    if (i != friendItems.size() - 1) {
+                for (int i = 0; i < add_friendItems.size(); i++) {
+                    item = item + add_friendlistItems[add_friendItems.get(i)];
+                    if (i != add_friendItems.size() - 1) {
                         item = item + ", ";
                     }
                 }
@@ -239,9 +239,9 @@ public class MakePlansActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-                for (int i = 0; i < friendcheckedItems.length; i++) {
-                    friendcheckedItems[i] = false;
-                    friendItems.clear();
+                for (int i = 0; i < add_friendcheckedItems.length; i++) {
+                    add_friendcheckedItems[i] = false;
+                    add_friendItems.clear();
                     add_surprise_friend.setText("");
                 }
             }
@@ -258,8 +258,8 @@ public class MakePlansActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // TODO Auto-generated method stub
-                EditText birthday = findViewById(R.id.add_surprise_date);
-                birthday.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
+                EditText add_surprise_date = findViewById(R.id.add_surprise_date);
+                add_surprise_date.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
