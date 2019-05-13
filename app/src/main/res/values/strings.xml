@@ -35,10 +35,10 @@
 
     <!--新增驚喜式計畫資料-->
     <string name="make_an_order">Make an order</string>
-    <string name="dialog_title">Items available in a shop</string>
-    <string name="ok_label">OK</string>
-    <string name="dismiss_label">Dismiss</string>
-    <string name="clear_all_label">Clear all</string>
+    <!--<string name="dialog_title">Items available in a shop</string>-->
+    <string name="ok_label">確認</string>
+    <!--<string name="dismiss_label">Dismiss</string>-->
+    <string name="clear_all_label">取消</string>
 
     <string-array name="gift_item">
         <item>禮物1</item>

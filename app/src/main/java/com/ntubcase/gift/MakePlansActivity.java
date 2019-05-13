@@ -174,12 +174,12 @@ public class MakePlansActivity extends AppCompatActivity {
             }
         });
 
-        mBuilder.setNegativeButton(R.string.dismiss_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+//        mBuilder.setNegativeButton(R.string.dismiss_label, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
 
         mBuilder.setNeutralButton(R.string.clear_all_label, new DialogInterface.OnClickListener() {
             @Override
@@ -228,12 +228,12 @@ public class MakePlansActivity extends AppCompatActivity {
             }
         });
 
-        mBuilder.setNegativeButton(R.string.dismiss_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+//        mBuilder.setNegativeButton(R.string.dismiss_label, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
 
         mBuilder.setNeutralButton(R.string.clear_all_label, new DialogInterface.OnClickListener() {
             @Override
