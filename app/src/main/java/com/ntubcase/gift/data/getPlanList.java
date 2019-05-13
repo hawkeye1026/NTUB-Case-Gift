@@ -32,6 +32,7 @@ public class getPlanList {
 
                     giftLength = jsonArray.length();
 
+
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         Log.v("abc",
                                 "10000");
@@ -49,7 +50,6 @@ public class getPlanList {
                             case "3":
                                 type[i] = "兌換券";
                         }
-
                     }
                 } catch (Exception e) {
                 }

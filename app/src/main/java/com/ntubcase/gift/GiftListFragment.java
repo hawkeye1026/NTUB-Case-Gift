@@ -23,7 +23,6 @@ import com.ntubcase.gift.Adapter.GiftListAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.data.getGiftList;
 
-import static com.ntubcase.gift.getGiftList.getJSON;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,13 +79,12 @@ public class GiftListFragment extends Fragment {
                 {"照片","禮物1","2019-02-02"},
                 {"兌換券","禮物2","2019-03-03"},
                 {"影片","禮物3","2019-04-04"}
+                {"兌換券","禮物4","2019-05-05"}
         };*/
 
         getGiftList.getJSON();
-                {"影片","禮物3","2019-04-04"},
-                {"兌換券","禮物4","2019-05-05"}
-        };
-        */
+
+
 
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);

@@ -46,16 +46,6 @@ public class MakeGiftsActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         giftType = intent.getStringExtra("giftType"); //取得選擇的禮物種類
 
-        switch (giftType){
-            case "兌換券":
-                giftType = "2";
-            case "影片":
-                giftType = "1";
-            case "照片":
-                giftType = "0";
-        }
-
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
 
@@ -89,9 +79,21 @@ public class MakeGiftsActivity extends AppCompatActivity {
 
                 //--------取得目前時間：yyyy/MM/dd hh:mm:ss
                 Date date =new Date();
-                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
                 dateTime = sdFormat.format(date);
                 Log.v("giftName",dateTime);
+
+                switch (giftType){
+                    case "兌換券":
+                        giftType = "3";
+                        break;
+                    case "影片":
+                        giftType = "2";
+                        break;
+                    case "照片":
+                        giftType = "1";
+                        break;
+                }
 
                 giftUpdateAsyncTask mgiftUpdateAsyncTask = new giftUpdateAsyncTask(new giftUpdateAsyncTask.TaskListener() {
                     @Override
