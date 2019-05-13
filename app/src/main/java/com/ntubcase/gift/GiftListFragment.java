@@ -43,13 +43,7 @@ public class GiftListFragment extends Fragment {
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
     private static int jslen = 0 ;
-    //-------------------
-    protected static String gift[];
-    protected static String date[];
-    protected static String giftName[];
-    protected static String ownerid[];
-    protected static String type[];
-    //-------------------
+
 
     public GiftListFragment() {
         // Required empty public constructor

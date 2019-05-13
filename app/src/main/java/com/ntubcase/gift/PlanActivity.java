@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -17,7 +18,10 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
+import com.ntubcase.gift.Adapter.GiftListAdapter;
 import com.ntubcase.gift.Adapter.PlanListAdapter;
+import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getPlanList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +38,7 @@ public class PlanActivity extends AppCompatActivity {
     private SearchView mSearchView;
     private PlanListAdapter planListAdapter;
     private ArrayAdapter spinnerAdapter;
+    private String[][] mPlansData = new String[getPlanList.planLength()][20];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,7 @@ public class PlanActivity extends AppCompatActivity {
 
         mPlansList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mPlans;
-
+        /*
         //------------範例資料格式(計畫種類,計畫名稱,日期)----------
         String[][] mPlansData = {       //計畫清單內容
                 {"驚喜式","小明生日","2019-04-04"},
@@ -61,8 +66,13 @@ public class PlanActivity extends AppCompatActivity {
                 {"期間式","計畫2","2019-04-09"},
                 {"問答式","計畫3","2019-04-10"}
         };
-
-        for(int i=0;i<mPlansData.length;i++) {
+        */
+        for(int i = 0 ;i < getPlanList.planLength(); i++){
+            mPlansData[i][0]= getPlanList.getPlanType(i);
+            mPlansData[i][1]= getPlanList.getGiftName(i);
+            mPlansData[i][2]= getPlanList.getSpCreateDate(i);
+        }
+        for(int i=0;i<getPlanList.planLength();i++) {
             mPlans = new HashMap<String, Object>();
             mPlans.put("type", mPlansData[i][0]);
             mPlans.put("title", mPlansData[i][1]);
@@ -108,6 +118,49 @@ public class PlanActivity extends AppCompatActivity {
         fab_surprise.setOnClickListener(fabClickListener);
         fab_calendar.setOnClickListener(fabClickListener);
         fab_qa.setOnClickListener(fabClickListener);
+    }
+
+    public void onResume(){
+
+        getGiftList.getJSON();
+
+        mListView = (ListView) findViewById(R.id.planList);
+        mSearchView = (SearchView) findViewById(R.id.mSearch);
+
+        mPlansList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> mPlans;
+        /*
+        //------------範例資料格式(計畫種類,計畫名稱,日期)----------
+        String[][] mPlansData = {       //計畫清單內容
+                {"驚喜式","小明生日","2019-04-04"},
+                {"期間式","結婚紀念日","2019-04-05"},
+                {"問答式","猜燈謎","2019-04-06"},
+                {"驚喜式","爸爸生日","2019-04-07"},
+                {"驚喜式","計畫1","2019-04-08"},
+                {"期間式","計畫2","2019-04-09"},
+                {"問答式","計畫3","2019-04-10"}
+        };
+        */
+        for(int i = 0 ;i < getPlanList.planLength(); i++){
+            mPlansData[i][0]= getPlanList.getPlanType(i);
+            mPlansData[i][1]= getPlanList.getGiftName(i);
+            mPlansData[i][2]= getPlanList.getSpCreateDate(i);
+        }
+        for(int i=0;i<getPlanList.planLength();i++) {
+            mPlans = new HashMap<String, Object>();
+            mPlans.put("type", mPlansData[i][0]);
+            mPlans.put("title", mPlansData[i][1]);
+            mPlans.put("date", mPlansData[i][2]);
+            mPlansList.add(mPlans);
+        }
+        planListAdapter = new PlanListAdapter(this, mPlansList);
+
+        mListView.setAdapter(planListAdapter);
+        mListView.setTextFilterEnabled(true);
+
+        setmListViewListener(); //設定ListView的監聽
+        setSearch_function(); // 設定searchView的文字輸入監聽
+        super.onResume();
     }
 
     // ----------------設定ListView的監聽---------------

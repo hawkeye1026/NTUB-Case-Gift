@@ -40,7 +40,7 @@ public class MakePlansActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //---------------------------------------------------------------------------------
-        //選告變數------------------------------------------------------------------------------
+        //宣告變數------------------------------------------------------------------------------
         EditText add_surprise_name = (EditText) findViewById(R.id.add_surprise_name);
         EditText add_surprise_date = findViewById(R.id.add_surprise_date);
         EditText add_surprise_time = findViewById(R.id.add_surprise_time);
@@ -48,10 +48,10 @@ public class MakePlansActivity extends AppCompatActivity {
         EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
         EditText add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
         //------------------------------------------------------------------------------
-        //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
+        //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
         add_giftlistItems = getResources().getStringArray(R.array.gift_item);
         add_giftcheckedItems = new boolean[add_giftlistItems.length];
-        //選擇好友使用的變數宣告---------------------------------------------------------------------------
+        //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
         add_friendlistItems = getResources().getStringArray(R.array.friend_item);
         add_friendcheckedItems = new boolean[add_friendlistItems.length];
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------

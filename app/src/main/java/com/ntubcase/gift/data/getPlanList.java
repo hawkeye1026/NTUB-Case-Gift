@@ -10,17 +10,19 @@ import org.json.JSONObject;
 
 public class getPlanList {
 
-    public  static String[] spid          = new String[100];
-    public  static String[] giftid        = new String[100];
-    public  static String[] sendGiftDate  = new String[100];
-    public  static String[] spPlanName    = new String[100];
-    public  static String[] spCreateDate  = new String[100];
-    public  static String[] message       = new String[100];
-    public  static String[] gift          = new String[100];
-    public  static String[] giftName      = new String[100];
-    public  static String[] giftCreateDate= new String[100];
-    public  static String[] ownerid       = new String[100];
-    public  static String[] type          = new String[100];
+    private static String[] spid          = new String[100];
+    private static String[] giftid         = new String[100];
+    private static String[] sendGiftDate   = new String[100];
+    private static String[] spPlanName     = new String[100];
+    private static String[] spCreateDate   = new String[100];
+    private static String[] message        = new String[100];
+    private static String[] gift           = new String[100];
+    private static String[] giftName       = new String[100];
+    private static String[] giftCreateDate = new String[100];
+    private static String[] ownerid        = new String[100];
+    private static String[] type           = new String[100];
+    private static String[] planType        = new String[100];
+
     private static int planLength = 0 ;
 
     public static void getJSON() {
@@ -52,6 +54,9 @@ public class getPlanList {
                         giftCreateDate[i] = jsonArray.getJSONObject(i).getString("giftCreateDate");
                         ownerid[i]        = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i]           = jsonArray.getJSONObject(i).getString("type");
+                        planType[i]       = "驚喜式";
+                        Log.v("pdata",sendGiftDate[i]);
+                        Log.v("pdata",spPlanName[i]);
 
                         switch(type[i]){
                             case "1":
@@ -62,11 +67,12 @@ public class getPlanList {
                                 type[i] = "兌換券";
                         }
                     }
+
                 } catch (Exception e) {
                 }
             }
         });
-        myAsyncTask.execute(Common.giftList);
+        myAsyncTask.execute(Common.planList);
     }
 
     public static int planLength(){
@@ -100,7 +106,7 @@ public class getPlanList {
     public static String getSpCreateDate(int i){
         return  spCreateDate[i];
     }
-    public static String getmessage(int i){
+    public static String getMessage(int i){
         return  message[i];
     }
     public static String getGift(int i){
@@ -109,7 +115,7 @@ public class getPlanList {
     public static String getGiftName(int i){
         return giftName[i];
     }
-    public static String getgiftCreateDate(int i){
+    public static String getGiftCreateDate(int i){
         return giftCreateDate[i];
     }
     public static String getOwnerid(){
@@ -117,5 +123,8 @@ public class getPlanList {
     }
     public static String getType(int i){
         return type[i];
+    }
+    public static String getPlanType(int i){
+        return planType[i];
     }
 }

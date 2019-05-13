@@ -4,17 +4,18 @@ import android.util.Log;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.giftDownloadAsyncTask;
+import com.ntubcase.gift.dateFormat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class getGiftList {
 
-    public  static String[] gift = new String[1000];
-    public  static String[] giftCreateDate = new String[100];
-    public  static String[] giftName= new String[100];
-    public  static String[] ownerid= new String[100];
-    public  static String[] type= new String[100];
+    private  static String[] gift = new String[1000];
+    private  static String[] giftCreateDate = new String[100];
+    private  static String[] giftName= new String[100];
+    private  static String[] ownerid= new String[100];
+    private  static String[] type= new String[100];
     private static int giftLength = 0 ;
 
     public static void getJSON() {
@@ -36,7 +37,7 @@ public class getGiftList {
                         Log.v("abc",
                                 "10000");
                         gift[i] = jsonArray.getJSONObject(i).getString("gift");
-                        giftCreateDate[i] = jsonArray.getJSONObject(i).getString("giftCreateDate");
+                        giftCreateDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("giftCreateDate"));
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");

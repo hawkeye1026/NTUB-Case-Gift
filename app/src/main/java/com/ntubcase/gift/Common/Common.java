@@ -13,6 +13,7 @@ public class Common {
     //--------------------------
     //Get
     public static String giftList="http://140.131.114.156/NTUB_gift_server/giftList.php/";
+    public static String planList="http://140.131.114.156/NTUB_gift_server/planList.php/";
     public static String test="http://140.131.114.156/NTUB_gift_server/test.php?";
     public static String insertGift="http://140.131.114.156/NTUB_gift_server/insertGift.php?";
     //public static String insertProtal="http://140.131.114.156/NTUB_gift_server/protal.php?";
