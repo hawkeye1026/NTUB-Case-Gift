@@ -79,7 +79,7 @@ public class MakeGiftsActivity extends AppCompatActivity {
 
                 //--------取得目前時間：yyyy/MM/dd hh:mm:ss
                 Date date =new Date();
-                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                 dateTime = sdFormat.format(date);
                 Log.v("giftName",dateTime);
 
