@@ -1,6 +1,7 @@
 package com.ntubcase.gift.MyAsyncTask;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,7 +15,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 
-public class worksheetUpdateAsyncTask extends AsyncTask<String, Integer, String> {
+public class giftInsertAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -31,7 +32,7 @@ public class worksheetUpdateAsyncTask extends AsyncTask<String, Integer, String>
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public worksheetUpdateAsyncTask(TaskListener taskListener) {
+    public giftInsertAsyncTask(TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -63,9 +64,11 @@ public class worksheetUpdateAsyncTask extends AsyncTask<String, Integer, String>
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "question_id=" + URLEncoder.encode(params[1], "UTF-8")+
-                            "&correct=" + URLEncoder.encode(params[2], "UTF-8");
-
+                    "giftContent=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&giftCreateDate=" + URLEncoder.encode(params[2], "UTF-8" )+
+                    "&giftName=" + URLEncoder.encode(params[3], "UTF-8" )+
+                    "&owner=" + URLEncoder.encode(params[4], "UTF-8" )+
+                    "&giftType=" + URLEncoder.encode(params[5], "UTF-8");
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -74,11 +77,20 @@ public class worksheetUpdateAsyncTask extends AsyncTask<String, Integer, String>
             writer.close();
             os.close();
 
+            int statusCode = conn.getResponseCode();
+
+            if (statusCode >= 200 && statusCode < 400) {
+                // Create an InputStream in order to extract the response object
+                inputStream = conn.getInputStream();
+            }
+            else {
+                inputStream = conn.getErrorStream();
+            }
             conn.connect();
             inputStream = conn.getInputStream();
 
             BufferedReader bufferedReader=new BufferedReader(
-                    new InputStreamReader(inputStream, "utf-8"));
+                    new InputStreamReader(inputStream, "UTF-8"));
 
             data=bufferedReader.readLine();
         } catch(Exception e) {

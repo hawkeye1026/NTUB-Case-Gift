@@ -3,7 +3,7 @@ package com.ntubcase.gift.data;
 import android.util.Log;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.getterAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftDownloadAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,7 +19,7 @@ public class getPlanList {
 
     public static void getJSON() {
 
-        getterAsyncTask myAsyncTask = new getterAsyncTask(new getterAsyncTask.TaskListener() {
+        giftDownloadAsyncTask myAsyncTask = new giftDownloadAsyncTask(new giftDownloadAsyncTask.TaskListener() {
 
             @Override
             public void onFinished(String result) {

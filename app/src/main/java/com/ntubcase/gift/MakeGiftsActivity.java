@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 //----------------------API
 import com.ntubcase.gift.Common.*;
-import com.ntubcase.gift.MyAsyncTask.giftUpdateAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 //----------------------
 
@@ -95,12 +95,12 @@ public class MakeGiftsActivity extends AppCompatActivity {
                         break;
                 }
 
-                giftUpdateAsyncTask mgiftUpdateAsyncTask = new giftUpdateAsyncTask(new giftUpdateAsyncTask.TaskListener() {
+                giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
                     }
                 });
-                mgiftUpdateAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
+                mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
                 //-------取得資料

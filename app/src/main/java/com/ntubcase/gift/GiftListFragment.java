@@ -89,7 +89,7 @@ public class GiftListFragment extends Fragment {
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);
             mGiftsData[i][1]= getGiftList.getGiftName(i);
-            mGiftsData[i][2]= getGiftList.getDate(i);
+            mGiftsData[i][2]= getGiftList.getGiftCreateDate(i);
         }
 
         for(int i=0;i<getGiftList.getGiftLength();i++) {
@@ -154,7 +154,7 @@ public class GiftListFragment extends Fragment {
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);
             mGiftsData[i][1]= getGiftList.getGiftName(i);
-            mGiftsData[i][2]= getGiftList.getDate(i);
+            mGiftsData[i][2]= getGiftList.getGiftCreateDate(i);
         }
         mGiftsList.clear();
 

@@ -3,15 +3,15 @@ package com.ntubcase.gift.data;
 import android.util.Log;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.getterAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftDownloadAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class getGiftList {
 
-    public  static String[] gift = new String[100];
-    public  static String[] date = new String[100];
+    public  static String[] gift = new String[1000];
+    public  static String[] giftCreateDate = new String[100];
     public  static String[] giftName= new String[100];
     public  static String[] ownerid= new String[100];
     public  static String[] type= new String[100];
@@ -19,7 +19,7 @@ public class getGiftList {
 
     public static void getJSON() {
 
-        getterAsyncTask myAsyncTask = new getterAsyncTask(new getterAsyncTask.TaskListener() {
+        giftDownloadAsyncTask myAsyncTask = new giftDownloadAsyncTask(new giftDownloadAsyncTask.TaskListener() {
 
             @Override
             public void onFinished(String result) {
@@ -36,7 +36,7 @@ public class getGiftList {
                         Log.v("abc",
                                 "10000");
                         gift[i] = jsonArray.getJSONObject(i).getString("gift");
-                        date[i] = jsonArray.getJSONObject(i).getString("date");
+                        giftCreateDate[i] = jsonArray.getJSONObject(i).getString("giftCreateDate");
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
@@ -70,8 +70,8 @@ public class getGiftList {
     public static String getGiftName(int i){
         return giftName[i];
     }
-    public static String getDate(int i){
-        return date[i];
+    public static String getGiftCreateDate(int i){
+        return giftCreateDate[i];
     }
     public static String getOwnerid(){
         return ownerid[0];
