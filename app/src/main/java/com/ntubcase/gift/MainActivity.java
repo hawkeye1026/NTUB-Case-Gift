@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getPlanList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getGiftList.getJSON();
-
+        getPlanList.getJSON();
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);
         mGift.setOnClickListener(new View.OnClickListener() {

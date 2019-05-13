@@ -10,12 +10,18 @@ import org.json.JSONObject;
 
 public class getPlanList {
 
-    public  static String[] gift = new String[100];
-    public  static String[] date = new String[100];
-    public  static String[] giftName= new String[100];
-    public  static String[] ownerid= new String[100];
-    public  static String[] type= new String[100];
-    private static int giftLength = 0 ;
+    public  static String[] spid          = new String[100];
+    public  static String[] giftid        = new String[100];
+    public  static String[] sendGiftDate  = new String[100];
+    public  static String[] spPlanName    = new String[100];
+    public  static String[] spCreateDate  = new String[100];
+    public  static String[] message       = new String[100];
+    public  static String[] gift          = new String[100];
+    public  static String[] giftName      = new String[100];
+    public  static String[] giftCreateDate= new String[100];
+    public  static String[] ownerid       = new String[100];
+    public  static String[] type          = new String[100];
+    private static int planLength = 0 ;
 
     public static void getJSON() {
 
@@ -28,19 +34,24 @@ public class getPlanList {
 
                     JSONArray jsonArray = object.getJSONArray("result");
 
-                    Log.v("length",jsonArray.length()+"");
+                    Log.v("plength",jsonArray.length()+"");
 
-                    giftLength = jsonArray.length();
-
+                    planLength = jsonArray.length();
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         Log.v("abc",
                                 "10000");
-                        gift[i] = jsonArray.getJSONObject(i).getString("gift");
-                        date[i] = jsonArray.getJSONObject(i).getString("date");
-                        giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
-                        ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
-                        type[i] = jsonArray.getJSONObject(i).getString("type");
+                        spid[i]           = jsonArray.getJSONObject(i).getString("spid");
+                        giftid[i]         = jsonArray.getJSONObject(i).getString("giftid");
+                        sendGiftDate[i]   = jsonArray.getJSONObject(i).getString("sendGiftDate");
+                        spPlanName[i]     = jsonArray.getJSONObject(i).getString("spPlanName");
+                        spCreateDate[i]   = jsonArray.getJSONObject(i).getString("spCreateDate");
+                        message[i]        = jsonArray.getJSONObject(i).getString("message");
+                        gift[i]           = jsonArray.getJSONObject(i).getString("gift");
+                        giftName[i]       = jsonArray.getJSONObject(i).getString("giftName");
+                        giftCreateDate[i] = jsonArray.getJSONObject(i).getString("giftCreateDate");
+                        ownerid[i]        = jsonArray.getJSONObject(i).getString("ownerid");
+                        type[i]           = jsonArray.getJSONObject(i).getString("type");
 
                         switch(type[i]){
                             case "1":
@@ -58,22 +69,53 @@ public class getPlanList {
         myAsyncTask.execute(Common.giftList);
     }
 
-    public static int getGiftLength(){
-        return giftLength;
+    public static int planLength(){
+        return planLength;
+    }
+    public static String getspid(int i){
+        return  spid[i];
+    }
+    /*
+    spid[i]           = jsonArray.getJSONObject(i).getString("spid");
+    giftid[i]         = jsonArray.getJSONObject(i).getString("giftid");
+    sendGiftDate[i]   = jsonArray.getJSONObject(i).getString("sendGiftDate");
+    spPlanName[i]     = jsonArray.getJSONObject(i).getString("spPlanName");
+    spCreateDate[i]   = jsonArray.getJSONObject(i).getString("spCreateDate");
+    message[i]        = jsonArray.getJSONObject(i).getString("message");
+    gift[i]           = jsonArray.getJSONObject(i).getString("gift");
+    giftName[i]       = jsonArray.getJSONObject(i).getString("giftName");
+    giftCreateDate[i] = jsonArray.getJSONObject(i).getString("giftCreateDate");
+    ownerid[i]        = jsonArray.getJSONObject(i).getString("ownerid");
+    type[i]           = jsonArray.getJSONObject(i).getString("type");
+    */
+    public static String getGiftid(int i){
+        return  giftid[i];
+    }
+    public static String getSendGiftDate(int i){
+        return  sendGiftDate[i];
+    }
+    public static String getSpPlanName(int i){
+        return  spPlanName[i];
+    }
+    public static String getSpCreateDate(int i){
+        return  spCreateDate[i];
+    }
+    public static String getmessage(int i){
+        return  message[i];
     }
     public static String getGift(int i){
         return  gift[i];
     }
-    public static String getType(int i){
-        return type[i];
-    }
     public static String getGiftName(int i){
         return giftName[i];
     }
-    public static String getDate(int i){
-        return date[i];
+    public static String getgiftCreateDate(int i){
+        return giftCreateDate[i];
     }
     public static String getOwnerid(){
         return ownerid[0];
+    }
+    public static String getType(int i){
+        return type[i];
     }
 }
