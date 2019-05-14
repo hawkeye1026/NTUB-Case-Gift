@@ -70,23 +70,24 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/mFriend"
+                android:id="@+id/mReceivedGift"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center"
-                android:text="@string/mFriend"
+                android:text="@string/mReceivedGift"
                 android:textSize="20dp"
                 android:textColor="#FFF"
                 android:background="@drawable/bg_mainbutton"/>
 
             <Button
+                android:id="@+id/mFriend"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_gravity="center"
-                android:text="@string/mystery_gift"
+                android:text="@string/mFriend"
                 android:textSize="20dp"
                 android:textColor="#FFF"
                 android:background="@drawable/bg_mainbutton"/>

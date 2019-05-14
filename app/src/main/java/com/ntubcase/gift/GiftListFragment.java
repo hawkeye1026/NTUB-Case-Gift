@@ -78,8 +78,6 @@ public class GiftListFragment extends Fragment {
 
         getGiftList.getJSON();
 
-
-
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);
             mGiftsData[i][1]= getGiftList.getGiftName(i);
@@ -171,7 +169,6 @@ public class GiftListFragment extends Fragment {
         setSearch_function(); // 設定searchView的文字輸入監聽
         super.onResume();
     }
-
 
 
     // ----------------設定ListView的監聽---------------
