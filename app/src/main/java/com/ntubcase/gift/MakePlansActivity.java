@@ -9,22 +9,26 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.ntubcase.gift.data.getGiftList;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class MakePlansActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-    String[] add_giftlistItems;
+    String[] add_giftlistItems = new String[getGiftList.getGiftLength()];
     boolean[] add_giftcheckedItems;
     ArrayList<Integer> add_giftItems = new ArrayList<>();
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
-    String[] add_friendlistItems;
+    String[] add_friendlistItems = new String[getGiftList.getGiftLength()];
     boolean[] add_friendcheckedItems;
     ArrayList<Integer> add_friendItems = new ArrayList<>();
     //----------------------------------------------------------------------------------------------
@@ -49,7 +53,10 @@ public class MakePlansActivity extends AppCompatActivity {
         EditText add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
-        add_giftlistItems = getResources().getStringArray(R.array.gift_item);
+        for(int i = 0 ; i < getGiftList.getGiftLength();i++){
+            add_giftlistItems[i] = getGiftList.getGiftName(i);
+        }
+//        add_giftlistItems = getResources().getStringArray(R.array.gift_item);
         add_giftcheckedItems = new boolean[add_giftlistItems.length];
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
         add_friendlistItems = getResources().getStringArray(R.array.friend_item);
@@ -167,7 +174,7 @@ public class MakePlansActivity extends AppCompatActivity {
                 for (int i = 0; i < add_giftItems.size(); i++) {
                     item = item + add_giftlistItems[add_giftItems.get(i)];
                     if (i != add_giftItems.size() - 1) {
-                        item = item + ", ";
+                        item = item + ",";
                     }
                 }
                 add_surprise_gift.setText(item);
@@ -221,7 +228,7 @@ public class MakePlansActivity extends AppCompatActivity {
                 for (int i = 0; i < add_friendItems.size(); i++) {
                     item = item + add_friendlistItems[add_friendItems.get(i)];
                     if (i != add_friendItems.size() - 1) {
-                        item = item + ", ";
+                        item = item + ",";
                     }
                 }
                 add_surprise_friend.setText(item);

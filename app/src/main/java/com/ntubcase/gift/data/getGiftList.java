@@ -3,24 +3,26 @@ package com.ntubcase.gift.data;
 import android.util.Log;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.giftDownloadAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftListAsyncTask;
 import com.ntubcase.gift.dateFormat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 public class getGiftList {
 
-    private  static String[] gift = new String[1000];
-    private  static String[] giftCreateDate = new String[100];
-    private  static String[] giftName= new String[100];
-    private  static String[] ownerid= new String[100];
-    private  static String[] type= new String[100];
+    private static String[] gift = new String[1000];
+    private static String[] giftCreateDate = new String[100];
+    private static String[] giftName= new String[100];
+    private static String[] ownerid= new String[100];
+    private static String[] type= new String[100];
     private static int giftLength = 0 ;
 
     public static void getJSON() {
 
-        giftDownloadAsyncTask myAsyncTask = new giftDownloadAsyncTask(new giftDownloadAsyncTask.TaskListener() {
+        giftListAsyncTask myAsyncTask = new giftListAsyncTask(new giftListAsyncTask.TaskListener() {
 
             @Override
             public void onFinished(String result) {
@@ -41,7 +43,7 @@ public class getGiftList {
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
-
+                        //Log.v("strArr",jsonArray)
                         switch(type[i]){
                             case "1":
                                 type[i] = "照片";
@@ -50,8 +52,8 @@ public class getGiftList {
                             case "3":
                                 type[i] = "兌換券";
                         }
-
                     }
+                    Log.v("strArr", Arrays.toString(getGiftList.getGiftNmaeArr()));
                 } catch (Exception e) {
                 }
             }
@@ -76,5 +78,8 @@ public class getGiftList {
     }
     public static String getOwnerid(){
         return ownerid[0];
+    }
+    public static String[] getGiftNmaeArr(){
+        return giftName;
     }
 }
