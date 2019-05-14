@@ -14,6 +14,7 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
+        setTitle(R.string.giftReceivedDetail);
     }
 
     @Override

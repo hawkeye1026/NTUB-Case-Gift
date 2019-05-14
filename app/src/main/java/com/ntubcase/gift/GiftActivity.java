@@ -1,15 +1,43 @@
 package com.ntubcase.gift;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Spinner;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+import com.ntubcase.gift.Adapter.GiftListAdapter;
 import com.ntubcase.gift.Adapter.GiftPagerAdapter;
+import com.ntubcase.gift.data.getGiftList;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GiftActivity extends AppCompatActivity {
+
+    private SearchView mSearchView;
+    private ListView mListView;
+    private GiftListAdapter giftListAdapter;
+    private List<Map<String, Object>> mGiftsList; //禮物清單
+    private FloatingActionButton fab1, fab2, fab3;
+    private FloatingActionMenu newGift;
+    private Spinner mSpinner;
+    private ArrayAdapter spinnerAdapter;
+    private static int jslen = 0 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,20 +48,200 @@ public class GiftActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
 
-        //---TabLayout---
-        ViewPager mViewpager = (ViewPager) findViewById(R.id.mViewpager);
-        TabLayout giftTabLayout = (TabLayout) findViewById(R.id.giftTab);
-        giftTabLayout.setupWithViewPager(mViewpager);
-        setupViewPager(mViewpager);
+        //---------------------ListView--------------------------------
+        mListView = (ListView) findViewById(R.id.giftList);
+        mSearchView = (SearchView) findViewById(R.id.mSearch);
+
+        mGiftsList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> mGifts;
+
+        String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
+        //------------範例資料格式(禮物種類,禮物名稱,日期)----------
+        /*String[][] mGiftsData = {       //禮物清單內容
+        /*
+        String[][] mGiftsData = {       //禮物清單內容
+                {"照片","小明生日賀卡","2019-01-01"},
+                {"影片","結婚紀念日","2019-01-02"},
+                {"兌換券","跑腿兌換券","2019-02-01"},
+                {"照片","禮物1","2019-02-02"},
+                {"兌換券","禮物2","2019-03-03"},
+                {"影片","禮物3","2019-04-04"}
+                {"兌換券","禮物4","2019-05-05"}
+        };*/
+
+        getGiftList.getJSON();
+
+        for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
+            mGiftsData[i][0]= getGiftList.getType(i);
+            mGiftsData[i][1]= getGiftList.getGiftName(i);
+            mGiftsData[i][2]= getGiftList.getGiftCreateDate(i);
+        }
+
+        for(int i=0;i<getGiftList.getGiftLength();i++) {
+            mGifts = new HashMap<String, Object>();
+            mGifts.put("type", mGiftsData[i][0]);
+            mGifts.put("title", mGiftsData[i][1]);
+            mGifts.put("date", mGiftsData[i][2]);
+            mGiftsList.add(mGifts);
+        }
+        giftListAdapter = new GiftListAdapter(this, mGiftsList);
+
+        mListView.setAdapter(giftListAdapter);
+        mListView.setTextFilterEnabled(true);
+
+        setmListViewListener(); //設定ListView的監聽
+        setSearch_function(); // 設定searchView的文字輸入監聽
+
+        //-----------------------------spinner----------------------
+        mSpinner = (Spinner) findViewById(R.id.mSpinner);
+        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_gift_type, R.layout.spinner_layout);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_itm_layout);
+        mSpinner.setAdapter(spinnerAdapter);
+
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String str = parent.getItemAtPosition(position).toString();
+
+                giftListAdapter.selectedType=str;
+                String query = mSearchView.getQuery().toString();
+                giftListAdapter.getFilter().filter(query);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //------------------------------FAB_newGift----------------------
+        newGift = (FloatingActionMenu) findViewById(R.id.newGift);
+        fab1 = (FloatingActionButton) findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) findViewById(R.id.fab3);
+        fab1.setOnClickListener(fabClickListener);
+        fab2.setOnClickListener(fabClickListener);
+        fab3.setOnClickListener(fabClickListener);
     }
 
-    //---------ViewPager初始化----------
-    private void setupViewPager(ViewPager viewPager) {
-        GiftPagerAdapter adapter = new GiftPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new GiftListFragment(), "送禮區");
-        adapter.addFragment(new GiftReceivedFragment(), "收禮區");
-        viewPager.setAdapter(adapter);
+    //-----------------
+    public void onResume(){
+
+        getGiftList.getJSON();
+
+        String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
+
+        Log.v("res_length",getGiftList.getGiftLength()+"");
+        for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
+            mGiftsData[i][0]= getGiftList.getType(i);
+            mGiftsData[i][1]= getGiftList.getGiftName(i);
+            mGiftsData[i][2]= getGiftList.getGiftCreateDate(i);
+        }
+        mGiftsList.clear();
+
+        mGiftsList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> mGifts;
+
+        for(int i=0;i<getGiftList.getGiftLength();i++) {
+            mGifts = new HashMap<String, Object>();
+            mGifts.put("type", mGiftsData[i][0]);
+            mGifts.put("title", mGiftsData[i][1]);
+            mGifts.put("date", mGiftsData[i][2]);
+            mGiftsList.add(mGifts);
+        }
+        giftListAdapter = new GiftListAdapter(this, mGiftsList);
+
+        mListView.setAdapter(giftListAdapter);
+        mListView.setTextFilterEnabled(true);
+
+        setmListViewListener(); //設定ListView的監聽
+        setSearch_function(); // 設定searchView的文字輸入監聽
+        super.onResume();
     }
+
+
+    // ----------------設定ListView的監聽---------------
+    private void setmListViewListener(){
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent();
+                intent = new Intent(GiftActivity.this, GiftDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                mSearchView.clearFocus();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
+    }
+
+    // ----------------設定searchView的文字輸入監聽---------------
+    private void setSearch_function(){
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                giftListAdapter.getFilter().filter(query);
+                mSearchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                giftListAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+        mSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    /*InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);*/
+                    mSearchView.clearFocus();
+                }
+            }
+        });
+    }
+
+    // ----------------設定FAB的點擊監聽---------------
+    private View.OnClickListener fabClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            switch (v.getId()) {
+                case R.id.fab1:
+                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
+                    intent.putExtra("giftType", fab1.getLabelText());
+                    break;
+                case R.id.fab2:
+                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
+                    intent.putExtra("giftType", fab2.getLabelText());
+                    break;
+                case R.id.fab3:
+                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
+                    intent.putExtra("giftType", fab3.getLabelText());
+                    break;
+            }
+
+            newGift.close(true);
+            startActivity(intent);
+        }
+    };
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

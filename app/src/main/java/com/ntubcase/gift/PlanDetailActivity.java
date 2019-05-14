@@ -34,6 +34,7 @@ public class PlanDetailActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
+        setTitle(R.string.planDetail);
 
         //---------------------------------------------------------------------------------
         //選告變數------------------------------------------------------------------------------

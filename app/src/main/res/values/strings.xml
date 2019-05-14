@@ -4,9 +4,14 @@
 
     <!-- 首頁按鈕-->
     <string name="mGift">禮物區</string>
+    <string name="mReceivedGift">收禮區</string>
     <string name="mPlan">送禮計畫</string>
     <string name="mFriend">我的好友</string>
-    <string name="mystery_gift">神秘禮物區</string>
+
+    <!-- Detail-->
+    <string name="giftDetail">禮物細節</string>
+    <string name="giftReceivedDetail">收禮細節</string>
+    <string name="planDetail">計畫細節</string>
 
     <!-- 禮物模式-->
     <string name="giftPhoto">照片</string>
@@ -52,6 +57,7 @@
         <item>Tuna</item>
         <item>Mushrooms</item>
     </string-array>
+
     <string-array name="friend_item">
         <item>好友1</item>
         <item>Sausage</item>
@@ -77,6 +83,7 @@
         <item>Tuna</item>
         <item>Mushrooms</item>
     </string-array>
+
     <string-array name="edit_friend_item">
         <item>好友1</item>
         <item>Sausage</item>
@@ -89,5 +96,6 @@
         <item>Tuna</item>
         <item>Mushrooms</item>
     </string-array>
+
 
 </resources>

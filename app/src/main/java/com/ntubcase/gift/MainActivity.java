@@ -14,7 +14,7 @@ import com.ntubcase.gift.data.getPlanList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mGift, mPlan, mFriend;
+    private Button mGift, mPlan, mReceivedGift, mFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , PlanActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //-------收禮區 按鈕------
+        mReceivedGift = findViewById(R.id.mReceivedGift);
+        mReceivedGift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this , GiftReceivedActivity.class);
                 startActivity(intent);
             }
         });

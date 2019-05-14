@@ -13,8 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.GiftReceivedAdapter;
 
@@ -27,7 +25,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GiftReceivedFragment extends Fragment {
+public class GiftReceivedNewFragment extends Fragment {
 
     private SearchView mSearchView;
     private ListView mListView;
@@ -36,7 +34,7 @@ public class GiftReceivedFragment extends Fragment {
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
 
-    public GiftReceivedFragment() {
+    public GiftReceivedNewFragment() {
         // Required empty public constructor
     }
 
@@ -44,7 +42,7 @@ public class GiftReceivedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_gift_received, container, false);
+        View view = inflater.inflate(R.layout.fragment_gift_received_new, container, false);
 
         //------------------ListView------------------
         mListView = (ListView) view.findViewById(R.id.giftList);
