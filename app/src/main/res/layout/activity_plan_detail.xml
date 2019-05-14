@@ -161,6 +161,8 @@
                     android:ems="10"
                     android:inputType="textMultiLine"
                     android:singleLine="false"
+                    android:gravity="top|left"
+                    android:layout_marginRight="5dp"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
