@@ -17,7 +17,7 @@ public class Common {
     public static String giftReceived="http://140.131.114.156/NTUB_gift_server/giftReceived.php/";
     //--------------------------------POST
 //    public static String test="http://140.131.114.156/NTUB_gift_server/test.php?";
-    public static String friendList="http://140.131.114.156/NTUB_gift_server/planList.php?";
+    public static String friendList="http://140.131.114.156/NTUB_gift_server/friendList.php?";
     public static String insertGift="http://140.131.114.156/NTUB_gift_server/insertGift.php?";
     //public static String insertProtal="http://140.131.114.156/NTUB_gift_server/protal.php?";
 

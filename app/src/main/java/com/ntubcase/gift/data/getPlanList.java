@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.giftListAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.planListAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,7 +28,7 @@ public class getPlanList {
 
     public static void getJSON() {
 
-        giftListAsyncTask myAsyncTask = new giftListAsyncTask(new giftListAsyncTask.TaskListener() {
+        planListAsyncTask myAsyncTask = new planListAsyncTask(new planListAsyncTask.TaskListener() {
 
             @Override
             public void onFinished(String result) {

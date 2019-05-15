@@ -12,10 +12,12 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class MakePlansActivity extends AppCompatActivity {
     boolean[] add_giftcheckedItems;
     ArrayList<Integer> add_giftItems = new ArrayList<>();
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
-    String[] add_friendlistItems = new String[getGiftList.getGiftLength()];
+    String[] add_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] add_friendcheckedItems;
     ArrayList<Integer> add_friendItems = new ArrayList<>();
     //----------------------------------------------------------------------------------------------
@@ -51,15 +53,29 @@ public class MakePlansActivity extends AppCompatActivity {
         EditText add_surprise_gift = (EditText) findViewById(R.id.add_surprise_gift);
         EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
         EditText add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
+        Button savePlan = (Button) findViewById(R.id.btn_plan_save);
+        Button sendPlan = (Button) findViewById(R.id.btn_plan_send);
+        sendPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                Intent intent = new Intent();
+                intent.setClass(MakePlansActivity.this , PlanActivity.class);
+                startActivity(intent);
+            }
+        });
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
             add_giftlistItems[i] = getGiftList.getGiftName(i);
         }
-//        add_giftlistItems = getResources().getStringArray(R.array.gift_item);
         add_giftcheckedItems = new boolean[add_giftlistItems.length];
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
-        add_friendlistItems = getResources().getStringArray(R.array.friend_item);
+        for(int i = 0; i < getFriendList.getFriendLength(); i++){
+            add_friendlistItems[i] = getFriendList.getFriendName(i);
+        }
         add_friendcheckedItems = new boolean[add_friendlistItems.length];
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
         add_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
@@ -278,7 +294,7 @@ public class MakePlansActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 EditText add_surprise_time = findViewById(R.id.add_surprise_time);
-                add_surprise_time.setText(hourOfDay + "：" + minute);
+                add_surprise_time.setText(hourOfDay + ":" + minute);
 
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE),false).show();
