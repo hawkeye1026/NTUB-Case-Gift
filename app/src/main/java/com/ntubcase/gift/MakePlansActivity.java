@@ -17,6 +17,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.planUpdateAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
@@ -55,12 +57,18 @@ public class MakePlansActivity extends AppCompatActivity {
         EditText add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
         Button savePlan = (Button) findViewById(R.id.btn_plan_save);
         Button sendPlan = (Button) findViewById(R.id.btn_plan_send);
+
+        //-----------製作計畫
         sendPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                planUpdateAsyncTask mgiftInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                    }
+                });
 
-
-
+                mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
                 Intent intent = new Intent();
                 intent.setClass(MakePlansActivity.this , PlanActivity.class);
                 startActivity(intent);
