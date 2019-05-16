@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -169,6 +170,9 @@ public class GiftActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 intent = new Intent(GiftActivity.this, GiftDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("name",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

@@ -11,19 +11,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_giftContent"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:hint="請輸入兌換券內容"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center">
 
             <ImageView
@@ -37,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="禮物名稱:"
+                android:text="禮物名稱："
                 android:textSize="18sp"/>
 
             <EditText
@@ -47,6 +41,14 @@
                 android:textSize="18sp"/>
 
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_giftContent"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:hint="請輸入兌換券內容"/>
 
     </LinearLayout>
 

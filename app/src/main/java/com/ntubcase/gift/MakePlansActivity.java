@@ -68,7 +68,7 @@ public class MakePlansActivity extends AppCompatActivity {
                     }
                 });
 
-                mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
+                //mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
                 Intent intent = new Intent();
                 intent.setClass(MakePlansActivity.this , PlanActivity.class);
                 startActivity(intent);
