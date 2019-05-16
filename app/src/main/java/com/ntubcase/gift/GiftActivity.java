@@ -172,6 +172,7 @@ public class GiftActivity extends AppCompatActivity {
                 intent = new Intent(GiftActivity.this, GiftDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("name",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
+                bundle.putString("content","禮物內容");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

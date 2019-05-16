@@ -33,7 +33,9 @@ public class GiftDetailActivity extends AppCompatActivity {
         //-----取得intent的bundle資料-----
         Bundle bundle = this.getIntent().getExtras();
         String giftName = bundle.getString("name");
+        String giftContent = bundle.getString("content");
         et_giftName.setText(giftName);
+        et_giftContent.setText(giftContent);
 
 
         //-----製作計畫按鈕-----
@@ -47,9 +49,7 @@ public class GiftDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
+        
     }
 
     @Override
