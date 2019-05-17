@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.planUpdateAsyncTask;
@@ -67,7 +68,7 @@ public class MakePlansActivity extends AppCompatActivity {
         Button savePlan = (Button) findViewById(R.id.btn_plan_save);
         Button sendPlan = (Button) findViewById(R.id.btn_plan_send);
 
-        //-----------製作計畫
+        //-----------送出計畫
         sendPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,11 +88,20 @@ public class MakePlansActivity extends AppCompatActivity {
 
                 mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
 
-                Intent intent = new Intent();
-                intent.setClass(MakePlansActivity.this , PlanActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
+
+        //-----------儲存計畫
+        savePlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
+
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){

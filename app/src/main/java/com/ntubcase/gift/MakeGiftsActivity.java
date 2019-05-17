@@ -69,8 +69,7 @@ public class MakeGiftsActivity extends AppCompatActivity {
         et_giftContent = (EditText) findViewById(R.id.et_giftContent);
 
 
-        //--------
-
+        //---------------------------------------------------------------------------------
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,8 +103,6 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-                //-------取得資料
-
 
                 finish();
             }
@@ -116,7 +113,7 @@ public class MakeGiftsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent = new Intent(MakeGiftsActivity.this, MakePlansActivity.class);
+                intent = new Intent(MakeGiftsActivity.this, PlanActivity.class);
                 startActivity(intent);
                 finish();
             }
