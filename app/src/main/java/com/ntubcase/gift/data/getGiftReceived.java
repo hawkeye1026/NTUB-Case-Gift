@@ -12,7 +12,7 @@ import org.json.JSONObject;
 public class getGiftReceived {
 
     private  static String[] planid = new String[1000];
-    private  static String[] senterid = new String[100];
+    private  static String[] senderid = new String[100];
     private  static String[] nickname= new String[100];
     private  static String[] planName= new String[100];
     private  static String[] sendPlanDate= new String[100];
@@ -38,7 +38,7 @@ public class getGiftReceived {
                         Log.v("abc",
                                 "10000");
                         planid[i] = jsonArray.getJSONObject(i).getString("planid");
-                        senterid[i] = jsonArray.getJSONObject(i).getString("senterid");
+                        senderid[i] = jsonArray.getJSONObject(i).getString("senderid");
                         nickname[i] = jsonArray.getJSONObject(i).getString("nickname");
                         planName[i] = jsonArray.getJSONObject(i).getString("planName");
                         sendPlanDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
@@ -67,8 +67,8 @@ public class getGiftReceived {
     public static String getPlanid(int i){
         return planid[i];
     }
-    public static String getSenterid(int i){
-        return senterid[i];
+    public static String getSenderid(int i){
+        return senderid[i];
     }
     public static String getNickname(int i){
         return nickname[i];
