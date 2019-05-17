@@ -1,7 +1,6 @@
 package com.ntubcase.gift.MyAsyncTask;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -9,30 +8,26 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-//=========================================
-// 非同步工作, 用來取回網站回傳的資料
-//=========================================
-public class getReceivedAsyncTask extends AsyncTask<String, Integer, String> {
 
-    //----------------------------------------
-    // 宣告一個接收回傳結果的程式必須實作的介面
-    //----------------------------------------
+public class giftReceivedNewAsyncTask extends AsyncTask<String, Integer, String> {
+
+    //----------------------------------------------------
+    // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
+    //----------------------------------------------------
     public interface TaskListener {
         void onFinished(String result);
     }
 
-    private TaskListener taskListener;
+    //----------------------
+    // 接收回傳值的物件參考
+    //----------------------
+    private final giftReceivedNewAsyncTask.TaskListener taskListener;
 
-    //-----------------------------------------------------------
-    // 建構元, 傳入(1)context, (2)取回資料後執行的程式
-    //-----------------------------------------------------------
-    public getReceivedAsyncTask(TaskListener taskListener) {
+    //---------------------------------------
+    // 建構元, 傳入context及接收回傳值的物件
+    //---------------------------------------
+    public giftReceivedNewAsyncTask(giftReceivedNewAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     @Override
@@ -40,10 +35,9 @@ public class getReceivedAsyncTask extends AsyncTask<String, Integer, String> {
         super.onProgressUpdate(values);
     }
 
-    //========================================
-    // 由主程式呼叫.execute()方法時啟動,
-    // 由主程式傳入:(1)主機網址
-    //========================================
+    //=========================================================
+    // 執行非同步工作, 建立一個HttpURLConnection, 讀取主機的資料.
+    //=========================================================
     @Override
     protected String doInBackground(String... params) {
         String data=null;
@@ -61,13 +55,10 @@ public class getReceivedAsyncTask extends AsyncTask<String, Integer, String> {
 
             int statusCode = conn.getResponseCode();
 
-
-            Log.v("Test2","statuus:"+statusCode);
+            //Log.v("Test2","statuus:" + statusCode);
 
             conn.connect();
             inputStream = conn.getInputStream();
-
-
 
             if (statusCode >= 200 && statusCode < 400) {
                 // Create an InputStream in order to extract the response object
@@ -76,8 +67,6 @@ public class getReceivedAsyncTask extends AsyncTask<String, Integer, String> {
             else {
                 inputStream = conn.getErrorStream();
             }
-
-
             BufferedReader bufferedReader=new BufferedReader(
                     new InputStreamReader(inputStream, "utf-8"));
 
@@ -95,9 +84,10 @@ public class getReceivedAsyncTask extends AsyncTask<String, Integer, String> {
         return data;
     }
 
-    //------------------------------------------------------------------
-    // 完成資料取回後, 由主程式的taskListener.onFinished()處理取回資料
-    //------------------------------------------------------------------
+
+    //===========================
+    // 執行完非同步工作之後執行
+    //===========================
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
