@@ -22,9 +22,11 @@ import com.ntubcase.gift.MyAsyncTask.planUpdateAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MakePlansActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
@@ -35,6 +37,13 @@ public class MakePlansActivity extends AppCompatActivity {
     String[] add_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] add_friendcheckedItems;
     ArrayList<Integer> add_friendItems = new ArrayList<>();
+    //----------------------------------------------------------------------------------------------
+    private static String[] giftid = new String[100];
+    private static String[] friendid = new String[100];
+    private static int giftidPositionIndex = 0 ;
+    private static int friendidPositionIndex = 0 ;
+    static EditText add_surprise_name;
+    static EditText add_surprice_message;
     //----------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +58,12 @@ public class MakePlansActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //---------------------------------------------------------------------------------
         //宣告變數------------------------------------------------------------------------------
-        EditText add_surprise_name = (EditText) findViewById(R.id.add_surprise_name);
+        add_surprise_name = (EditText) findViewById(R.id.add_surprise_name);
         EditText add_surprise_date = findViewById(R.id.add_surprise_date);
         EditText add_surprise_time = findViewById(R.id.add_surprise_time);
         EditText add_surprise_gift = (EditText) findViewById(R.id.add_surprise_gift);
         EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-        EditText add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
+        add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
         Button savePlan = (Button) findViewById(R.id.btn_plan_save);
         Button sendPlan = (Button) findViewById(R.id.btn_plan_send);
 
@@ -67,8 +76,18 @@ public class MakePlansActivity extends AppCompatActivity {
                     public void onFinished(String result) {
                     }
                 });
+                //---------------------------選擇日期
+                EditText add_surprise_date = findViewById(R.id.add_surprise_date);//日期
+                EditText add_surprise_time = findViewById(R.id.add_surprise_time);//分秒
+                String sendPlanDate = add_surprise_date.getText().toString() +" "+   add_surprise_time.getText().toString();
+                //---------------------------目前時間
+                Date date =new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                String spCreateDate = sdFormat.format(date);
 
-                //mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
+                //Log.v("insertGift",Common.insertPlan + "12"+ "計畫名稱YA" +spCreateDate +sendPlanDate+"測試上傳");
+
+                mgiftInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
                 Intent intent = new Intent();
                 intent.setClass(MakePlansActivity.this , PlanActivity.class);
                 startActivity(intent);
@@ -178,13 +197,17 @@ public class MakePlansActivity extends AppCompatActivity {
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlansActivity.this);
         mBuilder.setTitle("選擇禮物");
+
         mBuilder.setMultiChoiceItems(add_giftlistItems, add_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
                     add_giftItems.add(position);
+                    giftid[giftidPositionIndex] = getGiftList.getGiftid(position);
+                    giftidPositionIndex++;
                 }else{
                     add_giftItems.remove((Integer.valueOf(position)));
+                    giftidPositionIndex--;
                 }
             }
         });
@@ -237,8 +260,11 @@ public class MakePlansActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
                     add_friendItems.add(position);
+                    friendid[friendidPositionIndex] = getFriendList.getFriendid(position);
+                    friendidPositionIndex++;
                 }else{
                     add_friendItems.remove((Integer.valueOf(position)));
+                    friendidPositionIndex--;
                 }
             }
         });

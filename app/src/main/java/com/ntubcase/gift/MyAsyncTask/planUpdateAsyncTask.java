@@ -63,7 +63,11 @@ public class planUpdateAsyncTask extends AsyncTask<String, Integer, String> {
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "userid=" + URLEncoder.encode(params[1], "UTF-8");
+                    "giftid=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&spPlanName=" + URLEncoder.encode(params[2], "UTF-8" )+
+                    "&spCreateDate=" + URLEncoder.encode(params[3], "UTF-8" )+
+                    "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8" )+
+                    "&message=" + URLEncoder.encode(params[5], "UTF-8");
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

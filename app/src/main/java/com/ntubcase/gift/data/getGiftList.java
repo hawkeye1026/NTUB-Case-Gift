@@ -13,7 +13,8 @@ import java.util.Arrays;
 
 public class getGiftList {
 
-    private static String[] gift = new String[1000];
+    private static String[] giftid = new String[100];
+    private static String[] gift = new String[100];
     private static String[] giftCreateDate = new String[100];
     private static String[] giftName= new String[100];
     private static String[] ownerid= new String[100];
@@ -38,12 +39,13 @@ public class getGiftList {
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         Log.v("abc",
                                 "10000");
+                        giftid[i] = jsonArray.getJSONObject(i).getString("giftid");
                         gift[i] = jsonArray.getJSONObject(i).getString("gift");
                         giftCreateDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("giftCreateDate"));
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
-                        //Log.v("strArr",jsonArray)
+                        Log.v("giftid",giftid[i]);
                         switch(type[i]){
                             case "1":
                                 type[i] = "照片";
@@ -63,6 +65,9 @@ public class getGiftList {
 
     public static int getGiftLength(){
         return giftLength;
+    }
+    public static String getGiftid(int i){
+        return  giftid[i];
     }
     public static String getGift(int i){
         return  gift[i];

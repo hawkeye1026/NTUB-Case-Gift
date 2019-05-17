@@ -14,6 +14,7 @@ import java.util.Arrays;
 
 public class getFriendList {
 
+    private static String[] friendid = new String[100];
     private static String[] friendName = new String[100];
     private static int friendLength = 0 ;
 
@@ -33,9 +34,9 @@ public class getFriendList {
                     friendLength = jsonArray.length();
 
                     for (int i = 0 ; i <friendLength ; i++){
+                        friendid[i] = jsonArray.getJSONObject(i).getString("friendid");
                         friendName[i] = jsonArray.getJSONObject(i).getString("nickname");
                     }
-                    Log.v("friName","Friend" + friendName[0] );
                 } catch (Exception e) {
                 }
             }
@@ -48,5 +49,8 @@ public class getFriendList {
     }
     public static String getFriendName(int i){
         return  friendName[i];
+    }
+    public static String getFriendid(int i){
+        return  friendid[i];
     }
 }
