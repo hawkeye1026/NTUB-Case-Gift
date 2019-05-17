@@ -74,7 +74,7 @@ public class getGiftList {
     public static String getGiftCreateDate(int i){
         return giftCreateDate[i];
     }
-    public static String getOwnerid(){
+    public static String getOwnerid(int i){
         return ownerid[0];
     }
 }
