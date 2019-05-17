@@ -98,13 +98,14 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
+                        getGiftList.getJSON();
                     }
                 });
                 mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
                 //-------取得資料
-                getGiftList.getJSON();
+
 
                 finish();
             }

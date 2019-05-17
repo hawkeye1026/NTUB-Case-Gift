@@ -67,7 +67,9 @@ public class planUpdateAsyncTask extends AsyncTask<String, Integer, String> {
                     "&spPlanName=" + URLEncoder.encode(params[2], "UTF-8" )+
                     "&spCreateDate=" + URLEncoder.encode(params[3], "UTF-8" )+
                     "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8" )+
-                    "&message=" + URLEncoder.encode(params[5], "UTF-8");
+                    "&message=" + URLEncoder.encode(params[5], "UTF-8")+
+                    "&senderid=" + URLEncoder.encode(params[6], "UTF-8")+
+                    "&receiveid=" + URLEncoder.encode(params[7], "UTF-8");
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

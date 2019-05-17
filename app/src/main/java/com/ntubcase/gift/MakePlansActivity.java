@@ -71,7 +71,7 @@ public class MakePlansActivity extends AppCompatActivity {
         sendPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                planUpdateAsyncTask mgiftInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
+                planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
                     }
@@ -85,9 +85,8 @@ public class MakePlansActivity extends AppCompatActivity {
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                 String spCreateDate = sdFormat.format(date);
 
-                //Log.v("insertGift",Common.insertPlan + "12"+ "計畫名稱YA" +spCreateDate +sendPlanDate+"測試上傳");
+                mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
 
-                mgiftInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
                 Intent intent = new Intent();
                 intent.setClass(MakePlansActivity.this , PlanActivity.class);
                 startActivity(intent);
@@ -261,6 +260,7 @@ public class MakePlansActivity extends AppCompatActivity {
                 if(isChecked){
                     add_friendItems.add(position);
                     friendid[friendidPositionIndex] = getFriendList.getFriendid(position);
+                    Log.v("friend",friendid[0]);
                     friendidPositionIndex++;
                 }else{
                     add_friendItems.remove((Integer.valueOf(position)));
