@@ -137,6 +137,7 @@ public class GiftActivity extends AppCompatActivity {
             mGiftsData[i][0]= getGiftList.getType(i);
             mGiftsData[i][1]= getGiftList.getGiftName(i);
             mGiftsData[i][2]= getGiftList.getGiftCreateDate(i);
+            mGiftsData[i][3]= getGiftList.getGiftid(i);
         }
         mGiftsList.clear();
 
@@ -148,6 +149,7 @@ public class GiftActivity extends AppCompatActivity {
             mGifts.put("type", mGiftsData[i][0]);
             mGifts.put("title", mGiftsData[i][1]);
             mGifts.put("date", mGiftsData[i][2]);
+            mGifts.put("giftid", mGiftsData[i][3]);
             mGiftsList.add(mGifts);
         }
         giftListAdapter = new GiftListAdapter(this, mGiftsList);
@@ -173,6 +175,7 @@ public class GiftActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("name",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
                 bundle.putString("content","禮物內容");
+                bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
