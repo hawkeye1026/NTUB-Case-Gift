@@ -104,7 +104,11 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 getGiftList.getJSON();
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(MakeGiftsActivity.this, loadingActivity.class);
+                intent.putExtra("loadData","loadGift");
 
+                startActivity(intent);
                 finish();
             }
         });
@@ -144,8 +148,11 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 getGiftList.getJSON();
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent = new Intent(MakeGiftsActivity.this, PlanActivity.class);
+
+                Intent intent;
+                intent = new Intent(MakeGiftsActivity.this, loadingActivity.class);
+                intent.putExtra("loadData","sendToPlan");
+
                 startActivity(intent);
 
                 finish();

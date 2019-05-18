@@ -22,6 +22,7 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.planUpdateAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getPlanList;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,6 +92,13 @@ public class MakePlansActivity extends AppCompatActivity {
 
                 mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
 
+                Intent intent;
+                intent = new Intent(MakePlansActivity .this, loadingActivity.class);
+                intent.putExtra("loadData","loadPlan");
+
+                getPlanList.getJSON();
+
+                startActivity(intent);
                 finish();
             }
         });
