@@ -55,6 +55,9 @@ public class MakePlansActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         String planType = intent.getStringExtra("planType"); //取得選擇的計畫種類
 
+        //--------------------取得資料
+        getGiftList.getJSON();
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //---------------------------------------------------------------------------------
@@ -206,6 +209,8 @@ public class MakePlansActivity extends AppCompatActivity {
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlansActivity.this);
         mBuilder.setTitle("選擇禮物");
+
+        getGiftList.getJSON();
 
         mBuilder.setMultiChoiceItems(add_giftlistItems, add_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override

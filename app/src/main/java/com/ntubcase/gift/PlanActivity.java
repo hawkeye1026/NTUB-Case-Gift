@@ -48,7 +48,8 @@ public class PlanActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        //--------------------取得資料
+        getGiftList.getJSON();
         //---------------------ListView--------------------------------
         mListView = (ListView) findViewById(R.id.planList);
         mSearchView = (SearchView) findViewById(R.id.mSearch);
@@ -143,7 +144,7 @@ public class PlanActivity extends AppCompatActivity {
         */
         for(int i = 0 ;i < getPlanList.planLength(); i++){
             mPlansData[i][0]= getPlanList.getPlanType(i);
-            mPlansData[i][1]= getPlanList.getGiftName(i);
+            mPlansData[i][1]= getPlanList.getSpPlanName(i);
             mPlansData[i][2]= getPlanList.getSpCreateDate(i);
         }
         for(int i=0;i<getPlanList.planLength();i++) {
