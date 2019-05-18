@@ -1,21 +1,15 @@
 package com.ntubcase.gift.MyAsyncTask;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
-
-public class giftInsertAsyncTask extends AsyncTask<String, Integer, String> {
+public class giftReceivedDoneAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -27,12 +21,12 @@ public class giftInsertAsyncTask extends AsyncTask<String, Integer, String> {
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final TaskListener taskListener;
+    private final giftReceivedDoneAsyncTask.TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftInsertAsyncTask(TaskListener taskListener) {
+    public giftReceivedDoneAsyncTask(giftReceivedDoneAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -51,34 +45,20 @@ public class giftInsertAsyncTask extends AsyncTask<String, Integer, String> {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         try {
-            URL url = new URL(params[0]); //params[0] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第一個參數
+            URL url = new URL(params[0]);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(100000);
-            conn.setConnectTimeout(150000);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-
-            //----------------------------------------------
-            //  傳給主機的參數(name, amount, deliverDate)
-            //----------------------------------------------
-            //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
-            String args =
-                    "giftContent=" + URLEncoder.encode(params[1], "UTF-8")+
-                    "&giftCreateDate=" + URLEncoder.encode(params[2], "UTF-8" )+
-                    "&giftName=" + URLEncoder.encode(params[3], "UTF-8" )+
-                    "&owner=" + URLEncoder.encode(params[4], "UTF-8" )+
-                    "&giftType=" + URLEncoder.encode(params[5], "UTF-8");
-
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(args);
-            writer.flush();
-            writer.close();
-            os.close();
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            //conn.setDoInput(true);
+            //conn.setDoOutput(true);
 
             int statusCode = conn.getResponseCode();
+
+            //Log.v("Test2","statuus:" + statusCode);
+
+            conn.connect();
+            inputStream = conn.getInputStream();
 
             if (statusCode >= 200 && statusCode < 400) {
                 // Create an InputStream in order to extract the response object
@@ -87,11 +67,8 @@ public class giftInsertAsyncTask extends AsyncTask<String, Integer, String> {
             else {
                 inputStream = conn.getErrorStream();
             }
-            conn.connect();
-            inputStream = conn.getInputStream();
-
             BufferedReader bufferedReader=new BufferedReader(
-                    new InputStreamReader(inputStream, "UTF-8"));
+                    new InputStreamReader(inputStream, "utf-8"));
 
             data=bufferedReader.readLine();
         } catch(Exception e) {
