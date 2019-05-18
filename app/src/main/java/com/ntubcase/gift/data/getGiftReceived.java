@@ -47,10 +47,21 @@ public class getGiftReceived {
                         switch(type[i]){
                             case "1":
                                 type[i] = "驚喜式";
+                                Log.v("驚喜式",
+                                        type[i]);
+                                break;
                             case "2":
                                 type[i] = "期間式";
+                                Log.v("期間式",
+                                        type[i]);
+                                break;
                             case "3":
                                 type[i] = "問答式";
+                                Log.v("問答式",
+                                        type[i]);
+                                break;
+                            default:
+                                type[i] = "驚喜式";
                         }
 
                     }

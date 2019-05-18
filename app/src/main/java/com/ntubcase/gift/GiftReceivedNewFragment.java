@@ -1,9 +1,12 @@
 package com.ntubcase.gift;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.GiftReceivedAdapter;
 //import com.ntubcase.gift.data.getGiftList;
@@ -29,6 +33,7 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class GiftReceivedNewFragment extends Fragment {
+    Context context;
 
     private SearchView mSearchView;
     private ListView mListView;
@@ -36,11 +41,6 @@ public class GiftReceivedNewFragment extends Fragment {
     private List<Map<String, Object>> rGiftsList; //禮物清單
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
-
-    public GiftReceivedNewFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +67,7 @@ public class GiftReceivedNewFragment extends Fragment {
                 {"驚喜式","按摩兌換券","兒子","2019-02-05"},
                 {"驚喜式","禮物3","好友2","2019-02-07"}
         };
-*/
+
         getGiftReceived.getJSON();
 
         for(int i = 0; i < getGiftReceived.getGiftLength(); i++){
@@ -94,7 +94,7 @@ public class GiftReceivedNewFragment extends Fragment {
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
 
-
+*/
         //-----------------------------spinner----------------------
         mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
         spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_plan_type, R.layout.spinner_layout);
@@ -130,7 +130,9 @@ public class GiftReceivedNewFragment extends Fragment {
         String[][] rGiftsData = new String[getGiftReceived.getGiftLength()][20];
 
         Log.v("res_length",getGiftReceived.getGiftLength()+"");
+
         for(int i = 0 ;i < getGiftReceived.getGiftLength(); i++){
+
             rGiftsData[i][0]= getGiftReceived.getType(i);
             rGiftsData[i][1]= getGiftReceived.getPlanName(i);
             rGiftsData[i][2]= getGiftReceived.getNickname(i);
@@ -157,6 +159,8 @@ public class GiftReceivedNewFragment extends Fragment {
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
         super.onResume();
+
+
     }
 
     // ----------------設定ListView的監聽---------------
