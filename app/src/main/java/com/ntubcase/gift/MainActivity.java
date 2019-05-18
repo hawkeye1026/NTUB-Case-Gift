@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         getPlanList.getJSON();
         getFriendList.getJSON();
         getGiftReceived.getJSON();
+
+
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);
         mGift.setOnClickListener(new View.OnClickListener() {
