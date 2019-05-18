@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getPlanList;
 
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         getGiftList.getJSON();
         getPlanList.getJSON();
         getFriendList.getJSON();
+        getGiftReceived.getJSON();
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);
         mGift.setOnClickListener(new View.OnClickListener() {
