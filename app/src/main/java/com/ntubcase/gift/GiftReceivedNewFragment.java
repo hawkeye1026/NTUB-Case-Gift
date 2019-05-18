@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.GiftReceivedAdapter;
@@ -172,6 +173,10 @@ public class GiftReceivedNewFragment extends Fragment {
 
                 Intent intent = new Intent();
                 intent = new Intent(getActivity(), GiftReceivedDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("sender",((TextView)view.findViewById(R.id.tv_sender)).getText().toString());
+                bundle.putString("title",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

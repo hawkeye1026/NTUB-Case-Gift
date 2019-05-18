@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.ntubcase.gift.Adapter.reSurpriseGiftAdapter;
 
@@ -22,7 +23,16 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         setTitle(R.string.giftReceivedDetail);
-
+        //變數宣告------------------------
+        EditText surprice_sender =(EditText) findViewById(R.id.surprice_sender);
+        EditText surprice_planName =(EditText) findViewById(R.id.surprice_planName);
+        //-----取得intent的bundle資料-----
+        Bundle bundle = this.getIntent().getExtras();
+        String sender = bundle.getString("sender");
+        String title = bundle.getString("title");
+        surprice_sender.setText(sender);
+        surprice_planName.setText(title);
+        //---------------------------------
         List<surpriseCardviewGiftItem> giftList = new ArrayList<>();
         giftList.add(new surpriseCardviewGiftItem("白沙屯海灘1"));
         giftList.add(new surpriseCardviewGiftItem("白沙屯海灘2"));
