@@ -49,10 +49,13 @@ public class getGiftList {
                         switch(type[i]){
                             case "1":
                                 type[i] = "照片";
+                                break;
                             case "2":
                                 type[i] = "影片";
+                                break;
                             case "3":
                                 type[i] = "兌換券";
+                                break;
                         }
                     }
                     Log.v("strArr", Arrays.toString(getGiftList.getGiftNmaeArr()));
