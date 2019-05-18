@@ -1,8 +1,6 @@
 package com.ntubcase.gift;
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.GiftListAdapter;
-import com.ntubcase.gift.Adapter.GiftPagerAdapter;
 import com.ntubcase.gift.data.getGiftList;
 
 import java.util.ArrayList;
@@ -52,46 +49,6 @@ public class GiftActivity extends AppCompatActivity {
         //---------------------ListView--------------------------------
         mListView = (ListView) findViewById(R.id.giftList);
         mSearchView = (SearchView) findViewById(R.id.mSearch);
-
-        mGiftsList = new ArrayList<Map<String, Object>>();
-        Map<String, Object> mGifts;
-
-        String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
-        //------------範例資料格式(禮物種類,禮物名稱,日期)----------
-        /*String[][] mGiftsData = {       //禮物清單內容
-        /*
-        String[][] mGiftsData = {       //禮物清單內容
-                {"照片","小明生日賀卡","2019-01-01"},
-                {"影片","結婚紀念日","2019-01-02"},
-                {"兌換券","跑腿兌換券","2019-02-01"},
-                {"照片","禮物1","2019-02-02"},
-                {"兌換券","禮物2","2019-03-03"},
-                {"影片","禮物3","2019-04-04"}
-                {"兌換券","禮物4","2019-05-05"}
-        };*/
-
-        getGiftList.getJSON();
-
-        for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
-            mGiftsData[i][0]= getGiftList.getType(i);
-            mGiftsData[i][1]= getGiftList.getGiftName(i);
-            mGiftsData[i][2]= getGiftList.getGiftCreateDate(i);
-        }
-
-        for(int i=0;i<getGiftList.getGiftLength();i++) {
-            mGifts = new HashMap<String, Object>();
-            mGifts.put("type", mGiftsData[i][0]);
-            mGifts.put("title", mGiftsData[i][1]);
-            mGifts.put("date", mGiftsData[i][2]);
-            mGiftsList.add(mGifts);
-        }
-        giftListAdapter = new GiftListAdapter(this, mGiftsList);
-
-        mListView.setAdapter(giftListAdapter);
-        mListView.setTextFilterEnabled(true);
-
-        setmListViewListener(); //設定ListView的監聽
-        setSearch_function(); // 設定searchView的文字輸入監聽
 
         //-----------------------------spinner----------------------
         mSpinner = (Spinner) findViewById(R.id.mSpinner);
@@ -127,7 +84,7 @@ public class GiftActivity extends AppCompatActivity {
 
     //-----------------
     public void onResume(){
-
+        //---------------------ListView倒入資料--------------------------------
         getGiftList.getJSON();
 
         String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
@@ -138,7 +95,6 @@ public class GiftActivity extends AppCompatActivity {
             mGiftsData[i][1]= getGiftList.getGiftName(i);
             mGiftsData[i][2]= getGiftList.getGiftCreateDate(i);
         }
-        mGiftsList.clear();
 
         mGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mGifts;

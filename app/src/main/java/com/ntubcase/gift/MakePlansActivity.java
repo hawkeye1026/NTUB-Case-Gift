@@ -94,10 +94,6 @@ public class MakePlansActivity extends AppCompatActivity {
 
                 Intent intent;
                 intent = new Intent(MakePlansActivity .this, loadingActivity.class);
-                intent.putExtra("loadData","loadPlan");
-
-                getPlanList.getJSON();
-
                 startActivity(intent);
                 finish();
             }

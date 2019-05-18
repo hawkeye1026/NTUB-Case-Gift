@@ -13,29 +13,11 @@ public class loadingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //------------------------取得資料
         getGiftList.getJSON();
-        //------------------------跳轉頁
-        Intent intent = this.getIntent();
+        getPlanList.getJSON();
 
-        switch (intent.getStringExtra("loadData")){
-            case "loadGift":
-                getGiftList.getJSON();
-                intent = new Intent(loadingActivity.this, GiftActivity.class);
 
-                startActivity(intent);
-                break;
-            case "sendToPlan":
-                getGiftList.getJSON();
-                intent = new Intent(loadingActivity.this, PlanActivity.class);
+        finish();
 
-                startActivity(intent);
-                break;
-            case "loadPlan":
-                getPlanList.getJSON();
-                intent = new Intent(loadingActivity.this, PlanActivity.class);
-
-                startActivity(intent);
-                break;
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
     }
