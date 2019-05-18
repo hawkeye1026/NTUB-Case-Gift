@@ -98,14 +98,13 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
-                        getGiftList.getJSON();
+
                     }
                 });
                 mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
+                getGiftList.getJSON();
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-                //-------取得資料
-
 
                 finish();
             }
@@ -115,9 +114,41 @@ public class MakeGiftsActivity extends AppCompatActivity {
         btn_makePlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
+                giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
+
+                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+                Date date =new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                dateTime = sdFormat.format(date);
+                Log.v("giftName",dateTime);
+
+                switch (giftType){
+                    case "兌換券":
+                        giftType = "3";
+                        break;
+                    case "影片":
+                        giftType = "2";
+                        break;
+                    case "照片":
+                        giftType = "1";
+                        break;
+                }
+
+                giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
+                getGiftList.getJSON();
+
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent = new Intent(MakeGiftsActivity.this, MakePlansActivity.class);
                 startActivity(intent);
+
                 finish();
             }
         });
