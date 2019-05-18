@@ -117,9 +117,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:background="@drawable/bg_normalbutton"
-                    android:text="填寫送禮回饋"
-                    android:textColor="#FFF"
-                    android:textSize="18sp" />
+                    android:text="填寫收禮回饋"
+                    android:textColor="#FFF" />
 
             </LinearLayout>
 

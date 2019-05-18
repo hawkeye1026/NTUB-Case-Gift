@@ -26,13 +26,15 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
         //變數宣告------------------------
         EditText surprice_sender =(EditText) findViewById(R.id.surprice_sender);
         EditText surprice_planName =(EditText) findViewById(R.id.surprice_planName);
+
         //-----取得intent的bundle資料-----
         Bundle bundle = this.getIntent().getExtras();
         String sender = bundle.getString("sender");
         String title = bundle.getString("title");
         surprice_sender.setText(sender);
         surprice_planName.setText(title);
-        //---------------------------------
+
+        //cardview資料傳入---------------------------------
         List<surpriseCardviewGiftItem> giftList = new ArrayList<>();
         giftList.add(new surpriseCardviewGiftItem("白沙屯海灘1"));
         giftList.add(new surpriseCardviewGiftItem("白沙屯海灘2"));
