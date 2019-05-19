@@ -96,6 +96,7 @@ public class PlanActivity extends AppCompatActivity {
             mPlansData[i][0]= getPlanList.getPlanType(i);
             mPlansData[i][1]= getPlanList.getSpPlanName(i);
             mPlansData[i][2]= getPlanList.getSpCreateDate(i);
+            mPlansData[i][3]= getPlanList.getPlanid(i);
         }
 
         mPlansList = new ArrayList<Map<String, Object>>();
@@ -106,6 +107,7 @@ public class PlanActivity extends AppCompatActivity {
             mPlans.put("type", mPlansData[i][0]);
             mPlans.put("title", mPlansData[i][1]);
             mPlans.put("date", mPlansData[i][2]);
+            mPlans.put("planid", mPlansData[i][3]);
             mPlansList.add(mPlans);
         }
         planListAdapter = new PlanListAdapter(this, mPlansList);
@@ -127,6 +129,10 @@ public class PlanActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 intent = new Intent(PlanActivity.this, PlanDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("type",mPlansList.get(position).get("type").toString());
+                bundle.putString("planid",mPlansList.get(position).get("planid").toString());
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

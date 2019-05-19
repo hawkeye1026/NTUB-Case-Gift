@@ -4,11 +4,24 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.giftDetailAsyncTask;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.ntubcase.gift.MakeGiftsActivity.dateTime;
 
 public class GiftDetailActivity extends AppCompatActivity {
 
@@ -28,15 +41,6 @@ public class GiftDetailActivity extends AppCompatActivity {
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         et_giftContent = (EditText) findViewById(R.id.et_giftContent);
         btn_save = (Button) findViewById(R.id.btn_save);
-
-
-        //-----取得intent的bundle資料-----
-        Bundle bundle = this.getIntent().getExtras();
-        String giftName = bundle.getString("name");
-        String giftContent = bundle.getString("content");
-        et_giftName.setText(giftName);
-        et_giftContent.setText(giftContent);
-
 
         //-----製作計畫按鈕-----
         btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
@@ -60,4 +64,62 @@ public class GiftDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    //-----------------
+    public void onResume(){
+
+        //-----取得intent的bundle資料-----
+        Bundle bundle = this.getIntent().getExtras();
+        //String giftName = bundle.getString("name");
+        //String giftContent = bundle.getString("content");
+        String giftid = bundle.getString("giftid");
+        //et_giftName.setText(giftName);
+        //et_giftContent.setText(giftid);
+
+        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+        Date date =new Date();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        dateTime = sdFormat.format(date);
+        Log.v("date",dateTime);
+
+
+        giftDetailAsyncTask giftDetailAsyncTask = new giftDetailAsyncTask(new giftDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(GiftDetailActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    JSONObject object = new JSONObject(result);
+                    JSONArray jsonArray = object.getJSONArray("result");
+
+                    String giftid =jsonArray.getJSONObject(0).getString("giftid");
+                    String gift =jsonArray.getJSONObject(0).getString("gift");
+                    String giftName =jsonArray.getJSONObject(0).getString("giftName");
+                    String giftCreateDate =dateFormat.dateFormat(jsonArray.getJSONObject(0).getString("giftCreateDate"));
+                    String ownerid =jsonArray.getJSONObject(0).getString("ownerid");
+                    String type =jsonArray.getJSONObject(0).getString("type");
+                    Log.v("giftid",
+                            giftid);
+                    Log.v("giftName",
+                            giftName);
+                    Log.v("type",
+                            type);
+
+                    et_giftName.setText(giftName);
+                    et_giftContent.setText(gift);
+
+                } catch (Exception e) {
+                    Toast.makeText(GiftDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        giftDetailAsyncTask.execute(Common.giftDetail , giftid);
+        //getGiftList.getJSON();
+
+        super.onResume();
+    }
+
 }
