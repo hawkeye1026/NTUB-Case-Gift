@@ -70,8 +70,8 @@ public class GiftDetailActivity extends AppCompatActivity {
 
         //-----取得intent的bundle資料-----
         Bundle bundle = this.getIntent().getExtras();
-        String giftName = bundle.getString("name");
-        String giftContent = bundle.getString("content");
+        //String giftName = bundle.getString("name");
+        //String giftContent = bundle.getString("content");
         String giftid = bundle.getString("giftid");
         //et_giftName.setText(giftName);
         //et_giftContent.setText(giftid);
@@ -80,7 +80,7 @@ public class GiftDetailActivity extends AppCompatActivity {
         Date date =new Date();
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         dateTime = sdFormat.format(date);
-        Log.v("giftName",dateTime);
+        Log.v("date",dateTime);
 
 
         giftDetailAsyncTask giftDetailAsyncTask = new giftDetailAsyncTask(new giftDetailAsyncTask.TaskListener() {
@@ -91,27 +91,31 @@ public class GiftDetailActivity extends AppCompatActivity {
                         Toast.makeText(GiftDetailActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    // 將字串轉為JSONArray, 取出第一個JSON物件.
-                    JSONArray jsonArray = new JSONArray(result);
-                    JSONObject jsonObj = jsonArray.getJSONObject(0);
 
-                    String giftid =jsonObj.getString("giftid");
-                    String gift =jsonObj.getString("gift");
-                    String giftCreateDate =dateFormat.dateFormat(jsonObj.getString("giftCreateDate"));
-                    String giftName =jsonObj.getString("giftName");
-                    String ownerid =jsonObj.getString("ownerid");
-                    String type =jsonObj.getString("type");
+                    JSONObject object = new JSONObject(result);
+                    JSONArray jsonArray = object.getJSONArray("result");
 
-                    et_giftName.setText(giftid);
-                    et_giftContent.setText(giftName);
+                    String giftid =jsonArray.getJSONObject(0).getString("giftid");
+                    String gift =jsonArray.getJSONObject(0).getString("gift");
+                    String giftName =jsonArray.getJSONObject(0).getString("giftName");
+                    String giftCreateDate =dateFormat.dateFormat(jsonArray.getJSONObject(0).getString("giftCreateDate"));
+                    String ownerid =jsonArray.getJSONObject(0).getString("ownerid");
+                    String type =jsonArray.getJSONObject(0).getString("type");
+                    Log.v("giftid",
+                            giftid);
+                    Log.v("giftName",
+                            giftName);
+                    Log.v("type",
+                            type);
+
+                    et_giftName.setText(giftName);
+                    et_giftContent.setText(gift);
 
                 } catch (Exception e) {
                     Toast.makeText(GiftDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        Log.v("giftid",
-                giftid);
         giftDetailAsyncTask.execute(Common.giftDetail , giftid);
         //getGiftList.getJSON();
 

@@ -1,6 +1,8 @@
 package com.ntubcase.gift.MyAsyncTask;
 
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -108,7 +110,13 @@ public class giftDetailAsyncTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        if(result==null) {
+            Log.v("result",
+                    "null");
+            return;
+        }
         taskListener.onFinished(result);
+
     }
 
     @Override
