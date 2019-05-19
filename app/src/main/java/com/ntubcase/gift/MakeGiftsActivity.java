@@ -101,7 +101,6 @@ public class MakeGiftsActivity extends AppCompatActivity {
                     }
                 });
                 mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
-                //getGiftList.getJSON();
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
 

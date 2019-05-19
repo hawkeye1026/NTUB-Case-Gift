@@ -92,6 +92,8 @@ public class MakePlansActivity extends AppCompatActivity {
 
                 mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
 
+                Toast.makeText(v.getContext(), "預送成功", Toast.LENGTH_SHORT).show();
+
                 Intent intent;
                 intent = new Intent(MakePlansActivity .this, loadingActivity.class);
                 startActivity(intent);
@@ -103,7 +105,27 @@ public class MakePlansActivity extends AppCompatActivity {
         savePlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                    }
+                });
+                //---------------------------選擇日期
+                EditText add_surprise_date = findViewById(R.id.add_surprise_date);//日期
+                EditText add_surprise_time = findViewById(R.id.add_surprise_time);//分秒
+                String sendPlanDate = add_surprise_date.getText().toString() +" "+   add_surprise_time.getText().toString();
+                //---------------------------目前時間
+                Date date =new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                String spCreateDate = sdFormat.format(date);
+
+                mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
+
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+
+                Intent intent;
+                intent = new Intent(MakePlansActivity .this, loadingActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
