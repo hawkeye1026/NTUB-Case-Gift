@@ -173,8 +173,8 @@ public class GiftActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent = new Intent(GiftActivity.this, GiftDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("name",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
-                bundle.putString("content","禮物內容");
+                //bundle.putString("name",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
+                //bundle.putString("content","禮物內容");
                 bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
                 intent.putExtras(bundle);
                 startActivity(intent);

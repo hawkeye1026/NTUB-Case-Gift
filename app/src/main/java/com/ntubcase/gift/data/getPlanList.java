@@ -83,7 +83,7 @@ public class getPlanList {
     public static int planLength(){
         return planLength;
     }
-    public static String getspid(int i){
+    public static String getPlanid(int i){
         return  spid[i];
     }
     /*

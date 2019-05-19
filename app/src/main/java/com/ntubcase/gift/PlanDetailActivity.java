@@ -8,14 +8,26 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.spPlanDetailAsyncTask;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
+import static com.ntubcase.gift.MakeGiftsActivity.dateTime;
 
 public class PlanDetailActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
@@ -27,6 +39,7 @@ public class PlanDetailActivity extends AppCompatActivity {
     boolean[] edit_friendcheckedItems;
     ArrayList<Integer> edit_friendItems = new ArrayList<>();
     //----------------------------------------------------------------------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,104 +49,6 @@ public class PlanDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         setTitle(R.string.planDetail);
 
-        //---------------------------------------------------------------------------------
-        //選告變數------------------------------------------------------------------------------
-        EditText edit_surprise_name = (EditText) findViewById(R.id.edit_surprise_name);
-        EditText edit_surprise_date = findViewById(R.id.edit_surprise_date);
-        EditText edit_surprise_time = findViewById(R.id.edit_surprise_time);
-        EditText edit_surprise_gift = (EditText) findViewById(R.id.edit_surprise_gift);
-        EditText edit_surprise_friend = (EditText) findViewById(R.id.edit_surprise_friend);
-        EditText edit_surprice_message = (EditText) findViewById(R.id.edit_surprice_message);
-        //------------------------------------------------------------------------------
-        //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-        edit_giftlistItems = getResources().getStringArray(R.array.edit_gift_item);
-        edit_giftcheckedItems = new boolean[edit_giftlistItems.length];
-        //選擇好友使用的變數宣告---------------------------------------------------------------------------
-        edit_friendlistItems = getResources().getStringArray(R.array.edit_friend_item);
-        edit_friendcheckedItems = new boolean[edit_friendlistItems.length];
-        //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
-        edit_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        edit_surprise_gift.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // TODO Auto-generated method stub
-                if (hasFocus) {
-                    Showgiftdialog();
-                }
-            }
-        });
-
-        edit_surprise_gift.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Showgiftdialog();
-            }
-        });
-        //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
-        edit_surprise_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        edit_surprise_friend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // TODO Auto-generated method stub
-                if (hasFocus) {
-                    Showfrienddialog();
-                }
-            }
-        });
-        edit_surprise_friend.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Showfrienddialog();
-            }
-        });
-        //點選送禮日期EditText跳出選擇日期選擇器---------------------------------------
-        edit_surprise_date.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        edit_surprise_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // TODO Auto-generated method stub
-                if (hasFocus) {
-                    showDatePickerDialog();
-                }
-            }
-        });
-
-        edit_surprise_date.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                showDatePickerDialog();
-            }
-        });
-        //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
-        edit_surprise_time.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        edit_surprise_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // TODO Auto-generated method stub
-                if (hasFocus) {
-                    showTimePickerDialog();
-                }
-            }
-        });
-
-        edit_surprise_time.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                showTimePickerDialog();
-            }
-        });
     }
     //設定選擇禮物EditText傳入值---------------------------------------
     private void Showgiftdialog(){
@@ -279,5 +194,222 @@ public class PlanDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //-----------------
+    public void onResume(){
+
+        //---------------------------------------------------------------------------------
+        //選告變數------------------------------------------------------------------------------
+        final EditText edit_surprise_name = (EditText) findViewById(R.id.edit_surprise_name);
+        final EditText edit_surprise_date = findViewById(R.id.edit_surprise_date);
+        final EditText edit_surprise_time = findViewById(R.id.edit_surprise_time);
+        final EditText edit_surprise_gift = (EditText) findViewById(R.id.edit_surprise_gift);
+        final EditText edit_surprise_friend = (EditText) findViewById(R.id.edit_surprise_friend);
+        final EditText edit_surprice_message = (EditText) findViewById(R.id.edit_surprice_message);
+        //------------------------------------------------------------------------------
+        //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
+        edit_giftlistItems = getResources().getStringArray(R.array.edit_gift_item);
+        edit_giftcheckedItems = new boolean[edit_giftlistItems.length];
+        //選擇好友使用的變數宣告---------------------------------------------------------------------------
+        edit_friendlistItems = getResources().getStringArray(R.array.edit_friend_item);
+        edit_friendcheckedItems = new boolean[edit_friendlistItems.length];
+        //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
+        edit_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edit_surprise_gift.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    Showgiftdialog();
+                }
+            }
+        });
+
+        edit_surprise_gift.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Showgiftdialog();
+            }
+        });
+        //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
+        edit_surprise_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edit_surprise_friend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    Showfrienddialog();
+                }
+            }
+        });
+        edit_surprise_friend.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Showfrienddialog();
+            }
+        });
+        //點選送禮日期EditText跳出選擇日期選擇器---------------------------------------
+        edit_surprise_date.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edit_surprise_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    showDatePickerDialog();
+                }
+            }
+        });
+
+        edit_surprise_date.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                showDatePickerDialog();
+            }
+        });
+        //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
+        edit_surprise_time.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edit_surprise_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    showTimePickerDialog();
+                }
+            }
+        });
+
+        edit_surprise_time.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                showTimePickerDialog();
+            }
+        });
+
+        //-----取得intent的bundle資料-----
+        Bundle bundle = this.getIntent().getExtras();
+        //String giftName = bundle.getString("name");
+        //String giftContent = bundle.getString("content");
+        String type = bundle.getString("type");
+        String planid = bundle.getString("planid");
+        //et_giftName.setText(giftName);
+        //et_giftContent.setText(giftid);
+
+        Log.v("type",
+                type);
+        Log.v("planid",
+                planid);
+
+        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+        Date date =new Date();
+        final SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        dateTime = sdFormat.format(date);
+        Log.v("date",dateTime);
+
+        if(type.equals("驚喜式")){
+            spPlanDetailAsyncTask spPlanDetailAsyncTask = new spPlanDetailAsyncTask(new spPlanDetailAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+                    try {
+                        if (result == null) {
+                            Toast.makeText(PlanDetailActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        JSONObject object = new JSONObject(result);
+                        JSONArray jsonArray = object.getJSONArray("result");
+
+                        String spid =jsonArray.getJSONObject(0).getString("spid");
+                        String spPlanName =jsonArray.getJSONObject(0).getString("spPlanName");
+                        String sendPlanDate =dateFormat.dateFormat(jsonArray.getJSONObject(0).getString("sendPlanDate"));
+                        String message =jsonArray.getJSONObject(0).getString("message");
+                        String giftid =jsonArray.getJSONObject(0).getString("giftid");
+                        String giftName =jsonArray.getJSONObject(0).getString("giftName");
+                        String receiveid =jsonArray.getJSONObject(0).getString("receiveid");
+                        String nickname =jsonArray.getJSONObject(0).getString("nickname");
+
+                        //SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
+                        //SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+                        String[] arr = sendPlanDate.split(" ");
+                        //Date date = sdfDate.parse(arr[0]);
+                        //Date time = sdfTime.parse(arr[1]);
+
+                        edit_surprise_name.setText(spPlanName);
+                        //--- Q. 時間格式顯示方式不同!!! ---
+                        edit_surprise_date.setText(arr[0]); //2019-05-09
+                        edit_surprise_time.setText(arr[1]);  //05:59
+                        //---
+                        edit_surprise_gift.setText(giftName);
+                        edit_surprise_friend.setText(receiveid +", "+ nickname);
+                        edit_surprice_message.setText(message);
+
+                    } catch (Exception e) {
+                        Toast.makeText(PlanDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            spPlanDetailAsyncTask.execute(Common.spPalnDetail , planid);
+        }
+
+        if(type.equals("期間式")){
+
+        }
+
+        if(type.equals("問答式")){
+
+        }
+
+
+
+/*
+        giftDetailAsyncTask giftDetailAsyncTask = new giftDetailAsyncTask(new giftDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(GiftDetailActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    JSONObject object = new JSONObject(result);
+                    JSONArray jsonArray = object.getJSONArray("result");
+
+                    String giftid =jsonArray.getJSONObject(0).getString("giftid");
+                    String gift =jsonArray.getJSONObject(0).getString("gift");
+                    String giftName =jsonArray.getJSONObject(0).getString("giftName");
+                    String giftCreateDate =dateFormat.dateFormat(jsonArray.getJSONObject(0).getString("giftCreateDate"));
+                    String ownerid =jsonArray.getJSONObject(0).getString("ownerid");
+                    String type =jsonArray.getJSONObject(0).getString("type");
+                    Log.v("giftid",
+                            giftid);
+                    Log.v("giftName",
+                            giftName);
+                    Log.v("type",
+                            type);
+
+                    et_giftName.setText(giftName);
+                    et_giftContent.setText(gift);
+
+                } catch (Exception e) {
+                    Toast.makeText(GiftDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        giftDetailAsyncTask.execute(Common.giftDetail , giftid);
+        //getGiftList.getJSON();
+*/
+        super.onResume();
     }
 }
