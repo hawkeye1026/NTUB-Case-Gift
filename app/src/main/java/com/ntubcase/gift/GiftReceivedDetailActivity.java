@@ -20,11 +20,15 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.ntubcase.gift.MakeGiftsActivity.dateTime;
 
 public class GiftReceivedDetailActivity extends AppCompatActivity {
+    //---
+    ArrayList gifts; //禮物清單
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,19 +38,6 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         setTitle(R.string.giftReceivedDetail);
-
-
-        //cardview資料傳入---------------------------------
-        List<surpriseCardviewGiftItem> giftList = new ArrayList<>();
-        giftList.add(new surpriseCardviewGiftItem("白沙屯海灘1"));
-        giftList.add(new surpriseCardviewGiftItem("白沙屯海灘2"));
-        giftList.add(new surpriseCardviewGiftItem("白沙屯海灘3"));
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-// MemberAdapter 會在步驟7建立
-        recyclerView.setAdapter(new reSurpriseGiftAdapter(this, giftList));
-
     }
 
     @Override
@@ -57,6 +48,25 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showData(){
+        //cardview資料傳入---------------------------------
+        List<surpriseCardviewGiftItem> giftList = new ArrayList<>();
+
+        for(int i = 0 ;i < gifts.size(); i++){
+            giftList.add(new surpriseCardviewGiftItem(gifts.get(i).toString()));
+            Log.v("giftName", (gifts.get(i).toString()));
+        }
+
+        //giftList.add(new surpriseCardviewGiftItem("白沙屯海灘1"));
+        //giftList.add(new surpriseCardviewGiftItem("白沙屯海灘2"));
+        // giftList.add(new surpriseCardviewGiftItem("白沙屯海灘3"));
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+// MemberAdapter 會在步驟7建立
+        recyclerView.setAdapter(new reSurpriseGiftAdapter(this, giftList));
     }
 
     //-----------------
@@ -112,9 +122,22 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
                         surprice_planName.setText(spPlanName);
                         surprice_message.setText(message);
 
+                        //---adapter data---
+                        gifts = new ArrayList();
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            String giftid =jsonArray.getJSONObject(i).getString("giftid");
+                            String giftName =jsonArray.getJSONObject(i).getString("giftName");
+                            String type =jsonArray.getJSONObject(i).getString("type");
+                            gifts.add(giftName);
+                        }
+
                     } catch (Exception e) {
                         Toast.makeText(GiftReceivedDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
                     }
+
+                    //---
+                    showData();
                 }
             });
             spGiftRecieivedDetailAsyncTask.execute(Common.spGiftReceivedDetail , planid);
