@@ -8,6 +8,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.reSurpriseGiftAdapter;
@@ -38,6 +39,14 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         setTitle(R.string.giftReceivedDetail);
+
+//        final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollview_gift_rec));
+//        scrollview.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                scrollview.fullScroll(ScrollView.FOCUS_UP);
+//            }
+//        });
     }
 
     @Override

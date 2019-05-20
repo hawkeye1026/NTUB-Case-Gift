@@ -9,18 +9,22 @@
     android:padding="20dp">
 
     <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <!--計畫名稱-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:orientation="horizontal"
                 android:padding="10px">
 
@@ -141,10 +145,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10px"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                android:padding="10px">
 
                 <TextView
                     android:layout_width="0dp"
@@ -157,13 +161,13 @@
                     android:id="@+id/add_surprice_message"
                     android:layout_width="0dp"
                     android:layout_height="170dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="7"
                     android:background="@drawable/bg_message"
                     android:ems="10"
+                    android:gravity="top|left"
                     android:inputType="textMultiLine"
                     android:singleLine="false"
-                    android:gravity="top|left"
-                    android:layout_marginRight="5dp"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
