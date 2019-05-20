@@ -371,45 +371,6 @@ public class PlanDetailActivity extends AppCompatActivity {
 
         }
 
-
-
-/*
-        giftDetailAsyncTask giftDetailAsyncTask = new giftDetailAsyncTask(new giftDetailAsyncTask.TaskListener() {
-            @Override
-            public void onFinished(String result) {
-                try {
-                    if (result == null) {
-                        Toast.makeText(GiftDetailActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    JSONObject object = new JSONObject(result);
-                    JSONArray jsonArray = object.getJSONArray("result");
-
-                    String giftid =jsonArray.getJSONObject(0).getString("giftid");
-                    String gift =jsonArray.getJSONObject(0).getString("gift");
-                    String giftName =jsonArray.getJSONObject(0).getString("giftName");
-                    String giftCreateDate =dateFormat.dateFormat(jsonArray.getJSONObject(0).getString("giftCreateDate"));
-                    String ownerid =jsonArray.getJSONObject(0).getString("ownerid");
-                    String type =jsonArray.getJSONObject(0).getString("type");
-                    Log.v("giftid",
-                            giftid);
-                    Log.v("giftName",
-                            giftName);
-                    Log.v("type",
-                            type);
-
-                    et_giftName.setText(giftName);
-                    et_giftContent.setText(gift);
-
-                } catch (Exception e) {
-                    Toast.makeText(GiftDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        giftDetailAsyncTask.execute(Common.giftDetail , giftid);
-        //getGiftList.getJSON();
-*/
         super.onResume();
     }
 }

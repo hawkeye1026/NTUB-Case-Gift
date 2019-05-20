@@ -133,11 +133,11 @@ public class GiftReceivedNewFragment extends Fragment {
         Log.v("res_length",getGiftReceived.getGiftLength()+"");
 
         for(int i = 0 ;i < getGiftReceived.getGiftLength(); i++){
-
             rGiftsData[i][0]= getGiftReceived.getType(i);
             rGiftsData[i][1]= getGiftReceived.getPlanName(i);
             rGiftsData[i][2]= getGiftReceived.getNickname(i);
             rGiftsData[i][3]= getGiftReceived.getSendPlanDate(i);
+            rGiftsData[i][4]= getGiftReceived.getPlanid(i);
         }
         rGiftsList.clear();
 
@@ -150,6 +150,7 @@ public class GiftReceivedNewFragment extends Fragment {
             rGifts.put("title", rGiftsData[i][1]);
             rGifts.put("sender", rGiftsData[i][2]);
             rGifts.put("date", rGiftsData[i][3]);
+            rGifts.put("planid", rGiftsData[i][4]);
             rGiftsList.add(rGifts);
         }
         giftReceivedAdapter = new GiftReceivedAdapter(getActivity(), rGiftsList);
@@ -174,8 +175,10 @@ public class GiftReceivedNewFragment extends Fragment {
                 Intent intent = new Intent();
                 intent = new Intent(getActivity(), GiftReceivedDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("sender",((TextView)view.findViewById(R.id.tv_sender)).getText().toString());
-                bundle.putString("title",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
+                //bundle.putString("sender",((TextView)view.findViewById(R.id.tv_sender)).getText().toString());
+                //bundle.putString("title",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
+                bundle.putString("type",rGiftsList.get(position).get("type").toString());
+                bundle.putString("planid",rGiftsList.get(position).get("planid").toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

@@ -24,5 +24,5 @@ public class Common {
     //public static String insertProtal="http://140.131.114.156/NTUB_gift_server/protal.php?";
     public static String giftDetail="http://140.131.114.156/NTUB_gift_server/giftDetail.php?";
     public static String spPalnDetail="http://140.131.114.156/NTUB_gift_server/spPlanDetail.php?";
-
+    public static String spGiftReceivedDetail="http://140.131.114.156/NTUB_gift_server/spGiftReceivedDetail.php?";
 }
