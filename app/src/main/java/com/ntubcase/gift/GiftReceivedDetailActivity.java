@@ -51,6 +51,7 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){ //toolbar返回建
             finish();
+            
             return true;
         }
         return super.onOptionsItemSelected(item);
