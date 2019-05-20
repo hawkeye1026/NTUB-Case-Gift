@@ -145,7 +145,6 @@ public class MakePlansActivity extends AppCompatActivity {
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
         add_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         add_surprise_gift.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub

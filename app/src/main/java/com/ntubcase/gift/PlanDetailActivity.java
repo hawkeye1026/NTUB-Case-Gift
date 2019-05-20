@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.spPlanDetailAsyncTask;
+import com.ntubcase.gift.data.getFriendList;
+import com.ntubcase.gift.data.getGiftList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,7 +41,18 @@ public class PlanDetailActivity extends AppCompatActivity {
     boolean[] edit_friendcheckedItems;
     ArrayList<Integer> edit_friendItems = new ArrayList<>();
     //----------------------------------------------------------------------------------------------
-
+    //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
+    String[] add_giftlistItems = new String[getGiftList.getGiftLength()];
+    boolean[] add_giftcheckedItems;
+    ArrayList<Integer> add_giftItems = new ArrayList<>();
+    //選擇好友 使用的變數宣告---------------------------------------------------------------------------
+    String[] add_friendlistItems = new String[getFriendList.getFriendLength()];
+    boolean[] add_friendcheckedItems;
+    //------------------------------------
+    private static String[] giftid = new String[100];
+    private static String[] friendid = new String[100];
+    private static int giftidPositionIndex = 0 ;
+    private static int friendidPositionIndex = 0 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +73,11 @@ public class PlanDetailActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
                     edit_giftItems.add(position);
+                    giftid[giftidPositionIndex] = getGiftList.getGiftid(position);
+                    giftidPositionIndex++;
                 }else{
                     edit_giftItems.remove((Integer.valueOf(position)));
+                    giftidPositionIndex--;
                 }
             }
         });
@@ -114,8 +130,11 @@ public class PlanDetailActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
                     edit_friendItems.add(position);
+                    friendid[friendidPositionIndex] = getFriendList.getFriendid(position);
+                    friendidPositionIndex++;
                 }else{
                     edit_friendItems.remove((Integer.valueOf(position)));
+                    friendidPositionIndex--;
                 }
             }
         });
@@ -167,7 +186,7 @@ public class PlanDetailActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // TODO Auto-generated method stub
                 EditText edit_surprise_date = findViewById(R.id.edit_surprise_date);
-                edit_surprise_date.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
+                edit_surprise_date.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -208,12 +227,16 @@ public class PlanDetailActivity extends AppCompatActivity {
         final EditText edit_surprise_friend = (EditText) findViewById(R.id.edit_surprise_friend);
         final EditText edit_surprice_message = (EditText) findViewById(R.id.edit_surprice_message);
         //------------------------------------------------------------------------------
-        //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-        edit_giftlistItems = getResources().getStringArray(R.array.edit_gift_item);
-        edit_giftcheckedItems = new boolean[edit_giftlistItems.length];
-        //選擇好友使用的變數宣告---------------------------------------------------------------------------
-        edit_friendlistItems = getResources().getStringArray(R.array.edit_friend_item);
-        edit_friendcheckedItems = new boolean[edit_friendlistItems.length];
+        //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
+        for(int i = 0; i < getGiftList.getGiftLength(); i++){
+            add_giftlistItems[i] = getGiftList.getGiftName(i);
+        }
+        add_giftcheckedItems = new boolean[add_giftlistItems.length];
+        //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
+        for(int i = 0; i < getFriendList.getFriendLength(); i++){
+            add_friendlistItems[i] = getFriendList.getFriendName(i);
+        }
+        add_friendcheckedItems = new boolean[add_friendlistItems.length];
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
         edit_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edit_surprise_gift.setOnFocusChangeListener(new View.OnFocusChangeListener() {
