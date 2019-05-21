@@ -85,7 +85,14 @@ public class PlanActivity extends AppCompatActivity {
         fab_qa.setOnClickListener(fabClickListener);
     }
 
-    public void onResume(){
+    @Override
+    public void onStop(){
+        if(mPlansList != null) mPlansList.clear();
+        super.onStop();
+    }
+
+    @Override
+    public void onStart(){
         //---------------------ListView倒入資料--------------------------------
         getGiftList.getJSON();
         getPlanList.getJSON();
@@ -117,7 +124,7 @@ public class PlanActivity extends AppCompatActivity {
 
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
-        super.onResume();
+        super.onStart();
     }
 
     // ----------------設定ListView的監聽---------------
