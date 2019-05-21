@@ -80,10 +80,10 @@ public class getPlanList {
         myAsyncTask.execute(Common.planList);
     }
 
-    public static int planLength(){
+    public static int getPlanLength(){
         return planLength;
     }
-    public static String getPlanid(int i){
+    public static String getSpPlanid(int i){
         return  spid[i];
     }
     /*

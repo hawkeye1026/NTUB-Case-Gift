@@ -235,8 +235,6 @@ public class MakePlansActivity extends AppCompatActivity {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlansActivity.this);
         mBuilder.setTitle("選擇禮物");
 
-        getGiftList.getJSON();
-
         mBuilder.setMultiChoiceItems(add_giftlistItems, add_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
@@ -359,7 +357,7 @@ public class MakePlansActivity extends AppCompatActivity {
                 String month;
                 String day;
 
-                add_surprise_date.setText(year + "-" + dateAdd0(monthOfYear) + "-" + dateAdd0(dayOfMonth));
+                add_surprise_date.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
