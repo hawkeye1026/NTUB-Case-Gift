@@ -3,6 +3,7 @@ package com.ntubcase.gift;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,9 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.spPlanDetailAsyncTask;
+import com.ntubcase.gift.data.getFriendList;
+import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getPlanList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,14 +35,22 @@ import static com.ntubcase.gift.MakeGiftsActivity.dateTime;
 
 public class PlanDetailActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-    String[] edit_giftlistItems;
-    boolean[] edit_giftcheckedItems;
+    String[] edit_giftlistItems = new String[getGiftList.getGiftLength()];;
+    boolean[] edit_giftcheckedItems ;
     ArrayList<Integer> edit_giftItems = new ArrayList<>();
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
-    String[] edit_friendlistItems;
-    boolean[] edit_friendcheckedItems;
+    String[] edit_friendlistItems = new String[getFriendList.getFriendLength()];;
+    boolean[] edit_friendcheckedItems ;
     ArrayList<Integer> edit_friendItems = new ArrayList<>();
     //----------------------------------------------------------------------------------------------
+    private static String[] giftid = new String[100];
+    private static String[] friendid = new String[100];
+    private static int giftidPositionIndex = 0 ;
+    private static int friendidPositionIndex = 0 ;
+    private String receiveid;
+
+    private int[] gift_position = new int[1] ;
+    private int[] friend_position = new int[1] ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +67,28 @@ public class PlanDetailActivity extends AppCompatActivity {
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(PlanDetailActivity.this);
         mBuilder.setTitle("選擇禮物");
+
+        for(int i = 0; i < gift_position.length; i++){
+            for(int j = 0 ; j < getGiftList.getGiftLength(); j++){
+                if(getGiftList.getGiftid(j).equals(getPlanList.getGiftid(gift_position[i]))){
+                    edit_giftcheckedItems[j] = true;
+                    edit_giftItems.add(j);
+                    giftidPositionIndex++;
+                    break;
+                }
+            }
+        }
+
         mBuilder.setMultiChoiceItems(edit_giftlistItems, edit_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
                     edit_giftItems.add(position);
+                    giftid[giftidPositionIndex] = getGiftList.getGiftid(position);
+                    giftidPositionIndex++;
                 }else{
                     edit_giftItems.remove((Integer.valueOf(position)));
+                    giftidPositionIndex--;
                 }
             }
         });
@@ -106,16 +133,34 @@ public class PlanDetailActivity extends AppCompatActivity {
     }
     //設定選擇好友EditText傳入值---------------------------------------
     private void Showfrienddialog(){
-
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(PlanDetailActivity.this);
         mBuilder.setTitle("選擇好友");
+
+        for(int j = 0 ; j < getFriendList.getFriendLength(); j++){
+
+            Log.v("friendid",getFriendList.getFriendid(j));
+            Log.v("friendid",receiveid);
+
+            if(getFriendList.getFriendid(j).equals(receiveid)){
+                edit_friendcheckedItems[j] = true;
+                edit_friendItems.add(j);
+                friendidPositionIndex++;
+                break;
+            }
+
+        }
+
+
         mBuilder.setMultiChoiceItems(edit_friendlistItems, edit_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
                     edit_friendItems.add(position);
+                    friendid[friendidPositionIndex] = getFriendList.getFriendid(position);
+                    friendidPositionIndex++;
                 }else{
                     edit_friendItems.remove((Integer.valueOf(position)));
+                    friendidPositionIndex--;
                 }
             }
         });
@@ -167,7 +212,7 @@ public class PlanDetailActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // TODO Auto-generated method stub
                 EditText edit_surprise_date = findViewById(R.id.edit_surprise_date);
-                edit_surprise_date.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
+                edit_surprise_date.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -199,7 +244,17 @@ public class PlanDetailActivity extends AppCompatActivity {
     //-----------------
     public void onResume(){
 
-        //---------------------------------------------------------------------------------
+        Intent intent = this.getIntent();
+        //-----取得intent的bundle資料-----
+        Bundle bundle = this.getIntent().getExtras();
+        //String giftName = bundle.getString("name");
+        //String giftContent = bundle.getString("content");
+        String type = bundle.getString("type");
+        String planid = bundle.getString("planid");
+
+        //et_giftName.setText(giftName);
+        //et_giftContent.setText(giftid);
+
         //選告變數------------------------------------------------------------------------------
         final EditText edit_surprise_name = (EditText) findViewById(R.id.edit_surprise_name);
         final EditText edit_surprise_date = findViewById(R.id.edit_surprise_date);
@@ -207,13 +262,22 @@ public class PlanDetailActivity extends AppCompatActivity {
         final EditText edit_surprise_gift = (EditText) findViewById(R.id.edit_surprise_gift);
         final EditText edit_surprise_friend = (EditText) findViewById(R.id.edit_surprise_friend);
         final EditText edit_surprice_message = (EditText) findViewById(R.id.edit_surprice_message);
-        //------------------------------------------------------------------------------
-        //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-        edit_giftlistItems = getResources().getStringArray(R.array.edit_gift_item);
         edit_giftcheckedItems = new boolean[edit_giftlistItems.length];
-        //選擇好友使用的變數宣告---------------------------------------------------------------------------
-        edit_friendlistItems = getResources().getStringArray(R.array.edit_friend_item);
         edit_friendcheckedItems = new boolean[edit_friendlistItems.length];
+        //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
+        for(int i = 0; i < getGiftList.getGiftLength(); i++){
+            edit_giftlistItems[i] = getGiftList.getGiftName(i);
+        }
+        for(int i = 0 ; i < getPlanList.getPlanLength(); i++){
+            if(planid.equals(getPlanList.getSpPlanid(i))){
+                gift_position[0] = i ;  //傳入預設禮物
+            }
+        }
+        //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
+        for(int i = 0; i < getFriendList.getFriendLength(); i++){
+            edit_friendlistItems[i] = getFriendList.getFriendName(i);
+        }
+
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
         edit_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edit_surprise_gift.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -297,16 +361,6 @@ public class PlanDetailActivity extends AppCompatActivity {
                 showTimePickerDialog();
             }
         });
-
-        //-----取得intent的bundle資料-----
-        Bundle bundle = this.getIntent().getExtras();
-        //String giftName = bundle.getString("name");
-        //String giftContent = bundle.getString("content");
-        String type = bundle.getString("type");
-        String planid = bundle.getString("planid");
-        //et_giftName.setText(giftName);
-        //et_giftContent.setText(giftid);
-
         Log.v("type",
                 type);
         Log.v("planid",
@@ -337,7 +391,7 @@ public class PlanDetailActivity extends AppCompatActivity {
                         String message =jsonArray.getJSONObject(0).getString("message");
                         String giftid =jsonArray.getJSONObject(0).getString("giftid");
                         String giftName =jsonArray.getJSONObject(0).getString("giftName");
-                        String receiveid =jsonArray.getJSONObject(0).getString("receiveid");
+                        receiveid =jsonArray.getJSONObject(0).getString("receiveid");
                         String nickname =jsonArray.getJSONObject(0).getString("nickname");
 
                         //SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");

@@ -90,19 +90,19 @@ public class PlanActivity extends AppCompatActivity {
         getGiftList.getJSON();
         getPlanList.getJSON();
 
-        String[][] mPlansData = new String[getPlanList.planLength()][20];
+        String[][] mPlansData = new String[getPlanList.getPlanLength()][20];
 
-        for(int i = 0 ;i < getPlanList.planLength(); i++){
+        for(int i = 0 ;i < getPlanList.getPlanLength(); i++){
             mPlansData[i][0]= getPlanList.getPlanType(i);
             mPlansData[i][1]= getPlanList.getSpPlanName(i);
             mPlansData[i][2]= getPlanList.getSpCreateDate(i);
-            mPlansData[i][3]= getPlanList.getPlanid(i);
+            mPlansData[i][3]= getPlanList.getSpPlanid(i);
         }
 
         mPlansList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mPlans;
 
-        for(int i=0;i<getPlanList.planLength();i++) {
+        for(int i=0;i<getPlanList.getPlanLength();i++) {
             mPlans = new HashMap<String, Object>();
             mPlans.put("type", mPlansData[i][0]);
             mPlans.put("title", mPlansData[i][1]);

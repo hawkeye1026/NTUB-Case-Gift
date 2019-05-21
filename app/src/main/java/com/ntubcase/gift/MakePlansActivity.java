@@ -146,7 +146,6 @@ public class MakePlansActivity extends AppCompatActivity {
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
         add_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         add_surprise_gift.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
@@ -236,8 +235,6 @@ public class MakePlansActivity extends AppCompatActivity {
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlansActivity.this);
         mBuilder.setTitle("選擇禮物");
-
-        getGiftList.getJSON();
 
         mBuilder.setMultiChoiceItems(add_giftlistItems, add_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
@@ -358,7 +355,10 @@ public class MakePlansActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // TODO Auto-generated method stub
                 EditText add_surprise_date = findViewById(R.id.add_surprise_date);
-                add_surprise_date.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
+                String month;
+                String day;
+
+                add_surprise_date.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -370,13 +370,23 @@ public class MakePlansActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 EditText add_surprise_time = findViewById(R.id.add_surprise_time);
-                add_surprise_time.setText(hourOfDay + ":" + minute);
+                add_surprise_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
 
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE),false).show();
 
     }
     //-----------------------------------------------------------
+    public String dateAdd0(int date){
+        if(date <10){
+            return "0"+date;
+        }else{
+            return String.valueOf(date);
+        }
+    }
+    //-----------------------------------------------------------
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
