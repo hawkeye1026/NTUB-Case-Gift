@@ -264,18 +264,6 @@ public class PlanDetailActivity extends AppCompatActivity {
         for(int i = 0; i < getFriendList.getFriendLength(); i++){
             edit_friendlistItems[i] = getFriendList.getFriendName(i);
         }
-        //---------------------------------傳入好友初始勾選方塊
-        for(int j = 0 ; j < getFriendList.getFriendLength(); j++){
-            Log.v("friendid",getFriendList.getFriendid(j));
-            Log.v("friendid",receiveid);
-
-            if(getFriendList.getFriendid(j).equals(receiveid)){
-                edit_friendcheckedItems[j] = true;
-                edit_friendItems.add(j);
-                friendidPositionIndex++;
-                break;
-            }
-        }
 
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
         edit_surprise_gift.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
@@ -407,6 +395,19 @@ public class PlanDetailActivity extends AppCompatActivity {
                         edit_surprise_gift.setText(giftName);
                         edit_surprise_friend.setText(receiveid +", "+ nickname);
                         edit_surprice_message.setText(message);
+
+                        //---------------------------------傳入好友初始勾選方塊
+                        for(int j = 0 ; j < getFriendList.getFriendLength(); j++){
+                            Log.v("friendid",getFriendList.getFriendid(j));
+                            Log.v("friendid",receiveid);
+
+                            if(getFriendList.getFriendid(j).equals(receiveid)){
+                                edit_friendcheckedItems[j] = true;
+                                edit_friendItems.add(j);
+                                friendidPositionIndex++;
+                                break;
+                            }
+                        }
 
                     } catch (Exception e) {
                         Toast.makeText(PlanDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
