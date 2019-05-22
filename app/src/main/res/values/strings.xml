@@ -46,17 +46,4 @@
     <string name="clear_all_label">取消</string>
 
 
-    <string-array name="edit_gift_item">
-        <item>禮物1</item>
-        <item>測試用禮物</item>
-        <item>測試用禮物</item>
-    </string-array>
-
-    <string-array name="edit_friend_item">
-        <item>好友1</item>
-        <item>測試用好友</item>
-        <item>測試用好友</item>
-    </string-array>
-
-
 </resources>
