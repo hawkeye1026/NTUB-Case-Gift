@@ -68,17 +68,6 @@ public class PlanDetailActivity extends AppCompatActivity {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(PlanDetailActivity.this);
         mBuilder.setTitle("選擇禮物");
 
-        for(int i = 0; i < gift_position.length; i++){
-            for(int j = 0 ; j < getGiftList.getGiftLength(); j++){
-                if(getGiftList.getGiftid(j).equals(getPlanList.getGiftid(gift_position[i]))){
-                    edit_giftcheckedItems[j] = true;
-                    edit_giftItems.add(j);
-                    giftidPositionIndex++;
-                    break;
-                }
-            }
-        }
-
         mBuilder.setMultiChoiceItems(edit_giftlistItems, edit_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
@@ -135,21 +124,6 @@ public class PlanDetailActivity extends AppCompatActivity {
     private void Showfrienddialog(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(PlanDetailActivity.this);
         mBuilder.setTitle("選擇好友");
-
-        for(int j = 0 ; j < getFriendList.getFriendLength(); j++){
-
-            Log.v("friendid",getFriendList.getFriendid(j));
-            Log.v("friendid",receiveid);
-
-            if(getFriendList.getFriendid(j).equals(receiveid)){
-                edit_friendcheckedItems[j] = true;
-                edit_friendItems.add(j);
-                friendidPositionIndex++;
-                break;
-            }
-
-        }
-
 
         mBuilder.setMultiChoiceItems(edit_friendlistItems, edit_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
@@ -268,14 +242,39 @@ public class PlanDetailActivity extends AppCompatActivity {
         for(int i = 0; i < getGiftList.getGiftLength(); i++){
             edit_giftlistItems[i] = getGiftList.getGiftName(i);
         }
+        //---------------------------------傳入預設禮物
         for(int i = 0 ; i < getPlanList.getPlanLength(); i++){
             if(planid.equals(getPlanList.getSpPlanid(i))){
-                gift_position[0] = i ;  //傳入預設禮物
+                gift_position[0] = i ;
             }
         }
+        //---------------------------------傳入禮物初始勾選方塊
+        for(int i = 0; i < gift_position.length; i++){
+            for(int j = 0 ; j < getGiftList.getGiftLength(); j++){
+                if(getGiftList.getGiftid(j).equals(getPlanList.getGiftid(gift_position[i]))){
+                    edit_giftcheckedItems[j] = true;
+                    edit_giftItems.add(j);
+                    giftidPositionIndex++;
+                    break;
+                }
+            }
+        }
+        //---------------------------------
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
         for(int i = 0; i < getFriendList.getFriendLength(); i++){
             edit_friendlistItems[i] = getFriendList.getFriendName(i);
+        }
+        //---------------------------------傳入好友初始勾選方塊
+        for(int j = 0 ; j < getFriendList.getFriendLength(); j++){
+            Log.v("friendid",getFriendList.getFriendid(j));
+            Log.v("friendid",receiveid);
+
+            if(getFriendList.getFriendid(j).equals(receiveid)){
+                edit_friendcheckedItems[j] = true;
+                edit_friendItems.add(j);
+                friendidPositionIndex++;
+                break;
+            }
         }
 
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
