@@ -38,13 +38,12 @@ public class getPlanList {
 
                     JSONArray jsonArray = object.getJSONArray("result");
 
-                    Log.v("plength",jsonArray.length()+"");
+                    Log.e("plength",jsonArray.length()+"");
 
                     planLength = jsonArray.length();
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
-                        Log.v("abc",
-                                "10000");
+                        //Log.v("abc", "10000");
                         spid[i]           = jsonArray.getJSONObject(i).getString("spid");
                         giftid[i]         = jsonArray.getJSONObject(i).getString("giftid");
                         sendGiftDate[i]   = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
@@ -57,8 +56,8 @@ public class getPlanList {
                         ownerid[i]        = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i]           = jsonArray.getJSONObject(i).getString("type");
                         planType[i]       = "驚喜式";
-                        Log.v("pdata",sendGiftDate[i]);
-                        Log.v("pdata",spPlanName[i]);
+                        //Log.v("pdata",sendGiftDate[i]);
+                        //Log.v("pdata",spPlanName[i]);
 
                         switch(type[i]){
                             case "1":

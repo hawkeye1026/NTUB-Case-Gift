@@ -84,12 +84,12 @@ public class GiftActivity extends AppCompatActivity {
 
     //-----------------
     public void onResume(){
-        //---------------------ListView倒入資料--------------------------------
-        getGiftList.getJSON();
 
+        getGiftList.getJSON();
+        //---------------------ListView倒入資料--------------------------------
         String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
 
-        Log.v("res_length",getGiftList.getGiftLength()+"");
+        Log.e("res_length",getGiftList.getGiftLength()+"");
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);
             mGiftsData[i][1]= getGiftList.getGiftName(i);

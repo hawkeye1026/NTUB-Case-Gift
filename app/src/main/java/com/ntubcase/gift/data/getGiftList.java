@@ -37,8 +37,7 @@ public class getGiftList {
                     giftLength = jsonArray.length();
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
-                        Log.v("abc",
-                                "10000");
+                        //Log.v("abc","10000");
                         giftid[i] = jsonArray.getJSONObject(i).getString("giftid");
                         gift[i] = jsonArray.getJSONObject(i).getString("gift");
                         giftCreateDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("giftCreateDate"));

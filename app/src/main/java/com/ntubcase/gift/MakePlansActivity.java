@@ -1,6 +1,7 @@
 package com.ntubcase.gift;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,6 +49,8 @@ public class MakePlansActivity extends AppCompatActivity {
     static EditText add_surprise_name;
     static EditText add_surprice_message;
     //----------------------------------------------------------------------------------------------
+    ProgressDialog barProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,12 +96,32 @@ public class MakePlansActivity extends AppCompatActivity {
 
                 mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
 
+                //-------------讀取時間-----------
+                barProgressDialog = ProgressDialog.show(MakePlansActivity.this,
+                        "讀取中", "請等待...",true);
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        try{
+                            getPlanList.getJSON();
+                            Thread.sleep(1000);
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        finally{
+                            barProgressDialog.dismiss();
+                            /*Intent intent;
+                            intent = new Intent(MakePlansActivity .this, loadingActivity.class);
+                            startActivity(intent);*/
+                            finish();
+
+                        }
+                    }
+                }).start();
+
                 Toast.makeText(v.getContext(), "預送成功", Toast.LENGTH_SHORT).show();
 
-                Intent intent;
-                intent = new Intent(MakePlansActivity .this, loadingActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
 
@@ -122,12 +145,31 @@ public class MakePlansActivity extends AppCompatActivity {
 
                 mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
 
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                //-------------讀取時間-----------
+                barProgressDialog = ProgressDialog.show(MakePlansActivity.this,
+                        "讀取中", "請等待...",true);
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        try{
+                            getPlanList.getJSON();
+                            Thread.sleep(1000);
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        finally{
+                            barProgressDialog.dismiss();
+                            /*Intent intent;
+                            intent = new Intent(MakePlansActivity .this, loadingActivity.class);
+                            startActivity(intent);*/
+                            finish();
 
-                Intent intent;
-                intent = new Intent(MakePlansActivity .this, loadingActivity.class);
-                startActivity(intent);
-                finish();
+                        }
+                    }
+                }).start();
+
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }
         });
 

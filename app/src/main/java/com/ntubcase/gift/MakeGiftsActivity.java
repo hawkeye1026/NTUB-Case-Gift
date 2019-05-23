@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -36,6 +37,7 @@ public class MakeGiftsActivity extends AppCompatActivity {
     protected static Date date =new Date();
     protected static String owner = "wayne";
     protected static String dateTime;
+    ProgressDialog barProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +104,28 @@ public class MakeGiftsActivity extends AppCompatActivity {
                 });
                 mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
 
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                //-------------讀取時間-----------
+                barProgressDialog = ProgressDialog.show(MakeGiftsActivity.this,
+                        "讀取中", "請等待...",true);
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        try{
+                            getGiftList.getJSON();
+                            Thread.sleep(1000);
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        finally{
+                            barProgressDialog.dismiss();
+                            finish();
 
-                Intent intent;
-                intent = new Intent(MakeGiftsActivity.this, loadingActivity.class);
-                startActivity(intent);
-                finish();
+                        }
+                    }
+                }).start();
+
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -143,12 +161,10 @@ public class MakeGiftsActivity extends AppCompatActivity {
                     }
                 });
                 mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
-                getGiftList.getJSON();
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-
                 Intent intent;
-                intent = new Intent(MakeGiftsActivity.this, loadingActivity.class);
+                intent = new Intent(MakeGiftsActivity.this, PlanActivity.class);
                 startActivity(intent);
                 finish();
             }

@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ public class PlanActivity extends AppCompatActivity {
     private SearchView mSearchView;
     private PlanListAdapter planListAdapter;
     private ArrayAdapter spinnerAdapter;
+    private ProgressDialog barProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,22 +85,61 @@ public class PlanActivity extends AppCompatActivity {
         fab_surprise.setOnClickListener(fabClickListener);
         fab_calendar.setOnClickListener(fabClickListener);
         fab_qa.setOnClickListener(fabClickListener);
+        Log.e("Plan","onCreate");
     }
 
-    @Override
-    public void onStop(){
-        if(mPlansList != null) mPlansList.clear();
-        super.onStop();
+    private void getData(){
+        getPlanList.getJSON(); //-----------------------------
+        Log.e("Plan","getData");
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        t1.start();
     }
 
-    @Override
-    public void onStart(){
+    private void setList(){
+
         //---------------------ListView倒入資料--------------------------------
-        getGiftList.getJSON();
-        getPlanList.getJSON();
 
         String[][] mPlansData = new String[getPlanList.getPlanLength()][20];
+        Log.e("Plan","onResume: "+getPlanList.getPlanLength());
+        for(int i = 0 ;i < getPlanList.getPlanLength(); i++){
+            mPlansData[i][0]= getPlanList.getPlanType(i);
+            mPlansData[i][1]= getPlanList.getSpPlanName(i);
+            mPlansData[i][2]= getPlanList.getSpCreateDate(i);
+            mPlansData[i][3]= getPlanList.getSpPlanid(i);
+        }
 
+        mPlansList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> mPlans;
+
+        for(int i=0;i<getPlanList.getPlanLength();i++) {
+            mPlans = new HashMap<String, Object>();
+            mPlans.put("type", mPlansData[i][0]);
+            mPlans.put("title", mPlansData[i][1]);
+            mPlans.put("date", mPlansData[i][2]);
+            mPlans.put("planid", mPlansData[i][3]);
+            mPlansList.add(mPlans);
+        }
+        planListAdapter = new PlanListAdapter(this, mPlansList);
+
+        mListView.setAdapter(planListAdapter);
+        mListView.setTextFilterEnabled(true);
+    }
+
+    @Override
+    public void onResume(){
+
+        getPlanList.getJSON();
+
+        //---------------------ListView倒入資料--------------------------------
+
+        String[][] mPlansData = new String[getPlanList.getPlanLength()][20];
+        Log.e("Plan","onResume: "+getPlanList.getPlanLength());
         for(int i = 0 ;i < getPlanList.getPlanLength(); i++){
             mPlansData[i][0]= getPlanList.getPlanType(i);
             mPlansData[i][1]= getPlanList.getSpPlanName(i);
@@ -124,7 +165,7 @@ public class PlanActivity extends AppCompatActivity {
 
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
-        super.onStart();
+        super.onResume();
     }
 
     // ----------------設定ListView的監聽---------------
