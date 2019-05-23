@@ -24,6 +24,7 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.planUpdateAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getPlanList;
 
 import java.text.SimpleDateFormat;
@@ -104,6 +105,7 @@ public class MakePlansActivity extends AppCompatActivity {
                     public void run() {
                         try{
                             getPlanList.getJSON();
+                            getGiftReceived.getJSON();
                             Thread.sleep(1000);
                         }
                         catch(Exception e){
