@@ -229,6 +229,11 @@ public class MakePlansActivity extends AppCompatActivity {
 
     }
 
+    protected void onDestroy() {
+        giftidPositionIndex = 0;
+        friendidPositionIndex = 0;
+        super.onDestroy();
+    }
 
     //設定選擇禮物EditText傳入值---------------------------------------
     private void Showgiftdialog(){
