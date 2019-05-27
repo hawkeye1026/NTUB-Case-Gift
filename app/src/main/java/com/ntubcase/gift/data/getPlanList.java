@@ -12,18 +12,18 @@ import org.json.JSONObject;
 
 public class getPlanList {
 
-    private static String[] spid          = new String[100];
-    private static String[] giftid         = new String[100];
-    private static String[] sendGiftDate   = new String[100];
-    private static String[] spPlanName     = new String[100];
-    private static String[] spCreateDate   = new String[100];
-    private static String[] message        = new String[100];
-    private static String[] gift           = new String[100];
-    private static String[] giftName       = new String[100];
-    private static String[] giftCreateDate = new String[100];
-    private static String[] ownerid        = new String[100];
-    private static String[] type           = new String[100];
-    private static String[] planType        = new String[100];
+    private static String[] spid          ;
+    private static String[] giftid        ;
+    private static String[] sendGiftDate  ;
+    private static String[] spPlanName    ;
+    private static String[] spCreateDate  ;
+    private static String[] message       ;
+    private static String[] gift          ;
+    private static String[] giftName      ;
+    private static String[] giftCreateDate;
+    private static String[] ownerid       ;
+    private static String[] type          ;
+    private static String[] planType      ;
 
     private static int planLength = 0 ;
 
@@ -38,9 +38,22 @@ public class getPlanList {
 
                     JSONArray jsonArray = object.getJSONArray("result");
 
-                    Log.e("plength",jsonArray.length()+"");
-
+                    Log.v("plength",jsonArray.length()+"");
                     planLength = jsonArray.length();
+
+                    spid           = new String[planLength];
+                    giftid         = new String[planLength];
+                    sendGiftDate   = new String[planLength];
+                    spPlanName     = new String[planLength];
+                    spCreateDate   = new String[planLength];
+                    message        = new String[planLength];
+                    gift           = new String[planLength];
+                    giftName       = new String[planLength];
+                    giftCreateDate = new String[planLength];
+                    ownerid        = new String[planLength];
+                    type           = new String[planLength];
+                    planType       = new String[planLength];
+
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         //Log.v("abc", "10000");

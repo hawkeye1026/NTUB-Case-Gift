@@ -13,12 +13,12 @@ import java.util.Arrays;
 
 public class getGiftList {
 
-    private static String[] giftid = new String[100];
-    private static String[] gift = new String[100];
-    private static String[] giftCreateDate = new String[100];
-    private static String[] giftName= new String[100];
-    private static String[] ownerid= new String[100];
-    private static String[] type= new String[100];
+    private static String[] giftid        ;
+    private static String[] gift          ;
+    private static String[] giftCreateDate;
+    private static String[] giftName      ;
+    private static String[] ownerid       ;
+    private static String[] type          ;
     private static int giftLength = 0 ;
 
     public static void getJSON() {
@@ -35,6 +35,13 @@ public class getGiftList {
                     Log.v("length",jsonArray.length()+"");
 
                     giftLength = jsonArray.length();
+
+                    giftid         = new String[giftLength];
+                    gift           = new String[giftLength];
+                    giftCreateDate = new String[giftLength];
+                    giftName       = new String[giftLength];
+                    ownerid        = new String[giftLength];
+                    type           = new String[giftLength];
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         //Log.v("abc","10000");
