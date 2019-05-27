@@ -11,12 +11,12 @@ import org.json.JSONObject;
 
 public class getGiftReceived {
 
-    private  static String[] planid = new String[1000];
-    private  static String[] senderid = new String[100];
-    private  static String[] nickname= new String[100];
-    private  static String[] planName= new String[100];
-    private  static String[] sendPlanDate= new String[100];
-    private  static String[] type= new String[100];
+    private  static String[] planid     ;
+    private  static String[] senderid   ;
+    private  static String[] nickname   ;
+    private  static String[] planName   ;
+    private  static String[] sendPlanDate;
+    private  static String[] type       ;
     private static int giftLength = 0 ;
 
     public static void getJSON() {
@@ -33,6 +33,13 @@ public class getGiftReceived {
                     Log.v("length",jsonArray.length()+"");
 
                     giftLength = jsonArray.length();
+
+                    planid       = new String[giftLength];
+                    senderid     = new String[giftLength];
+                    nickname     = new String[giftLength];
+                    planName     = new String[giftLength];
+                    sendPlanDate = new String[giftLength];
+                    type         = new String[giftLength];
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         Log.v("abc",
