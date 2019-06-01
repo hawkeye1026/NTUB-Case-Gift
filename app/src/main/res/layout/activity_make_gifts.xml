@@ -27,17 +27,12 @@
                 android:src="@drawable/ic_gift_ticket"
                 android:layout_gravity="center_vertical"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="禮物名稱："
-                android:textSize="18sp"/>
-
             <EditText
                 android:id="@+id/et_giftName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/enterGiftName"
+                android:gravity="center"
                 android:textSize="18sp"/>
 
         </LinearLayout>

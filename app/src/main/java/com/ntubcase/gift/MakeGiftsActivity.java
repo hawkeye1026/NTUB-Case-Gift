@@ -61,6 +61,8 @@ public class MakeGiftsActivity extends AppCompatActivity {
         }else if(giftType.equals(mGiftStrings[1])){
             iv_giftIcon.setImageResource(R.drawable.ic_gift_video);
         }else if(giftType.equals(mGiftStrings[2])){
+            iv_giftIcon.setImageResource(R.drawable.ic_gift_message);
+        }else if(giftType.equals(mGiftStrings[3])){
             iv_giftIcon.setImageResource(R.drawable.ic_gift_ticket);
         }
 

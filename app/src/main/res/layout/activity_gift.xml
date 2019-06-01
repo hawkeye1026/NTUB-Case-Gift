@@ -67,7 +67,7 @@
         fab:menu_backgroundColor="#AB4B4B4B">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab1"
+            android:id="@+id/fabPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_gift_camera"
@@ -77,7 +77,7 @@
             fab:fab_colorPressed="@color/colorPrimaryLight"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab2"
+            android:id="@+id/fabVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_gift_video"
@@ -87,7 +87,17 @@
             fab:fab_colorPressed="@color/colorPrimaryLight"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab3"
+            android:id="@+id/fabMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_gift_message"
+            fab:fab_size="mini"
+            fab:fab_label="@string/giftMessage"
+            fab:fab_colorNormal="@color/colorWhite"
+            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabTicket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_gift_ticket"

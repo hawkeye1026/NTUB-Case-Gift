@@ -4,7 +4,7 @@
 
     <!-- 首頁按鈕-->
     <string name="mGift">禮物區</string>
-    <string name="mReceivedGift">收禮區</string>
+    <string name="mReceivedGift">收禮箱</string>
     <string name="mPlan">送禮計畫</string>
     <string name="mFriend">我的好友</string>
 
@@ -16,12 +16,14 @@
     <!-- 禮物模式-->
     <string name="giftPhoto">照片</string>
     <string name="giftVideo">影片</string>
+    <string name="giftMessage">悄悄話</string>
     <string name="giftTicket">兌換券</string>
 
     <!-- 禮物模式Aarray-->
     <string-array name="gift_type">
         <item>@string/giftPhoto</item>
         <item>@string/giftVideo</item>
+        <item>@string/giftMessage</item>
         <item>@string/giftTicket</item>
     </string-array>
 
@@ -37,13 +39,11 @@
         <item>@string/planQa</item>
     </string-array>
 
-
     <!--新增驚喜式計畫資料-->
-    <string name="make_an_order">Make an order</string>
-    <!--<string name="dialog_title">Items available in a shop</string>-->
     <string name="ok_label">確認</string>
-    <!--<string name="dismiss_label">Dismiss</string>-->
     <string name="clear_all_label">取消</string>
 
+    <!--製作禮物-->
+    <string name="enterGiftName">請輸入禮物名稱</string>
 
 </resources>

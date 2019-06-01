@@ -92,6 +92,8 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         }else if(a.equals(giftsType.get(1))){
             viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_video);
         }else if(a.equals(giftsType.get(2))){
+            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_message);
+        }else if(a.equals(giftsType.get(3))){
             viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_ticket);
         }
 
