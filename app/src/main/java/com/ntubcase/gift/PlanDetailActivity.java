@@ -214,7 +214,11 @@ public class PlanDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    protected void onDestroy() {
+        giftidPositionIndex = 0;
+        friendidPositionIndex = 0;
+        super.onDestroy();
+    }
     //-----------------
     public void onResume(){
 
@@ -393,7 +397,7 @@ public class PlanDetailActivity extends AppCompatActivity {
                         edit_surprise_time.setText(arr[1]);  //05:59
                         //---
                         edit_surprise_gift.setText(giftName);
-                        edit_surprise_friend.setText(receiveid +", "+ nickname);
+                        edit_surprise_friend.setText(nickname);
                         edit_surprice_message.setText(message);
 
                         //---------------------------------傳入好友初始勾選方塊
