@@ -190,20 +190,16 @@ public class GiftActivity extends AppCompatActivity {
             Intent intent = new Intent();
             switch (v.getId()) {
                 case R.id.fabPhoto:
-                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
-                    intent.putExtra("giftType", fabPhoto.getLabelText());
+                    intent = new Intent(GiftActivity.this, MakeGiftPhotoActivity.class);
                     break;
                 case R.id.fabVideo:
-                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
-                    intent.putExtra("giftType", fabVideo.getLabelText());
+                    intent = new Intent(GiftActivity.this, MakeGiftVideoActivity.class);
                     break;
                 case R.id.fabMessage:
-                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
-                    intent.putExtra("giftType", fabMessage.getLabelText());
+                    intent = new Intent(GiftActivity.this, MakeGiftMessageActivity.class);
                     break;
                 case R.id.fabTicket:
-                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
-                    intent.putExtra("giftType", fabTicket.getLabelText());
+                    intent = new Intent(GiftActivity.this, MakeGiftTicketActivity.class);
                     break;
             }
 
