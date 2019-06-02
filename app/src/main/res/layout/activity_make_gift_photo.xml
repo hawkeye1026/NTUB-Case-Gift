@@ -37,14 +37,28 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/et_giftContent"
+        <ImageView
+            android:id="@+id/iv_photo"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:hint="圖片"/>
+            android:layout_height="250dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_message"/>
+
+        <Button
+            android:id="@+id/btn_selectImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="從相簿選取"/>
+
+        <Button
+            android:id="@+id/btn_openCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="從相機拍攝"/>
 
     </LinearLayout>
 

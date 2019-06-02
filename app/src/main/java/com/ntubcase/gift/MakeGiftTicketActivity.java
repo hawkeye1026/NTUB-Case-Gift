@@ -43,87 +43,89 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
 
         //---------------------------------------------------------------------------------
-        btn_save = findViewById(R.id.btn_save);
-        btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         et_giftContent = (EditText) findViewById(R.id.et_giftContent);
-
-
-        //-------------------------------儲存按鈕----------------------------------------
-        btn_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-                giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
-                giftType="4";
-                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-                Date date =new Date();
-                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                dateTime = sdFormat.format(date);
-
-
-                giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
-                mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner, giftType);
-
-                //-------------讀取Dialog-----------
-                barProgressDialog = ProgressDialog.show(MakeGiftTicketActivity.this,
-                        "讀取中", "請等待...",true);
-                new Thread(new Runnable(){
-                    @Override
-                    public void run() {
-                        try{
-                            getGiftList.getJSON();
-                            Thread.sleep(1000);
-                        }
-                        catch(Exception e){
-                            e.printStackTrace();
-                        }
-                        finally{
-                            barProgressDialog.dismiss();
-                            finish();
-                        }
-                    }
-                }).start();
-
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //-------------------------------製作計畫按鈕----------------------------------------
-        btn_makePlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-                giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
-                giftType="4";
-                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-                Date date =new Date();
-                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                dateTime = sdFormat.format(date);
-
-
-                giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
-                mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
-
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-                Intent intent;
-                intent = new Intent(MakeGiftTicketActivity.this, PlanActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        btn_save = findViewById(R.id.btn_save);
+        btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
+        btn_save.setOnClickListener(saveClickListener); //設置監聽器
+        btn_makePlan.setOnClickListener(makePlanClickListener); //設置監聽器
 
     }
+
+    //-------------------------------儲存按鈕 監聽器----------------------------------------
+    private View.OnClickListener saveClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
+            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
+            giftType="4";
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date =new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            dateTime = sdFormat.format(date);
+
+
+            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner, giftType);
+
+            //-------------讀取Dialog-----------
+            barProgressDialog = ProgressDialog.show(MakeGiftTicketActivity.this,
+                    "讀取中", "請等待...",true);
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try{
+                        getGiftList.getJSON();
+                        Thread.sleep(1000);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    finally{
+                        barProgressDialog.dismiss();
+                        finish();
+                    }
+                }
+            }).start();
+
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
+    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
+            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
+            giftType="4";
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date =new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            dateTime = sdFormat.format(date);
+
+
+            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
+
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            Intent intent;
+            intent = new Intent(MakeGiftTicketActivity.this, PlanActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
+
     public void onStop() {
         super.onStop();
     }
