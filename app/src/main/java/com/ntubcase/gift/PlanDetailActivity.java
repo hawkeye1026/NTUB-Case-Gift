@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.ntubcase.gift.MakeGiftsActivity.dateTime;
 
 public class PlanDetailActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
@@ -352,16 +351,8 @@ public class PlanDetailActivity extends AppCompatActivity {
                 showTimePickerDialog();
             }
         });
-        Log.v("type",
-                type);
-        Log.v("planid",
-                planid);
-
-        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-        Date date =new Date();
-        final SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        dateTime = sdFormat.format(date);
-        Log.v("date",dateTime);
+        Log.v("type", type);
+        Log.v("planid", planid);
 
         if(type.equals("驚喜式")){
             spPlanDetailAsyncTask spPlanDetailAsyncTask = new spPlanDetailAsyncTask(new spPlanDetailAsyncTask.TaskListener() {

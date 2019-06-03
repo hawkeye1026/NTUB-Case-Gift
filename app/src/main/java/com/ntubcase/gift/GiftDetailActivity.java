@@ -21,8 +21,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.ntubcase.gift.MakeGiftsActivity.dateTime;
-
 public class GiftDetailActivity extends AppCompatActivity {
 
     private Button btn_save, btn_makePlan;
@@ -70,18 +68,7 @@ public class GiftDetailActivity extends AppCompatActivity {
 
         //-----取得intent的bundle資料-----
         Bundle bundle = this.getIntent().getExtras();
-        //String giftName = bundle.getString("name");
-        //String giftContent = bundle.getString("content");
         String giftid = bundle.getString("giftid");
-        //et_giftName.setText(giftName);
-        //et_giftContent.setText(giftid);
-
-        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-        Date date =new Date();
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        dateTime = sdFormat.format(date);
-        Log.v("date",dateTime);
-
 
         giftDetailAsyncTask giftDetailAsyncTask = new giftDetailAsyncTask(new giftDetailAsyncTask.TaskListener() {
             @Override
@@ -117,7 +104,6 @@ public class GiftDetailActivity extends AppCompatActivity {
             }
         });
         giftDetailAsyncTask.execute(Common.giftDetail , giftid);
-        //getGiftList.getJSON();
 
         super.onResume();
     }

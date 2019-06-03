@@ -25,7 +25,6 @@
         <activity android:name=".GiftReceivedDetailActivity" />
         <activity android:name=".GiftDetailActivity" />
         <activity android:name=".MakePlansActivity" />
-        <activity android:name=".MakeGiftsActivity" />
         <activity android:name=".PlanActivity" />
         <activity android:name=".GiftActivity" />
         <activity
