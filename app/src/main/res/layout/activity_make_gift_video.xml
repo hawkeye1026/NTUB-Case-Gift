@@ -37,14 +37,27 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/et_giftContent"
+        <VideoView
+            android:id="@+id/vv_content"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:hint="影片"/>
+            android:layout_height="250dp"
+            android:layout_margin="15dp"/>
+
+        <Button
+            android:id="@+id/btn_selectVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="從相簿選取"/>
+
+        <Button
+            android:id="@+id/btn_openCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="從相機拍攝"/>
 
     </LinearLayout>
 

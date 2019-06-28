@@ -76,7 +76,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
         btn_selectImage.setOnClickListener(selectImageClickListener); //設置監聽器
         btn_openCamera = (Button) findViewById(R.id.btn_openCamera);
         btn_openCamera.setOnClickListener(openCameraClickListener); //設置監聽器
-        checkPermission();
+        checkPermission();  //確認權限
     }
 
     private static final int SELECT_IMAGE = 0; //相簿
@@ -292,6 +292,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
         return false;
     }
 
+    //---------------------確認權限-----------------------
     private void checkPermission(){
         //檢查是否取得權限
         int checkCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -304,6 +305,5 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
         if(checkStorage != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
-
     }
 }

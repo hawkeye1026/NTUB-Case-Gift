@@ -40,11 +40,16 @@
         <EditText
             android:id="@+id/et_giftContent"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="start"
             android:textSize="20sp"
-            android:hint="請輸入內容"/>
+            android:hint="請輸入悄悄話內容"
+            android:inputType="textMultiLine"
+            android:lines="12"
+            android:minLines="12"
+            android:maxLines="15"
+            android:background="@drawable/bg_message"/>
 
     </LinearLayout>
 
