@@ -24,7 +24,7 @@ import java.util.Date;
 public class MakeGiftMessageActivity extends AppCompatActivity {
 
     private Button btn_save, btn_makePlan;
-    private static EditText et_giftName;
+    private static EditText et_giftName, et_giftContent;
 
     private static String giftName, giftContent;
 
@@ -44,6 +44,7 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
 
         //---------------------------------------------------------------------------------
         et_giftName = (EditText) findViewById(R.id.et_giftName);
+        et_giftContent = (EditText) findViewById(R.id.et_giftContent);
         btn_save = findViewById(R.id.btn_save);
         btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
@@ -56,7 +57,7 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = "悄悄話";    //取得使用者輸入的禮物內容
+            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
             giftType="3";
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date =new Date();
