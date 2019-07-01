@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "222741097394",
+    "firebase_url": "https://ntub-gift.firebaseio.com",
+    "project_id": "ntub-gift",
+    "storage_bucket": "ntub-gift.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222741097394:android:b531b22f9acfa5b6",
+        "android_client_info": {
+          "package_name": "com.ntubcase.gift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222741097394-8s39ipbtghclq6clvrsu2nqer170gcs7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs5QgGkwRzn5zbO7cKMyutnptTC774Hs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222741097394-8s39ipbtghclq6clvrsu2nqer170gcs7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
