@@ -96,7 +96,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     private View.OnClickListener openCameraClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmm");
             Date date = new Date(System.currentTimeMillis());
             String filename = format.format(date);
             File outputFile = new File(Environment.getExternalStorageDirectory() +"/giftPlanner",filename+".mp4");

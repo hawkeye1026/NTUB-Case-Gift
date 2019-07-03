@@ -97,7 +97,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
     private View.OnClickListener openCameraClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmm");
             Date date = new Date(System.currentTimeMillis());
             String filename = format.format(date);
             File outputFile = new File(Environment.getExternalStorageDirectory() +"/giftPlanner",filename+".jpg");
