@@ -5,18 +5,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder>{
+public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> implements Filterable {
     private Context context;
     private List<Map<String, Object>> mFriendList;
+    private List<Map<String, Object>> originalitem;
 
     public FriendListAdapter(Context context, List<Map<String, Object>> mFriendList) {
         this.context = context;
@@ -31,7 +36,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
     @Override
     public void onBindViewHolder(final FriendListAdapter.ViewHolder holder, int position) {
-
         holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());
@@ -60,5 +64,56 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
             tv_nickname = (TextView) itemView.findViewById(R.id.tv_nickname);
             tv_email = (TextView) itemView.findViewById(R.id.tv_email);
         }
+    }
+
+    @Override
+    public Filter getFilter() { //過濾器
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                constraint = constraint.toString();
+                FilterResults result = new FilterResults();
+
+                if(originalitem == null){
+                    synchronized (this){
+                        originalitem = new ArrayList<Map<String, Object>>(mFriendList);
+                    }
+                }
+
+                if(constraint != null && constraint.toString().length()>0){
+                    List<Map<String, Object>> filteredItem = new ArrayList<Map<String, Object>>();
+                    for(int i=0;i<originalitem.size();i++){
+                        String photo = originalitem.get(i).get("photo").toString();
+                        String nickname = originalitem.get(i).get("nickname").toString();
+                        String email = originalitem.get(i).get("email").toString();
+                        if(nickname.contains(constraint)){
+                            Map<String, Object> filteredItemContent = new HashMap<String, Object>();
+                            filteredItemContent.put("photo", photo);
+                            filteredItemContent.put("nickname", nickname);
+                            filteredItemContent.put("email", email);
+                            filteredItem.add(filteredItemContent);
+                        }
+                    }
+                    result.count = filteredItem.size();
+                    result.values = filteredItem;
+                }else{
+                    synchronized (this){
+                        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(originalitem);
+                        result.values = list;
+                        result.count = list.size();
+                    }
+                }
+
+                return result;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mFriendList = (List<Map<String, Object>>)results.values;
+                if(results.count>0) notifyDataSetChanged();
+            }
+        };
+
+        return filter;
     }
 }

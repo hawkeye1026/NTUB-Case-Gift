@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -26,6 +25,7 @@ public class FriendActivity extends AppCompatActivity {
 
     private FloatingActionButton fab_add;
     private SearchView mSearchView;
+    private FriendListAdapter friendListAdapter;
 
 
     @Override
@@ -38,7 +38,7 @@ public class FriendActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
 
         //-----------------------------------------------------
-        //mSearchView = (SearchView) findViewById(R.id.mSearch);
+        mSearchView = (SearchView) findViewById(R.id.mSearch);
         mRecyclerView = (RecyclerView) findViewById(R.id.friendList);
 
         fab_add = (FloatingActionButton) findViewById(R.id.fab_add);
@@ -76,10 +76,39 @@ public class FriendActivity extends AppCompatActivity {
         }
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        FriendListAdapter friendListAdapter = new FriendListAdapter(this, mFriendsList);
+        friendListAdapter = new FriendListAdapter(this, mFriendsList);
         mRecyclerView.setAdapter(friendListAdapter);
 
+        setSearch_function(); // 設定searchView的文字輸入監聽
         super.onResume();
+    }
+
+    // ----------------設定searchView的文字輸入監聽---------------
+    private void setSearch_function(){
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                friendListAdapter.getFilter().filter(query);
+                mSearchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                friendListAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+        mSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    mSearchView.clearFocus();
+                }
+            }
+        });
     }
 
     @Override
