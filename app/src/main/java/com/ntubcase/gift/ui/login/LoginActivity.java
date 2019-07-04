@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -19,8 +20,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 
-
+import com.ntubcase.gift.GiftDetailActivity;
+import com.ntubcase.gift.MainActivity;
+import com.ntubcase.gift.MakePlansActivity;
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.data.googleAccount;
 
 public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener  {
@@ -74,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         updateUI(account);
+        Toast.makeText(this,account.getEmail(),Toast.LENGTH_SHORT);
         // [END on_start_sign_in]
     }
 
@@ -147,8 +152,17 @@ public class LoginActivity extends AppCompatActivity implements
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
+            new googleAccount(account.getDisplayName(),account.getEmail(),account.getPhotoUrl());
+            mStatusTextView.setText(getString(R.string.signed_in_fmt,googleAccount.getUserMail()));
 
+            Intent intent;
+            intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+
+            //Log.v("account", account.getEmail()+"||||||||||"+account.getPhotoUrl());
+            Toast.makeText(this,account.getDisplayName(),Toast.LENGTH_SHORT);
+            //Log.v("account", ""+googleAccount.getUserPhoto());
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
@@ -159,6 +173,8 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
+
+    //綁定各按鈕的作用
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
