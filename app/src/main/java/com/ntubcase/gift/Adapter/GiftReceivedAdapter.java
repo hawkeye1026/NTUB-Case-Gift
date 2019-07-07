@@ -91,7 +91,7 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
         }else if(a.equals(plansType.get(1))){
             viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_calendar);
         }else if(a.equals(plansType.get(2))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_qa);
+            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_list);
         }
 
         return convertView;

@@ -68,32 +68,32 @@
         fab:menu_backgroundColor="#AB4B4B4B">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_surprise"
+            android:id="@+id/fab_single"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_plan_surprise"
             fab:fab_size="mini"
-            fab:fab_label="@string/planSurprise"
+            fab:fab_label="@string/planSingle"
             fab:fab_colorNormal="@color/colorWhite"
             fab:fab_colorPressed="@color/colorPrimaryLight"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_calendar"
+            android:id="@+id/fab_multi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_plan_calendar"
             fab:fab_size="mini"
-            fab:fab_label="@string/planCalendar"
+            fab:fab_label="@string/planMultiple"
             fab:fab_colorNormal="@color/colorWhite"
             fab:fab_colorPressed="@color/colorPrimaryLight"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_qa"
+            android:id="@+id/fab_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_plan_qa"
+            android:src="@drawable/ic_plan_list"
             fab:fab_size="mini"
-            fab:fab_label="@string/planQa"
+            fab:fab_label="@string/planList"
             fab:fab_colorNormal="@color/colorWhite"
             fab:fab_colorPressed="@color/colorPrimaryLight"/>
 
