@@ -55,6 +55,8 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
     protected static String dateTime, giftType;
     ProgressDialog barProgressDialog;
 
+    int currentapiVersion = android.os.Build.VERSION.SDK_INT; //取得目前版本
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,12 +107,19 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
                 outputFile.getParentFile().mkdir();
             }
 
-            cam_imageUri = FileProvider.getUriForFile(
-                    MakeGiftPhotoActivity.this,
-                    getPackageName() + ".fileprovider",
-                    outputFile);
+            if (currentapiVersion < 24) {
+                cam_imageUri = FileProvider.getUriForFile(
+                        MakeGiftPhotoActivity.this,
+                        getPackageName() + ".fileprovider",
+                        outputFile);
+            } else {
+                //兼容android7.0 使用共享文件的形式
+                ContentValues contentValues = new ContentValues(1);
+                contentValues.put(MediaStore.Images.Media.DATA, outputFile.getAbsolutePath());
+                cam_imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            }
 
-            Intent tTntent = new Intent("android.media.action.IMAGE_CAPTURE"); //照相
+            Intent tTntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //照相
             tTntent.putExtra(MediaStore.EXTRA_OUTPUT, cam_imageUri); //指定输出地址
             startActivityForResult(tTntent,OPEN_CAMERA); //啟動照相
         }
@@ -127,7 +136,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
                     break;
                 case OPEN_CAMERA:
                     decodeUri(cam_imageUri);
-                    delDefaultSavePic(); //刪除相機自動儲存的照片
+                    if (currentapiVersion < 24) delDefaultSavePic(); //刪除相機自動儲存的照片
                     break;
             }
 

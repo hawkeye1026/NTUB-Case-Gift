@@ -2,6 +2,7 @@ package com.ntubcase.gift;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,6 +49,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     protected static String dateTime, giftType;
     ProgressDialog barProgressDialog;
 
+    int currentapiVersion = android.os.Build.VERSION.SDK_INT; //取得目前版本
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +106,17 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
                 outputFile.getParentFile().mkdir();
             }
 
-            cam_videoUri = FileProvider.getUriForFile(
-                    MakeGiftVideoActivity.this,
-                    getPackageName() + ".fileprovider",
-                    outputFile);
+            if (currentapiVersion < 24) {
+                cam_videoUri = FileProvider.getUriForFile(
+                        MakeGiftVideoActivity.this,
+                        getPackageName() + ".fileprovider",
+                        outputFile);
+            } else {
+                //兼容android7.0 使用共享文件的形式
+                ContentValues contentValues = new ContentValues(1);
+                contentValues.put(MediaStore.Images.Media.DATA, outputFile.getAbsolutePath());
+                cam_videoUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            }
 
             Intent tTntent = new Intent("android.media.action.VIDEO_CAPTURE"); //錄影
             tTntent.putExtra(MediaStore.EXTRA_OUTPUT, cam_videoUri); //指定输出地址
