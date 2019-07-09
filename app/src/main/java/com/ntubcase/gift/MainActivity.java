@@ -1,14 +1,16 @@
 package com.ntubcase.gift;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+
+import android.widget.ImageView;
 
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
@@ -16,25 +18,24 @@ import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getGiftReceivedDone;
 import com.ntubcase.gift.data.getPlanList;
 
-import java.util.Arrays;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mGift, mPlan, mReceivedGift, mFriend;
+    private ImageView mGift, mPlan, mReceivedGift, mFriend;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
 
         getGiftList.getJSON();
         getPlanList.getJSON();
         getFriendList.getJSON();
         getGiftReceived.getJSON();
         getGiftReceivedDone.getJSON();
+
 
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);
@@ -44,8 +45,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , GiftActivity.class);
                 startActivity(intent);
+
             }
         });
+
+
+
+
+
 
         //-------送禮計畫 按鈕------
         mPlan = findViewById(R.id.mPlan);
@@ -104,4 +111,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
