@@ -107,17 +107,22 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
                 outputFile.getParentFile().mkdir();
             }
 
-            if (currentapiVersion < 24) {
-                cam_imageUri = FileProvider.getUriForFile(
+            /*
+            cam_imageUri = FileProvider.getUriForFile(
                         MakeGiftPhotoActivity.this,
                         getPackageName() + ".fileprovider",
                         outputFile);
-            } else {
+             */
+
+            if (currentapiVersion < 24) {
+                cam_imageUri = Uri.fromFile(outputFile);
+            }else{
                 //兼容android7.0 使用共享文件的形式
                 ContentValues contentValues = new ContentValues(1);
                 contentValues.put(MediaStore.Images.Media.DATA, outputFile.getAbsolutePath());
                 cam_imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
             }
+
 
             Intent tTntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //照相
             tTntent.putExtra(MediaStore.EXTRA_OUTPUT, cam_imageUri); //指定输出地址
