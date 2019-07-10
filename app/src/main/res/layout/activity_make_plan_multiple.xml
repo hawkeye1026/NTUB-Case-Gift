@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MakePlansActivity"
-    android:padding="20dp">
+    tools:context=".MakePlanMultipleActivity"
+    android:padding="10dp">
 
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="10">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,79 +46,7 @@
                     android:inputType="textPersonName" />
 
             </LinearLayout>
-            <!--送禮日期-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10px">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="送禮日期："
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/add_surprise_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="輸入送禮日期"
-                    android:inputType="none"></EditText>
-
-            </LinearLayout>
-            <!--送禮時間-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10px">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:inputType="time"
-                    android:text="送禮時間："
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/add_surprise_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="輸入送禮時間"
-                    android:inputType="none"></EditText>
-
-            </LinearLayout>
-            <!--選擇禮物-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10px">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="選擇禮物："
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/add_surprise_gift"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_weight="7"
-                    android:hint="選擇禮物" />
-            </LinearLayout>
             <!--收禮人-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,6 +70,59 @@
                     android:hint="選擇收禮人" />
 
             </LinearLayout>
+
+            <!--送禮日期-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10px">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="送禮日期："
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/add_surprise_dateS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="輸入送禮日期"
+                    android:inputType="none"></EditText>
+
+            </LinearLayout>
+
+            <!--結束日期-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10px">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="結束日期："
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/add_surprise_dateE"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="輸入結束日期"
+                    android:inputType="none"></EditText>
+
+            </LinearLayout>
+
             <!--留言板-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,42 +153,31 @@
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
-            <!--按鈕-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <Button
-                    android:id="@+id/btn_plan_save"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_normalbutton"
-                    android:text="儲存"
-                    android:textColor="#FFF"
-                    android:textSize="18sp" />
-
-                <Button
-                    android:id="@+id/btn_plan_send"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_normalbutton"
-                    android:text="預送禮物"
-                    android:textColor="#FFF"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
+    <!--按鈕-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/btn_plan_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_normalbutton"
+            android:text="下一步"
+            android:textColor="#FFF"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

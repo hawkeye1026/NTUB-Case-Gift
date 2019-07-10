@@ -14,6 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PlanMultipleActivity"></activity>
         <activity android:name=".MakeGiftMessageActivity" />
         <activity android:name=".MakeGiftVideoActivity" />
         <activity android:name=".MakeGiftPhotoActivity" />
@@ -24,7 +25,8 @@
         <activity android:name=".PlanDetailActivity" />
         <activity android:name=".GiftReceivedDetailActivity" />
         <activity android:name=".GiftDetailActivity" />
-        <activity android:name=".MakePlansActivity" />
+        <activity android:name=".MakePlanMultipleActivity" />
+        <activity android:name=".MakePlanSingleActivity" />
         <activity android:name=".PlanActivity" />
         <activity android:name=".GiftActivity" />
         <activity
@@ -32,15 +34,14 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

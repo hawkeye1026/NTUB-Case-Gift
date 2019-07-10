@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -14,14 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
-import com.ntubcase.gift.Adapter.GiftListAdapter;
 import com.ntubcase.gift.Adapter.PlanListAdapter;
-import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getPlanList;
 
 import java.util.ArrayList;
@@ -192,16 +187,13 @@ public class PlanActivity extends AppCompatActivity {
             Intent intent = new Intent();
             switch (v.getId()) {
                 case R.id.fab_single:
-                    intent = new Intent(PlanActivity.this, MakePlansActivity.class);
-                    intent.putExtra("planType", fab_single.getLabelText());
+                    intent = new Intent(PlanActivity.this, MakePlanSingleActivity.class);
                     break;
                 case R.id.fab_multi:
-                    intent = new Intent(PlanActivity.this, MakePlansActivity.class);
-                    intent.putExtra("planType", fab_multi.getLabelText());
+                    intent = new Intent(PlanActivity.this, MakePlanMultipleActivity.class);
                     break;
                 case R.id.fab_list:
-                    intent = new Intent(PlanActivity.this, MakePlansActivity.class);
-                    intent.putExtra("planType", fab_list.getLabelText());
+                    intent = new Intent(PlanActivity.this, MakePlanSingleActivity.class);
                     break;
             }
 

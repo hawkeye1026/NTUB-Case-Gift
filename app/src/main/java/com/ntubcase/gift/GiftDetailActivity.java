@@ -18,9 +18,6 @@ import com.ntubcase.gift.MyAsyncTask.giftDetailAsyncTask;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class GiftDetailActivity extends AppCompatActivity {
 
     private Button btn_save, btn_makePlan;
@@ -46,7 +43,7 @@ public class GiftDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent = new Intent(GiftDetailActivity.this, MakePlansActivity.class);
+                intent = new Intent(GiftDetailActivity.this, MakePlanSingleActivity.class);
                 startActivity(intent);
                 finish();
             }
