@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +15,9 @@ import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getGiftReceivedDone;
 import com.ntubcase.gift.data.getPlanList;
-import com.ntubcase.gift.data.googleAccount;
-
-import java.util.Arrays;
+import com.ntubcase.gift.login_model.googleAccount;
+import com.ntubcase.gift.login_model.revokeAccess;
+import com.ntubcase.gift.login_model.signOut;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         getGiftReceivedDone.getJSON();
         Toast.makeText(this, "親愛的"+googleAccount.getUserName()+"您好,登入成功", Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(this, "親愛的"+googleAccount.getUserPhoto()+"您好,登入成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "親愛的"+googleAccount.getPhotoUrl()+"您好,登入成功", Toast.LENGTH_SHORT).show();
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);
         mGift.setOnClickListener(new View.OnClickListener() {
@@ -80,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , FriendActivity.class);
                 startActivity(intent);
+
+
             }
         });
-
-
     }
 
     @Override
@@ -107,4 +106,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
