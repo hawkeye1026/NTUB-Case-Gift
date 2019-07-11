@@ -102,7 +102,7 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = "悄悄話";    //取得使用者輸入的禮物內容
+            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
             giftType="3";
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date =new Date();
