@@ -2,7 +2,6 @@ package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +89,8 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         }else if(a.equals(giftsType.get(1))){
             viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_video);
         }else if(a.equals(giftsType.get(2))){
+            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_message);
+        }else if(a.equals(giftsType.get(3))){
             viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_ticket);
         }
 

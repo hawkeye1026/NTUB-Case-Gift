@@ -8,7 +8,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.reSurpriseGiftAdapter;
@@ -21,11 +20,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.ntubcase.gift.MakeGiftsActivity.dateTime;
 
 public class GiftReceivedDetailActivity extends AppCompatActivity {
     //---
@@ -68,10 +63,6 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
             Log.v("giftName", (gifts.get(i).toString()));
         }
 
-        //giftList.add(new surpriseCardviewGiftItem("白沙屯海灘1"));
-        //giftList.add(new surpriseCardviewGiftItem("白沙屯海灘2"));
-        // giftList.add(new surpriseCardviewGiftItem("白沙屯海灘3"));
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 // MemberAdapter 會在步驟7建立
@@ -93,16 +84,9 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
         String type = bundle.getString("type");
         String planid = bundle.getString("planid");
 
-        Log.v("type",
-                type);
-        Log.v("planid",
-                planid);
+        Log.v("type", type);
+        Log.v("planid", planid);
 
-        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-        Date date =new Date();
-        final SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        dateTime = sdFormat.format(date);
-        Log.v("date",dateTime);
 
         if(type.equals("驚喜式")){
             final spGiftRecieivedDetailAsyncTask spGiftRecieivedDetailAsyncTask = new spGiftRecieivedDetailAsyncTask(new spGiftRecieivedDetailAsyncTask.TaskListener() {

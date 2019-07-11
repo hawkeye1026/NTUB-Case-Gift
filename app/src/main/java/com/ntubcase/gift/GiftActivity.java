@@ -31,7 +31,7 @@ public class GiftActivity extends AppCompatActivity {
     private ListView mListView;
     private GiftListAdapter giftListAdapter;
     private List<Map<String, Object>> mGiftsList; //禮物清單
-    private FloatingActionButton fab1, fab2, fab3;
+    private FloatingActionButton fabPhoto, fabVideo, fabMessage, fabTicket;
     private FloatingActionMenu newGift;
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
@@ -74,12 +74,14 @@ public class GiftActivity extends AppCompatActivity {
 
         //------------------------------FAB_newGift----------------------
         newGift = (FloatingActionMenu) findViewById(R.id.newGift);
-        fab1 = (FloatingActionButton) findViewById(R.id.fab1);
-        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        fab3 = (FloatingActionButton) findViewById(R.id.fab3);
-        fab1.setOnClickListener(fabClickListener);
-        fab2.setOnClickListener(fabClickListener);
-        fab3.setOnClickListener(fabClickListener);
+        fabPhoto = (FloatingActionButton) findViewById(R.id.fabPhoto);
+        fabVideo = (FloatingActionButton) findViewById(R.id.fabVideo);
+        fabMessage = (FloatingActionButton) findViewById(R.id.fabMessage);
+        fabTicket = (FloatingActionButton) findViewById(R.id.fabTicket);
+        fabPhoto.setOnClickListener(fabClickListener);
+        fabVideo.setOnClickListener(fabClickListener);
+        fabMessage.setOnClickListener(fabClickListener);
+        fabTicket.setOnClickListener(fabClickListener);
     }
 
     //-----------------
@@ -187,17 +189,17 @@ public class GiftActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent();
             switch (v.getId()) {
-                case R.id.fab1:
-                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
-                    intent.putExtra("giftType", fab1.getLabelText());
+                case R.id.fabPhoto:
+                    intent = new Intent(GiftActivity.this, MakeGiftPhotoActivity.class);
                     break;
-                case R.id.fab2:
-                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
-                    intent.putExtra("giftType", fab2.getLabelText());
+                case R.id.fabVideo:
+                    intent = new Intent(GiftActivity.this, MakeGiftVideoActivity.class);
                     break;
-                case R.id.fab3:
-                    intent = new Intent(GiftActivity.this, MakeGiftsActivity.class);
-                    intent.putExtra("giftType", fab3.getLabelText());
+                case R.id.fabMessage:
+                    intent = new Intent(GiftActivity.this, MakeGiftMessageActivity.class);
+                    break;
+                case R.id.fabTicket:
+                    intent = new Intent(GiftActivity.this, MakeGiftTicketActivity.class);
                     break;
             }
 

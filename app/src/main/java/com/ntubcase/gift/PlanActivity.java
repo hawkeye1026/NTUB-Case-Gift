@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -14,14 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
-import com.ntubcase.gift.Adapter.GiftListAdapter;
 import com.ntubcase.gift.Adapter.PlanListAdapter;
-import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getPlanList;
 
 import java.util.ArrayList;
@@ -31,7 +26,7 @@ import java.util.Map;
 
 public class PlanActivity extends AppCompatActivity {
 
-    private FloatingActionButton fab_surprise, fab_calendar, fab_qa;
+    private FloatingActionButton fab_single, fab_multi, fab_list;
     private FloatingActionMenu newPlan;
     private ListView mListView;
     private List<Map<String, Object>> mPlansList; //計畫清單
@@ -79,56 +74,12 @@ public class PlanActivity extends AppCompatActivity {
 
         //------------------------------FAB_newGift----------------------
         newPlan = (FloatingActionMenu) findViewById(R.id.newPlan);
-        fab_surprise = (FloatingActionButton) findViewById(R.id.fab_surprise);
-        fab_calendar = (FloatingActionButton) findViewById(R.id.fab_calendar);
-        fab_qa = (FloatingActionButton) findViewById(R.id.fab_qa);
-        fab_surprise.setOnClickListener(fabClickListener);
-        fab_calendar.setOnClickListener(fabClickListener);
-        fab_qa.setOnClickListener(fabClickListener);
-        Log.e("Plan","onCreate");
-    }
-
-    private void getData(){
-        getPlanList.getJSON(); //-----------------------------
-        Log.e("Plan","getData");
-
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
-        t1.start();
-    }
-
-    private void setList(){
-
-        //---------------------ListView倒入資料--------------------------------
-
-        String[][] mPlansData = new String[getPlanList.getPlanLength()][20];
-        Log.e("Plan","onResume: "+getPlanList.getPlanLength());
-        for(int i = 0 ;i < getPlanList.getPlanLength(); i++){
-            mPlansData[i][0]= getPlanList.getPlanType(i);
-            mPlansData[i][1]= getPlanList.getSpPlanName(i);
-            mPlansData[i][2]= getPlanList.getSpCreateDate(i);
-            mPlansData[i][3]= getPlanList.getSpPlanid(i);
-        }
-
-        mPlansList = new ArrayList<Map<String, Object>>();
-        Map<String, Object> mPlans;
-
-        for(int i=0;i<getPlanList.getPlanLength();i++) {
-            mPlans = new HashMap<String, Object>();
-            mPlans.put("type", mPlansData[i][0]);
-            mPlans.put("title", mPlansData[i][1]);
-            mPlans.put("date", mPlansData[i][2]);
-            mPlans.put("planid", mPlansData[i][3]);
-            mPlansList.add(mPlans);
-        }
-        planListAdapter = new PlanListAdapter(this, mPlansList);
-
-        mListView.setAdapter(planListAdapter);
-        mListView.setTextFilterEnabled(true);
+        fab_single = (FloatingActionButton) findViewById(R.id.fab_single);
+        fab_multi = (FloatingActionButton) findViewById(R.id.fab_multi);
+        fab_list = (FloatingActionButton) findViewById(R.id.fab_list);
+        fab_single.setOnClickListener(fabClickListener);
+        fab_multi.setOnClickListener(fabClickListener);
+        fab_list.setOnClickListener(fabClickListener);
     }
 
     @Override
@@ -139,7 +90,7 @@ public class PlanActivity extends AppCompatActivity {
         //---------------------ListView倒入資料--------------------------------
 
         String[][] mPlansData = new String[getPlanList.getPlanLength()][20];
-        Log.e("Plan","onResume: "+getPlanList.getPlanLength());
+        //Log.e("Plan","onResume: "+getPlanList.getPlanLength());
         for(int i = 0 ;i < getPlanList.getPlanLength(); i++){
             mPlansData[i][0]= getPlanList.getPlanType(i);
             mPlansData[i][1]= getPlanList.getSpPlanName(i);
@@ -235,17 +186,14 @@ public class PlanActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent();
             switch (v.getId()) {
-                case R.id.fab_surprise:
-                    intent = new Intent(PlanActivity.this, MakePlansActivity.class);
-                    intent.putExtra("planType", fab_surprise.getLabelText());
+                case R.id.fab_single:
+                    intent = new Intent(PlanActivity.this, MakePlanSingleActivity.class);
                     break;
-                case R.id.fab_calendar:
-                    intent = new Intent(PlanActivity.this, MakePlansActivity.class);
-                    intent.putExtra("planType", fab_calendar.getLabelText());
+                case R.id.fab_multi:
+                    intent = new Intent(PlanActivity.this, MakePlanMultipleActivity.class);
                     break;
-                case R.id.fab_qa:
-                    intent = new Intent(PlanActivity.this, MakePlansActivity.class);
-                    intent.putExtra("planType", fab_qa.getLabelText());
+                case R.id.fab_list:
+                    intent = new Intent(PlanActivity.this, MakePlanSingleActivity.class);
                     break;
             }
 

@@ -3,9 +3,9 @@
 
     <string-array name="spinner_plan_type">
         <item>全部</item>
-        <item>@string/planSurprise</item>
-        <item>@string/planCalendar</item>
-        <item>@string/planQa</item>
+        <item>@string/planSingle</item>
+        <item>@string/planMultiple</item>
+        <item>@string/planList</item>
     </string-array>
 
 </resources>

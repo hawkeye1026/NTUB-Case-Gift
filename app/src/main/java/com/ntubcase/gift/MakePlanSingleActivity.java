@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -29,11 +28,10 @@ import com.ntubcase.gift.data.getPlanList;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MakePlansActivity extends AppCompatActivity {
+public class MakePlanSingleActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     String[] add_giftlistItems = new String[getGiftList.getGiftLength()];
     boolean[] add_giftcheckedItems;
@@ -55,11 +53,8 @@ public class MakePlansActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_plans);
-        setTitle("製作計畫");
-
-        Intent intent = this.getIntent();
-        String planType = intent.getStringExtra("planType"); //取得選擇的計畫種類
+        setContentView(R.layout.activity_make_plan_single);
+        setTitle(R.string.planSingle);
 
         //--------------------取得資料
         getGiftList.getJSON();
@@ -98,7 +93,7 @@ public class MakePlansActivity extends AppCompatActivity {
                 mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
 
                 //-------------讀取時間-----------
-                barProgressDialog = ProgressDialog.show(MakePlansActivity.this,
+                barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
                         "讀取中", "請等待...",true);
                 new Thread(new Runnable(){
                     @Override
@@ -113,9 +108,9 @@ public class MakePlansActivity extends AppCompatActivity {
                         }
                         finally{
                             barProgressDialog.dismiss();
-                            /*Intent intent;
-                            intent = new Intent(MakePlansActivity .this, loadingActivity.class);
-                            startActivity(intent);*/
+//                            Intent intent;
+//                            intent = new Intent(MakePlanMultipleActivity .this, loadingActivity.class);
+//                            startActivity(intent);
                             finish();
 
                         }
@@ -148,7 +143,7 @@ public class MakePlansActivity extends AppCompatActivity {
                 mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
 
                 //-------------讀取時間-----------
-                barProgressDialog = ProgressDialog.show(MakePlansActivity.this,
+                barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
                         "讀取中", "請等待...",true);
                 new Thread(new Runnable(){
                     @Override
@@ -163,7 +158,7 @@ public class MakePlansActivity extends AppCompatActivity {
                         finally{
                             barProgressDialog.dismiss();
                             /*Intent intent;
-                            intent = new Intent(MakePlansActivity .this, loadingActivity.class);
+                            intent = new Intent(MakePlanMultipleActivity .this, loadingActivity.class);
                             startActivity(intent);*/
                             finish();
 
@@ -282,7 +277,7 @@ public class MakePlansActivity extends AppCompatActivity {
     //設定選擇禮物EditText傳入值---------------------------------------
     private void Showgiftdialog(){
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlansActivity.this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇禮物");
 
         mBuilder.setMultiChoiceItems(add_giftlistItems, add_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
@@ -340,7 +335,7 @@ public class MakePlansActivity extends AppCompatActivity {
     //設定選擇好友EditText傳入值---------------------------------------
     private void Showfrienddialog(){
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlansActivity.this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇好友");
         mBuilder.setMultiChoiceItems(add_friendlistItems, add_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
@@ -398,7 +393,7 @@ public class MakePlansActivity extends AppCompatActivity {
     //設定送禮日期EditText傳入值---------------------------------------
     private void showDatePickerDialog () {
         Calendar c = Calendar.getInstance();
-        new DatePickerDialog(MakePlansActivity.this, new DatePickerDialog.OnDateSetListener() {
+        new DatePickerDialog(MakePlanSingleActivity.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -415,7 +410,7 @@ public class MakePlansActivity extends AppCompatActivity {
     //設定送禮時間EditText傳入值---------------------------------------
     private void showTimePickerDialog () {
         Calendar t = Calendar.getInstance();
-        new TimePickerDialog(MakePlansActivity.this, new TimePickerDialog.OnTimeSetListener() {
+        new TimePickerDialog(MakePlanSingleActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 EditText add_surprise_time = findViewById(R.id.add_surprise_time);

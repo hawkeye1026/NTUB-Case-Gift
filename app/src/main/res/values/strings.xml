@@ -3,9 +3,9 @@
     <string name="action_settings">Settings</string>
 
     <!-- 首頁按鈕-->
-    <string name="mGift">禮物區</string>
-    <string name="mReceivedGift">收禮區</string>
-    <string name="mPlan">送禮計畫</string>
+    <string name="mGift">製作禮物</string>
+    <string name="mReceivedGift">收禮箱</string>
+    <string name="mPlan">預送計畫</string>
     <string name="mFriend">我的好友</string>
 
     <!-- Detail-->
@@ -16,33 +16,34 @@
     <!-- 禮物模式-->
     <string name="giftPhoto">照片</string>
     <string name="giftVideo">影片</string>
+    <string name="giftMessage">悄悄話</string>
     <string name="giftTicket">兌換券</string>
+    <string name="giftCode">解碼表</string>
 
     <!-- 禮物模式Aarray-->
     <string-array name="gift_type">
         <item>@string/giftPhoto</item>
         <item>@string/giftVideo</item>
+        <item>@string/giftMessage</item>
         <item>@string/giftTicket</item>
+        <item>@string/giftCode</item>
     </string-array>
 
     <!-- 計畫模式-->
-    <string name="planSurprise">驚喜式</string>
-    <string name="planCalendar">期間式</string>
-    <string name="planQa">問答式</string>
+    <string name="planSingle">單日送禮</string>
+    <string name="planMultiple">多日規劃</string>
+    <string name="planList">任務清單</string>
+
 
     <!-- 計畫模式Aarray-->
     <string-array name="plan_type">
-        <item>@string/planSurprise</item>
-        <item>@string/planCalendar</item>
-        <item>@string/planQa</item>
+        <item>@string/planSingle</item>
+        <item>@string/planMultiple</item>
+        <item>@string/planList</item>
     </string-array>
 
-
     <!--新增驚喜式計畫資料-->
-    <string name="make_an_order">Make an order</string>
-    <!--<string name="dialog_title">Items available in a shop</string>-->
     <string name="ok_label">確認</string>
-    <!--<string name="dismiss_label">Dismiss</string>-->
     <string name="clear_all_label">取消</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
@@ -107,5 +108,7 @@
          from https://console.developers.google.com/ -->
     <string name="server_client_id">958103176081–1mqjgnfvt7ae2266rcfp8i9a16lsqjuq.apps.googleusercontent.com</string>
 
+    <!--製作禮物-->
+    <string name="enterGiftName">請輸入禮物名稱</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.ntubcase.gift;
 
 import android.content.Intent;
+<<<<<<< HEAD
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -31,12 +32,21 @@ public class LoginActivity extends AppCompatActivity implements
 
     private static GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
+=======
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+public class LoginActivity extends AppCompatActivity {
+>>>>>>> YJL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+<<<<<<< HEAD
         // Views
         mStatusTextView = findViewById(R.id.status);
 
@@ -170,4 +180,17 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
+=======
+        Button btn_main = (Button) findViewById(R.id.btn_main);
+        btn_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(LoginActivity.this , MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+>>>>>>> YJL
 }

@@ -1,13 +1,16 @@
 package com.ntubcase.gift;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.data.getFriendList;
@@ -21,14 +24,13 @@ import com.ntubcase.gift.login_model.signOut;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mGift, mPlan, mReceivedGift, mFriend;
+    private ImageView mGift, mPlan, mReceivedGift, mFriend;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         getGiftList.getJSON();
         getPlanList.getJSON();
@@ -46,8 +48,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , GiftActivity.class);
                 startActivity(intent);
+
             }
         });
+
+
+
+
+
 
         //-------送禮計畫 按鈕------
         mPlan = findViewById(R.id.mPlan);

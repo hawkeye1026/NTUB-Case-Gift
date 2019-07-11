@@ -5,7 +5,9 @@
         <item>全部</item>
         <item>@string/giftPhoto</item>
         <item>@string/giftVideo</item>
+        <item>@string/giftMessage</item>
         <item>@string/giftTicket</item>
+        <item>@string/giftCode</item>
     </string-array>
 
 </resources>

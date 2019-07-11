@@ -92,7 +92,7 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
         }else if(a.equals(plansType.get(1))){
             viewHolder.ivPlanIcon.setImageResource(R.drawable.ic_plan_calendar);
         }else if(a.equals(plansType.get(2))){
-            viewHolder.ivPlanIcon.setImageResource(R.drawable.ic_plan_qa);
+            viewHolder.ivPlanIcon.setImageResource(R.drawable.ic_plan_list);
         }
 
         return convertView;

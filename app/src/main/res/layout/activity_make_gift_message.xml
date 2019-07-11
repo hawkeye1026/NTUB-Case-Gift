@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MakeGiftsActivity">
+    tools:context=".MakeGiftMessageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,33 +22,34 @@
 
             <ImageView
                 android:id="@+id/iv_giftIcon"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_gift_ticket"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_gift_message"
                 android:layout_gravity="center_vertical"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="禮物名稱："
-                android:textSize="18sp"/>
 
             <EditText
                 android:id="@+id/et_giftName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"/>
+                android:layout_marginLeft="5dp"
+                android:hint="@string/enterGiftName"
+                android:textSize="20sp"/>
 
         </LinearLayout>
 
         <EditText
             android:id="@+id/et_giftContent"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:hint="請輸入兌換券內容"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="start"
+            android:textSize="20sp"
+            android:hint="請輸入悄悄話內容"
+            android:inputType="textMultiLine"
+            android:lines="12"
+            android:minLines="12"
+            android:maxLines="15"
+            android:background="@drawable/bg_message"/>
 
     </LinearLayout>
 
