@@ -37,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
         getFriendList.getJSON();
         getGiftReceived.getJSON();
         getGiftReceivedDone.getJSON();
-        Toast.makeText(this, "親愛的"+googleAccount.getUserName()+"您好,登入成功", Toast.LENGTH_SHORT).show();
 
+        Toast.makeText(this, "親愛的"+googleAccount.getUserName()+"您好,登入成功", Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "親愛的"+googleAccount.getPhotoUrl()+"您好,登入成功", Toast.LENGTH_SHORT).show();
+
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);
         mGift.setOnClickListener(new View.OnClickListener() {
@@ -51,11 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
 
         //-------送禮計畫 按鈕------
         mPlan = findViewById(R.id.mPlan);
