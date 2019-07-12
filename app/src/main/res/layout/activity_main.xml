@@ -78,73 +78,74 @@
 
         <ImageView
             android:id="@+id/mGift"
+            style="?android:borderlessButtonStyle"
             android:layout_width="150dp"
             android:layout_height="155dp"
-            android:layout_marginStart="52dp"
+            android:layout_marginStart="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.209"
+            app:layout_constraintVertical_bias="0.208"
             app:srcCompat="@drawable/makegift"
-            tools:ignore="MissingConstraints"
-            style="?android:borderlessButtonStyle"/>
+            tools:ignore="MissingConstraints" />
 
         <ImageView
             android:id="@+id/mPlan"
+            style="?android:borderlessButtonStyle"
             android:layout_width="150dp"
             android:layout_height="155dp"
-            android:layout_marginEnd="52dp"
+            android:layout_marginEnd="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.209"
+            app:layout_constraintVertical_bias="0.208"
             app:srcCompat="@drawable/makeplan"
-            tools:ignore="MissingConstraints"
-            style="?android:borderlessButtonStyle"/>
+            tools:ignore="MissingConstraints" />
 
         <ImageView
             android:id="@+id/mReceivedGift"
+            style="?android:borderlessButtonStyle"
             android:layout_width="150dp"
             android:layout_height="155dp"
-            android:layout_marginStart="52dp"
+            android:layout_marginStart="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.552"
             app:srcCompat="@drawable/giftbox"
-            tools:ignore="MissingConstraints"
-            style="?android:borderlessButtonStyle"/>
+            tools:ignore="MissingConstraints" />
 
         <ImageView
             android:id="@+id/mFriend"
+            style="?android:borderlessButtonStyle"
             android:layout_width="150dp"
             android:layout_height="155dp"
-            android:layout_marginEnd="52dp"
-
+            android:layout_marginEnd="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.552"
             app:srcCompat="@drawable/myfriend"
-            tools:ignore="MissingConstraints"
-            style="?android:borderlessButtonStyle"/>
+            tools:ignore="MissingConstraints" />
 
         <ImageView
             android:id="@+id/imageView"
             style="?android:borderlessButtonStyle"
-            android:layout_width="115dp"
-            android:layout_height="115dp"
+            android:layout_width="94dp"
+            android:layout_height="84dp"
+
+
             android:layout_marginStart="8dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="36dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.013"
-            app:srcCompat="@drawable/edit" />
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/edit"
+            tools:ignore="MissingConstraints" />
 
 
     </android.support.constraint.ConstraintLayout>

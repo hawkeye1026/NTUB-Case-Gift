@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
+    <EditText
+        android:id="@+id/single_giftName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="禮物名稱"></EditText>
+    <EditText
+        android:id="@+id/single_sentTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="送禮時間">
+    </EditText>
+    <EditText
+        android:id="@+id/single_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="訊息">></EditText>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_can"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="取消"
+            android:layout_width="0dp"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/btn_ent"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text="確認"
+            android:layout_width="0dp"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
