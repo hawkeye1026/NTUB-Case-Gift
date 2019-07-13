@@ -25,7 +25,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal"
                 android:padding="10px">
 
@@ -37,7 +36,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/add_surprise_name"
+                    android:id="@+id/add_multi_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
@@ -62,7 +61,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/add_surprise_friend"
+                    android:id="@+id/add_multi_friend"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -86,7 +85,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/add_surprise_dateS"
+                    android:id="@+id/add_multi_dateS"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
@@ -112,7 +111,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/add_surprise_dateE"
+                    android:id="@+id/add_multi_dateE"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
@@ -136,11 +135,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:text="留言板："
+                    android:text="祝福："
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/add_surprice_message"
+                    android:id="@+id/add_multi_message"
                     android:layout_width="0dp"
                     android:layout_height="170dp"
                     android:layout_marginRight="5dp"

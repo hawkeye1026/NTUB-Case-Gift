@@ -34,17 +34,17 @@ import java.util.Date;
 public class MakePlanMultipleActivity extends AppCompatActivity {
 
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
-    String[] add_friendlistItems = new String[getFriendList.getFriendLength()];
-    boolean[] add_friendcheckedItems;
-    ArrayList<Integer> add_friendItems = new ArrayList<>();
+    String[] friendItemList = new String[getFriendList.getFriendLength()];
+    boolean[] mFriendChecked, tempFriendChecked;
+
     //----------------------------------------------------------------------------------------------
     private static String[] friendid = new String[100];
     private static int friendidPositionIndex = 0 ;
-    private EditText add_surprise_name;
-    private EditText add_surprice_message;
-    private EditText add_surprise_friend;
-    private EditText add_surprise_dateS ;
-    private EditText add_surprise_dateE ;
+    private EditText add_multi_name;
+    private EditText add_multi_message;
+    private EditText add_multi_friend;
+    private EditText add_multi_dateS ;
+    private EditText add_multi_dateE ;
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
 
@@ -61,23 +61,25 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //---------------------------------------------------------------------------------
         //宣告變數------------------------------------------------------------------------------
-        add_surprise_name = (EditText) findViewById(R.id.add_surprise_name);
-        add_surprise_dateS = findViewById(R.id.add_surprise_dateS);
-        add_surprise_dateE = findViewById(R.id.add_surprise_dateE);
-        add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-        add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
+        add_multi_name = (EditText) findViewById(R.id.add_multi_name);
+        add_multi_dateS = findViewById(R.id.add_multi_dateS);
+        add_multi_dateE = findViewById(R.id.add_multi_dateE);
+        add_multi_friend = (EditText) findViewById(R.id.add_multi_friend);
+        add_multi_message = (EditText) findViewById(R.id.add_multi_message);
 
         //------------------------------------------------------------------------------
 
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
         for(int i = 0; i < getFriendList.getFriendLength(); i++){
-            add_friendlistItems[i] = getFriendList.getFriendName(i);
+            friendItemList[i] = getFriendList.getFriendName(i);
         }
-        add_friendcheckedItems = new boolean[add_friendlistItems.length];
+        mFriendChecked = new boolean[friendItemList.length];
+        tempFriendChecked = new boolean[friendItemList.length];
+
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
-        add_surprise_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        add_surprise_friend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        add_multi_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        add_multi_friend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
@@ -86,7 +88,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                 }
             }
         });
-        add_surprise_friend.setOnClickListener(new View.OnClickListener() {
+        add_multi_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -95,8 +97,8 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         });
 
         //點選送禮日期EditText跳出選擇日期選擇器---------------------------------------
-        add_surprise_dateS.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        add_surprise_dateS.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        add_multi_dateS.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        add_multi_dateS.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
@@ -106,7 +108,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
             }
         });
 
-        add_surprise_dateS.setOnClickListener(new View.OnClickListener() {
+        add_multi_dateS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -115,8 +117,8 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         });
 
         //點選結束日期EditText跳出選擇日期選擇器---------------------------------------
-        add_surprise_dateE.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        add_surprise_dateE.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        add_multi_dateE.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        add_multi_dateE.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -127,7 +129,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
             }
         });
 
-        add_surprise_dateE.setOnClickListener(new View.OnClickListener() {
+        add_multi_dateE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -145,11 +147,11 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                 intent = new Intent(MakePlanMultipleActivity .this, PlanMultipleActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putString("planName", add_surprise_name.getText().toString());
-                bundle.putString("receiveFriend", add_surprise_friend.getText().toString());
-                bundle.putString("startDate", add_surprise_dateS.getText().toString());
-                bundle.putString("endDate", add_surprise_dateE.getText().toString());
-                bundle.putString("message", add_surprice_message.getText().toString());
+                bundle.putString("planName", add_multi_name.getText().toString());
+                bundle.putString("receiveFriend", add_multi_friend.getText().toString());
+                bundle.putString("startDate", add_multi_dateS.getText().toString());
+                bundle.putString("endDate", add_multi_dateE.getText().toString());
+                bundle.putString("message", add_multi_message.getText().toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -168,53 +170,43 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanMultipleActivity.this);
         mBuilder.setTitle("選擇好友");
-        mBuilder.setMultiChoiceItems(add_friendlistItems, add_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        mBuilder.setMultiChoiceItems(friendItemList, mFriendChecked, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-                if(isChecked){
-                    add_friendItems.add(position);
-                    friendid[friendidPositionIndex] = getFriendList.getFriendid(position);
-                    Log.v("friend",friendid[0]);
-                    friendidPositionIndex++;
-                }else{
-                    add_friendItems.remove((Integer.valueOf(position)));
-                    friendidPositionIndex--;
-                }
             }
         });
 
         mBuilder.setCancelable(false);
         mBuilder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                String item = "";
-                add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-                for (int i = 0; i < add_friendItems.size(); i++) {
-                    item = item + add_friendlistItems[add_friendItems.get(i)];
-                    if (i != add_friendItems.size() - 1) {
-                        item = item + " , ";
+            public void onClick(DialogInterface dialogInterface, int which) { //確認鈕
+                String mSelectFriends = "";
+                for (int i = 0; i < mFriendChecked.length; i++) {
+                    if(mFriendChecked[i]){
+                        if (mSelectFriends.equals("")) mSelectFriends += friendItemList[i];
+                        else mSelectFriends += " , " + friendItemList[i];
                     }
+                    tempFriendChecked[i]=mFriendChecked[i];
                 }
-                add_surprise_friend.setText(item);
+                add_multi_friend.setText(mSelectFriends);
             }
         });
 
-//        mBuilder.setNegativeButton(R.string.dismiss_label, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                dialogInterface.dismiss();
-//            }
-//        });
-
-        mBuilder.setNeutralButton(R.string.clear_all_label, new DialogInterface.OnClickListener() {
+        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-                for (int i = 0; i < add_friendcheckedItems.length; i++) {
-                    add_friendcheckedItems[i] = false;
-                    add_friendItems.clear();
-                    add_surprise_friend.setText("");
+                for (int i=0; i<tempFriendChecked.length; i++) mFriendChecked[i]=tempFriendChecked[i];
+            }
+        });
+
+        mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {  //清除鈕
+                for (int i = 0; i < mFriendChecked.length; i++) {
+                    mFriendChecked[i] = false;
+                    tempFriendChecked[i] = false;
                 }
+                add_multi_friend.setText("");
             }
         });
 
@@ -229,7 +221,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                add_surprise_dateS.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                add_multi_dateS.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -241,7 +233,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         new DatePickerDialog(MakePlanMultipleActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                add_surprise_dateE.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                add_multi_dateE.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
