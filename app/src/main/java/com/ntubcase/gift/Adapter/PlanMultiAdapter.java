@@ -10,12 +10,13 @@ import android.widget.TextView;
 import com.ntubcase.gift.R;
 
 import java.util.List;
+import java.util.Map;
 
 public class PlanMultiAdapter extends BaseAdapter {
     private Context context;
-    private List<String> selectDates;
+    private List<Map<String, Object>> selectDates;
 
-    public PlanMultiAdapter(Context context, List<String> selectDates) {
+    public PlanMultiAdapter(Context context, List<Map<String, Object>> selectDates) {
         this.context = context;
         this.selectDates = selectDates;
     }
@@ -55,8 +56,8 @@ public class PlanMultiAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.tv_date.setText(selectDates.get(position));
-        holder.tv_content.setText(String.valueOf(position+1));
+        holder.tv_date.setText(selectDates.get(position).get("date").toString());
+        holder.tv_content.setText(selectDates.get(position).get("message").toString()+"\n"+selectDates.get(position).get("time").toString());
 
         return convertView;
     }
