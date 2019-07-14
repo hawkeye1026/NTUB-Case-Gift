@@ -60,6 +60,9 @@ public class getGiftList {
                                 type[i] = "影片";
                                 break;
                             case "3":
+                                type[i] = "悄悄話";
+                                break;
+                            case "4":
                                 type[i] = "兌換券";
                                 break;
                         }

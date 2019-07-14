@@ -6,12 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.FriendListAdapter;
+import com.ntubcase.gift.data.getFriendList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class FriendActivity extends AppCompatActivity {
 
     //-----------------
     public void onResume(){
-
+/*
         //---------------------取得好友資料--------------------------------
         String[][] mFriendsData ={      //--------------測試用資料-----------------
                 {"0","小明","abcd@gmail.com"},
@@ -63,6 +65,17 @@ public class FriendActivity extends AppCompatActivity {
                 {"0","tzu","tzu@gmail.com"},
                 {"0","mmm","mmm@gmail.com"}
         };
+*/
+        getFriendList.getJSON();
+        //---------------------ListView倒入資料--------------------------------
+        String[][] mFriendsData = new String[getFriendList.getFriendLength()][20];
+
+        Log.e("res_length",getFriendList.getFriendLength()+"");
+        for(int i = 0 ;i < getFriendList.getFriendLength(); i++){
+            mFriendsData[i][0]= getFriendList.getFriendid(i);
+            mFriendsData[i][1]= getFriendList.getFriendName(i);
+            mFriendsData[i][2]= getFriendList.getFriendMail(i);
+        }
 
         mFriendsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mFriends;

@@ -13,15 +13,18 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,15 +34,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.RequestHandler;
 import com.ntubcase.gift.MyAsyncTask.giftInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.giftInsertImgAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class MakeGiftPhotoActivity extends AppCompatActivity {
 
@@ -47,6 +54,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
     private static EditText et_giftName;
     private ImageView iv_photo;
     private Uri cam_imageUri;
+    private Bitmap bitmap;
 
     private static String giftName, giftContent;
 
@@ -103,6 +111,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
             Date date = new Date(System.currentTimeMillis());
             String filename = format.format(date);
             File outputFile = new File(Environment.getExternalStorageDirectory() +"/giftPlanner",filename+".jpg");
+
             if (!outputFile.getParentFile().exists()) {
                 outputFile.getParentFile().mkdir();
             }
@@ -132,6 +141,8 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode != RESULT_OK) {
             return;
         } else {
@@ -144,9 +155,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
                     if (currentapiVersion < 24) delDefaultSavePic(); //刪除相機自動儲存的照片
                     break;
             }
-
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void decodeUri(Uri uri) {
@@ -214,13 +223,14 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = "照片";    //取得使用者輸入的禮物內容
+            giftContent = "photo";    //取得使用者輸入的禮物內容
             giftType="1";
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date =new Date();
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             dateTime = sdFormat.format(date);
 
+            uploadImage();
 
             giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
                 @Override
@@ -228,7 +238,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
 
                 }
             });
-            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner, giftType);
+            mgiftInsertAsyncTask.execute(Common.insertGiftImg, giftContent, dateTime ,giftName ,owner, giftType);
 
             //-------------讀取Dialog-----------
             barProgressDialog = ProgressDialog.show(MakeGiftPhotoActivity.this,
@@ -237,6 +247,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try{
+                        //uploadFile(imagepath);
                         getGiftList.getJSON();
                         Thread.sleep(1000);
                     }
@@ -282,6 +293,72 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
             finish();
         }
     };
+
+    private void uploadImage(){
+        class UploadImage extends AsyncTask<Bitmap,Void,String> {
+            ProgressDialog loading;
+            RequestHandler rh = new RequestHandler();
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(MakeGiftPhotoActivity.this, "Uploading Image", "Please wait...",true,true);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            protected String doInBackground(Bitmap... params) {
+                Bitmap bitmap = params[0];
+                String uploadImage = getStringImage(bitmap);
+
+                HashMap<String,String> data = new HashMap<>();
+                data.put("image", uploadImage);
+                data.put("name",getFileName(cam_imageUri));
+
+                String result = rh.postRequest(Common.insertGiftImg,data);
+                return result;
+            }
+        }
+
+        UploadImage ui = new UploadImage();
+        ui.execute(bitmap);
+    }
+
+    public String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    String getFileName(Uri uri){
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
 
 
     public void onStop() {
