@@ -38,7 +38,7 @@ public class getPlanList {
 
                     JSONArray jsonArray = object.getJSONArray("result");
 
-                    Log.v("plength",jsonArray.length()+"");
+//                    Log.v("plength",jsonArray.length()+"");
                     planLength = jsonArray.length();
 
                     spid           = new String[planLength];

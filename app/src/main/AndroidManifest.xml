@@ -17,7 +17,7 @@
         <activity android:name=".PlanMultipleActivity"></activity>
         <activity android:name=".MakeGiftMessageActivity" />
         <activity android:name=".MakeGiftVideoActivity" />
-        <activity android:name=".MakeGiftPhotoActivity" />
+        <activity android:name=".MakeGiftImageActivity" />
         <activity android:name=".MakeGiftTicketActivity" />
         <activity android:name=".loadingActivity" />
         <activity android:name=".GiftReceivedActivity" />

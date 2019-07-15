@@ -3,7 +3,9 @@ package com.ntubcase.gift.MyAsyncTask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 
 public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
 
+
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
     //----------------------------------------------------
@@ -34,12 +37,13 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
     // 接收回傳值的物件參考
     //----------------------
     private final TaskListener taskListener;
-
+    private String sourceFileUri;
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftInsertImgAsyncTask(TaskListener taskListener) {
+    public giftInsertImgAsyncTask(TaskListener taskListener,String sourceFileUri) {
         this.taskListener = taskListener;
+        this.sourceFileUri = sourceFileUri;
     }
 
     @Override
@@ -53,7 +57,7 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... params) {
         try {
-            String sourceFileUri = "/mnt/sdcard/abc.png";
+//            sourceFileUri = "/mnt/sdcard/abc.png";
 
             HttpURLConnection conn = null;
             DataOutputStream dos = null;
@@ -62,19 +66,26 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
             String boundary = "*****";
             int bytesRead, bytesAvailable, bufferSize;
             byte[] buffer;
-            int maxBufferSize = 1 * 1024 * 1024;
-            File sourceFile = new File(sourceFileUri);
+            int maxBufferSize = 40 * 1024 * 1024;
+           // Log.v("fileUri1",String.valueOf(sourceFileUri));
+            File sourceFile = new File(sourceFileUri.toString());
+           // Log.v("fileUri2",String.valueOf(sourceFileUri));
 
-            if (sourceFile.isFile()) {
+            if (!sourceFile.isFile()) {
+               // Log.v("uploadFile", "Source File not exist :"+imagepath);
+            }
+            else{
 
                 try {
                     //String upLoadServerUri = "http://website.com/abc.php?";
 
                     // open a URL connection to the Servlet
+                   // Log.v("fileUri3",String.valueOf(sourceFileUri));
                     FileInputStream fileInputStream = new FileInputStream(
                             sourceFile);
+                //    Log.v("fileUri4",String.valueOf(sourceFileUri));
                     URL url = new URL(params[0]);
-
+                //    Log.v("fileUri5",String.valueOf(sourceFileUri));
                     // Open a HTTP connection to the URL
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setDoInput(true); // Allow Inputs
@@ -86,16 +97,17 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
                             "multipart/form-data");
                     conn.setRequestProperty("Content-Type",
                             "multipart/form-data;boundary=" + boundary);
-                    conn.setRequestProperty("bill", sourceFileUri);
+                  //  Log.v("filename1", params[2]);
+                    conn.setRequestProperty("image", params[2]);
 
                     dos = new DataOutputStream(conn.getOutputStream());
-
+                   // Log.v("filename2", params[2]);
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
-                    dos.writeBytes("Content-Disposition: form-data; name=\"bill\";filename=\""
-                            + sourceFileUri + "\"" + lineEnd);
+                    dos.writeBytes("Content-Disposition: form-data; name=\"image\";filename=\""
+                            + params[2] + "\"" + lineEnd);
 
                     dos.writeBytes(lineEnd);
-
+              //      Log.v("filename3", params[2]);
                     // create a buffer of maximum size
                     bytesAvailable = fileInputStream.available();
 
@@ -180,4 +192,5 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
     protected void onCancelled() {
         super.onCancelled();
     }
+
 }

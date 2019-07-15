@@ -13,14 +13,12 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.RequestHandler;
 import com.ntubcase.gift.MyAsyncTask.giftInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.giftInsertImgAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
@@ -46,13 +43,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
-public class MakeGiftPhotoActivity extends AppCompatActivity {
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+
+public class MakeGiftImageActivity extends AppCompatActivity {
 
     private Button btn_save, btn_makePlan, btn_selectImage, btn_openCamera;
     private static EditText et_giftName;
-    private ImageView iv_photo;
+    private ImageView iv_image;
     private Uri cam_imageUri;
     private Bitmap bitmap;
 
@@ -68,7 +69,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_gift_photo);
+        setContentView(R.layout.activity_make_gift_image);
         setTitle("製作照片");
 
         ActionBar actionBar = getSupportActionBar();
@@ -76,7 +77,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
 
         //---------------------------------------------------------------------------------
         et_giftName = (EditText) findViewById(R.id.et_giftName);
-        iv_photo =(ImageView) findViewById(R.id.iv_photo);
+        iv_image =(ImageView) findViewById(R.id.iv_image);
         btn_save = findViewById(R.id.btn_save);
         btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
@@ -143,15 +144,22 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Uri selectedImageUri;
+
         if (resultCode != RESULT_OK) {
             return;
         } else {
             switch (requestCode) {
                 case SELECT_IMAGE:
+                    cam_imageUri = data.getData();
+
                     decodeUri(data.getData());
+
                     break;
                 case OPEN_CAMERA:
+                    cam_imageUri = data.getData();
                     decodeUri(cam_imageUri);
+
                     if (currentapiVersion < 24) delDefaultSavePic(); //刪除相機自動儲存的照片
                     break;
             }
@@ -189,7 +197,7 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
             o2.inSampleSize = scale;
             Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imageSource, null, o2);
 
-            iv_photo.setImageBitmap(bitmap);
+            iv_image.setImageBitmap(bitmap);
 
         } catch (FileNotFoundException e) {
             // handle errors
@@ -223,25 +231,34 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = "photo";    //取得使用者輸入的禮物內容
+            giftContent = String.valueOf(cam_imageUri);    //取得使用者輸入的禮物內容
             giftType="1";
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date =new Date();
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             dateTime = sdFormat.format(date);
 
-            uploadImage();
 
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+            giftInsertImgAsyncTask mGiftInsertImgAsyncTask = new giftInsertImgAsyncTask(new giftInsertImgAsyncTask.TaskListener() {
                 @Override
                 public void onFinished(String result) {
 
                 }
-            });
-            mgiftInsertAsyncTask.execute(Common.insertGiftImg, giftContent, dateTime ,giftName ,owner, giftType);
+            },getPath(cam_imageUri));
+            //Log.v("filename_M",getPath(cam_imageUri));
+            //Log.v("filename_M",cam_imageUri+"");
+            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg, String.valueOf(cam_imageUri),getFileName(cam_imageUri));
+
+//            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+//                @Override
+//                public void onFinished(String result) {
+//
+//                }
+//            });
+//            mgiftInsertAsyncTask.execute(Common.insertGiftImg, giftContent, dateTime ,giftName ,owner, giftType);
 
             //-------------讀取Dialog-----------
-            barProgressDialog = ProgressDialog.show(MakeGiftPhotoActivity.this,
+            barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,
                     "讀取中", "請等待...",true);
             new Thread(new Runnable(){
                 @Override
@@ -288,46 +305,59 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
 
             Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             Intent intent;
-            intent = new Intent(MakeGiftPhotoActivity.this, PlanActivity.class);
+            intent = new Intent(MakeGiftImageActivity.this, PlanActivity.class);
             startActivity(intent);
             finish();
         }
     };
-
-    private void uploadImage(){
-        class UploadImage extends AsyncTask<Bitmap,Void,String> {
-            ProgressDialog loading;
-            RequestHandler rh = new RequestHandler();
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(MakeGiftPhotoActivity.this, "Uploading Image", "Please wait...",true,true);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected String doInBackground(Bitmap... params) {
-                Bitmap bitmap = params[0];
-                String uploadImage = getStringImage(bitmap);
-
-                HashMap<String,String> data = new HashMap<>();
-                data.put("image", uploadImage);
-                data.put("name",getFileName(cam_imageUri));
-
-                String result = rh.postRequest(Common.insertGiftImg,data);
-                return result;
-            }
+//某個上傳圖片失敗的function
+//    private void uploadImage(){
+//        class UploadImage extends AsyncTask<Bitmap,Void,String> {
+//            ProgressDialog loading;
+//            RequestHandler rh = new RequestHandler();
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                loading = ProgressDialog.show(MakeGiftImageActivity.this, "Uploading Image", "Please wait...",true,true);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                super.onPostExecute(s);
+//                loading.dismiss();
+//                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            protected String doInBackground(Bitmap... params) {
+//                Bitmap bitmap = params[0];
+//                String uploadImage = getStringImage(bitmap);
+//
+//                HashMap<String,String> data = new HashMap<>();
+//                data.put("image", uploadImage);
+//                data.put("name",getFileName(cam_imageUri));
+//
+//                String result = rh.postRequest(Common.insertGiftImg,data);
+//                return result;
+//            }
+//        }
+//        UploadImage ui = new UploadImage();
+//        ui.execute(bitmap);
+//    }
+    private String getPath(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {//Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
         }
 
-        UploadImage ui = new UploadImage();
-        ui.execute(bitmap);
+        return result;
     }
 
     public String getStringImage(Bitmap bmp){
@@ -359,7 +389,6 @@ public class MakeGiftPhotoActivity extends AppCompatActivity {
         }
         return result;
     }
-
 
     public void onStop() {
         super.onStop();

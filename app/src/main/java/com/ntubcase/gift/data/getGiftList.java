@@ -51,7 +51,7 @@ public class getGiftList {
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
-                        Log.v("giftid",giftid[i]);
+//                        Log.v("giftid",giftid[i]);
                         switch(type[i]){
                             case "1":
                                 type[i] = "照片";
@@ -67,7 +67,7 @@ public class getGiftList {
                                 break;
                         }
                     }
-                    Log.v("strArr", Arrays.toString(getGiftList.getGiftNmaeArr()));
+//                    Log.v("strArr", Arrays.toString(getGiftList.getGiftNmaeArr()));
                 } catch (Exception e) {
                 }
             }

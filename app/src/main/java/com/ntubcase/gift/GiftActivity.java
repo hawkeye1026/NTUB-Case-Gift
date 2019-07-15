@@ -190,7 +190,7 @@ public class GiftActivity extends AppCompatActivity {
             Intent intent = new Intent();
             switch (v.getId()) {
                 case R.id.fabPhoto:
-                    intent = new Intent(GiftActivity.this, MakeGiftPhotoActivity.class);
+                    intent = new Intent(GiftActivity.this, MakeGiftImageActivity.class);
                     break;
                 case R.id.fabVideo:
                     intent = new Intent(GiftActivity.this, MakeGiftVideoActivity.class);

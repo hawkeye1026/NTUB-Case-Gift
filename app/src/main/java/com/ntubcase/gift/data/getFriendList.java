@@ -30,7 +30,7 @@ public class getFriendList {
 
                     JSONArray jsonArray = object.getJSONArray("result");
 
-                    Log.v("Flength",jsonArray.length()+"");
+//                    Log.v("Flength",jsonArray.length()+"");
 
                     friendLength = jsonArray.length();
                     friendid   = new String[friendLength];

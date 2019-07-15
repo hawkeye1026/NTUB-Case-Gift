@@ -30,7 +30,7 @@ public class getGiftReceivedDone {
 
                     JSONArray jsonArray = object.getJSONArray("result");
 
-                    Log.v("length",jsonArray.length()+"");
+//                    Log.v("length",jsonArray.length()+"");
                     giftLength = jsonArray.length();
 
                     planid      = new String[giftLength];
@@ -43,8 +43,7 @@ public class getGiftReceivedDone {
 
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
-                        Log.v("abc",
-                                "10000");
+//                        Log.v("abc","10000");
                         planid[i] = jsonArray.getJSONObject(i).getString("planid");
                         senderid[i] = jsonArray.getJSONObject(i).getString("senderid");
                         nickname[i] = jsonArray.getJSONObject(i).getString("nickname");
@@ -56,18 +55,18 @@ public class getGiftReceivedDone {
                         switch(type[i]){
                             case "1":
                                 type[i] = "驚喜式";
-                                Log.v("1",
-                                        type[i]);
+//                                Log.v("1",
+//                                        type[i]);
                                 break;
                             case "2":
                                 type[i] = "期間式";
-                                Log.v("2",
-                                        type[i]);
+//                                Log.v("2",
+//                                        type[i]);
                                 break;
                             case "3":
                                 type[i] = "問答式";
-                                Log.v("3",
-                                        type[i]);
+//                                Log.v("3",
+//                                        type[i]);
                                 break;
                             default:
                                 type[i] = "驚喜式";

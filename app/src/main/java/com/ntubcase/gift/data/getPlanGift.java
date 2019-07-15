@@ -44,15 +44,15 @@ public class getPlanGift {
                     type               = new String[giftLength];
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
-                        Log.v("abc",
-                                "10000");
+//                        Log.v("abc",
+//                                "10000");
                         giftid[i] = jsonArray.getJSONObject(i).getString("giftid");
                         gift[i] = jsonArray.getJSONObject(i).getString("gift");
                         giftCreateDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("giftCreateDate"));
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
-                        Log.v("giftid",giftid[i]);
+//                        Log.v("giftid",giftid[i]);
                         switch(type[i]){
                             case "1":
                                 type[i] = "照片";
@@ -65,7 +65,7 @@ public class getPlanGift {
                                 break;
                         }
                     }
-                    Log.v("strArr", Arrays.toString(getPlanGift.getGiftNmaeArr()));
+//                    Log.v("strArr", Arrays.toString(getPlanGift.getGiftNmaeArr()));
                 } catch (Exception e) {
                 }
             }

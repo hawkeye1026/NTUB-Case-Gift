@@ -42,8 +42,7 @@ public class getGiftReceived {
                     type         = new String[giftLength];
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
-                        Log.v("abc",
-                                "10000");
+//                        Log.v("abc","10000");
                         planid[i] = jsonArray.getJSONObject(i).getString("planid");
                         senderid[i] = jsonArray.getJSONObject(i).getString("senderid");
                         nickname[i] = jsonArray.getJSONObject(i).getString("nickname");
