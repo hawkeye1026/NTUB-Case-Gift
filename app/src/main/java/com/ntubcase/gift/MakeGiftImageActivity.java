@@ -55,6 +55,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private static EditText et_giftName;
     private ImageView iv_image;
     private Uri cam_imageUri;
+    private String cam_imagePath;
     private Bitmap bitmap;
 
     private static String giftName, giftContent;
@@ -238,15 +239,23 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             dateTime = sdFormat.format(date);
 
+            //若沒有選擇照片，跳出提醒
+            try{
+                if(cam_imageUri == null) {
+                    //顯示提示訊息
+
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             giftInsertImgAsyncTask mGiftInsertImgAsyncTask = new giftInsertImgAsyncTask(new giftInsertImgAsyncTask.TaskListener() {
                 @Override
                 public void onFinished(String result) {
 
                 }
-            },getPath(cam_imageUri));
+            },ImageFilePath.getPath(getApplicationContext(),cam_imageUri));
             //Log.v("filename_M",getPath(cam_imageUri));
-            //Log.v("filename_M",cam_imageUri+"");
             mGiftInsertImgAsyncTask.execute(Common.insertGiftImg, String.valueOf(cam_imageUri),getFileName(cam_imageUri));
 
 //            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
@@ -345,20 +354,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 //        UploadImage ui = new UploadImage();
 //        ui.execute(bitmap);
 //    }
-    private String getPath(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {//Source is Dropbox or other similar local file path
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-
-        return result;
-    }
 
     public String getStringImage(Bitmap bmp){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -426,4 +421,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
     }
+
+
 }

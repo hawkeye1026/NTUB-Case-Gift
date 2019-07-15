@@ -67,25 +67,23 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
             int bytesRead, bytesAvailable, bufferSize;
             byte[] buffer;
             int maxBufferSize = 40 * 1024 * 1024;
-           // Log.v("fileUri1",String.valueOf(sourceFileUri));
+            Log.v("fileUri1",String.valueOf(sourceFileUri));
             File sourceFile = new File(sourceFileUri.toString());
-           // Log.v("fileUri2",String.valueOf(sourceFileUri));
+            Log.v("fileUri2",String.valueOf(sourceFileUri));
 
             if (!sourceFile.isFile()) {
-               // Log.v("uploadFile", "Source File not exist :"+imagepath);
+                Log.v("uploadFile", "Source File not exist :");
             }
             else{
-
                 try {
-                    //String upLoadServerUri = "http://website.com/abc.php?";
 
                     // open a URL connection to the Servlet
-                   // Log.v("fileUri3",String.valueOf(sourceFileUri));
+                    Log.v("fileUri3",String.valueOf(sourceFileUri));
                     FileInputStream fileInputStream = new FileInputStream(
                             sourceFile);
-                //    Log.v("fileUri4",String.valueOf(sourceFileUri));
+                    Log.v("fileUri4",String.valueOf(sourceFileUri));
                     URL url = new URL(params[0]);
-                //    Log.v("fileUri5",String.valueOf(sourceFileUri));
+                    Log.v("fileUri5",String.valueOf(sourceFileUri));
                     // Open a HTTP connection to the URL
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setDoInput(true); // Allow Inputs
@@ -97,7 +95,7 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
                             "multipart/form-data");
                     conn.setRequestProperty("Content-Type",
                             "multipart/form-data;boundary=" + boundary);
-                  //  Log.v("filename1", params[2]);
+//                    Log.v("filename1", params[2]);
                     conn.setRequestProperty("image", params[2]);
 
                     dos = new DataOutputStream(conn.getOutputStream());
@@ -105,9 +103,9 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
                     dos.writeBytes("Content-Disposition: form-data; name=\"image\";filename=\""
                             + params[2] + "\"" + lineEnd);
-
+                    Log.v("write","Content-Disposition: form-data; name=\"image\"; filename=\"" + params[2] + "\"" + lineEnd);
                     dos.writeBytes(lineEnd);
-              //      Log.v("filename3", params[2]);
+
                     // create a buffer of maximum size
                     bytesAvailable = fileInputStream.available();
 
