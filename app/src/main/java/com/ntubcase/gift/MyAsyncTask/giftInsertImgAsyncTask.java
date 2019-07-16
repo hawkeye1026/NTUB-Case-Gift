@@ -38,6 +38,7 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
     //----------------------
     private final TaskListener taskListener;
     private String sourceFileUri;
+    private int serverResponseCode;
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
@@ -66,7 +67,7 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
             String boundary = "*****";
             int bytesRead, bytesAvailable, bufferSize;
             byte[] buffer;
-            int maxBufferSize = 40 * 1024 * 1024;
+            int maxBufferSize = 100000 * 1024 * 1024;
             Log.v("fileUri1",String.valueOf(sourceFileUri));
             File sourceFile = new File(sourceFileUri.toString());
             Log.v("fileUri2",String.valueOf(sourceFileUri));
@@ -83,7 +84,10 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
                             sourceFile);
                     Log.v("fileUri4",String.valueOf(sourceFileUri));
                     URL url = new URL(params[0]);
-                    Log.v("fileUri5",String.valueOf(sourceFileUri));
+                    Log.v("fileUri5",params[0]);
+                    Log.v("fileUri5",params[1]);
+                    Log.v("fileUri5",params[2]);
+
                     // Open a HTTP connection to the URL
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setDoInput(true); // Allow Inputs
@@ -98,12 +102,14 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
 //                    Log.v("filename1", params[2]);
                     conn.setRequestProperty("image", params[2]);
 
+                    conn.connect();
                     dos = new DataOutputStream(conn.getOutputStream());
+
                    // Log.v("filename2", params[2]);
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
-                    dos.writeBytes("Content-Disposition: form-data; name=\"image\";filename=\""
+                    dos.writeBytes("Content-Disposition:form-data; name=\"image\";filename=\""
                             + params[2] + "\"" + lineEnd);
-                    Log.v("write","Content-Disposition: form-data; name=\"image\"; filename=\"" + params[2] + "\"" + lineEnd);
+                    Log.v("write","Content-Disposition:form-data; name=\"image\"; filename=\"" + params[2] + "\"" + lineEnd);
                     dos.writeBytes(lineEnd);
 
                     // create a buffer of maximum size
@@ -127,16 +133,16 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
                     }
 
                     // send multipart form data necesssary after file
-                    // data...
+                    // data...1
                     dos.writeBytes(lineEnd);
                     dos.writeBytes(twoHyphens + boundary + twoHyphens
                             + lineEnd);
-/*
+
                     // Responses from the server (code and message)
                     serverResponseCode = conn.getResponseCode();
                     String serverResponseMessage = conn
                             .getResponseMessage();
-
+                    Log.v("resCode",serverResponseCode + "");
                     if (serverResponseCode == 200) {
 
                         // messageText.setText(msg);
@@ -146,7 +152,7 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
                         // recursiveDelete(mDirectory1);
 
                     }
-*/
+
                     // close the streams //
                     fileInputStream.close();
                     dos.flush();
