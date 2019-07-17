@@ -22,7 +22,7 @@ public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, Stri
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
-    //上傳照片的資料表內容
+    //上傳照片至資料表
     //----------------------------------------------------
     public interface TaskListener {
         void onFinished(String result);
@@ -73,7 +73,7 @@ public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, Stri
                      "&giftName=" + URLEncoder.encode(params[3], "UTF-8" )+
                      "&owner=" + URLEncoder.encode(params[4], "UTF-8" )+
                      "&giftType=" + URLEncoder.encode(params[5], "UTF-8");
-
+            Log.v("gift",args);
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

@@ -15,6 +15,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.login.loginAsyncTask;
 import com.ntubcase.gift.login_model.revokeAccess;
 import com.ntubcase.gift.login_model.signOut;
 
@@ -30,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static GoogleSignInClient mGoogleSignInClient;
 
     private Button btn_main;
+    private String user_birthday = "1998-1-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +56,6 @@ public class LoginActivity extends AppCompatActivity implements
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
-
-        //-----------------------------------------------------
-        btn_main =(Button) findViewById(R.id.btn_main);
-        btn_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        //-------------------------------------------------------
     }
 
     @Override
@@ -135,11 +126,19 @@ public class LoginActivity extends AppCompatActivity implements
             //建立google帳戶的物件: googleAccount(使用者名稱,使用者,使用者頭像)
             new googleAccount(account.getDisplayName(),account.getEmail(),account.getPhotoUrl());
 
+            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            mgiftInsertAsyncTask.execute(Common.login , account.getEmail(), account.getDisplayName() ,user_birthday ,account.getPhotoUrl().toString());
             //若確認已登入，直接進入首頁
             Intent intent;
             intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
+
 //
 //            Toast.makeText(this,account.getDisplayName(),Toast.LENGTH_SHORT);
 //

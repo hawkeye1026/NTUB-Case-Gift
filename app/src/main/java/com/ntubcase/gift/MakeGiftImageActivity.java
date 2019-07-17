@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_giftAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_imageAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.login_model.googleAccount;
@@ -50,11 +51,9 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private static EditText et_giftName;
     private ImageView iv_image;
     private Uri cam_imageUri;
-    private String cam_imagePath;
-    private Bitmap bitmap;
 
     private static String giftName, giftContent;
-
+    private String filename;
     protected static Date date =new Date();
     protected static String owner = googleAccount.getUserName();
     protected static String dateTime, giftType;
@@ -139,8 +138,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Uri selectedImageUri;
 
         if (resultCode != RESULT_OK) {
             return;
@@ -228,6 +225,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         public void onClick(View v) {
             giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
             giftContent = String.valueOf(cam_imageUri);    //取得使用者輸入的禮物內容
+            filename = getFileName(cam_imageUri);
             giftType="1";
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date =new Date();
@@ -251,15 +249,15 @@ public class MakeGiftImageActivity extends AppCompatActivity {
                 }
             },ImageFilePath.getPath(getApplicationContext(),cam_imageUri));
             //Log.v("filename_M",getPath(cam_imageUri));
-            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri),getFileName(cam_imageUri));
+            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri),filename);
 
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+            giftInsertImg_giftAsyncTask mgiftInsertAsyncTask = new giftInsertImg_giftAsyncTask(new giftInsertImg_giftAsyncTask.TaskListener() {
                @Override
                public void onFinished(String result) {
 
                }
            });
-           mgiftInsertAsyncTask.execute(Common.insertGift, giftContent, dateTime ,giftName ,owner, giftType);
+           mgiftInsertAsyncTask.execute(Common.insertGift, getFileName(cam_imageUri), dateTime ,giftName ,owner, giftType);
 
             //-------------讀取Dialog-----------
             barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,
@@ -314,49 +312,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             finish();
         }
     };
-//某個上傳圖片失敗的function
-//    private void uploadImage(){
-//        class UploadImage extends AsyncTask<Bitmap,Void,String> {
-//            ProgressDialog loading;
-//            RequestHandler rh = new RequestHandler();
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//                loading = ProgressDialog.show(MakeGiftImageActivity.this, "Uploading Image", "Please wait...",true,true);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String s) {
-//                super.onPostExecute(s);
-//                loading.dismiss();
-//                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            protected String doInBackground(Bitmap... params) {
-//                Bitmap bitmap = params[0];
-//                String uploadImage = getStringImage(bitmap);
-//
-//                HashMap<String,String> data = new HashMap<>();
-//                data.put("image", uploadImage);
-//                data.put("name",getFileName(cam_imageUri));
-//
-//                String result = rh.postRequest(Common.insertGiftImg,data);
-//                return result;
-//            }
-//        }
-//        UploadImage ui = new UploadImage();
-//        ui.execute(bitmap);
-//    }
-
-    public String getStringImage(Bitmap bmp){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
-    }
 
     String getFileName(Uri uri){
         String result = null;

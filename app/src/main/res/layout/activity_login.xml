@@ -8,21 +8,25 @@
     android:orientation="vertical"
     android:background="@drawable/bg_login">
 
-    <Button
-        android:id="@+id/btn_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="200dp"
-        android:text="進入首頁"
-        android:textSize="20dp" />
+    <!--<Button-->
+        <!--android:id="@+id/btn_main"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="200dp"-->
+        <!--android:text="進入首頁"-->
+        <!--android:textSize="20dp" />-->
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="visible"
-        tools:visibility="gone"/>
+        android:layout_marginTop="200dp"
+        android:layout_gravity="center">
+
+    </com.google.android.gms.common.SignInButton>
+        <!--android:visibility="visible"-->
+        <!--tools:visibility="gone"-->
+        />
 
 </LinearLayout>

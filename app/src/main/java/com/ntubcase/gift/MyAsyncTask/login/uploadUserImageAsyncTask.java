@@ -1,12 +1,9 @@
-package com.ntubcase.gift.MyAsyncTask.gift;
+package com.ntubcase.gift.MyAsyncTask.login;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_imageAsyncTask;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,10 +18,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 
-public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, String> {
 
+public class uploadUserImageAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -37,13 +33,13 @@ public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, Str
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final TaskListener taskListener;
+    private final uploadUserImageAsyncTask.TaskListener taskListener;
     private String sourceFileUri;
     private int serverResponseCode;
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftInsertImg_imageAsyncTask(TaskListener taskListener, String sourceFileUri) {
+    public uploadUserImageAsyncTask(uploadUserImageAsyncTask.TaskListener taskListener, String sourceFileUri) {
         this.taskListener = taskListener;
         this.sourceFileUri = sourceFileUri;
     }
@@ -69,8 +65,7 @@ public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, Str
             int bytesRead, bytesAvailable, bufferSize;
             byte[] buffer;
             int maxBufferSize = 1000 * 1024 * 1024;
-
-            File sourceFile = new File(sourceFileUri.toString());
+            File sourceFile = new File(sourceFileUri);
 
             if (!sourceFile.isFile()) {
                 Log.v("uploadFile", "Source File not exist :");
@@ -100,10 +95,11 @@ public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, Str
                     conn.connect();
                     dos = new DataOutputStream(conn.getOutputStream());
 
-                   // Log.v("filename2", params[2]);
+                    // Log.v("filename2", params[2]);
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
                     dos.writeBytes("Content-Disposition:form-data; name=\"image\";filename=\""
                             + params[2] + "\"" + lineEnd);
+                    Log.v("write","Content-Disposition:form-data; name=\"image\"; filename=\"" + params[2] + "\"" + lineEnd);
                     dos.writeBytes(lineEnd);
 
                     // create a buffer of maximum size
