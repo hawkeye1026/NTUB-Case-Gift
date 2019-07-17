@@ -1,21 +1,15 @@
-package com.ntubcase.gift.MyAsyncTask;
+package com.ntubcase.gift.MyAsyncTask.gift;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
-
-public class giftListAsyncTask extends AsyncTask<String, Integer, String> {
+public class giftReceivedNewAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -27,12 +21,12 @@ public class giftListAsyncTask extends AsyncTask<String, Integer, String> {
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final TaskListener taskListener;
+    private final giftReceivedNewAsyncTask.TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftListAsyncTask(TaskListener taskListener) {
+    public giftReceivedNewAsyncTask(giftReceivedNewAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 

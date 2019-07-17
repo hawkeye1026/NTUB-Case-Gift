@@ -18,7 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.spPlanDetailAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.spPlanDetailAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getPlanList;
@@ -26,10 +26,8 @@ import com.ntubcase.gift.data.getPlanList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 
 public class PlanDetailActivity extends AppCompatActivity {

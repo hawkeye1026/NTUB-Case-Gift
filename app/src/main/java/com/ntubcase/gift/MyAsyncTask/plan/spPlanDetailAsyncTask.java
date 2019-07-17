@@ -1,6 +1,7 @@
-package com.ntubcase.gift.MyAsyncTask;
+package com.ntubcase.gift.MyAsyncTask.plan;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,8 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
-public class friendListAsyncTask extends AsyncTask<String, Integer, String> {
+public class spPlanDetailAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -26,12 +26,12 @@ public class friendListAsyncTask extends AsyncTask<String, Integer, String> {
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final TaskListener taskListener;
+    private final spPlanDetailAsyncTask.TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public friendListAsyncTask(TaskListener taskListener) {
+    public spPlanDetailAsyncTask(spPlanDetailAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -63,7 +63,8 @@ public class friendListAsyncTask extends AsyncTask<String, Integer, String> {
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "userid=" + URLEncoder.encode(params[1], "UTF-8");
+                    "planid=" + URLEncoder.encode(params[1], "UTF-8");
+
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -108,7 +109,13 @@ public class friendListAsyncTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        if(result==null) {
+            Log.v("result",
+                    "null");
+            return;
+        }
         taskListener.onFinished(result);
+
     }
 
     @Override

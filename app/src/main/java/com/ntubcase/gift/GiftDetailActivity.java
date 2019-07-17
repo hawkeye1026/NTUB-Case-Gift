@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.giftDetailAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.giftDetailAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

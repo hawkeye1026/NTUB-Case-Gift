@@ -12,14 +12,12 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.reSurpriseGiftAdapter;
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.spGiftRecieivedDetailAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.spGiftRecieivedDetailAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class GiftReceivedDetailActivity extends AppCompatActivity {

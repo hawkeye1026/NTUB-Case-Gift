@@ -1,10 +1,7 @@
 package com.ntubcase.gift.data;
 
-import android.util.Log;
-
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.giftListAsyncTask;
-import com.ntubcase.gift.MyAsyncTask.planListAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.planListAsyncTask;
 import com.ntubcase.gift.dateFormat;
 
 import org.json.JSONArray;

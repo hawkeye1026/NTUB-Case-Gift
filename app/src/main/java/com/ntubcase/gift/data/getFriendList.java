@@ -1,16 +1,10 @@
 package com.ntubcase.gift.data;
 
-import android.util.Log;
-
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.friendListAsyncTask;
-import com.ntubcase.gift.MyAsyncTask.giftListAsyncTask;
-import com.ntubcase.gift.dateFormat;
+import com.ntubcase.gift.MyAsyncTask.friend.friendListAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.Arrays;
 
 public class getFriendList {
 

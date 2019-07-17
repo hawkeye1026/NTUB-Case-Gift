@@ -14,11 +14,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +26,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.giftInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 
 import java.io.File;

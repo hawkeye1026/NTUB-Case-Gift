@@ -1,16 +1,20 @@
-package com.ntubcase.gift.MyAsyncTask;
+package com.ntubcase.gift.MyAsyncTask.plan;
 
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 
-public class planListAsyncTask extends AsyncTask<String, Integer, String> {
+public class planUpdateAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -27,7 +31,7 @@ public class planListAsyncTask extends AsyncTask<String, Integer, String> {
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public planListAsyncTask(TaskListener taskListener) {
+    public planUpdateAsyncTask(TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -46,20 +50,35 @@ public class planListAsyncTask extends AsyncTask<String, Integer, String> {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         try {
-            URL url = new URL(params[0]);
+            URL url = new URL(params[0]); //params[0] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第一個參數
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            //conn.setDoInput(true);
-            //conn.setDoOutput(true);
+            conn.setReadTimeout(100000);
+            conn.setConnectTimeout(150000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            //----------------------------------------------
+            //  傳給主機的參數(name, amount, deliverDate)
+            //----------------------------------------------
+            //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
+            String args =
+                    "giftid=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&spPlanName=" + URLEncoder.encode(params[2], "UTF-8" )+
+                    "&spCreateDate=" + URLEncoder.encode(params[3], "UTF-8" )+
+                    "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8" )+
+                    "&message=" + URLEncoder.encode(params[5], "UTF-8")+
+                    "&senderid=" + URLEncoder.encode(params[6], "UTF-8")+
+                    "&receiveid=" + URLEncoder.encode(params[7], "UTF-8");
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(args);
+            writer.flush();
+            writer.close();
+            os.close();
 
             int statusCode = conn.getResponseCode();
-
-            //Log.v("Test2","statuus:" + statusCode);
-
-            conn.connect();
-            inputStream = conn.getInputStream();
 
             if (statusCode >= 200 && statusCode < 400) {
                 // Create an InputStream in order to extract the response object
@@ -68,8 +87,11 @@ public class planListAsyncTask extends AsyncTask<String, Integer, String> {
             else {
                 inputStream = conn.getErrorStream();
             }
+            conn.connect();
+            inputStream = conn.getInputStream();
+
             BufferedReader bufferedReader=new BufferedReader(
-                    new InputStreamReader(inputStream, "utf-8"));
+                    new InputStreamReader(inputStream, "UTF-8"));
 
             data=bufferedReader.readLine();
         } catch(Exception e) {

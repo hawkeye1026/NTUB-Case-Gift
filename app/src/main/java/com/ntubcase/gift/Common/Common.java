@@ -20,7 +20,8 @@ public class Common {
 //    public static String test="http://140.131.114.156/NTUB_gift_server/test.php?";
     public static String friendList="http://140.131.114.156/NTUB_gift_server/friendList.php?";
     public static String insertGift="http://140.131.114.156/NTUB_gift_server/insertGift.php?";
-    public static String insertGiftImg="http://140.131.114.156/NTUB_gift_server/resize.php";
+    public static String insertGiftImg_gift="http://140.131.114.156/NTUB_gift_server/insertGiftImg_gift.php";
+    public static String insertGiftImg_image="http://140.131.114.156/NTUB_gift_server/insertGiftImg_image.php";
     public static String insertPlan="http://140.131.114.156/NTUB_gift_server/insertSpPlan.php?";
     //public static String insertProtal="http://140.131.114.156/NTUB_gift_server/protal.php?";
     public static String giftDetail="http://140.131.114.156/NTUB_gift_server/giftDetail.php?";

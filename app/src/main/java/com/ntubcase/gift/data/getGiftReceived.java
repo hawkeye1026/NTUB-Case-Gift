@@ -3,7 +3,7 @@ package com.ntubcase.gift.data;
 import android.util.Log;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.giftReceivedNewAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.giftReceivedNewAsyncTask;
 import com.ntubcase.gift.dateFormat;
 
 import org.json.JSONArray;

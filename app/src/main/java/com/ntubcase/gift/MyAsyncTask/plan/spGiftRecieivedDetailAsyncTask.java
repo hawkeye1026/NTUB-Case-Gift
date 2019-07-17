@@ -1,6 +1,7 @@
-package com.ntubcase.gift.MyAsyncTask;
+package com.ntubcase.gift.MyAsyncTask.plan;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,8 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
-public class planUpdateAsyncTask extends AsyncTask<String, Integer, String> {
+public class spGiftRecieivedDetailAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -26,12 +26,12 @@ public class planUpdateAsyncTask extends AsyncTask<String, Integer, String> {
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final TaskListener taskListener;
+    private final spGiftRecieivedDetailAsyncTask.TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public planUpdateAsyncTask(TaskListener taskListener) {
+    public spGiftRecieivedDetailAsyncTask(spGiftRecieivedDetailAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -63,13 +63,8 @@ public class planUpdateAsyncTask extends AsyncTask<String, Integer, String> {
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "giftid=" + URLEncoder.encode(params[1], "UTF-8")+
-                    "&spPlanName=" + URLEncoder.encode(params[2], "UTF-8" )+
-                    "&spCreateDate=" + URLEncoder.encode(params[3], "UTF-8" )+
-                    "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8" )+
-                    "&message=" + URLEncoder.encode(params[5], "UTF-8")+
-                    "&senderid=" + URLEncoder.encode(params[6], "UTF-8")+
-                    "&receiveid=" + URLEncoder.encode(params[7], "UTF-8");
+                    "planid=" + URLEncoder.encode(params[1], "UTF-8");
+
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -114,7 +109,13 @@ public class planUpdateAsyncTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        if(result==null) {
+            Log.v("result",
+                    "null");
+            return;
+        }
         taskListener.onFinished(result);
+
     }
 
     @Override

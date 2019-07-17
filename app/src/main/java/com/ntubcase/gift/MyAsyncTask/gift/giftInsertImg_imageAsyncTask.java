@@ -1,4 +1,4 @@
-package com.ntubcase.gift.MyAsyncTask;
+package com.ntubcase.gift.MyAsyncTask.gift;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,11 +23,12 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
-public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
+public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, String> {
 
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
+    //上傳照片，不包括資料表中的紀錄
     //----------------------------------------------------
     public interface TaskListener {
         void onFinished(String result);
@@ -42,7 +43,7 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftInsertImgAsyncTask(TaskListener taskListener,String sourceFileUri) {
+    public giftInsertImg_imageAsyncTask(TaskListener taskListener, String sourceFileUri) {
         this.taskListener = taskListener;
         this.sourceFileUri = sourceFileUri;
     }
@@ -84,9 +85,6 @@ public class giftInsertImgAsyncTask extends AsyncTask<String, Integer, String> {
                             sourceFile);
                     Log.v("fileUri4",String.valueOf(sourceFileUri));
                     URL url = new URL(params[0]);
-                    Log.v("fileUri5",params[0]);
-                    Log.v("fileUri5",params[1]);
-                    Log.v("fileUri5",params[2]);
 
                     // Open a HTTP connection to the URL
                     conn = (HttpURLConnection) url.openConnection();

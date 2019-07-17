@@ -23,7 +23,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,9 +31,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.giftInsertAsyncTask;
-import com.ntubcase.gift.MyAsyncTask.giftInsertImgAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_imageAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.googleAccount;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,11 +43,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 
 public class MakeGiftImageActivity extends AppCompatActivity {
 
@@ -61,7 +56,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private static String giftName, giftContent;
 
     protected static Date date =new Date();
-    protected static String owner = "wayne";
+    protected static String owner = googleAccount.getUserName();
     protected static String dateTime, giftType;
     ProgressDialog barProgressDialog;
 
@@ -249,22 +244,22 @@ public class MakeGiftImageActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            giftInsertImgAsyncTask mGiftInsertImgAsyncTask = new giftInsertImgAsyncTask(new giftInsertImgAsyncTask.TaskListener() {
+            giftInsertImg_imageAsyncTask mGiftInsertImgAsyncTask = new giftInsertImg_imageAsyncTask(new giftInsertImg_imageAsyncTask.TaskListener() {
                 @Override
                 public void onFinished(String result) {
 
                 }
             },ImageFilePath.getPath(getApplicationContext(),cam_imageUri));
             //Log.v("filename_M",getPath(cam_imageUri));
-            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg, String.valueOf(cam_imageUri),getFileName(cam_imageUri));
+            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri),getFileName(cam_imageUri));
 
-//            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-//                @Override
-//                public void onFinished(String result) {
-//
-//                }
-//            });
-//            mgiftInsertAsyncTask.execute(Common.insertGiftImg, giftContent, dateTime ,giftName ,owner, giftType);
+            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+               @Override
+               public void onFinished(String result) {
+
+               }
+           });
+           mgiftInsertAsyncTask.execute(Common.insertGift, giftContent, dateTime ,giftName ,owner, giftType);
 
             //-------------讀取Dialog-----------
             barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,

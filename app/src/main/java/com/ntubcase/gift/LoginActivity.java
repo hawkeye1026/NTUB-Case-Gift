@@ -36,16 +36,15 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Button listeners
+        // 設置登入監聽器
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        // 結束設置登入監聽器
 
-        // [START configure_signin]
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        //開啟google登入
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        // [END configure_signin]
+        //[END configure_signin]
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googleAccount.setGoogleSignInClient(mGoogleSignInClient);
         // [END build_client]

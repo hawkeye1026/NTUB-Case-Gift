@@ -2,7 +2,6 @@ package com.ntubcase.gift;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -16,20 +15,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.planUpdateAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
-import com.ntubcase.gift.data.getGiftReceived;
-import com.ntubcase.gift.data.getPlanList;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class MakePlanMultipleActivity extends AppCompatActivity {
 
