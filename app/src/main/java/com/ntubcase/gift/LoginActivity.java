@@ -33,13 +33,17 @@ public class LoginActivity extends AppCompatActivity implements
     private static GoogleSignInClient mGoogleSignInClient;
 
     private Button btn_main;
-    private String user_birthday = "1998-1-1";
+    private static String user_birthday = "1998-1-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //-------------登入按鈕
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
         // 設置登入監聽器
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         // 結束設置登入監聽器
@@ -52,10 +56,7 @@ public class LoginActivity extends AppCompatActivity implements
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googleAccount.setGoogleSignInClient(mGoogleSignInClient);
         // [END build_client]
-        //-------------登入按鈕
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
+
     }
 
     @Override
@@ -126,13 +127,13 @@ public class LoginActivity extends AppCompatActivity implements
             //建立google帳戶的物件: googleAccount(使用者名稱,使用者,使用者頭像)
             new googleAccount(account.getDisplayName(),account.getEmail(),account.getPhotoUrl());
 
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
+            loginAsyncTask loginAsyncTask = new loginAsyncTask(new loginAsyncTask.TaskListener() {
                 @Override
                 public void onFinished(String result) {
 
                 }
             });
-            mgiftInsertAsyncTask.execute(Common.login , account.getEmail(), account.getDisplayName() ,user_birthday ,account.getPhotoUrl().toString());
+            loginAsyncTask.execute(Common.login , account.getEmail(), account.getDisplayName() ,user_birthday ,account.getPhotoUrl().toString());
             //若確認已登入，直接進入首頁
             Intent intent;
             intent = new Intent(LoginActivity.this, MainActivity.class);
