@@ -1,6 +1,7 @@
 package com.ntubcase.gift.MyAsyncTask.login;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -63,11 +64,10 @@ public class loginAsyncTask extends AsyncTask<String, Integer, String> {
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "email=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "mail=" + URLEncoder.encode(params[1], "UTF-8")+
                     "&nickname=" + URLEncoder.encode(params[2], "UTF-8" )+
                     "&birthday=" + URLEncoder.encode(params[3], "UTF-8" )+
                     "&image=" + URLEncoder.encode(params[4], "UTF-8" );
-
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

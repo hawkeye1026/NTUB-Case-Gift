@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static GoogleSignInClient mGoogleSignInClient;
 
     private Button btn_main;
-    private static String user_birthday = "1998-1-1";
+    private static String user_birthday = "1998-01-01";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
