@@ -41,29 +41,26 @@ import java.util.Date;
 
 public class MakePlanSingleActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-    String[] add_giftlistItems = new String[getGiftList.getGiftLength()];
-    boolean[] add_giftcheckedItems;
-    ArrayList<Integer> add_giftItems = new ArrayList<>();
+    String[] edt_single_giftlistItems = new String[getGiftList.getGiftLength()];
+    boolean[] edt_single_giftcheckedItems;
+    ArrayList<Integer> edt_single_giftItems = new ArrayList<>();
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
-    String[] add_friendlistItems = new String[getFriendList.getFriendLength()];
-    boolean[] add_friendcheckedItems;
-    ArrayList<Integer> add_friendItems = new ArrayList<>();
+    String[] edt_single_friendlistItems = new String[getFriendList.getFriendLength()];
+    boolean[] edt_single_friendcheckedItems;
+    ArrayList<Integer> edt_single_friendItems = new ArrayList<>();
     //----------------------------------------------------------------------------------------------
     private static String[] giftid = new String[100];
     private static String[] friendid = new String[100];
     private static int giftidPositionIndex = 0 ;
     private static int friendidPositionIndex = 0 ;
-    static EditText add_surprise_name;
-    static EditText add_surprice_message;
+    static EditText edt_single_name, edt_single_message,edt_single_date,edt_single_friend,edt_single_giftName,edt_single_sentTime;
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
     private RecyclerView recycler_view;
     private plan_single_adapter adapter;
     private ArrayList<String> mData = new ArrayList<>();
-    private Button btnAdd;
-    private Button btn_ent,btn_can;
-    private EditText edt_single_giftName,edt_single_sentTime,edt_single_message;
-    String single_giftName,single_sentTime,single_message;
+    private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
+    String single_giftName, single_sentTime, single_message;
 
 
     @Override
@@ -79,17 +76,15 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //---------------------------------------------------------------------------------
         //宣告變數------------------------------------------------------------------------------
-        add_surprise_name = (EditText) findViewById(R.id.add_surprise_name);
-        EditText add_surprise_date = findViewById(R.id.add_surprise_date);
-//        EditText add_surprise_time = findViewById(R.id.add_surprise_time);
-//        EditText add_surprise_gift = (EditText) findViewById(R.id.add_surprise_gift);
-        EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-        add_surprice_message = (EditText) findViewById(R.id.add_surprice_message);
-        Button savePlan = (Button) findViewById(R.id.btn_plan_save);
-        Button sendPlan = (Button) findViewById(R.id.btn_plan_send);
+        edt_single_name = findViewById(R.id.add_surprise_name);
+        edt_single_date = findViewById(R.id.add_surprise_date);
+        edt_single_friend = findViewById(R.id.add_surprise_friend);
+        edt_single_message = findViewById(R.id.add_surprice_message);
+        btn_save = findViewById(R.id.btn_plan_save);
+        btn_send = findViewById(R.id.btn_plan_send);
 
         //-----------送出計畫
-        sendPlan.setOnClickListener(new View.OnClickListener() {
+        btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
@@ -98,15 +93,14 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     }
                 });
                 //---------------------------選擇日期
-                EditText add_surprise_date = findViewById(R.id.add_surprise_date);//日期
-                //EditText add_surprise_time = findViewById(R.id.add_surprise_time);//分秒
-                //String sendPlanDate = add_surprise_date.getText().toString() +" "+   add_surprise_time.getText().toString();
+
+                String sendPlanDate = edt_single_date.getText().toString() +" "+ edt_single_sentTime.getText().toString();
                 //---------------------------目前時間
                 Date date =new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                 String spCreateDate = sdFormat.format(date);
 
-                //mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
+                mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], edt_single_name.getText().toString() ,spCreateDate ,sendPlanDate,edt_single_message.getText().toString(),"1",friendid[0]);
 
                 //-------------讀取時間-----------
                 barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
@@ -139,7 +133,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         });
 
         //-----------儲存計畫
-        savePlan.setOnClickListener(new View.OnClickListener() {
+        btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
@@ -148,9 +142,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     }
                 });
                 //---------------------------選擇日期
-                EditText add_surprise_date = findViewById(R.id.add_surprise_date);//日期
-                //EditText add_surprise_time = findViewById(R.id.add_surprise_time);//分秒
-                //String sendPlanDate = add_surprise_date.getText().toString() +" "+   add_surprise_time.getText().toString();
+                String sendPlanDate = edt_single_date.getText().toString() +" "+ edt_single_sentTime.getText().toString();
                 //---------------------------目前時間
                 Date date =new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -190,14 +182,14 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
-            add_giftlistItems[i] = getGiftList.getGiftName(i);
+            edt_single_giftlistItems[i] = getGiftList.getGiftName(i);
         }
-        add_giftcheckedItems = new boolean[add_giftlistItems.length];
+        edt_single_giftcheckedItems = new boolean[edt_single_giftlistItems.length];
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
         for(int i = 0; i < getFriendList.getFriendLength(); i++){
-            add_friendlistItems[i] = getFriendList.getFriendName(i);
+            edt_single_friendlistItems[i] = getFriendList.getFriendName(i);
         }
-        add_friendcheckedItems = new boolean[add_friendlistItems.length];
+        edt_single_friendcheckedItems = new boolean[edt_single_friendlistItems.length];
 
 
         //--------點選新增事件
@@ -311,8 +303,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         recycler_view.setAdapter(adapter);
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
-        add_surprise_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        add_surprise_friend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        edt_single_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_single_friend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -322,7 +314,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 }
             }
         });
-        add_surprise_friend.setOnClickListener(new View.OnClickListener() {
+        edt_single_friend.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -331,8 +323,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             }
         });
         //點選送禮日期EditText跳出選擇日期選擇器---------------------------------------
-        add_surprise_date.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        add_surprise_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        edt_single_date.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_single_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -343,7 +335,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             }
         });
 
-        add_surprise_date.setOnClickListener(new View.OnClickListener() {
+        edt_single_date.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -368,15 +360,15 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇禮物");
 
-        mBuilder.setMultiChoiceItems(add_giftlistItems, add_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        mBuilder.setMultiChoiceItems(edt_single_giftlistItems, edt_single_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
-                    add_giftItems.add(position);
+                    edt_single_giftItems.add(position);
                     giftid[giftidPositionIndex] = getGiftList.getGiftid(position);
                     giftidPositionIndex++;
                 }else{
-                    add_giftItems.remove((Integer.valueOf(position)));
+                    edt_single_giftItems.remove((Integer.valueOf(position)));
                     giftidPositionIndex--;
                 }
             }
@@ -387,9 +379,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
-                for (int i = 0; i < add_giftItems.size(); i++) {
-                    item = item + add_giftlistItems[add_giftItems.get(i)];
-                    if (i != add_giftItems.size() - 1) {
+                for (int i = 0; i < edt_single_giftItems.size(); i++) {
+                    item = item + edt_single_giftlistItems[edt_single_giftItems.get(i)];
+                    if (i != edt_single_giftItems.size() - 1) {
                         item = item + ",";
                     }
                 }
@@ -408,9 +400,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 EditText add_surprise_gift = (EditText) findViewById(R.id.single_giftName);
-                for (int i = 0; i < add_giftcheckedItems.length; i++) {
-                    add_giftcheckedItems[i] = false;
-                    add_giftItems.clear();
+                for (int i = 0; i < edt_single_giftcheckedItems.length; i++) {
+                    edt_single_giftcheckedItems[i] = false;
+                    edt_single_giftItems.clear();
                     add_surprise_gift.setText("");
                 }
             }
@@ -424,16 +416,16 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇好友");
-        mBuilder.setMultiChoiceItems(add_friendlistItems, add_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        mBuilder.setMultiChoiceItems(edt_single_friendlistItems, edt_single_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                 if(isChecked){
-                    add_friendItems.add(position);
+                    edt_single_friendItems.add(position);
                     friendid[friendidPositionIndex] = getFriendList.getFriendid(position);
                     Log.v("friend",friendid[0]);
                     friendidPositionIndex++;
                 }else{
-                    add_friendItems.remove((Integer.valueOf(position)));
+                    edt_single_friendItems.remove((Integer.valueOf(position)));
                     friendidPositionIndex--;
                 }
             }
@@ -444,14 +436,13 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
-                EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-                for (int i = 0; i < add_friendItems.size(); i++) {
-                    item = item + add_friendlistItems[add_friendItems.get(i)];
-                    if (i != add_friendItems.size() - 1) {
+                for (int i = 0; i < edt_single_friendItems.size(); i++) {
+                    item = item + edt_single_friendlistItems[edt_single_friendItems.get(i)];
+                    if (i != edt_single_friendItems.size() - 1) {
                         item = item + ",";
                     }
                 }
-                add_surprise_friend.setText(item);
+                edt_single_friend.setText(item);
             }
         });
 
@@ -466,9 +457,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-                for (int i = 0; i < add_friendcheckedItems.length; i++) {
-                    add_friendcheckedItems[i] = false;
-                    add_friendItems.clear();
+                for (int i = 0; i < edt_single_friendcheckedItems.length; i++) {
+                    edt_single_friendcheckedItems[i] = false;
+                    edt_single_friendItems.clear();
                     add_surprise_friend.setText("");
                 }
             }
