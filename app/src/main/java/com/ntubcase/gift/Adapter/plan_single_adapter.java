@@ -12,12 +12,15 @@ import com.ntubcase.gift.R;
 
 import java.util.List;
 
+import static android.opengl.Matrix.length;
+
 public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapter.ViewHolder> {
     private List<String> mData;
 
     public plan_single_adapter(List<String> data) {
         mData = data;
     }
+
 
     // 建立ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -74,9 +77,16 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
 
     // 新增項目
     public void addItem(String text) {
-        // 為了示範效果，固定新增在位置3。若要新增在最前面就把3改成0
-        mData.add(9,text);
-        notifyItemInserted(9);
+        int a;
+        a = mData.size();
+        if(a==0){
+            mData.add(0,text);
+            notifyItemInserted(0);
+        }else{
+            mData.add(a,text);
+            notifyItemInserted(a);
+        }
+
     }
 
     // 刪除項目

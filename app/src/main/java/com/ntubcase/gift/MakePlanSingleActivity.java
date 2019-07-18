@@ -41,13 +41,11 @@ import java.util.Date;
 
 public class MakePlanSingleActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-    String[] edt_single_giftlistItems = new String[getGiftList.getGiftLength()];
-    boolean[] edt_single_giftcheckedItems;
-    ArrayList<Integer> edt_single_giftItems = new ArrayList<>();
+    String[] single_giftlistItems = new String[getGiftList.getGiftLength()];
+    boolean[] single_giftcheckedItems,tempGiftChecked;
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
-    String[] edt_single_friendlistItems = new String[getFriendList.getFriendLength()];
-    boolean[] edt_single_friendcheckedItems;
-    ArrayList<Integer> edt_single_friendItems = new ArrayList<>();
+    String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
+    boolean[] single_friendcheckedItems, tempFriendChecked;
     //----------------------------------------------------------------------------------------------
     private static String[] giftid = new String[100];
     private static String[] friendid = new String[100];
@@ -182,15 +180,16 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
-            edt_single_giftlistItems[i] = getGiftList.getGiftName(i);
+            single_giftlistItems[i] = getGiftList.getGiftName(i);
         }
-        edt_single_giftcheckedItems = new boolean[edt_single_giftlistItems.length];
+        single_giftcheckedItems = new boolean[single_giftlistItems.length];
+        tempGiftChecked = new boolean[single_giftlistItems.length];
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
         for(int i = 0; i < getFriendList.getFriendLength(); i++){
-            edt_single_friendlistItems[i] = getFriendList.getFriendName(i);
+            single_friendlistItems[i] = getFriendList.getFriendName(i);
         }
-        edt_single_friendcheckedItems = new boolean[edt_single_friendlistItems.length];
-
+        single_friendcheckedItems = new boolean[single_friendlistItems.length];
+        tempFriendChecked = new boolean[single_friendlistItems.length];
 
         //--------點選新增事件
         btnAdd =(Button) findViewById(R.id.btnAdd);
@@ -198,6 +197,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //開啟對話視窗
+
                 final Dialog dialog = new Dialog(MakePlanSingleActivity.this);
                 dialog.setContentView(R.layout.single_dialog);
                 Window window = dialog.getWindow();
@@ -252,7 +252,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 });
 
                 //點選取消
-                btn_can = (Button)dialog.findViewById(R.id.btn_can);
+                btn_can = dialog.findViewById(R.id.btn_can);
                 btn_can.setOnClickListener(new Button.OnClickListener(){
                     @Override
                     public void onClick(View view) {
@@ -261,22 +261,17 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 });
 
                 //點選確認
-                btn_ent = (Button)dialog.findViewById(R.id.btn_ent);
+                btn_ent = dialog.findViewById(R.id.btn_ent);
                 btn_ent.setOnClickListener(new Button.OnClickListener(){
                     @Override
                     //新增一個項目
                     public void onClick(View view) {
-
                         //抓取輸入方塊訊息
-
                         single_giftName = edt_single_giftName.getText().toString();
                         single_sentTime = edt_single_sentTime.getText().toString();
                         single_message = edt_single_message.getText().toString();
-                        //在item內傳送文字
-                        TextView txtItem =(TextView) findViewById(R.id.txtItem);
-                        txtItem.setText(single_sentTime+"-"+single_giftName+single_message);
-
-
+                       //在item內傳送文字
+                        adapter.addItem(single_sentTime+"-"+single_giftName+single_message);
                         dialog.cancel();
                     }
                 });
@@ -286,12 +281,12 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         });
 
         // 準備資料，塞項目到ArrayList裡
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i <0; i++) {
             mData.add("項目"+i);
         }
 
         // 連結元件
-        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        recycler_view = findViewById(R.id.recycler_view);
         // 設置RecyclerView為列表型態
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
         // 設置格線
@@ -360,17 +355,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇禮物");
 
-        mBuilder.setMultiChoiceItems(edt_single_giftlistItems, edt_single_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        mBuilder.setMultiChoiceItems(single_giftlistItems, single_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-                if(isChecked){
-                    edt_single_giftItems.add(position);
-                    giftid[giftidPositionIndex] = getGiftList.getGiftid(position);
-                    giftidPositionIndex++;
-                }else{
-                    edt_single_giftItems.remove((Integer.valueOf(position)));
-                    giftidPositionIndex--;
-                }
             }
         });
 
@@ -379,34 +366,35 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
-                for (int i = 0; i < edt_single_giftItems.size(); i++) {
-                    item = item + edt_single_giftlistItems[edt_single_giftItems.get(i)];
-                    if (i != edt_single_giftItems.size() - 1) {
-                        item = item + ",";
+                for (int i = 0; i < single_giftcheckedItems.length; i++) {
+                    if(single_giftcheckedItems[i]){
+                        if (item.equals("")) item += single_giftlistItems[i];
+                        else item += " , " + single_giftlistItems[i];
                     }
+                    tempGiftChecked[i]=single_giftcheckedItems[i];
                 }
                 edt_single_giftName.setText(item);
             }
         });
-
-        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        mBuilder.setNeutralButton("取消全選", new DialogInterface.OnClickListener() {
+        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                EditText add_surprise_gift = (EditText) findViewById(R.id.single_giftName);
-                for (int i = 0; i < edt_single_giftcheckedItems.length; i++) {
-                    edt_single_giftcheckedItems[i] = false;
-                    edt_single_giftItems.clear();
-                    add_surprise_gift.setText("");
-                }
+                for (int i=0; i<tempGiftChecked.length; i++) single_giftcheckedItems[i]=tempGiftChecked[i];
             }
         });
+
+        mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {  //清除鈕
+                for (int i = 0; i < single_giftcheckedItems.length; i++) {
+                    single_giftcheckedItems[i] = false;
+                    tempGiftChecked[i] = false;
+                }
+                edt_single_giftName.setText("");
+            }
+        });
+
+
 
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
@@ -416,18 +404,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇好友");
-        mBuilder.setMultiChoiceItems(edt_single_friendlistItems, edt_single_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        mBuilder.setMultiChoiceItems(single_friendlistItems, single_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-                if(isChecked){
-                    edt_single_friendItems.add(position);
-                    friendid[friendidPositionIndex] = getFriendList.getFriendid(position);
-                    Log.v("friend",friendid[0]);
-                    friendidPositionIndex++;
-                }else{
-                    edt_single_friendItems.remove((Integer.valueOf(position)));
-                    friendidPositionIndex--;
-                }
             }
         });
 
@@ -436,34 +415,35 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
-                for (int i = 0; i < edt_single_friendItems.size(); i++) {
-                    item = item + edt_single_friendlistItems[edt_single_friendItems.get(i)];
-                    if (i != edt_single_friendItems.size() - 1) {
-                        item = item + ",";
+                for (int i = 0; i < single_friendcheckedItems.length; i++) {
+                    if(single_friendcheckedItems[i]){
+                        if (item.equals("")) item += single_friendlistItems[i];
+                        else item += " , " + single_friendlistItems[i];
                     }
+                    tempFriendChecked[i]=single_friendcheckedItems[i];
                 }
                 edt_single_friend.setText(item);
             }
         });
 
-        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+            public void onClick(DialogInterface dialogInterface, int which) {
+                for (int i=0; i<tempFriendChecked.length; i++) single_friendcheckedItems[i]=tempFriendChecked[i];
             }
         });
 
-        mBuilder.setNeutralButton(R.string.clear_all_label, new DialogInterface.OnClickListener() {
+        mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                EditText add_surprise_friend = (EditText) findViewById(R.id.add_surprise_friend);
-                for (int i = 0; i < edt_single_friendcheckedItems.length; i++) {
-                    edt_single_friendcheckedItems[i] = false;
-                    edt_single_friendItems.clear();
-                    add_surprise_friend.setText("");
+            public void onClick(DialogInterface dialogInterface, int which) {  //清除鈕
+                for (int i = 0; i < single_friendcheckedItems.length; i++) {
+                    single_friendcheckedItems[i] = false;
+                    tempFriendChecked[i] = false;
                 }
+                edt_single_friend.setText("");
             }
         });
+
 
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
