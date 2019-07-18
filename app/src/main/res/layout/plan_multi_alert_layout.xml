@@ -25,7 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:ems="10"
-            android:hint="輸入此日的留言"/>
+            android:hint="輸入此日的留言"
+            android:maxLines="3"
+            android:scrollbars="vertical"/>
 
     </LinearLayout>
 

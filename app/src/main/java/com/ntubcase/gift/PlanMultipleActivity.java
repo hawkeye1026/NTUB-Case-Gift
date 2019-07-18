@@ -11,6 +11,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -47,8 +48,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     private String[] giftItemList = new String[getGiftList.getGiftLength()];
-//    private boolean[] mCheckedItems = new boolean[giftItemList.length];
-//    private boolean[] tempCheckedItems = new boolean[giftItemList.length];
     private boolean[][] mCheckedItems;
     private boolean[][] tempCheckedItems;
 
@@ -93,7 +92,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
             selectDates.add(mDates);
         }
 
-         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
+        //------選擇禮物用-----
+        for(int i = 0 ; i < getGiftList.getGiftLength();i++){
             giftItemList[i] = getGiftList.getGiftName(i);  //禮物名稱資料
         }
         mCheckedItems = new boolean[selectDates.size()][giftItemList.length];
@@ -107,14 +107,13 @@ public class PlanMultipleActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showAlertDialog(position);  //顯示alertDialog
-
+                showAlertDialog(view,position,parent);  //顯示alertDialog
             }
         });
     }
 
     //-----------------顯示alertDialog-----------------
-    private void showAlertDialog(int position) {
+    private void showAlertDialog(final View view, int position, final ViewGroup parent) {
         final int gridPosition = position;
 
         // create an alert builder
@@ -153,12 +152,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
         });
 
         //----------------選擇禮物---------------
-//        for(int i = 0 ; i < getGiftList.getGiftLength();i++){
-//            giftItemList[i] = getGiftList.getGiftName(i);  //禮物名稱資料
-//        }
-//        mCheckedItems = new boolean[giftItemList.length];
-//        tempCheckedItems = new boolean[giftItemList.length];
-
         alert_gifts.setInputType(InputType.TYPE_NULL);
         alert_gifts.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -182,7 +175,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {   // send data from the AlertDialog to the Activity
-                sendDialogDataToActivity(gridPosition, alert_message.getText().toString()
+                sendDialogDataToActivity(view, gridPosition, parent, alert_message.getText().toString()
                         , alert_time.getText().toString(), alert_gifts.getText().toString());
             }
         });
@@ -200,7 +193,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     }
 
     //--------------------- 處理AlertDialog回傳的資料-----------------------------
-    private void sendDialogDataToActivity(int gridPosition, String newMessage, String newTime, String newGifts) {
+    private void sendDialogDataToActivity(View view, int gridPosition, ViewGroup parent, String newMessage, String newTime, String newGifts) {
         Map<String, Object> updateData = selectDates.get(gridPosition);
         updateData.put("message", newMessage);
         updateData.put("time", newTime);
@@ -208,6 +201,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
         selectDates.set(gridPosition, updateData);
         planMultiAdapter.notifyDataSetChanged(); //更新資料
+        planMultiAdapter.setItemHeight(view, gridPosition, parent); //設定grid高度
     }
 
 

@@ -1,10 +1,13 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
@@ -15,6 +18,9 @@ import java.util.Map;
 public class PlanMultiAdapter extends BaseAdapter {
     private Context context;
     private List<Map<String, Object>> selectDates;
+    private int numColumns = 3; //總列數
+    private int lines; //總行數
+    private int[] rowsMaxHeight; //每行最高高度
 
     public PlanMultiAdapter(Context context, List<Map<String, Object>> selectDates) {
         this.context = context;
@@ -44,6 +50,7 @@ public class PlanMultiAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+
         if (convertView == null) {
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,6 +59,14 @@ public class PlanMultiAdapter extends BaseAdapter {
             holder.tv_date = (TextView) convertView.findViewById(R.id.tv_date);
             holder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);;
             convertView.setTag(holder);
+
+            //---計算總行數---
+            if (lines < 1){
+                if(getCount() % numColumns > 0) lines = getCount() / numColumns  + 1;
+                else lines = getCount() / numColumns;
+                rowsMaxHeight = new int[lines];
+            }
+
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -61,4 +76,38 @@ public class PlanMultiAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    //----------------設定grid高度-------------------------
+    public void setItemHeight(final View convertView, final int position, final ViewGroup parent){
+        convertView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int positionRow = position / numColumns;  //此position的所在行數
+                        int height = convertView.getHeight(); //此view高度
+
+                        if(height < rowsMaxHeight[positionRow]){
+                            convertView.setLayoutParams(new GridView.LayoutParams(
+                                    GridView.LayoutParams.MATCH_PARENT,
+                                    rowsMaxHeight[positionRow]));
+                        } else if(height > rowsMaxHeight[positionRow]){
+                            rowsMaxHeight[positionRow] = height;
+
+                            for (int i = positionRow * numColumns; i < ((positionRow+1) * numColumns) && i< getCount(); i++){
+                                View view = parent.getChildAt(i);
+                                if (view.getHeight() != rowsMaxHeight[positionRow]){
+                                    view.setLayoutParams(new GridView.LayoutParams(
+                                            GridView.LayoutParams.MATCH_PARENT,
+                                            rowsMaxHeight[positionRow]));
+                                }
+                            }
+                        }
+
+                        Log.e("***","position: " + position +"; height: " +  height + "; maxHeight: " +  rowsMaxHeight[positionRow]);
+
+                        convertView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+    }
+
 }
