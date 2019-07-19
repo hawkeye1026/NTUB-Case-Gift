@@ -14,15 +14,16 @@ import com.ntubcase.gift.R;
 
 
 import java.util.List;
-
+import java.util.Map;
 
 
 public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapter.ViewHolder>implements Filterable{
     private List<String> mData;
+    private List<Map<String, Object>> data;
     private OnItemClickListener mOnItemClickListener;
 
-    public plan_single_adapter(List<String> data) {
-        mData = data;
+    public plan_single_adapter(List<Map<String, Object>> data) {
+        this.data = data;
     }
 
     @Override
@@ -40,15 +41,6 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
             super(itemView);
             txtItem = (TextView) itemView.findViewById(R.id.txtItem);
             btnRemove= (Button) itemView.findViewById(R.id.btnRemove);
-
-//            // 點擊項目時
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Toast.makeText(view.getContext(),
-//                            "click " +getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
 
             // 點擊項目中的Button時
             btnRemove.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +76,9 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
                 }
             });
         }
-        holder.txtItem.setText(mData.get(position));
+//        holder.txtItem.setText(mData.get(position));
+        holder.txtItem.setText(data.get(position).toString());
+
     }
 
 
@@ -93,18 +87,18 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return data.size();
     }
 
     // 新增項目
-    public void addItem(String text) {
+    public void addItem(List<Map<String, Object>> data) {
         int a;
-        a = mData.size();
+        a = data.size();
         if(a==0){
-            mData.add(0,text);
+            data.add(0, (Map<String, Object>) data);
             notifyItemInserted(0);
         }else{
-            mData.add(a,text);
+            data.add(a, (Map<String, Object>) data);
             notifyItemInserted(a);
         }
 
