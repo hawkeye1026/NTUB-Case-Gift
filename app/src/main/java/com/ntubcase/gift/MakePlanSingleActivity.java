@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -34,31 +33,41 @@ import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getPlanList;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class MakePlanSingleActivity extends AppCompatActivity {
+public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
+    int a=0;
     String[] single_giftlistItems = new String[getGiftList.getGiftLength()];
-    boolean[] single_giftcheckedItems,tempGiftChecked;
+    List<boolean[]> single_giftcheckedItems;
+    List<boolean[]> tempGiftChecked;
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] single_friendcheckedItems, tempFriendChecked;
     //----------------------------------------------------------------------------------------------
     private static String[] giftid = new String[100];
     private static String[] friendid = new String[100];
-    private static int giftidPositionIndex = 0 ;
-    private static int friendidPositionIndex = 0 ;
-    static EditText edt_single_name, edt_single_message,edt_single_date,edt_single_friend,edt_single_giftName,edt_single_sentTime;
+    private static int giftidPositionIndex = 0;
+    private static int friendidPositionIndex = 0;
+    static EditText edt_single_name, edt_single_message, edt_single_date, edt_single_friend, edt_single_giftName, edt_single_sentTime;
+    static TextView txtItem;
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
     private RecyclerView recycler_view;
     private plan_single_adapter adapter;
     private ArrayList<String> mData = new ArrayList<>();
+
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String single_giftName, single_sentTime, single_message;
+
+    //------
+    private static int giftposition[];
+    int giftCount = 0;
 
 
     @Override
@@ -69,6 +78,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         //--------------------取得資料
         getGiftList.getJSON();
+        //--------------------
+        giftposition = new int[single_giftlistItems.length];
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
@@ -80,6 +91,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         edt_single_message = findViewById(R.id.add_surprice_message);
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
+        txtItem = findViewById(R.id.txtItem);
 
         //-----------送出計畫
         btn_send.setOnClickListener(new View.OnClickListener() {
@@ -92,29 +104,27 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 });
                 //---------------------------選擇日期
 
-                String sendPlanDate = edt_single_date.getText().toString() +" "+ edt_single_sentTime.getText().toString();
+                String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
                 //---------------------------目前時間
-                Date date =new Date();
+                Date date = new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                 String spCreateDate = sdFormat.format(date);
 
-                mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], edt_single_name.getText().toString() ,spCreateDate ,sendPlanDate,edt_single_message.getText().toString(),"1",friendid[0]);
+                mPlanInsertAsyncTask.execute(Common.insertPlan, giftid[0], edt_single_name.getText().toString(), spCreateDate, sendPlanDate, edt_single_message.getText().toString(), "1", friendid[0]);
 
                 //-------------讀取時間-----------
                 barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
-                        "讀取中", "請等待...",true);
-                new Thread(new Runnable(){
+                        "讀取中", "請等待...", true);
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        try{
+                        try {
                             getPlanList.getJSON();
                             getGiftReceived.getJSON();
                             Thread.sleep(1000);
-                        }
-                        catch(Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
-                        }
-                        finally{
+                        } finally {
                             barProgressDialog.dismiss();
 //                            Intent intent;
 //                            intent = new Intent(MakePlanMultipleActivity .this, loadingActivity.class);
@@ -140,9 +150,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     }
                 });
                 //---------------------------選擇日期
-                String sendPlanDate = edt_single_date.getText().toString() +" "+ edt_single_sentTime.getText().toString();
+                String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
                 //---------------------------目前時間
-                Date date =new Date();
+                Date date = new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                 String spCreateDate = sdFormat.format(date);
 
@@ -150,18 +160,16 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
                 //-------------讀取時間-----------
                 barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
-                        "讀取中", "請等待...",true);
-                new Thread(new Runnable(){
+                        "讀取中", "請等待...", true);
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        try{
+                        try {
                             getPlanList.getJSON();
                             Thread.sleep(1000);
-                        }
-                        catch(Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
-                        }
-                        finally{
+                        } finally {
                             barProgressDialog.dismiss();
                             /*Intent intent;
                             intent = new Intent(MakePlanMultipleActivity .this, loadingActivity.class);
@@ -179,110 +187,42 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
-        for(int i = 0 ; i < getGiftList.getGiftLength();i++){
+        for (int i = 0; i < getGiftList.getGiftLength(); i++) {
             single_giftlistItems[i] = getGiftList.getGiftName(i);
         }
-        single_giftcheckedItems = new boolean[single_giftlistItems.length];
-        tempGiftChecked = new boolean[single_giftlistItems.length];
+//        single_giftcheckedItems = new boolean[single_giftlistItems.length];
+//        tempGiftChecked = new boolean[single_giftlistItems.length];
+
+        single_giftcheckedItems = new ArrayList<boolean[]>();
+        tempGiftChecked = new ArrayList<boolean[]>();
+
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
-        for(int i = 0; i < getFriendList.getFriendLength(); i++){
+        for (int i = 0; i < getFriendList.getFriendLength(); i++) {
             single_friendlistItems[i] = getFriendList.getFriendName(i);
         }
         single_friendcheckedItems = new boolean[single_friendlistItems.length];
         tempFriendChecked = new boolean[single_friendlistItems.length];
 
         //--------點選新增事件
-        btnAdd =(Button) findViewById(R.id.btnAdd);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //開啟對話視窗
-
-                final Dialog dialog = new Dialog(MakePlanSingleActivity.this);
-                dialog.setContentView(R.layout.single_dialog);
-                Window window = dialog.getWindow();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.setCancelable(false);//讓使用者點選背景或上一頁沒有用
-
-                //宣告
-                edt_single_giftName = dialog.findViewById(R.id.single_giftName);
-                edt_single_sentTime = dialog.findViewById(R.id.single_sentTime);
-                edt_single_message = dialog.findViewById(R.id.single_message);
-
-                //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
-                edt_single_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-                edt_single_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        // TODO Auto-generated method stub
-                        if (hasFocus) {
-                            showTimePickerDialog();
-                        }
-                    }
-                });
-
-                edt_single_sentTime.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        // TODO Auto-generated method stub
-                        showTimePickerDialog();
-                    }
-                });
-                //點選選擇禮物EditText跳出選擇好友選擇器------------------------------------------------------------------------
-                edt_single_giftName.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-                edt_single_giftName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        // TODO Auto-generated method stub
-                        if (hasFocus) {
-                            Showgiftdialog();
-                        }
-                    }
-                });
-                edt_single_giftName.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        // TODO Auto-generated method stub
-                        Showgiftdialog();
-                    }
-                });
-
-                //點選取消
-                btn_can = dialog.findViewById(R.id.btn_can);
-                btn_can.setOnClickListener(new Button.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-
-                //點選確認
-                btn_ent = dialog.findViewById(R.id.btn_ent);
-                btn_ent.setOnClickListener(new Button.OnClickListener(){
-                    @Override
-                    //新增一個項目
-                    public void onClick(View view) {
-                        //抓取輸入方塊訊息
-                        single_giftName = edt_single_giftName.getText().toString();
-                        single_sentTime = edt_single_sentTime.getText().toString();
-                        single_message = edt_single_message.getText().toString();
-                       //在item內傳送文字
-                        adapter.addItem(single_sentTime+"-"+single_giftName+single_message);
-                        dialog.cancel();
-                    }
-                });
-                dialog.show();
+                //------
+                for (int i = 0; i < giftposition.length; i++) {
+                    //single_giftcheckedItems[giftposition[i]] = false;
+                }
+                boolean[] checked = new boolean[single_giftlistItems.length];
+                single_giftcheckedItems.add(checked);
+                tempGiftChecked.add(checked);
+                showDialog(true, mData.size());
             }
 
         });
 
         // 準備資料，塞項目到ArrayList裡
-        for(int i = 0; i <0; i++) {
-            mData.add("項目"+i);
+        for (int i = 0; i < 0; i++) {
+            mData.add("項目" + i);
         }
 
         // 連結元件
@@ -296,11 +236,21 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         adapter = new plan_single_adapter(mData);
         // 設置adapter給recycler_view
         recycler_view.setAdapter(adapter);
+        adapter.setOnItemClickListener(new plan_single_adapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View view, int position){
+                showDialog(false, position);
+                String data[]= {single_giftName, single_sentTime, single_message};
+                edt_single_giftName.setText(data[0]);
+                edt_single_sentTime.setText(data[1]);
+                edt_single_message.setText(data[2]);
+            }
+        });
+        //--------------------------------------
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
         edt_single_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edt_single_friend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
@@ -338,9 +288,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 showDatePickerDialog();
             }
         });
-
-
-
     }
 
     protected void onDestroy() {
@@ -350,57 +297,65 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     }
 
     //設定選擇禮物EditText傳入值---------------------------------------
-    private void Showgiftdialog(){
+    private void Showgiftdialog(final int position) {
+
+        Log.e("***", "position: "+position + "; size: "+ single_giftcheckedItems.size());
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇禮物");
 
-        mBuilder.setMultiChoiceItems(single_giftlistItems, single_giftcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        mBuilder.setMultiChoiceItems(single_giftlistItems, single_giftcheckedItems.get(position), new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+                giftposition[giftCount] = position;
+                giftCount++;
             }
         });
-
+        //清除、取消、確認
         mBuilder.setCancelable(false);
         mBuilder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
-                for (int i = 0; i < single_giftcheckedItems.length; i++) {
-                    if(single_giftcheckedItems[i]){
+                for (int i = 0; i < single_giftlistItems.length; i++) {
+                    if (single_giftcheckedItems.get(position)[i]) {
                         if (item.equals("")) item += single_giftlistItems[i];
                         else item += " , " + single_giftlistItems[i];
                     }
-                    tempGiftChecked[i]=single_giftcheckedItems[i];
+                    tempGiftChecked.get(position)[i] = single_giftcheckedItems.get(position)[i];
                 }
+                Log.e("***", "確認"+tempGiftChecked.get(position)[1]);
                 edt_single_giftName.setText(item);
             }
         });
         mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                for (int i=0; i<tempGiftChecked.length; i++) single_giftcheckedItems[i]=tempGiftChecked[i];
+                for (int i = 0; i < single_giftlistItems.length; i++) {
+                    single_giftcheckedItems.get(position)[i] = tempGiftChecked.get(position)[i];
+                }
+                Log.e("***", "取消"+tempGiftChecked.get(position)[1]);
             }
         });
 
         mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {  //清除鈕
-                for (int i = 0; i < single_giftcheckedItems.length; i++) {
-                    single_giftcheckedItems[i] = false;
-                    tempGiftChecked[i] = false;
+                for (int i = 0; i < single_giftlistItems.length; i++) {
+                    single_giftcheckedItems.get(position)[i] = false;
+                    tempGiftChecked.get(position)[i] = false;
                 }
                 edt_single_giftName.setText("");
             }
         });
 
 
-
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
     }
+
     //設定選擇好友EditText傳入值---------------------------------------
-    private void Showfrienddialog(){
+    private void Showfrienddialog() {
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇好友");
@@ -416,11 +371,11 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
                 for (int i = 0; i < single_friendcheckedItems.length; i++) {
-                    if(single_friendcheckedItems[i]){
+                    if (single_friendcheckedItems[i]) {
                         if (item.equals("")) item += single_friendlistItems[i];
                         else item += " , " + single_friendlistItems[i];
                     }
-                    tempFriendChecked[i]=single_friendcheckedItems[i];
+                    tempFriendChecked[i] = single_friendcheckedItems[i];
                 }
                 edt_single_friend.setText(item);
             }
@@ -429,7 +384,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                for (int i=0; i<tempFriendChecked.length; i++) single_friendcheckedItems[i]=tempFriendChecked[i];
+                for (int i = 0; i < tempFriendChecked.length; i++)
+                    single_friendcheckedItems[i] = tempFriendChecked[i];
             }
         });
 
@@ -448,8 +404,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
     }
+
     //設定送禮日期EditText傳入值---------------------------------------
-    private void showDatePickerDialog () {
+    private void showDatePickerDialog() {
         Calendar c = Calendar.getInstance();
         new DatePickerDialog(MakePlanSingleActivity.this, new DatePickerDialog.OnDateSetListener() {
 
@@ -465,32 +422,131 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
     }
+
     //設定送禮時間EditText傳入值---------------------------------------
-    private void showTimePickerDialog () {
+    private void showTimePickerDialog() {
         Calendar t = Calendar.getInstance();
         new TimePickerDialog(MakePlanSingleActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 edt_single_sentTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
             }
-        }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE),false).show();
+        }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false).show();
 
     }
+
     //-----------------------------------------------------------
-    public String dateAdd0(int date){
-        if(date <10){
-            return "0"+date;
-        }else{
+    public String dateAdd0(int date) {
+        if (date < 10) {
+            return "0" + date;
+        } else {
             return String.valueOf(date);
         }
     }
+
     //-----------------------------------------------------------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){ //toolbar返回建
+        if (item.getItemId() == android.R.id.home) { //toolbar返回建
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    private void showDialog(final boolean isNew, final int position) {
+        final Dialog dialog = new Dialog(MakePlanSingleActivity.this);
+        dialog.setContentView(R.layout.single_dialog);
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);//讓使用者點選背景或上一頁沒有用
+
+        //宣告
+        edt_single_giftName = dialog.findViewById(R.id.single_giftName);
+        edt_single_sentTime = dialog.findViewById(R.id.single_sentTime);
+        edt_single_message = dialog.findViewById(R.id.single_message);
+
+        //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
+        edt_single_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_single_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    showTimePickerDialog();
+                }
+            }
+        });
+
+        edt_single_sentTime.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                showTimePickerDialog();
+            }
+        });
+        //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
+        edt_single_giftName.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_single_giftName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    Showgiftdialog(position);
+                }
+            }
+        });
+        edt_single_giftName.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Showgiftdialog(position);
+            }
+        });
+
+        //點選取消
+        btn_can = dialog.findViewById(R.id.btn_can);
+        btn_can.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew){
+                    single_giftcheckedItems.remove(position);
+                    tempGiftChecked.remove(position);
+                }
+                dialog.dismiss();
+            }
+        });
+
+        //點選確認
+        btn_ent = dialog.findViewById(R.id.btn_ent);
+        btn_ent.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            //新增一個項目
+            public void onClick(View view) {
+                //抓取輸入方塊訊息
+                single_giftName = edt_single_giftName.getText().toString();
+                single_sentTime = edt_single_sentTime.getText().toString();
+                single_message = edt_single_message.getText().toString();
+
+                if (isNew) {
+
+                    adapter.addItem(single_sentTime + "-" + single_giftName + single_message);
+                }else{
+                    mData.set(position, single_sentTime + "-" + single_giftName + single_message);
+                    adapter.notifyDataSetChanged();
+                }
+                //在item內傳送文字
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
+
+
 }

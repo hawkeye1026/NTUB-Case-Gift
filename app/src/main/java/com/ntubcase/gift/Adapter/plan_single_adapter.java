@@ -4,7 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ntubcase.gift.R;
@@ -12,13 +15,19 @@ import com.ntubcase.gift.R;
 
 import java.util.List;
 
-import static android.opengl.Matrix.length;
 
-public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapter.ViewHolder> {
+
+public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapter.ViewHolder>implements Filterable{
     private List<String> mData;
+    private OnItemClickListener mOnItemClickListener;
 
     public plan_single_adapter(List<String> data) {
         mData = data;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 
 
@@ -32,14 +41,14 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
             txtItem = (TextView) itemView.findViewById(R.id.txtItem);
             btnRemove= (Button) itemView.findViewById(R.id.btnRemove);
 
-            // 點擊項目時
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(view.getContext(),
-                            "click " +getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                }
-            });
+//            // 點擊項目時
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Toast.makeText(view.getContext(),
+//                            "click " +getAdapterPosition(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
 
             // 點擊項目中的Button時
             btnRemove.setOnClickListener(new View.OnClickListener() {
@@ -65,10 +74,22 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final plan_single_adapter.ViewHolder holder, final int position) {
         // 設置txtItem要顯示的內容
+        if (mOnItemClickListener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() { //----------item點擊事件----------
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }
         holder.txtItem.setText(mData.get(position));
     }
+
+
+
+
 
     @Override
     public int getItemCount() {
@@ -93,5 +114,14 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
     public void removeItem(int position){
         mData.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+
+        this.mOnItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 }
