@@ -19,10 +19,12 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -112,12 +114,12 @@ public class MakeGiftImageActivity extends AppCompatActivity {
                 outputFile.getParentFile().mkdir();
             }
 
-            /*
+
             cam_imageUri = FileProvider.getUriForFile(
-                        MakeGiftPhotoActivity.this,
+                        MakeGiftImageActivity.this,
                         getPackageName() + ".fileprovider",
                         outputFile);
-             */
+
 
             if (currentapiVersion < 24) {
                 cam_imageUri = Uri.fromFile(outputFile);
@@ -150,7 +152,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 
                     break;
                 case OPEN_CAMERA:
-                    cam_imageUri = data.getData();
                     decodeUri(cam_imageUri);
 
                     if (currentapiVersion < 24) delDefaultSavePic(); //刪除相機自動儲存的照片
@@ -224,8 +225,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = String.valueOf(cam_imageUri);    //取得使用者輸入的禮物內容
-            filename = getFileName(cam_imageUri);
+            giftContent = getFileName(cam_imageUri);    //取得使用者輸入的禮物內容
             giftType="1";
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date =new Date();
@@ -236,7 +236,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             try{
                 if(cam_imageUri == null) {
                     //顯示提示訊息
-
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -249,7 +248,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
                 }
             },ImageFilePath.getPath(getApplicationContext(),cam_imageUri));
             //Log.v("filename_M",getPath(cam_imageUri));
-            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri),filename);
+            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri),giftContent);
 
             giftInsertImg_giftAsyncTask mgiftInsertAsyncTask = new giftInsertImg_giftAsyncTask(new giftInsertImg_giftAsyncTask.TaskListener() {
                @Override
@@ -257,7 +256,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 
                }
            });
-           mgiftInsertAsyncTask.execute(Common.insertGift, getFileName(cam_imageUri), dateTime ,giftName ,owner, giftType);
+           mgiftInsertAsyncTask.execute(Common.insertGift, giftContent, dateTime ,giftName ,owner, giftType);
 
             //-------------讀取Dialog-----------
             barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,
