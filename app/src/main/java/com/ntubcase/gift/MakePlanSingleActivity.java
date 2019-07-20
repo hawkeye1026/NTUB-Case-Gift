@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +62,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     ProgressDialog barProgressDialog;
     private RecyclerView recycler_view;
     private plan_single_adapter adapter;
-    private ArrayList<String> mData = new ArrayList<>();
+    private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String single_giftName, single_sentTime, single_message;
@@ -69,7 +70,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     //------
     private static int giftposition[];
     int giftCount = 0;
-    private List<Map<String, Object>> selectDates;
 
 
     @Override
@@ -192,8 +192,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         for (int i = 0; i < getGiftList.getGiftLength(); i++) {
             single_giftlistItems[i] = getGiftList.getGiftName(i);
         }
-//        single_giftcheckedItems = new boolean[single_giftlistItems.length];
-//        tempGiftChecked = new boolean[single_giftlistItems.length];
 
         single_giftcheckedItems = new ArrayList<boolean[]>();
         tempGiftChecked = new ArrayList<boolean[]>();
@@ -222,11 +220,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
 
         });
 
-        // 準備資料，塞項目到ArrayList裡
-        for (int i = 0; i < 0; i++) {
-            mData.add("項目" + i);
-        }
-
         // 連結元件
         recycler_view = findViewById(R.id.recycler_view);
         // 設置RecyclerView為列表型態
@@ -235,16 +228,14 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         // 將資料交給adapter
-        adapter = new plan_single_adapter(selectDates);
+        adapter = new plan_single_adapter(mData);
         // 設置adapter給recycler_view
         recycler_view.setAdapter(adapter);
         adapter.setOnItemClickListener(new plan_single_adapter.OnItemClickListener(){
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view, int position){
                 showDialog(false, position);
-
             }
-
         });
         //--------------------------------------
 
@@ -468,6 +459,14 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         edt_single_sentTime = dialog.findViewById(R.id.single_sentTime);
         edt_single_message = dialog.findViewById(R.id.single_message);
 
+        if(!isNew){ //若為編輯則設定資料
+            edt_single_giftName.setText(mData.get(position).get("giftName").toString());
+            edt_single_sentTime.setText(mData.get(position).get("sentTime").toString());
+            edt_single_message.setText(mData.get(position).get("message").toString());
+        }
+
+
+
         //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
         edt_single_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edt_single_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -530,35 +529,32 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
             //新增一個項目
             public void onClick(View view) {
                 //抓取輸入方塊訊息
-//                single_giftName = edt_single_giftName.getText().toString();
-//                single_sentTime = edt_single_sentTime.getText().toString();
-//                single_message = edt_single_message.getText().toString();
+                single_giftName = edt_single_giftName.getText().toString();
+                single_sentTime = edt_single_sentTime.getText().toString();
+                single_message = edt_single_message.getText().toString();
 
-                if (isNew) {
-                    adapter.addItem(mData);
-                    sendDialogDataToActivity(position,edt_single_giftName.getText().toString(),edt_single_sentTime.getText().toString(), edt_single_message.getText().toString());
-                }else{
-                    sendDialogDataToActivity(position,edt_single_giftName.getText().toString(),edt_single_sentTime.getText().toString(), edt_single_message.getText().toString());
-                    mData.set(position, single_sentTime + "-" + single_giftName + single_message);
+                if (isNew) {    //新增
+                    Map<String, Object> newData = new HashMap<String, Object>();
+                    newData.put("giftName", single_giftName);
+                    newData.put("sentTime", single_sentTime);
+                    newData.put("message", single_message);
+                    mData.add(newData);
+                    adapter.notifyItemInserted(mData.size());
+                    //adapter.addItem(single_sentTime + "-" + single_giftName + single_message);
+                }else{  //編輯
+                    Map<String, Object> updateData = mData.get(position);
+                    updateData.put("giftName", single_giftName);
+                    updateData.put("sentTime", single_sentTime);
+                    updateData.put("message", single_message);
+
+                    mData.set(position, updateData);
                     adapter.notifyDataSetChanged();
                 }
                 //在item內傳送文字
                 dialog.cancel();
             }
-
-
         });
         dialog.show();
     }
-
-    private void sendDialogDataToActivity(int position,String toString, String toString1, String toString2) {
-        Map<String, Object> updateData = selectDates.get(position);
-        updateData.put("giftname", toString);
-        updateData.put("sentTime", toString1);
-        updateData.put("message", toString2);
-        selectDates.set(position, updateData);
-        plan_single_adapter.class.notifyAll(); //更新資料
-    }
-
 
 }

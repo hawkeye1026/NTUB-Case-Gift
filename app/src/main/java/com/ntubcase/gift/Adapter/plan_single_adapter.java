@@ -4,32 +4,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.ntubcase.gift.R;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
-public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapter.ViewHolder>implements Filterable{
-    private List<String> mData;
-    private List<Map<String, Object>> data;
+public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapter.ViewHolder>{
+    private List<Map<String, Object>> mData;
     private OnItemClickListener mOnItemClickListener;
 
     public plan_single_adapter(List<Map<String, Object>> data) {
-        this.data = data;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return null;
+        mData = data;
     }
 
 
@@ -51,9 +40,6 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
                     removeItem(getAdapterPosition());
                 }
             });
-
-
-
 
         }
     }
@@ -77,38 +63,22 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
                 }
             });
         }
-//        holder.txtItem.setText(mData.get(position));
-        holder.txtItem.setText(data.get(position).toString());
-
+        String giftName = mData.get(position).get("giftName").toString();
+        String sentTime = mData.get(position).get("sentTime").toString();
+        String message = mData.get(position).get("message").toString();
+        holder.txtItem.setText(giftName + "; " + sentTime + "; " + message);
     }
-
-
-
 
 
     @Override
     public int getItemCount() {
-        return data.size();
-    }
-
-    // 新增項目
-    public void addItem(ArrayList<String> data) {
-        int a;
-        a = data.size();
-        if(a==0){
-            data.add(0, (Map<String, Object>) data);
-            notifyItemInserted(0);
-        }else{
-            data.add(a, (Map<String, Object>) data);
-            notifyItemInserted(a);
-        }
-
+        return mData.size();
     }
 
     // 刪除項目
     public void removeItem(int position){
         mData.remove(position);
-        notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
