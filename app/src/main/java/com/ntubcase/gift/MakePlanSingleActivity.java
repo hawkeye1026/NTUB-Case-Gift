@@ -538,6 +538,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                     adapter.addItem(mData);
                     sendDialogDataToActivity(position,edt_single_giftName.getText().toString(),edt_single_sentTime.getText().toString(), edt_single_message.getText().toString());
                 }else{
+                    sendDialogDataToActivity(position,edt_single_giftName.getText().toString(),edt_single_sentTime.getText().toString(), edt_single_message.getText().toString());
                     mData.set(position, single_sentTime + "-" + single_giftName + single_message);
                     adapter.notifyDataSetChanged();
                 }
