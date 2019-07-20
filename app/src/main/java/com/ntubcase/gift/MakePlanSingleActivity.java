@@ -241,15 +241,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         adapter.setOnItemClickListener(new plan_single_adapter.OnItemClickListener(){
             @Override
             public void onItemClick(View view, int position) {
-                private void sendDialogDataToActivity(String giftname, String sentTime, String message) {
-                    showDialog(false, position);
-                    Map<String, Object> updateData = selectDates.get(position);
-                    updateData.put("giftname", giftname);
-                    updateData.put("sentTime", sentTime);
-                    updateData.put("message", message);
-                    selectDates.set(position, updateData);
-                    MakePlanSingleActivity.notifyDataSetChanged(); //更新資料
-                }
+                showDialog(false, position);
 
             }
 
@@ -543,7 +535,8 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
 //                single_message = edt_single_message.getText().toString();
 
                 if (isNew) {
-                    sendDialogDataToActivity(edt_single_giftName.getText().toString(),edt_single_sentTime.getText().toString(), edt_single_message.getText().toString())
+                    adapter.addItem(mData);
+                    sendDialogDataToActivity(position,edt_single_giftName.getText().toString(),edt_single_sentTime.getText().toString(), edt_single_message.getText().toString());
                 }else{
                     mData.set(position, single_sentTime + "-" + single_giftName + single_message);
                     adapter.notifyDataSetChanged();
@@ -555,6 +548,15 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
 
         });
         dialog.show();
+    }
+
+    private void sendDialogDataToActivity(int position,String toString, String toString1, String toString2) {
+        Map<String, Object> updateData = selectDates.get(position);
+        updateData.put("giftname", toString);
+        updateData.put("sentTime", toString1);
+        updateData.put("message", toString2);
+        selectDates.set(position, updateData);
+        plan_single_adapter.class.notifyAll(); //更新資料
     }
 
 

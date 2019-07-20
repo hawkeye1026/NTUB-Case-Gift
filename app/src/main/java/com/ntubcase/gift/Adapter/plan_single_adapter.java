@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.R;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -91,7 +92,7 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
     }
 
     // 新增項目
-    public void addItem(List<Map<String, Object>> data) {
+    public void addItem(ArrayList<String> data) {
         int a;
         a = data.size();
         if(a==0){
