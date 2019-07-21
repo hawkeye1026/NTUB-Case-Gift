@@ -78,7 +78,7 @@ public class PlanMultiAdapter extends BaseAdapter {
     }
 
     //----------------設定grid高度-------------------------
-    public void setItemHeight(final View convertView, final int position, final ViewGroup parent){
+    public void setItemHeight(final View convertView, final int position, final ViewGroup parent, final GridView gridView){
         convertView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -86,15 +86,15 @@ public class PlanMultiAdapter extends BaseAdapter {
                         int positionRow = position / numColumns;  //此position的所在行數
                         int height = convertView.getHeight(); //此view高度
 
-                        if(height < rowsMaxHeight[positionRow]){
+                        if(height < rowsMaxHeight[positionRow]){    //高度小於同行最高
                             convertView.setLayoutParams(new GridView.LayoutParams(
                                     GridView.LayoutParams.MATCH_PARENT,
                                     rowsMaxHeight[positionRow]));
-                        } else if(height > rowsMaxHeight[positionRow]){
+                        } else if(height > rowsMaxHeight[positionRow]){ //高度大於同行最高
                             rowsMaxHeight[positionRow] = height;
 
                             for (int i = positionRow * numColumns; i < ((positionRow+1) * numColumns) && i< getCount(); i++){
-                                View view = parent.getChildAt(i);
+                                View view = parent.getChildAt(i- gridView.getFirstVisiblePosition());
                                 if (view.getHeight() != rowsMaxHeight[positionRow]){
                                     view.setLayoutParams(new GridView.LayoutParams(
                                             GridView.LayoutParams.MATCH_PARENT,
@@ -104,10 +104,26 @@ public class PlanMultiAdapter extends BaseAdapter {
                         }
 
                         Log.e("***","position: " + position +"; height: " +  height + "; maxHeight: " +  rowsMaxHeight[positionRow]);
+                        for (int j=0; j<rowsMaxHeight.length; j++) Log.e("***", j+ ": " + rowsMaxHeight[j]);
 
                         convertView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 });
+    }
+
+    //------刷新單一item-----
+    public void refreshOneView(GridView gridView, int position) {
+        int start = gridView.getFirstVisiblePosition();
+        int last = gridView.getLastVisiblePosition();
+        for (int i = start, j = last; i <= j; i++) {
+            if (position == i) {
+                View convertView = gridView.getChildAt(position - start);
+                if (convertView != null) {
+                    getView(position, convertView, gridView);
+                    break;
+                }
+            }
+        }
     }
 
 }

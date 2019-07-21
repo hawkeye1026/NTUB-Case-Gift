@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -23,6 +24,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     private List<Map<String, Object>> mFriendList;
     private List<Map<String, Object>> originalitem;
 
+    private OnItemClickListener mOnItemClickListener;
+
     public FriendListAdapter(Context context, List<Map<String, Object>> mFriendList) {
         this.context = context;
         this.mFriendList = mFriendList;
@@ -35,17 +38,27 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(final FriendListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final FriendListAdapter.ViewHolder holder, final int position) {
         holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() { //----------item點擊事件----------
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), holder.tv_nickname.getText(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (mOnItemClickListener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() { //----------item點擊事件----------
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
     @Override

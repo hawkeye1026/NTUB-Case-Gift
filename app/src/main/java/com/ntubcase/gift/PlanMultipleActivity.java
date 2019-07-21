@@ -1,6 +1,7 @@
 package com.ntubcase.gift;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -12,12 +13,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.PlanMultiAdapter;
 import com.ntubcase.gift.data.getGiftList;
@@ -133,6 +134,18 @@ public class PlanMultipleActivity extends AppCompatActivity {
         alert_time.setText(selectDates.get(gridPosition).get("time").toString());
         alert_gifts.setText(selectDates.get(gridPosition).get("gifts").toString());
 
+        alert_message.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);  //---關閉軟鍵盤---
+                    }
+                }
+            }
+        });
+
         //----------------選擇時間---------------
         alert_time.setInputType(InputType.TYPE_NULL);
         alert_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -198,10 +211,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
         updateData.put("message", newMessage);
         updateData.put("time", newTime);
         updateData.put("gifts", newGifts);
+        selectDates.set(gridPosition, updateData);  //更新item資料
 
-        selectDates.set(gridPosition, updateData);
-        planMultiAdapter.notifyDataSetChanged(); //更新資料
-        planMultiAdapter.setItemHeight(view, gridPosition, parent); //設定grid高度
+        planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
+        planMultiAdapter.setItemHeight(view, gridPosition, parent, gridView); //設定grid高度
     }
 
 
