@@ -1,6 +1,8 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ntubcase.gift.FriendActivity;
 import com.ntubcase.gift.R;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +43,12 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
     @Override
     public void onBindViewHolder(final FriendListAdapter.ViewHolder holder, int position) {
+        //getBitmapFromURL(mFriendList.get(position).get("photo").toString());
+        //if(mFriendList.get(position).get("photo").equals("")){
+        //    holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
+        //}else {
+        //    holder.iv_photo.setImageBitmap(getBitmapFromURL(mFriendList.get(position).get("photo").toString()));
+        //}
         holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());
@@ -63,6 +76,24 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
             iv_photo = (ImageView) itemView.findViewById(R.id.iv_photo);
             tv_nickname = (TextView) itemView.findViewById(R.id.tv_nickname);
             tv_email = (TextView) itemView.findViewById(R.id.tv_email);
+        }
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+
+        } catch (IOException e) {
+            // Log exception
+            e.printStackTrace();
+            return null;
         }
     }
 
