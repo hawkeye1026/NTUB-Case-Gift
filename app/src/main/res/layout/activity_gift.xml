@@ -56,55 +56,65 @@
         android:id="@+id/newGift"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
         app:menu_labels_textSize="16dp"
+        fab:menu_backgroundColor="#AB4B4B4B"
         fab:menu_labels_ellipsize="end"
-        fab:menu_labels_singleLine="true"
-        fab:menu_backgroundColor="#AB4B4B4B">
+        fab:menu_labels_singleLine="true">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_gift_camera"
-            fab:fab_size="mini"
-            fab:fab_label="@string/giftPhoto"
             fab:fab_colorNormal="@color/colorWhite"
-            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+            fab:fab_colorPressed="@color/colorPrimaryLight"
+            fab:fab_label="@string/giftPhoto"
+            fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_gift_video"
-            fab:fab_size="mini"
-            fab:fab_label="@string/giftVideo"
             fab:fab_colorNormal="@color/colorWhite"
-            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+            fab:fab_colorPressed="@color/colorPrimaryLight"
+            fab:fab_label="@string/giftVideo"
+            fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_gift_message"
-            fab:fab_size="mini"
-            fab:fab_label="@string/giftMessage"
             fab:fab_colorNormal="@color/colorWhite"
-            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+            fab:fab_colorPressed="@color/colorPrimaryLight"
+            fab:fab_label="@string/giftMessage"
+            fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabTicket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_gift_ticket"
-            fab:fab_size="mini"
-            fab:fab_label="@string/giftTicket"
             fab:fab_colorNormal="@color/colorWhite"
-            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+            fab:fab_colorPressed="@color/colorPrimaryLight"
+            fab:fab_label="@string/giftTicket"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_gift_decode"
+            fab:fab_colorNormal="@color/colorWhite"
+            fab:fab_colorPressed="@color/colorPrimaryLight"
+            fab:fab_label="@string/giftCode"
+            fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

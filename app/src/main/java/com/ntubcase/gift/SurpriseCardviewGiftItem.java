@@ -1,14 +1,14 @@
 package com.ntubcase.gift;
 
-public class surpriseCardviewGiftItem {
+public class SurpriseCardviewGiftItem {
 
     private String name;
 
-    public surpriseCardviewGiftItem() {
+    public SurpriseCardviewGiftItem() {
         super();
     }
 
-    public surpriseCardviewGiftItem( String name) {
+    public SurpriseCardviewGiftItem(String name) {
         super();
 
         this.name = name;

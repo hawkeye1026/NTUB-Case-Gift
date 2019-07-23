@@ -57,6 +57,19 @@ public class LoginActivity extends AppCompatActivity implements
         googleAccount.setGoogleSignInClient(mGoogleSignInClient);
         // [END build_client]
 
+        //---------------------------------------------------------------------------------------------------
+        Button btn_main = (Button) findViewById(R.id.btn_main);
+        btn_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
     }
 
     @Override

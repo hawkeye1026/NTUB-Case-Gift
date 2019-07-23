@@ -24,7 +24,7 @@ import com.ntubcase.gift.login_model.signOut;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView mGift, mPlan, mReceivedGift, mFriend;
+    private ImageView mGift, mPlan, mReceivedGift, mFriend, mSetting;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,11 +49,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , GiftActivity.class);
                 startActivity(intent);
-
             }
         });
 
-        //-------送禮計畫 按鈕------
+        //-------預送計畫 按鈕------
         mPlan = findViewById(R.id.mPlan);
         mPlan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,8 +82,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , FriendActivity.class);
                 startActivity(intent);
+            }
+        });
 
-
+        //-------設定 按鈕------
+        mSetting = findViewById(R.id.mSetting);
+        mSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this , SettingActivity.class);
+                startActivity(intent);
             }
         });
     }

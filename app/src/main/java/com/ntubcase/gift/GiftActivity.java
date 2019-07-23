@@ -31,7 +31,7 @@ public class GiftActivity extends AppCompatActivity {
     private ListView mListView;
     private GiftListAdapter giftListAdapter;
     private List<Map<String, Object>> mGiftsList; //禮物清單
-    private FloatingActionButton fabPhoto, fabVideo, fabMessage, fabTicket;
+    private FloatingActionButton fabPhoto, fabVideo, fabMessage, fabTicket, fabCode;
     private FloatingActionMenu newGift;
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
@@ -78,10 +78,12 @@ public class GiftActivity extends AppCompatActivity {
         fabVideo = (FloatingActionButton) findViewById(R.id.fabVideo);
         fabMessage = (FloatingActionButton) findViewById(R.id.fabMessage);
         fabTicket = (FloatingActionButton) findViewById(R.id.fabTicket);
+        fabCode = (FloatingActionButton) findViewById(R.id.fabCode);
         fabPhoto.setOnClickListener(fabClickListener);
         fabVideo.setOnClickListener(fabClickListener);
         fabMessage.setOnClickListener(fabClickListener);
         fabTicket.setOnClickListener(fabClickListener);
+        fabCode.setOnClickListener(fabClickListener);
     }
 
     //-----------------
@@ -201,6 +203,10 @@ public class GiftActivity extends AppCompatActivity {
                 case R.id.fabTicket:
                     intent = new Intent(GiftActivity.this, MakeGiftTicketActivity.class);
                     break;
+                case R.id.fabCode:
+                    intent = new Intent(GiftActivity.this, MakeGiftCodeActivity.class);
+                    break;
+
             }
 
             newGift.close(true);

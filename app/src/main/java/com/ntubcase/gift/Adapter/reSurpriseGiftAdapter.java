@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
-import com.ntubcase.gift.surpriseCardviewGiftItem;
+import com.ntubcase.gift.SurpriseCardviewGiftItem;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ import java.util.List;
 public class reSurpriseGiftAdapter extends RecyclerView.Adapter<reSurpriseGiftAdapter.ViewHolder>{
 
         private Context context;
-        private List<surpriseCardviewGiftItem> giftList;
+        private List<SurpriseCardviewGiftItem> giftList;
 
-    public reSurpriseGiftAdapter(Context context, List<surpriseCardviewGiftItem> giftList) {
+    public reSurpriseGiftAdapter(Context context, List<SurpriseCardviewGiftItem> giftList) {
             this.context = context;
             this.giftList = giftList;
         }
@@ -31,7 +31,7 @@ public class reSurpriseGiftAdapter extends RecyclerView.Adapter<reSurpriseGiftAd
 
         @Override
         public void onBindViewHolder(reSurpriseGiftAdapter.ViewHolder holder, int position) {
-            final surpriseCardviewGiftItem surpriseCardviewGiftItem = giftList.get(position);
+            final SurpriseCardviewGiftItem surpriseCardviewGiftItem = giftList.get(position);
 
             holder.giftName.setText(surpriseCardviewGiftItem.getName());
             holder.itemView.setOnClickListener(new View.OnClickListener() {

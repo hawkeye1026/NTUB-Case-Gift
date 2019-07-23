@@ -54,10 +54,10 @@ public class GiftReceivedDetailActivity extends AppCompatActivity {
 
     private void showData(){
         //cardview資料傳入---------------------------------
-        List<surpriseCardviewGiftItem> giftList = new ArrayList<>();
+        List<SurpriseCardviewGiftItem> giftList = new ArrayList<>();
 
         for(int i = 0 ;i < gifts.size(); i++){
-            giftList.add(new surpriseCardviewGiftItem(gifts.get(i).toString()));
+            giftList.add(new SurpriseCardviewGiftItem(gifts.get(i).toString()));
             Log.v("giftName", (gifts.get(i).toString()));
         }
 

@@ -107,9 +107,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                         }
                         finally{
                             barProgressDialog.dismiss();
-//                            Intent intent;
-//                            intent = new Intent(MakePlanMultipleActivity .this, loadingActivity.class);
-//                            startActivity(intent);
                             finish();
 
                         }
@@ -156,9 +153,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                         }
                         finally{
                             barProgressDialog.dismiss();
-                            /*Intent intent;
-                            intent = new Intent(MakePlanMultipleActivity .this, loadingActivity.class);
-                            startActivity(intent);*/
                             finish();
 
                         }

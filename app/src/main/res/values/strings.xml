@@ -7,6 +7,7 @@
     <string name="mReceivedGift">收禮箱</string>
     <string name="mPlan">預送計畫</string>
     <string name="mFriend">我的好友</string>
+    <string name="mSetting">設定</string>
 
     <!-- Detail-->
     <string name="giftDetail">禮物細節</string>
@@ -18,7 +19,7 @@
     <string name="giftVideo">影片</string>
     <string name="giftMessage">悄悄話</string>
     <string name="giftTicket">兌換券</string>
-    <string name="giftCode">解碼表</string>
+    <string name="giftCode">密碼表</string>
 
     <!-- 禮物模式Aarray-->
     <string-array name="gift_type">
