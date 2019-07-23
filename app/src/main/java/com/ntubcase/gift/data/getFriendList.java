@@ -34,7 +34,7 @@ public class getFriendList {
                     for (int i = 0 ; i <friendLength ; i++){
                         friendid[i] = jsonArray.getJSONObject(i).getString("friendid");
                         friendName[i] = jsonArray.getJSONObject(i).getString("nickname");
-                        friendMail[i] = jsonArray.getJSONObject(i).getString("email");
+                        friendMail[i] = jsonArray.getJSONObject(i).getString("mail");
                     }
                 } catch (Exception e) {
                 }
