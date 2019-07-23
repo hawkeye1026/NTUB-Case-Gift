@@ -1,52 +1,120 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="330dp"
+
+    android:background="@drawable/bg_dialog"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    >
-    <EditText
-        android:id="@+id/single_giftName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="禮物名稱"></EditText>
-    <EditText
-        android:id="@+id/single_sentTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:hint="送禮時間">
-    </EditText>
-    <EditText
-        android:id="@+id/single_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="訊息">></EditText>
+    android:orientation="vertical"
+    android:layout_margin="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
+
+        <ImageView
+            android:id="@+id/gift"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.2"
+            app:srcCompat="@drawable/gift" />
+
+        <EditText
+            android:id="@+id/single_giftName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.8"
+            android:hint="禮物名稱"></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        >
+
+        <ImageView
+            android:id="@+id/time"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.2"
+            app:srcCompat="@drawable/clock" />
+
+        <EditText
+            android:id="@+id/single_sentTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.8"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="送禮時間"></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
+
+        <ImageView
+            android:id="@+id/message"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.2"
+            app:srcCompat="@drawable/talk" />
+
+        <EditText
+            android:id="@+id/single_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.8"
+            android:hint="訊息">>
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_can"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:text="取消"
             android:layout_width="0dp"
-            android:layout_margin="10dp"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="5"
+
+            android:background="@drawable/bg_cancel" />
 
         <Button
             android:id="@+id/btn_ent"
-            android:layout_weight="5"
-            android:layout_height="wrap_content"
-            android:text="確認"
             android:layout_width="0dp"
-            android:layout_margin="10dp"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="5"
+
+            android:background="@drawable/bg_enter" />
 
     </LinearLayout>
 
