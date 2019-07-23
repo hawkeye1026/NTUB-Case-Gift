@@ -1,5 +1,7 @@
 package com.ntubcase.gift;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,10 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.FriendListAdapter;
 import com.ntubcase.gift.data.getFriendList;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +88,8 @@ public class FriendActivity extends AppCompatActivity {
 
         for(int i=0; i<mFriendsData.length; i++) {
             mFriends = new HashMap<String, Object>();
+            //Bitmap img = getBitmapFromURL(mFriendsData[i][0]);
+            //mFriends.put("photo", img);
             mFriends.put("photo", mFriendsData[i][0]);
             mFriends.put("nickname", mFriendsData[i][1]);
             mFriends.put("email", mFriendsData[i][2]);
@@ -94,6 +102,24 @@ public class FriendActivity extends AppCompatActivity {
 
         setSearch_function(); // 設定searchView的文字輸入監聽
         super.onResume();
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+
+        } catch (IOException e) {
+            // Log exception
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // ----------------設定searchView的文字輸入監聽---------------

@@ -44,12 +44,14 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     @Override
     public void onBindViewHolder(final FriendListAdapter.ViewHolder holder, int position) {
         //getBitmapFromURL(mFriendList.get(position).get("photo").toString());
-        //if(mFriendList.get(position).get("photo").equals("")){
+        //if(mFriendList.get(position).get("photo").equals(null)){
         //    holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
         //}else {
-        //    holder.iv_photo.setImageBitmap(getBitmapFromURL(mFriendList.get(position).get("photo").toString()));
+        //    holder.iv_photo.setImageBitmap((Bitmap) mFriendList.get(position).get("photo"));
         //}
-        holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
+        //holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
+
+        holder.iv_photo.setImageBitmap(getBitmapFromURL(mFriendList.get(position).get("photo").toString()));
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());
 
