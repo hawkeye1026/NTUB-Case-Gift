@@ -213,8 +213,14 @@ public class PlanMultipleActivity extends AppCompatActivity {
         updateData.put("gifts", newGifts);
         selectDates.set(gridPosition, updateData);  //更新item資料
 
-        planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
-        planMultiAdapter.setItemHeight(view, gridPosition, parent, gridView); //設定grid高度
+        if (newMessage.equals("") && newTime.equals("") && newGifts.equals("")) {
+            planMultiAdapter.checkMaxHeight(false, gridPosition);
+        }else {
+            planMultiAdapter.checkMaxHeight(true, gridPosition);
+        }
+
+        planMultiAdapter.notifyDataSetChanged();
+        //planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
     }
 
 
