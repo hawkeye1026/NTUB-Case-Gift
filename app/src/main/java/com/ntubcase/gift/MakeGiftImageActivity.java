@@ -44,6 +44,9 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -91,14 +94,32 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             Bundle bundle = this.getIntent().getExtras();
             int position =Integer.valueOf( bundle.getString("position"));
             //-------圖片網址
-            Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
-            Log.v("Gift",Common.imgPath + getGiftList.getGift(position));
+            Uri imageURI = Uri.parse(Common.imgPath + "1559909992170.jpg");
+            Log.v("Gift",Common.imgPath + "1559909992170.jpg");
             et_giftName.setText( getGiftList.getGiftName(position));
-            iv_image.setImageURI(imageURI);
+//            iv_image.setImageURI(imageURI);
+            iv_image.setImageBitmap(GetURLBitmap(new URL(Common.imgPath + "1559909992170.jpg")));
         }catch (Exception e){
 
         }
         checkPermission();  //確認權限
+    }
+
+    public static Bitmap GetURLBitmap(URL url)
+    {
+        try
+        {
+            URLConnection conn = url.openConnection();
+            conn.connect();
+            InputStream isCover = conn.getInputStream();
+            Bitmap bmpCover = BitmapFactory.decodeStream(isCover);
+            isCover.close();
+            return bmpCover;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     private static final int SELECT_IMAGE = 0; //相簿
