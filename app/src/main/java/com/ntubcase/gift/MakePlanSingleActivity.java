@@ -46,8 +46,8 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     int a=0;
     String[] single_giftlistItems = new String[getGiftList.getGiftLength()];
-    List<boolean[]> single_giftcheckedItems;
-    List<boolean[]> tempGiftChecked;
+    public static List<boolean[]> single_giftcheckedItems;
+    public static List<boolean[]> tempGiftChecked;
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] single_friendcheckedItems, tempFriendChecked;
@@ -209,12 +209,13 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //------
-                for (int i = 0; i < giftposition.length; i++) {
-                    //single_giftcheckedItems[giftposition[i]] = false;
-                }
+
                 boolean[] checked = new boolean[single_giftlistItems.length];
                 single_giftcheckedItems.add(checked);
                 tempGiftChecked.add(checked);
+                for (int i = 0; i < giftposition.length; i++) {
+                    checked[giftposition[i]] = false;
+                }
                 showDialog(true, mData.size());
             }
 
@@ -237,6 +238,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 showDialog(false, position);
             }
         });
+
         //--------------------------------------
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
@@ -310,12 +312,15 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 String item = "";
                 for (int i = 0; i < single_giftlistItems.length; i++) {
                     if (single_giftcheckedItems.get(position)[i]) {
-                        if (item.equals("")) item += single_giftlistItems[i];
-                        else item += " , " + single_giftlistItems[i];
+                        if (item.equals("")){ item += single_giftlistItems[i];
+                        Log.e("***", "if-item"+item);
+                        }else{ item += " , " + single_giftlistItems[i];
+                        Log.e("***", "else-item"+item);}
                     }
                     tempGiftChecked.get(position)[i] = single_giftcheckedItems.get(position)[i];
+                    Log.e("***", "item"+item);
                 }
-                Log.e("***", "確認"+tempGiftChecked.get(position)[1]);
+
                 edt_single_giftName.setText(item);
             }
         });
@@ -446,7 +451,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     }
 
 
-
+    //跳出送禮輸入窗
     private void showDialog(final boolean isNew, final int position) {
         final Dialog dialog = new Dialog(MakePlanSingleActivity.this);
         dialog.setContentView(R.layout.single_dialog);
@@ -464,8 +469,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
             edt_single_sentTime.setText(mData.get(position).get("sentTime").toString());
             edt_single_message.setText(mData.get(position).get("message").toString());
         }
-
-
 
         //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
         edt_single_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
@@ -536,6 +539,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 if (isNew) {    //新增
                     Map<String, Object> newData = new HashMap<String, Object>();
                     newData.put("giftName", single_giftName);
+
                     newData.put("sentTime", single_sentTime);
                     newData.put("message", single_message);
                     mData.add(newData);

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.ntubcase.gift.MakePlanSingleActivity;
 import com.ntubcase.gift.R;
 
 
@@ -67,6 +69,7 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
         String sentTime = mData.get(position).get("sentTime").toString();
         String message = mData.get(position).get("message").toString();
         holder.txtItem.setText(giftName + "; " + sentTime + "; " + message);
+
     }
 
 
@@ -78,6 +81,8 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
     // 刪除項目
     public void removeItem(int position){
         mData.remove(position);
+        MakePlanSingleActivity.single_giftcheckedItems.remove(position);
+        MakePlanSingleActivity.tempGiftChecked.remove(position);
         notifyDataSetChanged();
     }
 

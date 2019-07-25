@@ -85,7 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="0.8"
-            android:hint="訊息">>
+            android:hint="訊息"
+            android:maxLines="3">
         </EditText>
     </LinearLayout>
 
