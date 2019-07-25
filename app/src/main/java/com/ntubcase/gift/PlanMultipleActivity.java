@@ -119,7 +119,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
         // create an alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("請輸入該日規劃");
+        String[] mdate = selectDates.get(gridPosition).get("date").toString().split("-");
+        builder.setTitle("請輸入"+ mdate[1] + "月" + mdate[2] +"日規劃");
 
         // set the custom layout
         final View customLayout = getLayoutInflater().inflate(R.layout.plan_multi_alert_layout, null);
@@ -213,14 +214,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         updateData.put("gifts", newGifts);
         selectDates.set(gridPosition, updateData);  //更新item資料
 
-        if (newMessage.equals("") && newTime.equals("") && newGifts.equals("")) {
-            planMultiAdapter.checkMaxHeight(false, gridPosition);
-        }else {
-            planMultiAdapter.checkMaxHeight(true, gridPosition);
-        }
-
-        planMultiAdapter.notifyDataSetChanged();
-        //planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
+        planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
     }
 
 
