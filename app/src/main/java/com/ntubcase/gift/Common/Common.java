@@ -25,6 +25,10 @@ public class Common {
     //-------------------------------------Received
     public static String spGiftReceivedDetail="http://140.131.114.156/NTUB_gift_server/spGiftReceivedDetail.php?";
 
+
+    //------------------------------------imagePath
+    public static String imgPath="http://140.131.114.156/NTUB_gift_server/giftImg/";
+
     //-------以下為wayne保留使用
 //    public static String insertGiftImg_gift="http://140.131.114.156/NTUB_gift_server/insertGiftImg_gift.php";
 //    public static String test="http://140.131.114.156/NTUB_gift_server/test.php?";

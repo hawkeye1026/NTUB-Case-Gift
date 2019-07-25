@@ -130,14 +130,48 @@ public class GiftActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent();
-                intent = new Intent(GiftActivity.this, GiftDetailActivity.class);
+                Intent intent = new Intent() ;
                 Bundle bundle = new Bundle();
-                //bundle.putString("name",((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString());
-                //bundle.putString("content","禮物內容");
-                bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                Log.v("test",mGiftsList.get(position).get("type").toString());
+                Log.v("test",position+"");
+                /*
+                switch (mGiftsList.get(position).get("type").toString()) {
+                    case "1":
+                        //------------照片
+                        intent = new Intent(GiftActivity.this, MakeGiftImageActivity.class);
+                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        bundle.putString("position",String.valueOf(position));
+                        break;
+                    case "2":
+                        //------------影片
+                        intent = new Intent(GiftActivity.this, MakeGiftVideoActivity.class);
+                        bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        bundle.putString("position",String.valueOf(position));
+                        break;
+                    case "3":
+                        //------------悄悄話
+                        intent = new Intent(GiftActivity.this, MakeGiftMessageActivity.class);
+                        bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        bundle.putString("position",String.valueOf(position));
+                        break;
+                    case "4":
+                        //------------兌換券
+                        intent = new Intent(GiftActivity.this, MakeGiftTicketActivity.class);
+                        bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        bundle.putString("position",String.valueOf(position));
+                        break;
+                    case "5":
+                        //------------兌換券
+                        intent = new Intent(GiftActivity.this, MakeGiftCodeActivity.class);
+                        bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        bundle.putString("position",String.valueOf(position));
+                        break;
+                }
+
+
                 intent.putExtras(bundle);
                 startActivity(intent);
+                */
             }
         });
 

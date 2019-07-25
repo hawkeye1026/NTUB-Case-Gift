@@ -52,7 +52,7 @@ public class getGiftList {
 //                        Log.v("giftid",giftid[i]);
                         switch(type[i]){
                             case "1":
-                                type[i] = "照片";
+                                //type[i] = "照片";
                                 break;
                             case "2":
                                 type[i] = "影片";
@@ -85,6 +85,7 @@ public class getGiftList {
     public static String getType(int i){
         return type[i];
     }
+
     public static String getGiftName(int i){
         return giftName[i];
     }
