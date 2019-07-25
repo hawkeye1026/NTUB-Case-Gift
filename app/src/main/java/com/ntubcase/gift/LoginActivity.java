@@ -23,6 +23,9 @@ import com.ntubcase.gift.login_model.signOut;
 
 import com.ntubcase.gift.login_model.googleAccount;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener  {
@@ -33,12 +36,17 @@ public class LoginActivity extends AppCompatActivity implements
     private static GoogleSignInClient mGoogleSignInClient;
 
     private Button btn_main;
-    private static String user_birthday = "1998-01-01";
+    private static String user_birthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+        Date date =new Date();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        user_birthday = sdFormat.format(date);
 
         //-------------登入按鈕
         SignInButton signInButton = findViewById(R.id.sign_in_button);

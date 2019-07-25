@@ -134,7 +134,7 @@ public class GiftActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 Log.v("test",mGiftsList.get(position).get("type").toString());
                 Log.v("test",position+"");
-                /*
+
                 switch (mGiftsList.get(position).get("type").toString()) {
                     case "1":
                         //------------照片
@@ -171,7 +171,7 @@ public class GiftActivity extends AppCompatActivity {
 
                 intent.putExtras(bundle);
                 startActivity(intent);
-                */
+
             }
         });
 
