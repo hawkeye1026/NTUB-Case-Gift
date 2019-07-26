@@ -39,8 +39,9 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private TextView tv_receiveFriend;
 
     private String planName, receiveFriend, startDate, endDate, message; //------bundle傳遞的資料
-    private Date dateStart, dateEnd;
+    private Date dateStart, dateEnd, selectTime;
     private List<Map<String, Object>> selectDates; //選取的時間區段
+    private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     //-----cutomlayout內物件
     private EditText alert_message;
@@ -221,10 +222,18 @@ public class PlanMultipleActivity extends AppCompatActivity {
     //--------------顯示TimePicker------------------
     private void showTimePickerDialog () {
         Calendar t = Calendar.getInstance();
+
+        if (selectTime!=null) t.setTime(selectTime);  //取得上次選的時間
+
         new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                alert_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+                try {
+                    alert_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+                    selectTime = sdfT.parse(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE),false).show();
     }

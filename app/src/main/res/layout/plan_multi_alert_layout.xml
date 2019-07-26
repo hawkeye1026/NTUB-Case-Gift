@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:text="留言："
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
 
         <EditText
             android:id="@+id/alert_message"
@@ -42,7 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:text="送禮時間："
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
 
         <EditText
             android:id="@+id/alert_time"
@@ -67,7 +69,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:text="選擇禮物："
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
 
         <EditText
             android:id="@+id/alert_gifts"

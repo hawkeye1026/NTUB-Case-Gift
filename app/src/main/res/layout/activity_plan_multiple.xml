@@ -14,14 +14,16 @@
         android:layout_height="wrap_content"
         android:text="To. "
         android:textSize="20dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="選擇禮物:"
         android:textSize="20dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp"
+        android:textColor="@android:color/black"/>
 
     <GridView
         android:id="@+id/gridView"

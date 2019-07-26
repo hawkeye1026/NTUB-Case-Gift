@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,175 +8,168 @@
     tools:context=".MakePlanMultipleActivity"
     android:padding="10dp">
 
-    <ScrollView
-        android:id="@+id/scrollview"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--android:focusable="true"-->
+        <!--android:focusableInTouchMode="true"-->
 
+        <!--計畫名稱-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="計畫名稱："
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+            <EditText
+                android:id="@+id/add_multi_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:ems="10"
+                android:hint="輸入計畫名稱"
+                android:inputType="textPersonName" />
+
+        </LinearLayout>
+
+        <!--收禮人-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="收禮人："
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+            <EditText
+                android:id="@+id/add_multi_friend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="7"
+                android:hint="選擇收禮人" />
+
+        </LinearLayout>
+
+        <!--規劃期間-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:padding="10dp">
 
-            <!--計畫名稱-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="規劃期間："
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/black"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10px">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="計畫名稱："
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/add_multi_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:ems="10"
-                    android:hint="輸入計畫名稱"
-                    android:inputType="textPersonName" />
-
-            </LinearLayout>
-
-            <!--收禮人-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10px">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="收禮人："
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/add_multi_friend"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_weight="7"
-                    android:hint="選擇收禮人" />
-
-            </LinearLayout>
-
-            <!--送禮日期-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10px">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="送禮日期："
-                    android:textSize="18sp" />
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp">
 
                 <EditText
                     android:id="@+id/add_multi_dateS"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
+                    android:layout_weight="5"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="輸入送禮日期"
-                    android:inputType="none"></EditText>
-
-            </LinearLayout>
-
-            <!--結束日期-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10px">
+                    android:inputType="none"
+                    android:gravity="center"/>
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="結束日期："
-                    android:textSize="18sp" />
+                    android:gravity="center"
+                    android:text="~"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@android:color/black"/>
 
                 <EditText
                     android:id="@+id/add_multi_dateE"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
+                    android:layout_weight="5"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="輸入結束日期"
-                    android:inputType="none"></EditText>
-
-            </LinearLayout>
-
-            <!--留言板-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                android:padding="10px">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:text="祝福："
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/add_multi_message"
-                    android:layout_width="0dp"
-                    android:layout_height="170dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="7"
-                    android:background="@drawable/bg_message"
-                    android:ems="10"
-                    android:gravity="top|left"
-                    android:inputType="textMultiLine"
-                    android:singleLine="false"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:inputType="none"
+                    android:gravity="center"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
-
-    <!--按鈕-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <Button
-            android:id="@+id/btn_plan_next"
+        <!--留言板-->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@drawable/bg_normalbutton"
-            android:text="下一步"
-            android:textColor="#FFF"
-            android:textSize="18sp" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:text="祝福："
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+            <EditText
+                android:id="@+id/add_multi_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="7"
+                android:background="@drawable/bg_message"
+                android:ems="10"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:singleLine="false"
+                android:lines="5"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:scrollbars="vertical"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btn_plan_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_normalbutton"
+        android:text="下一步"
+        android:textColor="#FFF"
+        android:textSize="18sp" />
+
+</RelativeLayout>

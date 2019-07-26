@@ -26,6 +26,7 @@ import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getPlanList;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,13 +41,10 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     //----------------------------------------------------------------------------------------------
     private static String[] friendid = new String[100];
     private static int friendidPositionIndex = 0 ;
-    private EditText add_multi_name;
-    private EditText add_multi_message;
-    private EditText add_multi_friend;
-    private EditText add_multi_dateS ;
-    private EditText add_multi_dateE ;
-    //----------------------------------------------------------------------------------------------
-    ProgressDialog barProgressDialog;
+    private EditText add_multi_name,add_multi_message,add_multi_friend,add_multi_dateS,add_multi_dateE;
+
+    private Date selectStartDate, selectEndDate;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,17 +141,22 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(MakePlanMultipleActivity .this, PlanMultipleActivity.class);
+                if (selectStartDate==null || selectEndDate==null){
+                    Toast.makeText(MakePlanMultipleActivity.this,
+                            "請設定規劃期間", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent;
+                    intent = new Intent(MakePlanMultipleActivity .this, PlanMultipleActivity.class);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("planName", add_multi_name.getText().toString());
-                bundle.putString("receiveFriend", add_multi_friend.getText().toString());
-                bundle.putString("startDate", add_multi_dateS.getText().toString());
-                bundle.putString("endDate", add_multi_dateE.getText().toString());
-                bundle.putString("message", add_multi_message.getText().toString());
-                intent.putExtras(bundle);
-                startActivity(intent);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("planName", add_multi_name.getText().toString());
+                    bundle.putString("receiveFriend", add_multi_friend.getText().toString());
+                    bundle.putString("startDate", add_multi_dateS.getText().toString());
+                    bundle.putString("endDate", add_multi_dateE.getText().toString());
+                    bundle.putString("message", add_multi_message.getText().toString());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -217,26 +220,59 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     //設定送禮日期EditText傳入值---------------------------------------
     private void showDateSPickerDialog () {
         Calendar c = Calendar.getInstance();
-        new DatePickerDialog(MakePlanMultipleActivity.this, new DatePickerDialog.OnDateSetListener() {
 
+        if (selectStartDate!=null) c.setTime(selectStartDate);  //取得上次選的日期
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanMultipleActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                add_multi_dateS.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-            }
-        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+                try {
+                    add_multi_dateS.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    selectStartDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
 
+                    if (selectEndDate!=null && selectStartDate.after(selectEndDate)){ //若開始日期比結束日期晚
+                        selectEndDate = selectStartDate;
+                        add_multi_dateE.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        datePickerDialog.show();
     }
 
     //設定結束日期EditText傳入值---------------------------------------
     private void showDateEPickerDialog () {
         Calendar c = Calendar.getInstance();
-        new DatePickerDialog(MakePlanMultipleActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+        if (selectEndDate!=null) c.setTime(selectEndDate);  //取得上次選的日期
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanMultipleActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                add_multi_dateE.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-            }
-        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+                try {
+                    add_multi_dateE.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    selectEndDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
 
+                    if (selectStartDate!=null && !selectEndDate.after(selectStartDate)){ //若結束日期比開始日期早
+                        selectStartDate = selectEndDate;
+                        add_multi_dateS.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+
+        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        datePickerDialog.show();
     }
 
     //-----------------------------------------------------------
