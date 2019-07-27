@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -195,16 +196,40 @@ public class PlanMultipleActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNeutralButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
 
+        builder.setNeutralButton("刪除規劃", null);
+
         // create and show the alert dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        final AlertDialog mDialog = builder.create();
+        mDialog.show();
+
+        mDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(PlanMultipleActivity.this)
+                        .setTitle("您確定要刪除此規劃嗎?")
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sendDialogDataToActivity(view, gridPosition, parent,"", "", "");
+                                mDialog.dismiss();
+                            }
+                        })
+                        .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
+            }
+        });
+
     }
 
     //--------------------- 處理AlertDialog回傳的資料-----------------------------
