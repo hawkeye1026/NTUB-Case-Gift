@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,6 +28,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,12 +42,16 @@ import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_giftAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_imageAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.login_model.googleAccount;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -57,7 +65,8 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private static String giftName, giftContent;
     private String filename;
     protected static Date date =new Date();
-    protected static String owner = googleAccount.getUserName();
+    protected static String owner = "test";
+//    protected static String owner = googleAccount.getUserName()
     protected static String dateTime, giftType;
     ProgressDialog barProgressDialog;
 
@@ -72,7 +81,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
 
-        //---------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         iv_image =(ImageView) findViewById(R.id.iv_image);
         btn_save = findViewById(R.id.btn_save);
@@ -84,6 +93,24 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         btn_selectImage.setOnClickListener(selectImageClickListener); //設置監聽器
         btn_openCamera = (Button) findViewById(R.id.btn_openCamera);
         btn_openCamera.setOnClickListener(openCameraClickListener); //設置監聽器
+
+        try{
+            //-----判斷是否為修改
+            Bundle bundle = this.getIntent().getExtras();
+            //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
+            int position =Integer.valueOf( bundle.getString("position"));
+
+            //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
+            Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
+            Log.v("gift",Common.imgPath + getGiftList.getGift(position));
+            Picasso.get().load(imageURI).into(iv_image);
+            //-------set該禮物名稱
+            et_giftName.setText( getGiftList.getGiftName(position));
+
+            //--------
+        }catch (Exception e){
+
+        }
         checkPermission();  //確認權限
     }
 
@@ -136,6 +163,55 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             startActivityForResult(tTntent,OPEN_CAMERA); //啟動照相
         }
     };
+
+    //-------------------------------儲存按鈕 監聽器----------------------------------------
+    private View.OnClickListener saveClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            uploadImage();
+
+            //-------------讀取Dialog-----------
+            barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,
+                    "讀取中", "請等待...",true);
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try{
+                        //uploadFile(imagepath);
+                        getGiftList.getJSON();
+                        Thread.sleep(1000);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    finally{
+                        barProgressDialog.dismiss();
+                        finish();
+                    }
+                }
+            }).start();
+            //-------------結束Dialog-----------
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+        }
+    };
+    //-------------------------------結束儲存按鈕 監聽器----------------------------------------
+
+    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
+    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //上傳圖片
+            uploadImage();
+
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            Intent intent;
+            intent = new Intent(MakeGiftImageActivity.this, PlanActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
+    //-------------------------------結束製作計畫按鈕 監聽器----------------------------------------
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -220,97 +296,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         }
     }
 
-    //-------------------------------儲存按鈕 監聽器----------------------------------------
-    private View.OnClickListener saveClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = getFileName(cam_imageUri);    //取得使用者輸入的禮物內容
-            giftType="1";
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date =new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
 
-            //若沒有選擇照片，跳出提醒
-            try{
-                if(cam_imageUri == null) {
-                    //顯示提示訊息
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            giftInsertImg_imageAsyncTask mGiftInsertImgAsyncTask = new giftInsertImg_imageAsyncTask(new giftInsertImg_imageAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            },ImageFilePath.getPath(getApplicationContext(),cam_imageUri));
-            //Log.v("filename_M",getPath(cam_imageUri));
-            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri),giftContent);
-
-            giftInsertImg_giftAsyncTask mgiftInsertAsyncTask = new giftInsertImg_giftAsyncTask(new giftInsertImg_giftAsyncTask.TaskListener() {
-               @Override
-               public void onFinished(String result) {
-
-               }
-           });
-           mgiftInsertAsyncTask.execute(Common.insertGift, giftContent, dateTime ,giftName ,owner, giftType);
-
-            //-------------讀取Dialog-----------
-            barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,
-                    "讀取中", "請等待...",true);
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    try{
-                        //uploadFile(imagepath);
-                        getGiftList.getJSON();
-                        Thread.sleep(1000);
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-                    finally{
-                        barProgressDialog.dismiss();
-                        finish();
-                    }
-                }
-            }).start();
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
-    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = "照片";    //取得使用者輸入的禮物內容
-            giftType="1";
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date =new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
-
-
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-            Intent intent;
-            intent = new Intent(MakeGiftImageActivity.this, PlanActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    };
 
     String getFileName(Uri uri){
         String result = null;
@@ -370,6 +356,42 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
     }
+    public void uploadImage(){
 
+        //--------若沒有選擇照片，跳出提醒
+        try{
+            if(cam_imageUri == null) {
+                //顯示提示訊息
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
+        giftContent = getFileName(cam_imageUri);    //取得使用者輸入的禮物內容
+        giftType="1";
+        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+        Date date =new Date();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        dateTime = sdFormat.format(date);
+
+        //------------------------------上傳禮物圖片
+        giftInsertImg_imageAsyncTask mGiftInsertImgAsyncTask = new giftInsertImg_imageAsyncTask(new giftInsertImg_imageAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+
+            }
+        },ImageFilePath.getPath(getApplicationContext(),cam_imageUri));
+        mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri),giftContent);
+
+        //------------------------------上傳禮物資料
+        giftInsertImg_giftAsyncTask mgiftInsertAsyncTask = new giftInsertImg_giftAsyncTask(new giftInsertImg_giftAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+
+            }
+        });
+        mgiftInsertAsyncTask.execute(Common.insertGift, giftContent, dateTime ,giftName ,owner, giftType);
+
+    }
 
 }

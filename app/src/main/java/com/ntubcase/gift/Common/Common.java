@@ -14,7 +14,7 @@ public class Common {
     public static String login ="http://140.131.114.156/NTUB_gift_server/login.php?";
     //-------------------------------------gift
     public static String insertGift="http://140.131.114.156/NTUB_gift_server/insertGift.php?";                  //上傳圖片_資料表
-    public static String insertGiftImg_image="http://140.131.114.156/NTUB_gift_server/insertGiftImg_image.php"; //上傳圖片_圖片擋
+    public static String insertGiftImg_image="http://140.131.114.156/NTUB_gift_server/insertGiftImg.php"; //上傳圖片_圖片擋
     //-------------------------------------gift_detail
     public static String giftDetail="http://140.131.114.156/NTUB_gift_server/giftDetail.php?";
     //-------------------------------------friend
@@ -24,6 +24,10 @@ public class Common {
     public static String spPalnDetail="http://140.131.114.156/NTUB_gift_server/spPlanDetail.php?";
     //-------------------------------------Received
     public static String spGiftReceivedDetail="http://140.131.114.156/NTUB_gift_server/spGiftReceivedDetail.php?";
+
+
+    //------------------------------------imagePath
+    public static String imgPath="http://140.131.114.156/NTUB_gift_server/giftImg/";
 
     //-------以下為wayne保留使用
 //    public static String insertGiftImg_gift="http://140.131.114.156/NTUB_gift_server/insertGiftImg_gift.php";
