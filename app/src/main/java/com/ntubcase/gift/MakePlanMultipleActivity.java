@@ -20,7 +20,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.planUpdateAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.planUpdateAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getGiftReceived;

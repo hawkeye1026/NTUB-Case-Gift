@@ -90,7 +90,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         edt_single_name = findViewById(R.id.add_surprise_name);
         edt_single_date = findViewById(R.id.add_surprise_date);
         edt_single_friend = findViewById(R.id.add_surprise_friend);
-        edt_single_message = findViewById(R.id.add_surprice_message);
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
         txtItem = findViewById(R.id.txtItem);
