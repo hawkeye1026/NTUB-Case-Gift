@@ -15,6 +15,7 @@ public class Common {
     //-------------------------------------gift
     public static String insertGift="http://140.131.114.156/NTUB_gift_server/insertGift.php?";                  //上傳圖片_資料表
     public static String insertGiftImg_image="http://140.131.114.156/NTUB_gift_server/insertGiftImg.php"; //上傳圖片_圖片擋
+    public static String insertGiftCode="http://140.131.114.156/NTUB_gift_server/insertGiftCode.php?";                  //上傳圖片_資料表
     //-------------------------------------gift_detail
     public static String giftDetail="http://140.131.114.156/NTUB_gift_server/giftDetail.php?";
     //-------------------------------------friend

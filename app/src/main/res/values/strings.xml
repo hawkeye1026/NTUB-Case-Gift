@@ -63,5 +63,7 @@
 
     <!--製作禮物-->
     <string name="enterGiftName">請輸入禮物名稱</string>
+    <string name="enterMainCode">請輸入秘密代碼</string>
+    <string name="enterMatchCode">請輸入對應訊息</string>
 
 </resources>

@@ -63,6 +63,9 @@ public class getGiftList {
                             case "4":
                                 type[i] = "兌換券";
                                 break;
+                            case "5":
+                                type[i] = "密碼表";
+                                break;
                         }
                     }
 //                    Log.v("strArr", Arrays.toString(getGiftList.getGiftNmaeArr()));
