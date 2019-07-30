@@ -14,9 +14,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".PlanMultipleActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".MakeGiftCodeActivity"></activity>
         <activity android:name=".SettingActivity" />
-        <activity android:name=".PlanMultipleActivity" />
         <activity android:name=".MakeGiftMessageActivity" />
         <activity android:name=".MakeGiftVideoActivity" />
         <activity android:name=".MakeGiftImageActivity" />
@@ -26,7 +28,9 @@
         <activity android:name=".PlanDetailActivity" />
         <activity android:name=".GiftReceivedDetailActivity" />
         <activity android:name=".GiftDetailActivity" />
-        <activity android:name=".MakePlanMultipleActivity" />
+        <activity
+            android:name=".MakePlanMultipleActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".MakePlanSingleActivity" />
         <activity android:name=".PlanActivity" />
         <activity android:name=".GiftActivity" />

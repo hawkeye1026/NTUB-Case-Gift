@@ -1,25 +1,19 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ntubcase.gift.FriendActivity;
 import com.ntubcase.gift.R;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +23,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     private Context context;
     private List<Map<String, Object>> mFriendList;
     private List<Map<String, Object>> originalitem;
+
+    private OnItemClickListener mOnItemClickListener;
 
     public FriendListAdapter(Context context, List<Map<String, Object>> mFriendList) {
         this.context = context;
@@ -42,25 +38,27 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(final FriendListAdapter.ViewHolder holder, int position) {
-        //getBitmapFromURL(mFriendList.get(position).get("photo").toString());
-        //if(mFriendList.get(position).get("photo").equals(null)){
-        //    holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
-        //}else {
-        //    holder.iv_photo.setImageBitmap((Bitmap) mFriendList.get(position).get("photo"));
-        //}
-        //holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
-
-        holder.iv_photo.setImageBitmap(getBitmapFromURL(mFriendList.get(position).get("photo").toString()));
+    public void onBindViewHolder(final FriendListAdapter.ViewHolder holder, final int position) {
+        holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() { //----------item點擊事件----------
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), holder.tv_nickname.getText(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (mOnItemClickListener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() { //----------item點擊事件----------
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
     @Override
@@ -78,24 +76,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
             iv_photo = (ImageView) itemView.findViewById(R.id.iv_photo);
             tv_nickname = (TextView) itemView.findViewById(R.id.tv_nickname);
             tv_email = (TextView) itemView.findViewById(R.id.tv_email);
-        }
-    }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-
-        } catch (IOException e) {
-            // Log exception
-            e.printStackTrace();
-            return null;
         }
     }
 

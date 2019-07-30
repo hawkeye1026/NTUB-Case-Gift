@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.FriendListAdapter;
@@ -99,6 +100,14 @@ public class FriendActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         friendListAdapter = new FriendListAdapter(this, mFriendsList);
         mRecyclerView.setAdapter(friendListAdapter);
+
+        friendListAdapter.setOnItemClickListener(new FriendListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                TextView tv = view.findViewById(R.id.tv_nickname);
+                Toast.makeText(FriendActivity.this, tv.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         setSearch_function(); // 設定searchView的文字輸入監聽
         super.onResume();
