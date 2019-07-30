@@ -1,94 +1,84 @@
 package com.ntubcase.gift.Adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.CheckBox;
+import android.widget.EditText;
 import com.ntubcase.gift.R;
 
+
 import java.util.List;
+import java.util.Map;
 
-public class plan_list_adapter extends BaseAdapter implements View.OnClickListener {
-    private Context context;
-    private List<String> data;
-    private int resource;
 
-    public plan_list_adapter(List<String> data, int resource) {
-        this.data = data;
-        this.resource = resource;
+public class plan_list_adapter extends RecyclerView.Adapter<plan_list_adapter.ViewHolder>{
+    //private List<Map<String, Object>> mData;
+    private List<String> mData;
+
+    public plan_list_adapter(List<String> data) {
+        mData = data;
     }
 
-    @Override
-    public int getCount() {
-        return data == null ? 0 : data.size();
-    }
 
-    @Override
-    public Object getItem(int i) {
-        return data.get(i);
-    }
+    // 建立ViewHolder
+    class ViewHolder extends RecyclerView.ViewHolder{
+        // 宣告元件
+        private EditText editText;
+        private Button btnRemove ,btnCheck;
+        private CheckBox checkBox;
+        String message;
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
+        ViewHolder(View itemView) {
+            super(itemView);
+            editText = (EditText) itemView.findViewById(R.id.editText);
+            btnRemove= (Button) itemView.findViewById(R.id.btn_delete_item);
+            btnCheck= (Button) itemView.findViewById(R.id.btn_check_item);
+            checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
+            // 點擊項目中的Button時
+            btnRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // 移除項目，getAdapterPosition為點擊的項目位置
+                    mData.remove(getAdapterPosition());
+                    notifyDataSetChanged();
+                }
+            });
 
-        if (context == null) {
-            context = viewGroup.getContext();
-        }
+            btnCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   mData.set(getAdapterPosition(),editText.getText().toString());
+                   notifyDataSetChanged();
+                }
+            });
 
-        if (view == null) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(resource, null);
-            viewHolder = new ViewHolder();
-            //viewHolder.tvItemContent = view.findViewById(R.id.tv_item_content);
-            viewHolder.btnDeleteItem = view.findViewById(R.id.btn_delete_item);
-            viewHolder.checkbox = view.findViewById(R.id.checkbox);
-            viewHolder.edittext = view.findViewById(R.id.editText);
-            view.setTag(viewHolder);
-        }
-
-        viewHolder = (ViewHolder) view.getTag();
-
-        viewHolder.btnDeleteItem.setOnClickListener(this);
-        viewHolder.btnDeleteItem.setTag(i);
-
-        //viewHolder.tvItemContent.setText(data.get(i));
-        //viewHolder.tvItemContent.setOnClickListener(this);
-
-        return view;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-//            case R.id.tv_item_content:
-//                String message = ((TextView) view).getText().toString();
-//                Toast.makeText(context, message + " clicked", Toast.LENGTH_SHORT).show();
-//                break;
-            case R.id.btn_delete_item:
-                data.remove((int) view.getTag());
-                notifyDataSetChanged();
-                break;
         }
     }
 
-    static class ViewHolder {
-        public View checkbox;
-        public View edittext;
-        //TextView tvItemContent;
-        Button btnDeleteItem;
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // 連結項目布局檔list_item
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.plan_list_item, parent, false);
+        return new ViewHolder(view);
+    }
 
+    @Override
+    public void onBindViewHolder(final plan_list_adapter.ViewHolder holder, final int position) {
+
+        holder.editText.setText(mData.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return mData.size();
     }
 
 }
-

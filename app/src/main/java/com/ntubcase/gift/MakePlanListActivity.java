@@ -16,17 +16,11 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_list_adapter;
 import com.ntubcase.gift.data.getFriendList;
@@ -34,10 +28,11 @@ import com.ntubcase.gift.data.getGiftList;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MakePlanListActivity extends AppCompatActivity implements View.OnClickListener {
+public class MakePlanListActivity extends AppCompatActivity{
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     int a=0;
     String[] list_giftlistItems = new String[getGiftList.getGiftLength()];
@@ -56,14 +51,14 @@ public class MakePlanListActivity extends AppCompatActivity implements View.OnCl
     ProgressDialog barProgressDialog;
     private RecyclerView recycler_view;
     private plan_list_adapter adapter;
-    private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
+//    private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
+    private List<String> mData = new ArrayList<>();
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String list_giftName, list_sentTime, list_message;
 
     //------
     private int i;
-    private List<String> data;
     private static int giftposition[];
     int giftCount = 0;
 
@@ -91,6 +86,8 @@ public class MakePlanListActivity extends AppCompatActivity implements View.OnCl
         btn_send = findViewById(R.id.btn_plan_send);
         txtItem = findViewById(R.id.txtItem);
 
+
+
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
         for (int i = 0; i < getGiftList.getGiftLength(); i++) {
@@ -107,19 +104,31 @@ public class MakePlanListActivity extends AppCompatActivity implements View.OnCl
         list_friendcheckedItems = new boolean[list_friendlistItems.length];
         tempFriendChecked = new boolean[list_friendlistItems.length];
 
+        // 連結元件
+        recycler_view = findViewById(R.id.list_recycle_view);
+        // 設置RecyclerView為列表型態
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));
+        // 設置格線
+        recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        // 將資料交給adapter
+        adapter = new plan_list_adapter(mData);
+        // 設置adapter給recycler_view
+        recycler_view.setAdapter(adapter);
+
         //--------點選新增事件
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addItemToList();
+                /*Map<String, Object> newData = new HashMap<String, Object>();
+                newData.put("message", "");*/
+                mData.add("");
+                adapter.notifyItemInserted(mData.size());
             }
 
         });
-        buildData();
-        adapter = new plan_list_adapter(data, R.layout.plan_list_item);
-        ListView listview = findViewById(R.id.lv_item_list);
-        listview.setAdapter(adapter);
+
         //--------------------------------------
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
@@ -358,18 +367,6 @@ public class MakePlanListActivity extends AppCompatActivity implements View.OnCl
 
     }
     //-----------------------------------------------------------------
-    private void addItemToList() {
-        data.add("Item " + i++);
-        adapter.notifyDataSetChanged();
-    }
 
-    private void buildData() {
-        data = new ArrayList<>();
-    }
-
-    @Override
-    public void onClick(View v) {
-
-    }
 }
 
