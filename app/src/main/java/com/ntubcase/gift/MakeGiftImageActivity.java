@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,6 +28,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,6 +42,7 @@ import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_giftAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_imageAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.login_model.googleAccount;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -92,34 +97,21 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         try{
             //-----判斷是否為修改
             Bundle bundle = this.getIntent().getExtras();
+            //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
             int position =Integer.valueOf( bundle.getString("position"));
-            //-------圖片網址
-            Uri imageURI = Uri.parse(Common.imgPath + "1559909992170.jpg");
-            Log.v("Gift",Common.imgPath + "1559909992170.jpg");
+
+            //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
+            Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
+            Log.v("gift",Common.imgPath + getGiftList.getGift(position));
+            Picasso.get().load(imageURI).into(iv_image);
+            //-------set該禮物名稱
             et_giftName.setText( getGiftList.getGiftName(position));
-//            iv_image.setImageURI(imageURI);
-            iv_image.setImageBitmap(GetURLBitmap(new URL(Common.imgPath + "1559909992170.jpg")));
+
+            //--------
         }catch (Exception e){
 
         }
         checkPermission();  //確認權限
-    }
-
-    public static Bitmap GetURLBitmap(URL url)
-    {
-        try
-        {
-            URLConnection conn = url.openConnection();
-            conn.connect();
-            InputStream isCover = conn.getInputStream();
-            Bitmap bmpCover = BitmapFactory.decodeStream(isCover);
-            isCover.close();
-            return bmpCover;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
     }
 
     private static final int SELECT_IMAGE = 0; //相簿
