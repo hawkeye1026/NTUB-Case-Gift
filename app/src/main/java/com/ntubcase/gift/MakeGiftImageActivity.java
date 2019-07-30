@@ -381,9 +381,9 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 
             }
         },ImageFilePath.getPath(getApplicationContext(),cam_imageUri));
-        //------------------------------上傳禮物資料
         mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri),giftContent);
 
+        //------------------------------上傳禮物資料
         giftInsertImg_giftAsyncTask mgiftInsertAsyncTask = new giftInsertImg_giftAsyncTask(new giftInsertImg_giftAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {

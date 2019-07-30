@@ -94,13 +94,11 @@ public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, Str
                             "multipart/form-data");
                     conn.setRequestProperty("Content-Type",
                             "multipart/form-data;boundary=" + boundary);
-//                    Log.v("filename1", params[2]);
                     conn.setRequestProperty("image", params[2]);
 
                     conn.connect();
                     dos = new DataOutputStream(conn.getOutputStream());
-
-                   // Log.v("filename2", params[2]);
+                    
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
                     dos.writeBytes("Content-Disposition:form-data; name=\"image\";filename=\""
                             + params[2] + "\"" + lineEnd);
