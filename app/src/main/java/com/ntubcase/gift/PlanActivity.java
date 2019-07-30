@@ -193,7 +193,7 @@ public class PlanActivity extends AppCompatActivity {
                     intent = new Intent(PlanActivity.this, MakePlanMultipleActivity.class);
                     break;
                 case R.id.fab_list:
-                    intent = new Intent(PlanActivity.this, MakePlanSingleActivity.class);
+                    intent = new Intent(PlanActivity.this, MakePlanListActivity.class);
                     break;
             }
 
