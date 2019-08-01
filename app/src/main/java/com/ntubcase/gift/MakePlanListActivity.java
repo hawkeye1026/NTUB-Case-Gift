@@ -84,7 +84,6 @@ public class MakePlanListActivity extends AppCompatActivity{
         edt_list_sentTime = findViewById(R.id.list_time);
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
-        txtItem = findViewById(R.id.txtItem);
 
 
 
