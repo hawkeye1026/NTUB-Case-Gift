@@ -57,22 +57,13 @@ public class FriendActivity extends AppCompatActivity {
                 Toast.makeText(FriendActivity.this, "新增好友", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     //-----------------
     public void onResume(){
-/*
-        //---------------------取得好友資料--------------------------------
-        String[][] mFriendsData ={      //--------------測試用資料-----------------
-                {"0","小明","abcd@gmail.com"},
-                {"0","媽媽","mother@gmail.com"},
-                {"0","爸爸","fater@gmail.com"},
-                {"0","ruby","ruby@gmail.com"},
-                {"0","wen","wen@gmail.com"},
-                {"0","tzu","tzu@gmail.com"},
-                {"0","mmm","mmm@gmail.com"}
-        };
-*/
+
         getFriendList.getJSON();
         //---------------------ListView倒入資料--------------------------------
         String[][] mFriendsData = new String[getFriendList.getFriendLength()][20];
@@ -82,6 +73,7 @@ public class FriendActivity extends AppCompatActivity {
             mFriendsData[i][0]= getFriendList.getFriendid(i);
             mFriendsData[i][1]= getFriendList.getFriendName(i);
             mFriendsData[i][2]= getFriendList.getFriendMail(i);
+            mFriendsData[i][3]= getFriendList.getImgURL(i);
         }
 
         mFriendsList = new ArrayList<Map<String, Object>>();
@@ -91,9 +83,10 @@ public class FriendActivity extends AppCompatActivity {
             mFriends = new HashMap<String, Object>();
             //Bitmap img = getBitmapFromURL(mFriendsData[i][0]);
             //mFriends.put("photo", img);
-            mFriends.put("photo", mFriendsData[i][0]);
+            mFriends.put("friedid", mFriendsData[i][0]);
             mFriends.put("nickname", mFriendsData[i][1]);
             mFriends.put("email", mFriendsData[i][2]);
+            mFriends.put("imgURL", mFriendsData[i][3]);
             mFriendsList.add(mFriends);
         }
 
@@ -113,23 +106,6 @@ public class FriendActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-
-        } catch (IOException e) {
-            // Log exception
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     // ----------------設定searchView的文字輸入監聽---------------
     private void setSearch_function(){
