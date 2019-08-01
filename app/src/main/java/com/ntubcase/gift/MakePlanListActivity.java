@@ -2,6 +2,7 @@ package com.ntubcase.gift;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -16,6 +17,8 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ntubcase.gift.Adapter.plan_list_adapter;
+import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
@@ -122,12 +126,18 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onClick(View view) {
                 /*Map<String, Object> newData = new HashMap<String, Object>();
                 newData.put("message", "");*/
-                mData.add("");
-                adapter.notifyItemInserted(mData.size());
+//                mData.add("");
+//                adapter.notifyItemInserted(mData.size());
+                showDialog(true, mData.size());
             }
 
         });
-
+        adapter.setOnItemClickListener(new plan_list_adapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View view, int position){
+                showDialog(false, position);
+            }
+        });
         //--------------------------------------
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
@@ -366,6 +376,54 @@ public class MakePlanListActivity extends AppCompatActivity{
 
     }
     //-----------------------------------------------------------------
+
+    //跳出送禮輸入窗
+    private void showDialog(final boolean isNew, final int position) {
+        final Dialog dialog = new Dialog(MakePlanListActivity.this);
+        dialog.setContentView(R.layout.list_dialog);
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);//讓使用者點選背景或上一頁沒有用
+
+        //宣告
+        edt_list_message = dialog.findViewById(R.id.list_message);
+
+        if(!isNew){ //若為編輯則設定資料
+            edt_list_message.setText(mData.get(position));
+        }
+        //點選取消
+        btn_can = dialog.findViewById(R.id.btn_can);
+        btn_can.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew){
+                    edt_list_message.setText("");
+                }
+                dialog.dismiss();
+            }
+        });
+
+        //點選確認
+        btn_ent = dialog.findViewById(R.id.btn_ent);
+        btn_ent.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            //新增一個項目
+            public void onClick(View view) {
+                //抓取輸入方塊訊息
+                list_message = edt_list_message.getText().toString();
+                if (isNew) {    //新增
+                    mData.add(list_message);
+                    adapter.notifyItemInserted(mData.size());
+                }else{  //編輯
+                    mData.set(position, list_message);
+                    adapter.notifyDataSetChanged();
+                }
+                //在item內傳送文字
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
 
 }
 
