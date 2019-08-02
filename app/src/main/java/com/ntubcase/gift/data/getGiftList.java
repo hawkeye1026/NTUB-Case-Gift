@@ -52,7 +52,7 @@ public class getGiftList {
 //                        Log.v("giftid",giftid[i]);
                         switch(type[i]){
                             case "1":
-                                //type[i] = "照片";
+                                type[i] = "照片";
                                 break;
                             case "2":
                                 type[i] = "影片";
