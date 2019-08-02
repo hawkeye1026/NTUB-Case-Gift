@@ -13,9 +13,10 @@
 
     <ScrollView
         android:id="@+id/scrollview"
-        android:layout_width="440dp"
+        android:layout_width="420dp"
         android:layout_height="500dp"
         android:layout_gravity="center"
+        android:layout_margin="10dp"
         android:background="@drawable/list"
         android:paddingTop="30dp">
 
@@ -100,7 +101,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="3dp"
                     android:layout_weight="0.4"
-                    android:hint="選擇收禮人" />
+                    android:hint="收禮人" />
 
                 <ImageView
                     android:layout_width="30dp"

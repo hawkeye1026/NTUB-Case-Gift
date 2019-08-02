@@ -523,7 +523,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 if (isNew) {    //新增
                     Map<String, Object> newData = new HashMap<String, Object>();
                     newData.put("giftName", single_giftName);
-
                     newData.put("sentTime", single_sentTime);
                     newData.put("message", single_message);
                     mData.add(newData);
@@ -543,5 +542,4 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         });
         dialog.show();
     }
-
 }
