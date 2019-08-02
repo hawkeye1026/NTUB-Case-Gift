@@ -22,7 +22,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.2"
-            app:srcCompat="@drawable/gift" />
+            app:srcCompat="@drawable/talk" />
 
         <EditText
             android:id="@+id/list_message"

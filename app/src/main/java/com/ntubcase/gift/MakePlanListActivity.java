@@ -219,7 +219,21 @@ public class MakePlanListActivity extends AppCompatActivity{
                 Showgiftdialog();
             }
         });
+        //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
+        edt_list_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_list_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    showTimePickerDialog();
+                }
+            }
+        });
+
         edt_list_sentTime.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
