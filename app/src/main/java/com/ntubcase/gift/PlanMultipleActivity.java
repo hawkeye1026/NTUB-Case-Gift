@@ -24,6 +24,7 @@ import com.ntubcase.gift.Adapter.PlanMultiAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multipleInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.multipleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 
@@ -35,6 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 public class PlanMultipleActivity extends AppCompatActivity {
 
@@ -45,7 +47,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private ArrayList<String> friendids = new ArrayList<>();
 
     private String planName, receiveFriend, startDate, endDate, message; //------bundle傳遞的資料
-    private String sender= "1", planid, planType="2", dateTime, date_time, goal;
+    private String sender= "1", planid, planType="2", dateTime, date_time="", goal;
 
     private Date dateStart, dateEnd, selectTime;
     private List<Map<String, Object>> selectDates; //選取的時間區段
@@ -57,6 +59,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private EditText alert_gifts;
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
+    private String[] giftidList = new String[getGiftList.getGiftLength()];
     private String[] giftItemList = new String[getGiftList.getGiftLength()];
     private boolean[][] mCheckedItems;
     private boolean[][] tempCheckedItems;
@@ -108,12 +111,14 @@ public class PlanMultipleActivity extends AppCompatActivity {
             mDates.put("message", "");
             mDates.put("time", "");
             mDates.put("gifts", "");
+            mDates.put("giftids", "");
             selectDates.add(mDates);
         }
 
         //------選擇禮物用-----
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
             giftItemList[i] = getGiftList.getGiftName(i);  //禮物名稱資料
+            giftidList[i] = getGiftList.getGiftid(i);
         }
         mCheckedItems = new boolean[selectDates.size()][giftItemList.length];
         tempCheckedItems = new boolean[selectDates.size()][giftItemList.length];
@@ -408,13 +413,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
             Log.v("message", message);
             multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message);
 
-            int i=0;
-            date_time = selectDates.get(i).get("date").toString()+" "+selectDates.get(i).get("time").toString();
-            goal = selectDates.get(i).get("message").toString();
-            Log.v("planid", planid);
-            Log.v("goal", goal);
-            Log.v("date + time", date_time);
-            Log.v("gift", selectDates.get(i).get("gift").toString());
 /*
             for (int i = 0 ; i < selectDates.size(); i++) {
                 multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
@@ -424,7 +422,16 @@ public class PlanMultipleActivity extends AppCompatActivity {
                     }
                 });
 
-
+                date_time = selectDates.get(i).get("date").toString()+selectDates.get(i).get("time").toString();  //-- x
+                goal = selectDates.get(i).get("message").toString();
+                Log.v("planid", planid);
+                Log.v("goal", goal);
+                Log.v("date_time", date_time);
+                Log.v("gifts", selectDates.get(i).get("gifts").toString());
+                StringTokenizer stTokenizer = new StringTokenizer(selectDates.get(i).get("gifts").toString(), ",");
+                while (stTokenizer.hasMoreTokens()){
+                    Log.v("gift_nextToken", stTokenizer.nextToken());
+                }
                 multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "61", date_time, goal);
             }
 */
