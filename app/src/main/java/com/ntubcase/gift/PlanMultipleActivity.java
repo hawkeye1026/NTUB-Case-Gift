@@ -37,10 +37,12 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
     private GridView gridView;
     private PlanMultiAdapter planMultiAdapter;
-    private TextView tv_receiveFriend;
+    private TextView tv_receiveFriend, tv_message, tv_sender;
 
     private String planName, receiveFriend, startDate, endDate, message; //------bundle傳遞的資料
     private ArrayList<String> receiveFriendId; //------bundle傳遞的資料
+
+    private String sender= "1", planid, planType="2", dateTime, date_time, goal;
 
     private Date dateStart, dateEnd, selectTime;
     private List<Map<String, Object>> selectDates; //選取的時間區段
@@ -76,8 +78,13 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
 
         setTitle(planName); //-----標題為計畫名稱-----
-        tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend); //-----顯示收禮人-----
-        tv_receiveFriend.setText("To. " + receiveFriend);
+        tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend);
+        tv_message = (TextView) findViewById(R.id.tv_message);
+        tv_sender = (TextView) findViewById(R.id.tv_sender);
+        tv_receiveFriend.setText("To. " + receiveFriend);   //-----顯示收禮人-----
+        tv_message.setText(message); //-----顯示祝福-----
+        tv_sender.setText("From. " + sender); //-----顯示祝福-----
+
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -134,7 +141,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         final View customLayout = getLayoutInflater().inflate(R.layout.plan_multi_alert_layout, null);
         builder.setView(customLayout);
 
-        //----------------------------------------設定cutomlayout內顯示的資料--------------------------------------------------
+        //----------------------------------------設定customLayout內顯示的資料--------------------------------------------------
         alert_message  = customLayout.findViewById(R.id.alert_message);
         alert_time  = customLayout.findViewById(R.id.alert_time);
         alert_gifts  = customLayout.findViewById(R.id.alert_gifts);

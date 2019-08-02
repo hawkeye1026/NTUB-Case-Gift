@@ -18,7 +18,7 @@ import android.widget.Spinner;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.PlanListAdapter;
-import com.ntubcase.gift.data.getPlanList;
+import com.ntubcase.gift.data.getPlanningList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,28 +92,30 @@ public class PlanNewFragment extends Fragment {
     @Override
     public void onResume(){
 
-        getPlanList.getJSON();
+        getPlanningList.getJSON();
 
         //---------------------ListView倒入資料--------------------------------
 
-        String[][] mPlansData = new String[getPlanList.getPlanLength()][20];
-        //Log.e("Plan","onResume: "+getPlanList.getPlanLength());
-        for(int i = 0 ;i < getPlanList.getPlanLength(); i++){
-            mPlansData[i][0]= getPlanList.getPlanType(i);
-            mPlansData[i][1]= getPlanList.getSpPlanName(i);
-            mPlansData[i][2]= getPlanList.getSpCreateDate(i);
-            mPlansData[i][3]= getPlanList.getSpPlanid(i);
+        String[][] mPlansData = new String[getPlanningList.getPlanningLength()][20];
+        //Log.e("Planning","onResume: "+getPlanningList.getPlanningLength());
+        for(int i = 0 ;i < getPlanningList.getPlanningLength(); i++){
+            mPlansData[i][0]= getPlanningList.getPlanid(i);
+            mPlansData[i][1]= getPlanningList.getPlanType(i);
+            mPlansData[i][2]= getPlanningList.getPlanName(i);
+            mPlansData[i][3]= getPlanningList.getCreateDate(i);
+            mPlansData[i][4]= getPlanningList.getSendPlanDate(i);
         }
 
         mPlansList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mPlans;
 
-        for(int i=0;i<getPlanList.getPlanLength();i++) {
+        for(int i=0;i<getPlanningList.getPlanningLength();i++) {
             mPlans = new HashMap<String, Object>();
-            mPlans.put("type", mPlansData[i][0]);
-            mPlans.put("title", mPlansData[i][1]);
-            mPlans.put("date", mPlansData[i][2]);
-            mPlans.put("planid", mPlansData[i][3]);
+            mPlans.put("planid", mPlansData[i][0]);
+            mPlans.put("type", mPlansData[i][1]);
+            mPlans.put("title", mPlansData[i][2]);
+            mPlans.put("date", mPlansData[i][3]);
+            mPlans.put("sendPlanDate", mPlansData[i][4]);
             mPlansList.add(mPlans);
         }
         planListAdapter = new PlanListAdapter(getContext(), mPlansList);
@@ -136,8 +138,8 @@ public class PlanNewFragment extends Fragment {
                 Intent intent = new Intent();
                 intent = new Intent(getActivity(), PlanDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("type",mPlansList.get(position).get("type").toString());
                 bundle.putString("planid",mPlansList.get(position).get("planid").toString());
+                bundle.putString("type",mPlansList.get(position).get("type").toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
