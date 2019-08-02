@@ -40,6 +40,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private TextView tv_receiveFriend;
 
     private String planName, receiveFriend, startDate, endDate, message; //------bundle傳遞的資料
+    private ArrayList<String> receiveFriendId; //------bundle傳遞的資料
+
     private Date dateStart, dateEnd, selectTime;
     private List<Map<String, Object>> selectDates; //選取的時間區段
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
@@ -50,9 +52,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private EditText alert_gifts;
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-    private String[] giftItemList = new String[getGiftList.getGiftLength()];
+    private String[] giftItemList = new String[getGiftList.getGiftLength()];  //所有禮物
     private boolean[][] mCheckedItems;
     private boolean[][] tempCheckedItems;
+    private String[][] selectGifts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +65,15 @@ public class PlanMultipleActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
 
-        //-----------------------------------------------------------------------------------------
+        //---------------------------------上一頁資料-----------------------------------
         Bundle bundle = getIntent().getExtras();
-        planName = bundle.getString("planName");
-        receiveFriend = bundle.getString("receiveFriend");
-        startDate = bundle.getString("startDate");
-        endDate = bundle.getString("endDate");
-        message = bundle.getString("message");
+        planName = bundle.getString("planName");    //計畫名稱
+        receiveFriend = bundle.getString("receiveFriend");  //收禮人名稱
+        receiveFriendId = bundle.getStringArrayList("receiveFriendId"); //收禮人ID
+        startDate = bundle.getString("startDate");  //起始日期
+        endDate = bundle.getString("endDate");  //結束日期
+        message = bundle.getString("message");  //祝福
+
 
         setTitle(planName); //-----標題為計畫名稱-----
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend); //-----顯示收禮人-----
@@ -88,10 +93,11 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
         for(int i=0; i < allDates.size(); i++) {
             mDates = new HashMap<String, Object>();
-            mDates.put("date", allDates.get(i));
-            mDates.put("message", "");
-            mDates.put("time", "");
-            mDates.put("gifts", "");
+            mDates.put("date", allDates.get(i));  //日期
+            mDates.put("message", "");  //留言
+            mDates.put("time", ""); //時間
+            mDates.put("gifts", "");    //禮物
+            mDates.put("giftsId", new String[0]);  //禮物ID
             selectDates.add(mDates);
         }
 
@@ -101,7 +107,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         }
         mCheckedItems = new boolean[selectDates.size()][giftItemList.length];
         tempCheckedItems = new boolean[selectDates.size()][giftItemList.length];
-
+        selectGifts = new String[selectDates.size()][];
 
         //---------------------------------GridView---------------------------------------------
         gridView = (GridView) findViewById(R.id.gridView);
@@ -191,7 +197,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {   // send data from the AlertDialog to the Activity
-                sendDialogDataToActivity(view, gridPosition, parent, alert_message.getText().toString()
+                sendDialogDataToActivity(gridPosition, alert_message.getText().toString()
                         , alert_time.getText().toString(), alert_gifts.getText().toString());
             }
         });
@@ -216,7 +222,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
                         .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                sendDialogDataToActivity(view, gridPosition, parent,"", "", "");
+                                sendDialogDataToActivity(gridPosition, "", "", "");
                                 mDialog.dismiss();
                             }
                         })
@@ -233,11 +239,12 @@ public class PlanMultipleActivity extends AppCompatActivity {
     }
 
     //--------------------- 處理AlertDialog回傳的資料-----------------------------
-    private void sendDialogDataToActivity(View view, int gridPosition, ViewGroup parent, String newMessage, String newTime, String newGifts) {
+    private void sendDialogDataToActivity(int gridPosition, String newMessage, String newTime, String newGifts) {
         Map<String, Object> updateData = selectDates.get(gridPosition);
         updateData.put("message", newMessage);
         updateData.put("time", newTime);
         updateData.put("gifts", newGifts);
+        updateData.put("giftsId", selectGifts[gridPosition]);
         selectDates.set(gridPosition, updateData);  //更新item資料
 
         planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
@@ -290,14 +297,21 @@ public class PlanMultipleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String mSelectGifts ="";
+                List<String> mSelectGiftIds = new ArrayList<>();
+
                 for (int i = 0; i < giftItemList.length; i++) {
                     if(mCheckedItems[gridPosition][i]){
                         if (mSelectGifts.equals("")) mSelectGifts += giftItemList[i];
                         else mSelectGifts += " , " + giftItemList[i];
+                        mSelectGiftIds.add(getGiftList.getGiftid(i));
                     }
                     tempCheckedItems[gridPosition][i]=mCheckedItems[gridPosition][i];
                 }
                 alert_gifts.setText(mSelectGifts);
+
+                //------儲存所選的禮物id-----
+                selectGifts[gridPosition] = new String[mSelectGiftIds.size()];
+                for(int j=0; j<mSelectGiftIds.size(); j++) selectGifts[gridPosition][j]=mSelectGiftIds.get(j);
             }
         });
 

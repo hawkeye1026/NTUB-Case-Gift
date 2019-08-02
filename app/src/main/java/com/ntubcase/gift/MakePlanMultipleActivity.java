@@ -1,8 +1,6 @@
 package com.ntubcase.gift;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -16,31 +14,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.plan.planUpdateAsyncTask;
+
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
-import com.ntubcase.gift.data.getGiftReceived;
-import com.ntubcase.gift.data.getPlanList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MakePlanMultipleActivity extends AppCompatActivity {
 
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] friendItemList = new String[getFriendList.getFriendLength()];
     boolean[] mFriendChecked, tempFriendChecked;
+    ArrayList<String> selectFriendIds;
 
     //----------------------------------------------------------------------------------------------
-    private static String[] friendid = new String[100];
-    private static int friendidPositionIndex = 0 ;
     private EditText add_multi_name,add_multi_message,add_multi_friend,add_multi_dateS,add_multi_dateE;
 
     private Date selectStartDate, selectEndDate;
@@ -151,6 +145,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString("planName", add_multi_name.getText().toString());
                     bundle.putString("receiveFriend", add_multi_friend.getText().toString());
+                    bundle.putStringArrayList("receiveFriendId", selectFriendIds);
                     bundle.putString("startDate", add_multi_dateS.getText().toString());
                     bundle.putString("endDate", add_multi_dateE.getText().toString());
                     bundle.putString("message", add_multi_message.getText().toString());
@@ -164,7 +159,6 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     }
 
     protected void onDestroy() {
-        friendidPositionIndex = 0;
         super.onDestroy();
     }
 
@@ -184,10 +178,13 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) { //確認鈕
                 String mSelectFriends = "";
+                selectFriendIds = new ArrayList<>();
+
                 for (int i = 0; i < mFriendChecked.length; i++) {
                     if(mFriendChecked[i]){
                         if (mSelectFriends.equals("")) mSelectFriends += friendItemList[i];
                         else mSelectFriends += " , " + friendItemList[i];
+                        selectFriendIds.add(getFriendList.getFriendid(i));
                     }
                     tempFriendChecked[i]=mFriendChecked[i];
                 }
