@@ -81,7 +81,6 @@ public class MakePlanListActivity extends AppCompatActivity{
         //---------------------------------------------------------------------------------
         //宣告變數------------------------------------------------------------------------------
         edt_list_name = findViewById(R.id.list_name);
-        edt_list_fdate = findViewById(R.id.list_fdate);
         edt_list_edate = findViewById(R.id.list_edate);
         edt_list_friend = findViewById(R.id.list_friend);
         edt_list_giftName = findViewById(R.id.list_gift);
@@ -159,27 +158,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                 Showfrienddialog();
             }
         });
-        //點選開始日期EditText跳出選擇日期選擇器---------------------------------------
-        edt_list_fdate.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        edt_list_fdate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // TODO Auto-generated method stub
-                if (hasFocus) {
-                    showDatePickerDialog(true);
-                }
-            }
-        });
-
-        edt_list_fdate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                showDatePickerDialog(true);
-            }
-        });
+       
         //點選結束日期EditText跳出選擇日期選擇器---------------------------------------
         edt_list_edate.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edt_list_edate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -188,7 +167,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showDatePickerDialog(false);
+                    showDatePickerDialog();
                 }
             }
         });
@@ -197,7 +176,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showDatePickerDialog(false);
+                showDatePickerDialog();
             }
         });
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
@@ -351,7 +330,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         mDialog.show();
     }
     //設定送禮日期EditText傳入值---------------------------------------
-    private void showDatePickerDialog(final boolean isNew) {
+    private void showDatePickerDialog() {
         Calendar c = Calendar.getInstance();
         new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
 
@@ -360,11 +339,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                 // TODO Auto-generated method stub
                 String month;
                 String day;
-                if (isNew) {
-                    edt_list_fdate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                }else{
                     edt_list_edate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                }
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 

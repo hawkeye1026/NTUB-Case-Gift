@@ -14,7 +14,7 @@
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="420dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:background="@drawable/list"
@@ -50,7 +50,9 @@
                     android:layout_weight="0.9"
                     android:ems="10"
                     android:hint="輸入計畫名稱"
-                    android:inputType="textPersonName" />
+                    android:maxLines="1"
+                    android:textSize="16sp"
+                    android:inputType="textPersonName"/>
 
             </LinearLayout>
 
@@ -76,7 +78,9 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="選擇送禮時間"
-                    android:inputType="none"></EditText>
+                    android:inputType="none"
+                    android:maxLines="1"
+                    android:textSize="16sp"></EditText>
 
             </LinearLayout>
 
@@ -101,14 +105,17 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="3dp"
                     android:layout_weight="0.4"
-                    android:hint="收禮人" />
+                    android:hint="收禮人"
+                    android:maxLines="1"
+                    android:textSize="16sp"/>
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="0.1"
-                    app:srcCompat="@drawable/gift" />
+                    app:srcCompat="@drawable/gift"
+                    />
 
                 <EditText
                     android:id="@+id/list_gift"
@@ -118,7 +125,9 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="選擇禮物"
-                    android:inputType="none"></EditText>
+                    android:inputType="none"
+                    android:maxLines="1"
+                    android:textSize="16sp"></EditText>
 
             </LinearLayout>
             <!--送禮日期-->
@@ -137,33 +146,14 @@
                     app:srcCompat="@drawable/date" />
 
                 <EditText
-                    android:id="@+id/list_fdate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:layout_weight="0.4"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="開始日期"
-                    android:inputType="none"></EditText>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    android:text="-"
-                    android:textSize="30sp" />
-
-
-                <EditText
                     android:id="@+id/list_edate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.9"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="截止日期"
+                    android:textSize="16sp"
                     android:inputType="none"></EditText>
 
 
