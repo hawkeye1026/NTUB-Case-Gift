@@ -27,7 +27,6 @@ public class getPlanGift {
             public void onFinished(String result) {
                 try {
                     JSONObject object = new JSONObject(result);
-
                     JSONArray jsonArray = object.getJSONArray("result");
 
                     Log.v("length",jsonArray.length()+"");

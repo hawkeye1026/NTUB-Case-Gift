@@ -47,7 +47,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         Uri imageURI = Uri.parse(mFriendList.get(position).get("imgURL").toString());
         Log.v("imgURL",mFriendList.get(position).get("imgURL").toString());
         Picasso.get().load(imageURI).into(holder.iv_photo);
-            
+
         //holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());

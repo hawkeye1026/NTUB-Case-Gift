@@ -1,10 +1,8 @@
 package com.ntubcase.gift;
 
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ntubcase.gift.Adapter.PlanMultiAdapter;
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.multipleInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 
 import java.text.ParseException;
@@ -37,9 +40,13 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
     private GridView gridView;
     private PlanMultiAdapter planMultiAdapter;
-    private TextView tv_receiveFriend;
+    private TextView tv_receiveFriend, tv_sender, tv_message;
+    private Button btn_plan_save, btn_plan_send;
+    private ArrayList<String> friendids = new ArrayList<>();
 
     private String planName, receiveFriend, startDate, endDate, message; //------bundle傳遞的資料
+    private String sender= "1", planid, planType="2", dateTime, date_time, goal;
+
     private Date dateStart, dateEnd, selectTime;
     private List<Map<String, Object>> selectDates; //選取的時間區段
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
@@ -61,6 +68,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
+        //---------------------------------------------------------------------------------
+        btn_plan_save = (Button) findViewById(R.id.btn_plan_save);
+        btn_plan_send = (Button) findViewById(R.id.btn_plan_send);
+        btn_plan_save.setOnClickListener(planSaveClickListener); //設置監聽器
 
         //-----------------------------------------------------------------------------------------
         Bundle bundle = getIntent().getExtras();
@@ -69,10 +80,15 @@ public class PlanMultipleActivity extends AppCompatActivity {
         startDate = bundle.getString("startDate");
         endDate = bundle.getString("endDate");
         message = bundle.getString("message");
+        friendids = bundle.getStringArrayList("friendids");
 
         setTitle(planName); //-----標題為計畫名稱-----
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend); //-----顯示收禮人-----
+        tv_sender = (TextView) findViewById(R.id.tv_sender);
+        tv_message = (TextView) findViewById(R.id.tv_message);
         tv_receiveFriend.setText("To. " + receiveFriend);
+        tv_sender.setText("From. " + sender);
+        tv_message.setText(message);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -128,7 +144,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         final View customLayout = getLayoutInflater().inflate(R.layout.plan_multi_alert_layout, null);
         builder.setView(customLayout);
 
-        //----------------------------------------設定cutomlayout內顯示的資料--------------------------------------------------
+        //----------------------------------------設定customlayout內顯示的資料--------------------------------------------------
         alert_message  = customLayout.findViewById(R.id.alert_message);
         alert_time  = customLayout.findViewById(R.id.alert_time);
         alert_gifts  = customLayout.findViewById(R.id.alert_gifts);
@@ -344,6 +360,78 @@ public class PlanMultipleActivity extends AppCompatActivity {
         return lDate;
     }
 
+    //-------------------------------儲存按鈕 監聽器----------------------------------------
+    private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.v("planName + message", planName+message);  //需存入plan database
+            Log.v("receiveFriend + sender", receiveFriend+sender);  //需存入plan database
+            Log.v("startDate+endDate", startDate+endDate);
+            Log.v("selectTime", String.valueOf(selectTime));
+            Log.v("selectDates", String.valueOf(selectDates));  //需存入list database
+
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date = new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            dateTime = sdFormat.format(date);
+
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+            planid = "pl_" + sdFormat_giftContent.format(date);
+            Log.v("friendids.size", String.valueOf(friendids.size()));
+
+            //------------------------------上傳plan資料
+            for (int i = 0 ; i < friendids.size(); i++) {
+                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                Log.v("sender", sender);
+                Log.v("friendids.get(i)", friendids.get(i));
+                Log.v("planid", planid);
+                Log.v("planType", planType);
+                giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, friendids.get(i), planid, planType);
+            }
+
+            multiplePlanInsertAsyncTask multiplePlanInsertAsyncTask = new multiplePlanInsertAsyncTask(new multiplePlanInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            Log.v("planid", planid);
+            Log.v("planName", planName);
+            Log.v("createDate", dateTime);
+            Log.v("startDate", startDate);
+            Log.v("endDate", endDate);
+            Log.v("message", message);
+            multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message);
+
+            int i=0;
+            date_time = selectDates.get(i).get("date").toString()+" "+selectDates.get(i).get("time").toString();
+            goal = selectDates.get(i).get("message").toString();
+            Log.v("planid", planid);
+            Log.v("goal", goal);
+            Log.v("date + time", date_time);
+            Log.v("gift", selectDates.get(i).get("gift").toString());
+/*
+            for (int i = 0 ; i < selectDates.size(); i++) {
+                multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+
+
+                multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "61", date_time, goal);
+            }
+*/
+        }
+
+    };
+    //-------------------------------結束儲存按鈕 監聽器----------------------------------------
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -31,17 +31,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MakePlanMultipleActivity extends AppCompatActivity {
 
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] friendItemList = new String[getFriendList.getFriendLength()];
+    String[] friendidList = new String[getFriendList.getFriendLength()];
     boolean[] mFriendChecked, tempFriendChecked;
 
     //----------------------------------------------------------------------------------------------
     private static String[] friendid = new String[100];
     private static int friendidPositionIndex = 0 ;
     private EditText add_multi_name,add_multi_message,add_multi_friend,add_multi_dateS,add_multi_dateE;
+    private List<Map<String, Object>> selectFriends; //選取的時間區段
+    private ArrayList<String> friendids = new ArrayList<>();
 
     private Date selectStartDate, selectEndDate;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -70,6 +76,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
         for(int i = 0; i < getFriendList.getFriendLength(); i++){
             friendItemList[i] = getFriendList.getFriendName(i);
+            friendidList[i] = getFriendList.getFriendid(i);
         }
         mFriendChecked = new boolean[friendItemList.length];
         tempFriendChecked = new boolean[friendItemList.length];
@@ -154,6 +161,8 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                     bundle.putString("startDate", add_multi_dateS.getText().toString());
                     bundle.putString("endDate", add_multi_dateE.getText().toString());
                     bundle.putString("message", add_multi_message.getText().toString());
+                    bundle.putStringArrayList("friendids", friendids);
+                    Log.v("friendids", String.valueOf(friendids));
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
@@ -184,14 +193,20 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) { //確認鈕
                 String mSelectFriends = "";
+                int j =0;
                 for (int i = 0; i < mFriendChecked.length; i++) {
                     if(mFriendChecked[i]){
                         if (mSelectFriends.equals("")) mSelectFriends += friendItemList[i];
                         else mSelectFriends += " , " + friendItemList[i];
+                        friendids.add(friendidList[i]);
+                        Log.v("friendids.get(j)",friendids.get(j));
+                        j++;
                     }
                     tempFriendChecked[i]=mFriendChecked[i];
                 }
                 add_multi_friend.setText(mSelectFriends);
+                Log.v("friendid[j]", String.valueOf(friendid));
+                //Log.v("selectFriends", String.valueOf(friendidItemList));
             }
         });
 
