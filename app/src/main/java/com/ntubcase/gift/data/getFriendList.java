@@ -11,6 +11,8 @@ public class getFriendList {
     private static String[] friendid   ;
     private static String[] friendName ;
     private static String[] friendMail ;
+    private static String[] friendBirthday ;
+    private static String[] imgURL ;
     private static int friendLength = 0 ;
 
     public static void getJSON() {
@@ -30,11 +32,15 @@ public class getFriendList {
                     friendid   = new String[friendLength];
                     friendName = new String[friendLength];
                     friendMail = new String[friendLength];
+                    friendBirthday = new String[friendLength];
+                    imgURL = new String[friendLength];
 
                     for (int i = 0 ; i <friendLength ; i++){
                         friendid[i] = jsonArray.getJSONObject(i).getString("friendid");
                         friendName[i] = jsonArray.getJSONObject(i).getString("nickname");
                         friendMail[i] = jsonArray.getJSONObject(i).getString("mail");
+                        friendBirthday[i] = jsonArray.getJSONObject(i).getString("birthday");
+                        imgURL[i] = jsonArray.getJSONObject(i).getString("image");
                     }
                 } catch (Exception e) {
                 }
@@ -54,5 +60,11 @@ public class getFriendList {
     }
     public static String getFriendMail(int i){
         return friendMail[i];
+    }
+    public static String getFriendBirthday(int i){
+        return friendBirthday[i];
+    }
+    public static String getImgURL(int i){
+        return imgURL[i];
     }
 }

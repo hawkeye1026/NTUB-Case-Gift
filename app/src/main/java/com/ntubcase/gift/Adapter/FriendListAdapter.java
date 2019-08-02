@@ -1,7 +1,9 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +42,13 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
     @Override
     public void onBindViewHolder(final FriendListAdapter.ViewHolder holder, final int position) {
-        holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
+
+        //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
+        Uri imageURI = Uri.parse(mFriendList.get(position).get("imgURL").toString());
+        Log.v("imgURL",mFriendList.get(position).get("imgURL").toString());
+        Picasso.get().load(imageURI).into(holder.iv_photo);
+
+        //holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());
 

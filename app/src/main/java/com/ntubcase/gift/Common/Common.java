@@ -6,6 +6,7 @@ public class Common {
     public static String giftList="http://140.131.114.156/NTUB_gift_server/giftList.php/";
     //-------------------------------------plan
     public static String planList="http://140.131.114.156/NTUB_gift_server/planList.php/";
+
     //-------------------------------------Received
     public static String giftReceived="http://140.131.114.156/NTUB_gift_server/giftReceived.php/";
     public static String giftReceivedDone="http://140.131.114.156/NTUB_gift_server/giftReceivedDone.php/";
@@ -21,6 +22,8 @@ public class Common {
     //-------------------------------------friend
     public static String friendList="http://140.131.114.156/NTUB_gift_server/friendList.php?";
     //-------------------------------------plan
+    public static String planningList="http://140.131.114.156/NTUB_gift_server/planningList.php?";
+    public static String insertMulPlan="http://140.131.114.156/NTUB_gift_server/insertMulPlan.php?";
     public static String insertPlan="http://140.131.114.156/NTUB_gift_server/insertSpPlan.php?";
     public static String spPalnDetail="http://140.131.114.156/NTUB_gift_server/spPlanDetail.php?";
     //-------------------------------------Received
