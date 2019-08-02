@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlanNewFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="搜尋："
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+            <Spinner
+                android:id="@+id/mSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dropDownVerticalOffset="25dp"/>
+
+            <SearchView
+                android:id="@+id/mSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:focusable="false"
+                android:queryHint="計畫名稱"
+                android:textSize="16sp"
+                android:paddingLeft="-16dp"/>
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/planList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/newPlan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        app:menu_labels_textSize="16dp"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_backgroundColor="#AB4B4B4B">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plan_surprise"
+            fab:fab_size="mini"
+            fab:fab_label="@string/planSingle"
+            fab:fab_colorNormal="@color/colorWhite"
+            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_multi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plan_calendar"
+            fab:fab_size="mini"
+            fab:fab_label="@string/planMultiple"
+            fab:fab_colorNormal="@color/colorWhite"
+            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plan_list"
+            fab:fab_size="mini"
+            fab:fab_label="@string/planList"
+            fab:fab_colorNormal="@color/colorWhite"
+            fab:fab_colorPressed="@color/colorPrimaryLight"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+</FrameLayout>
