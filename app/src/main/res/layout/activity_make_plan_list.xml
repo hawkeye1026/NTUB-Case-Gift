@@ -4,25 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_all"
+    android:background="@drawable/bg_plan"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".MakePlanListActivity">
 
 
     <ScrollView
         android:id="@+id/scrollview"
-        android:layout_width="354dp"
-        android:layout_height="wrap_content"
+        android:layout_width="460dp"
+        android:layout_height="528dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:paddingTop="40dp">
+        android:background="@drawable/list"
+        android:paddingTop="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
@@ -53,31 +53,6 @@
 
             </LinearLayout>
 
-            <!--送禮日期-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/date" />
-
-                <EditText
-                    android:id="@+id/list_fdate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="輸入開始日期"
-                    android:inputType="none"></EditText>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,32 +65,7 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="0.1"
-                    app:srcCompat="@drawable/date" />
-
-                <EditText
-                    android:id="@+id/list_edate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="輸入截止日期"
-                    android:inputType="none"></EditText>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/date" />
+                    app:srcCompat="@drawable/clock" />
 
                 <EditText
                     android:id="@+id/list_time"
@@ -124,7 +74,7 @@
                     android:layout_weight="0.9"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:hint="輸入時間"
+                    android:hint="選擇送禮時間"
                     android:inputType="none"></EditText>
 
             </LinearLayout>
@@ -163,7 +113,7 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="0.1"
-                    app:srcCompat="@drawable/date" />
+                    app:srcCompat="@drawable/gift" />
 
                 <EditText
                     android:id="@+id/list_gift"
@@ -176,31 +126,83 @@
                     android:inputType="none"></EditText>
 
             </LinearLayout>
+            <!--送禮日期-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="30dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/list_fdate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="輸入開始日期"
+                    android:inputType="none"></EditText>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="-"
+                    android:textSize="30sp" />
+
+                <EditText
+                    android:id="@+id/list_edate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="輸入截止日期"
+                    android:inputType="none"></EditText>
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:orientation="vertical">
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+                    android:gravity="center"
+                    android:text="項目"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/btnAdd"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="0dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="right"
                     android:layout_marginRight="10dp"
+                    android:layout_weight="0.11"
                     android:background="@drawable/bg_add" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/list_recycle_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="135dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp">
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_marginRight="20dp"></android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
 
@@ -211,13 +213,12 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingBottom="5dp">
 
         <Button
             android:id="@+id/btn_plan_save"
