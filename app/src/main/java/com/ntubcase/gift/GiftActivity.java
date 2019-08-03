@@ -61,6 +61,12 @@ public class GiftActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String str = parent.getItemAtPosition(position).toString();
 
+                if (str.equals(getString(R.string.giftPhoto))) str="1";
+                else if(str.equals(getString(R.string.giftVideo))) str="2";
+                else if(str.equals(getString(R.string.giftMessage))) str="3";
+                else if(str.equals(getString(R.string.giftTicket))) str="4";
+                else if(str.equals(getString(R.string.giftCode))) str="5";
+
                 giftListAdapter.selectedType=str;
                 String query = mSearchView.getQuery().toString();
                 giftListAdapter.getFilter().filter(query);
@@ -161,7 +167,7 @@ public class GiftActivity extends AppCompatActivity {
                         bundle.putString("position",String.valueOf(position));
                         break;
                     case "5":
-                        //------------兌換券
+                        //------------密碼表
                         intent = new Intent(GiftActivity.this, MakeGiftCodeActivity.class);
                         bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
                         bundle.putString("position",String.valueOf(position));

@@ -23,11 +23,11 @@
 
     <!-- 禮物模式Aarray-->
     <string-array name="gift_type">
-        <item>@string/giftPhoto</item>
-        <item>@string/giftVideo</item>
-        <item>@string/giftMessage</item>
-        <item>@string/giftTicket</item>
-        <item>@string/giftCode</item>
+        <item>1</item>  <!-- 照片-->
+        <item>2</item>  <!-- 影片-->
+        <item>3</item>  <!-- 悄悄話-->
+        <item>4</item>  <!-- 兌換券-->
+        <item>5</item>  <!-- 密碼表-->
     </string-array>
 
     <!-- 計畫模式-->
