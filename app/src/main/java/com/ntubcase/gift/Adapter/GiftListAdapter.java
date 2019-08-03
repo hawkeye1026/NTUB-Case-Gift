@@ -2,6 +2,7 @@ package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,17 +84,22 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         viewHolder.tvTitle.setText(item.get(position).get("title").toString()); //設定禮物名稱
         viewHolder.tvDate.setText(item.get(position).get("date").toString()); //設定日期
 
-        String a =  item.get(position).get("type").toString();
-        if(a.equals(giftsType.get(0))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_camera);
-        }else if(a.equals(giftsType.get(1))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_video);
-        }else if(a.equals(giftsType.get(2))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_message);
-        }else if(a.equals(giftsType.get(3))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_ticket);
-        }else if(a.equals(giftsType.get(4))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_decode);
+        switch (item.get(position).get("type").toString()){
+            case "1":
+                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_camera);
+                break;
+            case "2":
+                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_video);
+                break;
+            case "3":
+                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_message);
+                break;
+            case "4":
+                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_ticket);
+                break;
+            case "5":
+                viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_decode);
+                break;
         }
 
         return convertView;
