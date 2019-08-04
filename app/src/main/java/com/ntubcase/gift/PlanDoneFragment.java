@@ -4,6 +4,7 @@ package com.ntubcase.gift;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class PlanDoneFragment extends Fragment {
     private SearchView mSearchView;
     private PlanListAdapter planListAdapter;
     private ArrayAdapter spinnerAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public PlanDoneFragment() {
         // Required empty public constructor
@@ -68,6 +70,17 @@ public class PlanDoneFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        //---------------------SwipeRefreshLayout--------------------------------
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.mSwipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                onResume();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
