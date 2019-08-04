@@ -94,8 +94,9 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         btn_openCamera = (Button) findViewById(R.id.btn_openCamera);
         btn_openCamera.setOnClickListener(openCameraClickListener); //設置監聽器
 
+
+        //------------禮物詳細，判斷禮物是否有初值
         try{
-            //-----判斷是否為修改
             Bundle bundle = this.getIntent().getExtras();
             //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
             int position =Integer.valueOf( bundle.getString("position"));
@@ -104,13 +105,17 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
             Log.v("gift",Common.imgPath + getGiftList.getGift(position));
             Picasso.get().load(imageURI).into(iv_image);
-            //-------set該禮物名稱
-            et_giftName.setText( getGiftList.getGiftName(position));
+            //-------
 
+            //-------存入禮物詳細的editText
+            et_giftName.setText( getGiftList.getGiftName(position));
             //--------
+
         }catch (Exception e){
 
         }
+        //------------禮物詳細結束
+
         checkPermission();  //確認權限
     }
 

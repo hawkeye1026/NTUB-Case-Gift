@@ -151,25 +151,25 @@ public class GiftActivity extends AppCompatActivity {
                     case "2":
                         //------------影片
                         intent = new Intent(GiftActivity.this, MakeGiftVideoActivity.class);
-                        bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
                         bundle.putString("position",String.valueOf(position));
                         break;
                     case "3":
                         //------------悄悄話
                         intent = new Intent(GiftActivity.this, MakeGiftMessageActivity.class);
-                        bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
                         bundle.putString("position",String.valueOf(position));
                         break;
                     case "4":
                         //------------兌換券
                         intent = new Intent(GiftActivity.this, MakeGiftTicketActivity.class);
-                        bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
                         bundle.putString("position",String.valueOf(position));
                         break;
                     case "5":
                         //------------密碼表
                         intent = new Intent(GiftActivity.this, MakeGiftCodeActivity.class);
-                        bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
+                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
                         bundle.putString("position",String.valueOf(position));
                         break;
                 }

@@ -367,7 +367,7 @@ public class PlanDetailActivity extends AppCompatActivity {
 
                         String spid =jsonArray.getJSONObject(0).getString("spid");
                         String spPlanName =jsonArray.getJSONObject(0).getString("spPlanName");
-                        String sendPlanDate =dateFormat.dateFormat(jsonArray.getJSONObject(0).getString("sendPlanDate"));
+                        String sendPlanDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("sendPlanDate"));
                         String message =jsonArray.getJSONObject(0).getString("message");
                         String giftid =jsonArray.getJSONObject(0).getString("giftid");
                         String giftName =jsonArray.getJSONObject(0).getString("giftName");

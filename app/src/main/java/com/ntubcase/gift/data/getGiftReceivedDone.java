@@ -2,7 +2,7 @@ package com.ntubcase.gift.data;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftReceivedDoneAsyncTask;
-import com.ntubcase.gift.dateFormat;
+import com.ntubcase.gift.DateFormat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,9 +46,9 @@ public class getGiftReceivedDone {
                         senderid[i] = jsonArray.getJSONObject(i).getString("senderid");
                         nickname[i] = jsonArray.getJSONObject(i).getString("nickname");
                         planName[i] = jsonArray.getJSONObject(i).getString("planName");
-                        sendPlanDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
+                        sendPlanDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
                         type[i] = jsonArray.getJSONObject(i).getString("type");
-                        openDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("openDate"));
+                        openDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("openDate"));
 
                         switch(type[i]){
                             case "1":

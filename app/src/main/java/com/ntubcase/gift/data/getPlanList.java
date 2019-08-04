@@ -2,7 +2,7 @@ package com.ntubcase.gift.data;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planListAsyncTask;
-import com.ntubcase.gift.dateFormat;
+import com.ntubcase.gift.DateFormat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,13 +56,13 @@ public class getPlanList {
                         //Log.v("abc", "10000");
                         spid[i]           = jsonArray.getJSONObject(i).getString("spid");
                         giftid[i]         = jsonArray.getJSONObject(i).getString("giftid");
-                        sendGiftDate[i]   = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
+                        sendGiftDate[i]   = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
                         spPlanName[i]     = jsonArray.getJSONObject(i).getString("spPlanName");
-                        spCreateDate[i]   = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("spCreateDate"));
+                        spCreateDate[i]   = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("spCreateDate"));
                         message[i]        = jsonArray.getJSONObject(i).getString("message");
                         gift[i]           = jsonArray.getJSONObject(i).getString("gift");
                         giftName[i]       = jsonArray.getJSONObject(i).getString("giftName");
-                        giftCreateDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("giftCreateDate"));
+                        giftCreateDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("giftCreateDate"));
                         ownerid[i]        = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i]           = jsonArray.getJSONObject(i).getString("type");
                         planType[i]       = "驚喜式";

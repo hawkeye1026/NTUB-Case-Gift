@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftReceivedNewAsyncTask;
-import com.ntubcase.gift.dateFormat;
+import com.ntubcase.gift.DateFormat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,7 +47,7 @@ public class getGiftReceived {
                         senderid[i] = jsonArray.getJSONObject(i).getString("senderid");
                         nickname[i] = jsonArray.getJSONObject(i).getString("nickname");
                         planName[i] = jsonArray.getJSONObject(i).getString("planName");
-                        sendPlanDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
+                        sendPlanDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
                         type[i] = jsonArray.getJSONObject(i).getString("type");
 
                         switch(type[i]){
