@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planUpdateAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
@@ -51,9 +52,10 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] single_friendcheckedItems, tempFriendChecked;
+    ArrayList<String> selectFriendIds;
+
     //----------------------------------------------------------------------------------------------
     private static String[] giftid = new String[100];
-    private static String[] friendid = new String[100];
     private static int giftidPositionIndex = 0;
     private static int friendidPositionIndex = 0;
     static EditText edt_single_name, edt_single_message, edt_single_date, edt_single_friend, edt_single_giftName, edt_single_sentTime;
@@ -66,6 +68,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String single_giftName, single_sentTime, single_message;
+    private String sender= "1", planid, planType="1", dateTime;
 
     //------
     private static int giftposition[];
@@ -98,7 +101,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
+                /*planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
                     }
@@ -112,7 +115,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 String spCreateDate = sdFormat.format(date);
 
                 mPlanInsertAsyncTask.execute(Common.insertPlan, giftid[0], edt_single_name.getText().toString(), spCreateDate, sendPlanDate, edt_single_message.getText().toString(), "1", friendid[0]);
-
+*/
                 //-------------讀取時間-----------
                 barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
                         "讀取中", "請等待...", true);
@@ -142,20 +145,44 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-                    }
-                });
+                Log.v("planName",edt_single_name.getText().toString());
+                Log.v("single_date", edt_single_date.getText().toString());
+                Log.v("selectFriendIds", String.valueOf(selectFriendIds));
+                Log.v("mData", String.valueOf(mData));
+
                 //---------------------------選擇日期
-                String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
-                //---------------------------目前時間
+                //String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
+                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
                 Date date = new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                String spCreateDate = sdFormat.format(date);
+                dateTime = sdFormat.format(date);
 
-                //mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
+                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+                planid = "sin_" + sdFormat_giftContent.format(date);
 
+                Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
+                //------------------------------上傳plan資料
+                for (int i = 0 ; i < selectFriendIds.size(); i++) {
+                    giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                        @Override
+                        public void onFinished(String result) {
+
+                        }
+                    });
+                    Log.v("sender", sender);
+                    Log.v("selectFriendIds.get(i)", selectFriendIds.get(i));
+                    Log.v("planid", planid);
+                    Log.v("planType", planType);
+                    giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, selectFriendIds.get(i), planid, planType);
+                }
+
+               //planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
+               //    @Override
+               //    public void onFinished(String result) {
+               //    }
+               //});
+               //mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
+/*
                 //-------------讀取時間-----------
                 barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
                         "讀取中", "請等待...", true);
@@ -176,6 +203,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 }).start();
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                */
             }
         });
 
@@ -359,10 +387,13 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
+                selectFriendIds = new ArrayList<>();
+
                 for (int i = 0; i < single_friendcheckedItems.length; i++) {
                     if (single_friendcheckedItems[i]) {
                         if (item.equals("")) item += single_friendlistItems[i];
                         else item += " , " + single_friendlistItems[i];
+                        selectFriendIds.add(getFriendList.getFriendid(i));
                     }
                     tempFriendChecked[i] = single_friendcheckedItems[i];
                 }
