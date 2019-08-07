@@ -18,20 +18,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertCodeAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,8 +47,8 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
     private TableLayout tableLayout;
     private TableRow tabRow;
-    private ArrayList<String> maincodes = new ArrayList<>();
-    private ArrayList<String> matchcodes = new ArrayList<>();
+    private ArrayList<String> mainCodes = new ArrayList<>();
+    private ArrayList<String> matchCodes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,17 +70,18 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
         btn_add.setOnClickListener(new View.OnClickListener() { //設置 新增一行按鈕 監聽器
             @Override
-            public void onClick(View v) { tableAddRow(1); }
+            public void onClick(View v) {
+                tableAddRow(1);
+            }
         });
         btn_addMulti.setOnClickListener(addMultiClickListener); //設置監聽器
         btn_remove.setOnClickListener(removeClickListener); //設置監聽器
         //---------------------------------------------------------------------------------
 
         tableLayout = (TableLayout) findViewById(R.id.tab_01);
-        tabRow = new TableRow(getApplicationContext()); //範例行
+        tabRow = new TableRow(getApplicationContext()); //---範例行
         for (int col = 0 ; col< 2; col++){
             EditText editText = new EditText(getApplicationContext());
-            Button button = new Button(getApplicationContext());
 
             editText.setBackgroundColor(Color.WHITE);
             editText.setGravity(Gravity.CENTER);
@@ -194,7 +191,6 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
                     tabRow.addView(imageView);
                 }
-                //tableLayout.setColumnShrinkable(2,true);
                 btn_add.setVisibility(View.INVISIBLE);
                 btn_addMulti.setVisibility(View.INVISIBLE);
                 btn_remove.setText("關閉刪除鈕");
@@ -210,15 +206,34 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 btn_addMulti.setVisibility(View.VISIBLE);
                 btn_remove.setText("顯示刪除鈕");
             }
-
-
         }
     };
+
+    //------------------------取得使用者輸入的資料--------------------------------
+    private void getCodeData(){
+        int lineNum = tableLayout.getChildCount();  //總行數
+        String mainCode, matchCode;
+
+        for (int row=1; row<lineNum; row++){ //首行不算
+            tabRow = (TableRow) tableLayout.getChildAt(row);
+            mainCode = ((EditText)tabRow.getChildAt(0)).getText().toString();
+            matchCode = ((EditText)tabRow.getChildAt(1)).getText().toString();
+
+            if(mainCode.equals("") && matchCode.equals("")) ;
+            else{
+                mainCodes.add(mainCode);
+                matchCodes.add(matchCode);
+            }
+        }
+    }
 
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            getCodeData(); //取得使用者輸入的資料
+
             giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
 
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
@@ -236,20 +251,17 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 }
             });
             mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner, giftType);
-            Log.v("maincodes", String.valueOf(maincodes));
-            Log.v("matchcodes", String.valueOf(matchcodes));
+            Log.v("maincodes", String.valueOf(mainCodes));
+            Log.v("matchcodes", String.valueOf(matchCodes));
 
-            for (int i = 1 ; i< maincodes.size(); i++){
-                Log.v("maincodes.get(i + 1)", maincodes.get(i));
-                Log.v("matchcodes.get(i + 1)", matchcodes.get(i));
-
+            for (int i = 0 ; i< mainCodes.size(); i++){
                 giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
 
                     }
                 });
-                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode , giftContent, maincodes.get(i), matchcodes.get(i));
+                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode , giftContent, mainCodes.get(i), matchCodes.get(i));
 
             }
 
@@ -282,8 +294,10 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            getCodeData(); //取得使用者輸入的資料
+
             giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftType="5";
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date =new Date();
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -299,20 +313,17 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 }
             });
             mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner, giftType);
-            Log.v("maincodes", String.valueOf(maincodes));
-            Log.v("matchcodes", String.valueOf(matchcodes));
+            Log.v("maincodes", String.valueOf(mainCodes));
+            Log.v("matchcodes", String.valueOf(matchCodes));
 
-            for (int i = 1 ; i< maincodes.size(); i++){
-                Log.v("maincodes.get(i + 1)", maincodes.get(i));
-                Log.v("matchcodes.get(i + 1)", matchcodes.get(i));
-
+            for (int i = 0 ; i< mainCodes.size(); i++){
                 giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
 
                     }
                 });
-                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode , giftContent, maincodes.get(i), matchcodes.get(i));
+                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode , giftContent, mainCodes.get(i), matchCodes.get(i));
 
             }
 
@@ -323,37 +334,6 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             finish();
         }
     };
-
-    /*
-    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
-    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
-            giftType="3";
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date =new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
-
-
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-            Intent intent;
-            intent = new Intent(MakeGiftMessageActivity.this, PlanActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    };
-*/
 
     public void onStop() {
         super.onStop();
