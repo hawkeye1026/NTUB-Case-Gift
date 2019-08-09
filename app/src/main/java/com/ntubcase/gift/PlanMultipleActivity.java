@@ -128,7 +128,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
         }
         mCheckedItems = new boolean[selectDates.size()][giftItemList.length];
         tempCheckedItems = new boolean[selectDates.size()][giftItemList.length];
-        selectGifts = new String[selectDates.size()][];
+        selectGifts = new String[selectDates.size()][1];
+        for (int i=0; i<selectGifts.length; i++) selectGifts[i][0]="";
 
         //---------------------------------GridView---------------------------------------------
         gridView = (GridView) findViewById(R.id.gridView);
@@ -331,9 +332,12 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 alert_gifts.setText(mSelectGifts);
 
                 //------儲存所選的禮物id-----
-                selectGifts[gridPosition] = new String[mSelectGiftIds.size()];
-                for(int j=0; j<mSelectGiftIds.size(); j++) {
-                    selectGifts[gridPosition][j]=mSelectGiftIds.get(j);
+                if (mSelectGiftIds.size()==0){
+                    selectGifts[gridPosition] = new String[1];
+                    selectGifts[gridPosition][0]="";
+                }else{
+                    selectGifts[gridPosition] = new String[mSelectGiftIds.size()];
+                    for(int j=0; j<mSelectGiftIds.size(); j++) selectGifts[gridPosition][j]=mSelectGiftIds.get(j);
                 }
             }
         });
@@ -429,17 +433,15 @@ public class PlanMultipleActivity extends AppCompatActivity {
             Log.v("message", message);
             multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message);
 
-/*
+
             Log.v("selectDates.size", String.valueOf(selectDates.size()));
             for (int i = 0 ; i < selectDates.size(); i++) {
 
-                int j=0;
-                if(selectGifts[i][j]==null){
-                    break;
-                }else{
-                    while (selectGifts[i][j].equals("")==false){
-                        Log.v("selectGifts[i][j]", selectGifts[i][j]);
+                if (!selectGifts[i][0].equals("") ){
 
+                    Log.v("selectGifts.length", String.valueOf(selectGifts[i].length));
+
+                    for (int j = 0 ; j < selectGifts[i].length; j++) {
                         String space=" ";
                         date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
                         goal = selectDates.get(i).get("message").toString();
@@ -453,11 +455,29 @@ public class PlanMultipleActivity extends AppCompatActivity {
                         Log.v("planid", planid);
                         Log.v("goal", goal);
                         Log.v("date_time", date_time);
-                        Log.v("gifts", selectDates.get(i).get("gifts").toString());
-                        multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, selectGifts[i][0], date_time, goal);
-                        j++;
+                        Log.v("selectGifts[i][j]", selectGifts[i][j]);
+                        multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, selectGifts[i][j], date_time, goal);
                     }
+
+                }else{
+                    String space=" ";
+                    date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
+                    goal = selectDates.get(i).get("message").toString();
+
+                    multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
+                        @Override
+                        public void onFinished(String result) {
+
+                        }
+                    });
+                    Log.v("planid", planid);
+                    Log.v("goal", goal);
+                    Log.v("date_time", date_time);
+                    multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "0", date_time, goal);
                 }
+
+
+
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
 
@@ -468,7 +488,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 //}
 
             }
-*/
+
         }
 
     };

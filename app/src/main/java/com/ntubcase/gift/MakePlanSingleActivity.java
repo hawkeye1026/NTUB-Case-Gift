@@ -603,7 +603,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                     updateData.put("message", single_message);
 
                     mData.set(position, updateData);
-                    adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                 }
                 //在item內傳送文字
                 dialog.cancel();
