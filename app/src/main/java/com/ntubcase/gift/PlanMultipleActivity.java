@@ -114,7 +114,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
         }
         mCheckedItems = new boolean[selectDates.size()][giftItemList.length];
         tempCheckedItems = new boolean[selectDates.size()][giftItemList.length];
-        selectGifts = new String[selectDates.size()][];
+        selectGifts = new String[selectDates.size()][1];
+        for (int i=0; i<selectGifts.length; i++) selectGifts[i][0]="";
 
         //---------------------------------GridView---------------------------------------------
         gridView = (GridView) findViewById(R.id.gridView);
@@ -317,8 +318,13 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 alert_gifts.setText(mSelectGifts);
 
                 //------儲存所選的禮物id-----
-                selectGifts[gridPosition] = new String[mSelectGiftIds.size()];
-                for(int j=0; j<mSelectGiftIds.size(); j++) selectGifts[gridPosition][j]=mSelectGiftIds.get(j);
+                if (mSelectGiftIds.size()==0){
+                    selectGifts[gridPosition] = new String[1];
+                    selectGifts[gridPosition][0]="";
+                }else{
+                    selectGifts[gridPosition] = new String[mSelectGiftIds.size()];
+                    for(int j=0; j<mSelectGiftIds.size(); j++) selectGifts[gridPosition][j]=mSelectGiftIds.get(j);
+                }
             }
         });
 
