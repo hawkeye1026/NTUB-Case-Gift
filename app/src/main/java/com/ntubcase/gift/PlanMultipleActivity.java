@@ -30,6 +30,7 @@ import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multipleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getPlanningList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -404,62 +405,102 @@ public class PlanMultipleActivity extends AppCompatActivity {
             planid = "mul_" + sdFormat_giftContent.format(date);
             Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
 
-            //------------------------------上傳plan資料
-            for (int i = 0 ; i < receiveFriendId.size(); i++) {
-                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
+            uploadPlan("0");
 
+            //-------------讀取Dialog-----------
+            /*
+            barProgressDialog = ProgressDialog.show(PlanMultipleActivity.this,
+                    "讀取中", "請等待...",true);
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try{
+                        //uploadFile(imagepath);
+                        getPlanningList.getJSON();
+                        Thread.sleep(1000);
                     }
-                });
-                Log.v("sender", sender);
-                Log.v("friendids.get(i)", receiveFriendId.get(i));
-                Log.v("planid", planid);
-                Log.v("planType", planType);
-                giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, receiveFriendId.get(i), planid, planType);
-            }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    finally{
+                        barProgressDialog.dismiss();
+                        finish();
+                    }
+                }
+            }).start();
+            */
+            //-------------結束Dialog-----------
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+        }
 
-            multiplePlanInsertAsyncTask multiplePlanInsertAsyncTask = new multiplePlanInsertAsyncTask(new multiplePlanInsertAsyncTask.TaskListener() {
+    };
+    //-------------------------------結束儲存按鈕 監聽器----------------------------------------
+
+    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
+    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date = new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            dateTime = sdFormat.format(date);
+
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+            planid = "mul_" + sdFormat_giftContent.format(date);
+            Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
+
+            uploadPlan("1");
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+
+            Intent intent;
+            intent = new Intent(PlanMultipleActivity.this, PlanActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
+    //-------------------------------結束製作計畫按鈕 監聽器----------------------------------------
+
+    //------------------------------上傳plan資料
+    public void uploadPlan(String sent){
+        //---upload giftRecord
+        for (int i = 0 ; i < receiveFriendId.size(); i++) {
+            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
                 @Override
                 public void onFinished(String result) {
 
                 }
             });
+            Log.v("sender", sender);
+            Log.v("friendids.get(i)", receiveFriendId.get(i));
             Log.v("planid", planid);
-            Log.v("planName", planName);
-            Log.v("createDate", dateTime);
-            Log.v("startDate", startDate);
-            Log.v("endDate", endDate);
-            Log.v("message", message);
-            multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message);
+            Log.v("planType", planType);
+            giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, receiveFriendId.get(i), planid, sent, planType);
+        }
 
+        //---upload multiplePlan
+        multiplePlanInsertAsyncTask multiplePlanInsertAsyncTask = new multiplePlanInsertAsyncTask(new multiplePlanInsertAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
 
-            Log.v("selectDates.size", String.valueOf(selectDates.size()));
-            for (int i = 0 ; i < selectDates.size(); i++) {
+            }
+        });
+        Log.v("planid", planid);
+        Log.v("planName", planName);
+        Log.v("createDate", dateTime);
+        Log.v("startDate", startDate);
+        Log.v("endDate", endDate);
+        Log.v("message", message);
+        multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message);
 
-                if (!selectGifts[i][0].equals("") ){
+        //--- upload multipleList
+        Log.v("selectDates.size", String.valueOf(selectDates.size()));
+        for (int i = 0 ; i < selectDates.size(); i++) {
 
-                    Log.v("selectGifts.length", String.valueOf(selectGifts[i].length));
+            if (!selectGifts[i][0].equals("") ){
 
-                    for (int j = 0 ; j < selectGifts[i].length; j++) {
-                        String space=" ";
-                        date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
-                        goal = selectDates.get(i).get("message").toString();
+                Log.v("selectGifts.length", String.valueOf(selectGifts[i].length));
 
-                        multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
-                            @Override
-                            public void onFinished(String result) {
-
-                            }
-                        });
-                        Log.v("planid", planid);
-                        Log.v("goal", goal);
-                        Log.v("date_time", date_time);
-                        Log.v("selectGifts[i][j]", selectGifts[i][j]);
-                        multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, selectGifts[i][j], date_time, goal);
-                    }
-
-                }else{
+                for (int j = 0 ; j < selectGifts[i].length; j++) {
                     String space=" ";
                     date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
                     goal = selectDates.get(i).get("message").toString();
@@ -473,28 +514,29 @@ public class PlanMultipleActivity extends AppCompatActivity {
                     Log.v("planid", planid);
                     Log.v("goal", goal);
                     Log.v("date_time", date_time);
-                    multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "0", date_time, goal);
+                    Log.v("selectGifts[i][j]", selectGifts[i][j]);
+                    multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, selectGifts[i][j], date_time, goal);
                 }
 
+            }else{
+                String space=" ";
+                date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
+                goal = selectDates.get(i).get("message").toString();
 
+                multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
 
-
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-
-                //-- spile()
-                //StringTokenizer stTokenizer = new StringTokenizer(selectDates.get(i).get("gifts").toString(), ",");
-                //while (stTokenizer.hasMoreTokens()){
-                //    Log.v("gift_nextToken", stTokenizer.nextToken());
-                //}
-
+                    }
+                });
+                Log.v("planid", planid);
+                Log.v("goal", goal);
+                Log.v("date_time", date_time);
+                multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "0", date_time, goal);
             }
-
         }
 
-    };
-    //-------------------------------結束儲存按鈕 監聽器----------------------------------------
-
-
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

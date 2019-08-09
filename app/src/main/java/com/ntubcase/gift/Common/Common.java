@@ -23,6 +23,8 @@ public class Common {
     public static String friendList="http://140.131.114.156/NTUB_gift_server/friendList.php?";
     //-------------------------------------plan
     public static String planningList="http://140.131.114.156/NTUB_gift_server/planningList.php?";
+    public static String planSent="http://140.131.114.156/NTUB_gift_server/planSent.php?";
+    public static String planGot="http://140.131.114.156/NTUB_gift_server/planGot.php?";
     public static String insertMulPlan="http://140.131.114.156/NTUB_gift_server/insertMulPlan.php?";
     public static String insertSinPlan="http://140.131.114.156/NTUB_gift_server/insertSinPlan.php?";
     public static String insertPlan="http://140.131.114.156/NTUB_gift_server/insertSpPlan.php?";

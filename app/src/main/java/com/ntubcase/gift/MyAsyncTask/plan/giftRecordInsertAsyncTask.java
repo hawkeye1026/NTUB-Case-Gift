@@ -65,7 +65,8 @@ public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String
                     "senderid=" + URLEncoder.encode(params[1], "UTF-8") +
                             "&receiverid=" + URLEncoder.encode(params[2], "UTF-8") +
                             "&planid=" + URLEncoder.encode(params[3], "UTF-8") +
-                            "&planType=" + URLEncoder.encode(params[4], "UTF-8");
+                            "&sent" + URLEncoder.encode(params[4], "UTF-8") +
+                            "&planType=" + URLEncoder.encode(params[5], "UTF-8");
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
