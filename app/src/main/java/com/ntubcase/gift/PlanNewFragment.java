@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.PlanListAdapter;
+import com.ntubcase.gift.data.getPlanGot;
 import com.ntubcase.gift.data.getPlanningList;
 
 import java.util.ArrayList;
@@ -92,24 +93,24 @@ public class PlanNewFragment extends Fragment {
     @Override
     public void onResume(){
 
-        getPlanningList.getJSON();
+        getPlanGot.getJSON();
 
         //---------------------ListView倒入資料--------------------------------
 
-        String[][] mPlansData = new String[getPlanningList.getPlanningLength()][20];
+        String[][] mPlansData = new String[getPlanGot.getPlangotgLength()][20];
         //Log.e("Planning","onResume: "+getPlanningList.getPlanningLength());
-        for(int i = 0 ;i < getPlanningList.getPlanningLength(); i++){
-            mPlansData[i][0]= getPlanningList.getPlanid(i);
-            mPlansData[i][1]= getPlanningList.getPlanType(i);
-            mPlansData[i][2]= getPlanningList.getPlanName(i);
-            mPlansData[i][3]= getPlanningList.getCreateDate(i);
-            mPlansData[i][4]= getPlanningList.getSendPlanDate(i);
+        for(int i = 0 ;i < getPlanGot.getPlangotgLength(); i++){
+            mPlansData[i][0]= getPlanGot.getPlanid(i);
+            mPlansData[i][1]= getPlanGot.getPlanType(i);
+            mPlansData[i][2]= getPlanGot.getPlanName(i);
+            mPlansData[i][3]= getPlanGot.getCreateDate(i);
+            mPlansData[i][4]= getPlanGot.getSendPlanDate(i);
         }
 
         mPlansList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mPlans;
 
-        for(int i=0;i<getPlanningList.getPlanningLength();i++) {
+        for(int i=0;i<getPlanGot.getPlangotgLength();i++) {
             mPlans = new HashMap<String, Object>();
             mPlans.put("planid", mPlansData[i][0]);
             mPlans.put("type", mPlansData[i][1]);
