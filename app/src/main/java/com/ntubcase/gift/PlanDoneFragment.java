@@ -17,6 +17,7 @@ import android.widget.Spinner;
 
 import com.ntubcase.gift.Adapter.PlanListAdapter;
 import com.ntubcase.gift.data.getPlanList;
+import com.ntubcase.gift.data.getPlanSent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,23 +91,23 @@ public class PlanDoneFragment extends Fragment {
     @Override
     public void onResume(){
 
-        getPlanList.getJSON();
+        getPlanSent.getJSON();
 
         //---------------------ListView倒入資料--------------------------------
 
-        String[][] mPlansData = new String[getPlanList.getPlanLength()][20];
+        String[][] mPlansData = new String[getPlanSent.getPlansentgLength()][20];
         //Log.e("Plan","onResume: "+getPlanList.getPlanLength());
-        for(int i = 0 ;i < getPlanList.getPlanLength(); i++){
-            mPlansData[i][0]= getPlanList.getPlanType(i);
-            mPlansData[i][1]= getPlanList.getSpPlanName(i);
-            mPlansData[i][2]= getPlanList.getSpCreateDate(i);
-            mPlansData[i][3]= getPlanList.getSpPlanid(i);
+        for(int i = 0 ;i < getPlanSent.getPlansentgLength(); i++){
+            mPlansData[i][0]= getPlanSent.getPlanType(i);
+            mPlansData[i][1]= getPlanSent.getPlanName(i);
+            mPlansData[i][2]= getPlanSent.getCreateDate(i);
+            mPlansData[i][3]= getPlanSent.getPlanid(i);
         }
 
         mPlansList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mPlans;
 
-        for(int i=0;i<getPlanList.getPlanLength();i++) {
+        for(int i=0;i<getPlanSent.getPlansentgLength();i++) {
             mPlans = new HashMap<String, Object>();
             mPlans.put("type", mPlansData[i][0]);
             mPlans.put("title", mPlansData[i][1]);

@@ -17,7 +17,9 @@ import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getGiftReceivedDone;
+import com.ntubcase.gift.data.getPlanGot;
 import com.ntubcase.gift.data.getPlanList;
+import com.ntubcase.gift.data.getPlanSent;
 import com.ntubcase.gift.data.getPlanningList;
 import com.ntubcase.gift.login_model.googleAccount;
 import com.ntubcase.gift.login_model.revokeAccess;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         getGiftList.getJSON();
         getPlanList.getJSON();
         getPlanningList.getJSON();
+        getPlanSent.getJSON();
+        getPlanGot.getJSON();
         getFriendList.getJSON();
         getGiftReceived.getJSON();
         getGiftReceivedDone.getJSON();

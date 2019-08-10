@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String> {
+public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -25,12 +25,12 @@ public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final giftRecordInsertAsyncTask.TaskListener taskListener;
+    private final singlePlanInsertAsyncTask.TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftRecordInsertAsyncTask(giftRecordInsertAsyncTask.TaskListener taskListener) {
+    public singlePlanInsertAsyncTask(singlePlanInsertAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -62,11 +62,11 @@ public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "senderid=" + URLEncoder.encode(params[1], "UTF-8") +
-                            "&receiverid=" + URLEncoder.encode(params[2], "UTF-8") +
-                            "&planid=" + URLEncoder.encode(params[3], "UTF-8") +
-                            "&sent" + URLEncoder.encode(params[4], "UTF-8") +
-                            "&planType=" + URLEncoder.encode(params[5], "UTF-8");
+                    "planid=" + URLEncoder.encode(params[1], "UTF-8") +
+                            "&planName=" + URLEncoder.encode(params[2], "UTF-8") +
+                            "&createDate=" + URLEncoder.encode(params[3], "UTF-8") +
+                            "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8") +
+                            "&message=" + URLEncoder.encode(params[5], "UTF-8");
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
@@ -124,3 +124,4 @@ public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String
         super.onCancelled();
     }
 }
+
