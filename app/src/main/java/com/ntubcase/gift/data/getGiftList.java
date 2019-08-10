@@ -78,7 +78,7 @@ public class  getGiftList {
         });
         myAsyncTask.execute(Common.giftList);
     }
-
+    //---------禮物資料
     public static int getGiftLength(){
         return giftLength;
     }
@@ -90,6 +90,16 @@ public class  getGiftList {
     }
     public static String getType(int i){
         return type[i];
+    }
+    //---------解碼表資料
+    public static String getDecodeGift(int i){
+        return  gift[i];
+    }
+    public static String getDecodeMaincode(int i){
+        return decodeMainCode[i];
+    }
+    public static String getDecodeMatchCode(int i){
+        return decodeMatchCode[i];
     }
 
     public static String getGiftName(int i){
