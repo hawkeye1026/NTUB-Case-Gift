@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import android.widget.VideoView;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -75,6 +77,26 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
         mc = new MediaController(this); // 設定影片控制台
         vv_content.setMediaController(mc);
         vv_content.setOnPreparedListener(this); // 呼叫 VideoView.setVideoURI() 後觸發
+
+        /*
+        try{
+            //-----判斷是否為修改
+            Bundle bundle = this.getIntent().getExtras();
+            //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
+            int position =Integer.valueOf( bundle.getString("position"));
+
+            //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
+            Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
+            Log.v("gift",Common.imgPath + getGiftList.getGift(position));
+            Picasso.get().load(imageURI).into(iv_image);
+            //-------set該禮物名稱
+            et_giftName.setText( getGiftList.getGiftName(position));
+
+            //--------
+        }catch (Exception e){
+
+        }
+        */
 
         checkPermission();  //確認權限
     }

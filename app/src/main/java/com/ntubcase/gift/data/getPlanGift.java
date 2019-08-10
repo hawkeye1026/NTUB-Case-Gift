@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftListAsyncTask;
-import com.ntubcase.gift.dateFormat;
+import com.ntubcase.gift.DateFormat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,7 +45,7 @@ public class getPlanGift {
 //                                "10000");
                         giftid[i] = jsonArray.getJSONObject(i).getString("giftid");
                         gift[i] = jsonArray.getJSONObject(i).getString("gift");
-                        giftCreateDate[i] = dateFormat.dateFormat(jsonArray.getJSONObject(i).getString("giftCreateDate"));
+                        giftCreateDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("giftCreateDate"));
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");

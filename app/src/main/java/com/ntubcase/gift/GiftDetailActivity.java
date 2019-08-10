@@ -82,7 +82,7 @@ public class GiftDetailActivity extends AppCompatActivity {
                     String giftid =jsonArray.getJSONObject(0).getString("giftid");
                     String gift =jsonArray.getJSONObject(0).getString("gift");
                     String giftName =jsonArray.getJSONObject(0).getString("giftName");
-                    String giftCreateDate =dateFormat.dateFormat(jsonArray.getJSONObject(0).getString("giftCreateDate"));
+                    String giftCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("giftCreateDate"));
                     String ownerid =jsonArray.getJSONObject(0).getString("ownerid");
                     String type =jsonArray.getJSONObject(0).getString("type");
                     Log.v("giftid",
