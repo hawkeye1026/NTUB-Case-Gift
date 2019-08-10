@@ -9,15 +9,20 @@ import com.ntubcase.gift.DateFormat;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class getGiftList {
-
+public class  getGiftList {
+    //-------禮物
     private static String[] giftid        ;
     private static String[] gift          ;
     private static String[] giftCreateDate;
     private static String[] giftName      ;
     private static String[] ownerid       ;
     private static String[] type          ;
+    //-------解碼內容
+    private static String[] decodeGift          ;
+    private static String[] decodeMainCode          ;
+    private static String[] decodeMatchCode          ;
     private static int giftLength = 0 ;
+    private static int decodeLength = 0 ;
 
     public static void getJSON() {
 
@@ -27,7 +32,7 @@ public class getGiftList {
             public void onFinished(String result) {
                 try {
                     JSONObject object = new JSONObject(result);
-
+                    //取得禮物資料
                     JSONArray jsonArray = object.getJSONArray("result");
 
                     Log.v("length",jsonArray.length()+"");
@@ -50,8 +55,24 @@ public class getGiftList {
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
                     }
-//                    Log.v("strArr", Arrays.toString(getGiftList.getGiftNmaeArr()));
+
+                    //取得解碼表資料
+                    jsonArray = object.getJSONArray("decode");
+                    decodeLength = jsonArray.length();
+
+                    decodeGift      = new String[giftLength];
+                    decodeMainCode  = new String[giftLength];
+                    decodeMatchCode = new String[giftLength];
+                    Log.v("strArr", decodeLength+"");
+                    for (int i = 0 ; i < decodeLength ; i++){
+                        //Log.v("abc","10000");
+                        decodeGift[i] = jsonArray.getJSONObject(i).getString("gift");
+                        decodeMainCode[i] = jsonArray.getJSONObject(i).getString("mainCode");
+                        decodeMatchCode[i] = jsonArray.getJSONObject(i).getString("matchCode");
+                        Log.v("strArr", decodeMainCode[i]);
+                    }
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
