@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextClock;
+import android.widget.TextView;
+
 import com.ntubcase.gift.R;
 
 
@@ -20,6 +23,7 @@ import java.util.Map;
 public class plan_list_adapter extends RecyclerView.Adapter<plan_list_adapter.ViewHolder>{
     //private List<Map<String, Object>> mData;
     private List<String> mData;
+    private OnItemClickListener mOnItemClickListener;
 
     public plan_list_adapter(List<String> data) {
         mData = data;
@@ -29,16 +33,15 @@ public class plan_list_adapter extends RecyclerView.Adapter<plan_list_adapter.Vi
     // 建立ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder{
         // 宣告元件
-        private EditText editText;
-        private Button btnRemove ,btnCheck;
+        private TextView textView;
+        private Button btnRemove;
         private CheckBox checkBox;
         String message;
 
         ViewHolder(View itemView) {
             super(itemView);
-            editText = (EditText) itemView.findViewById(R.id.editText);
+            textView = (TextView) itemView.findViewById(R.id.Textview);
             btnRemove= (Button) itemView.findViewById(R.id.btn_delete_item);
-            btnCheck= (Button) itemView.findViewById(R.id.btn_check_item);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
 
             // 點擊項目中的Button時
@@ -51,13 +54,6 @@ public class plan_list_adapter extends RecyclerView.Adapter<plan_list_adapter.Vi
                 }
             });
 
-            btnCheck.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                   mData.set(getAdapterPosition(),editText.getText().toString());
-                   notifyDataSetChanged();
-                }
-            });
 
         }
     }
@@ -72,13 +68,30 @@ public class plan_list_adapter extends RecyclerView.Adapter<plan_list_adapter.Vi
 
     @Override
     public void onBindViewHolder(final plan_list_adapter.ViewHolder holder, final int position) {
-
-        holder.editText.setText(mData.get(position));
+        // 設置txtItem要顯示的內容
+        if (mOnItemClickListener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() { //----------item點擊事件----------
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }
+        String message = mData.get(position);
+        holder.textView.setText(message);
     }
 
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void setOnItemClickListener(plan_list_adapter.OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
 }

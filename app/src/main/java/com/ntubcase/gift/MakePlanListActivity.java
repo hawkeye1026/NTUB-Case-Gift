@@ -2,6 +2,7 @@ package com.ntubcase.gift;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -16,6 +17,8 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ntubcase.gift.Adapter.plan_list_adapter;
+import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
@@ -77,14 +81,12 @@ public class MakePlanListActivity extends AppCompatActivity{
         //---------------------------------------------------------------------------------
         //宣告變數------------------------------------------------------------------------------
         edt_list_name = findViewById(R.id.list_name);
-        edt_list_fdate = findViewById(R.id.list_fdate);
         edt_list_edate = findViewById(R.id.list_edate);
         edt_list_friend = findViewById(R.id.list_friend);
         edt_list_giftName = findViewById(R.id.list_gift);
         edt_list_sentTime = findViewById(R.id.list_time);
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
-        txtItem = findViewById(R.id.txtItem);
 
 
 
@@ -123,12 +125,18 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onClick(View view) {
                 /*Map<String, Object> newData = new HashMap<String, Object>();
                 newData.put("message", "");*/
-                mData.add("");
-                adapter.notifyItemInserted(mData.size());
+//                mData.add("");
+//                adapter.notifyItemInserted(mData.size());
+                showDialog(true, mData.size());
             }
 
         });
-
+        adapter.setOnItemClickListener(new plan_list_adapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View view, int position){
+                showDialog(false, position);
+            }
+        });
         //--------------------------------------
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
@@ -150,27 +158,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                 Showfrienddialog();
             }
         });
-        //點選開始日期EditText跳出選擇日期選擇器---------------------------------------
-        edt_list_fdate.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        edt_list_fdate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // TODO Auto-generated method stub
-                if (hasFocus) {
-                    showDatePickerDialog(true);
-                }
-            }
-        });
-
-        edt_list_fdate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                showDatePickerDialog(true);
-            }
-        });
+       
         //點選結束日期EditText跳出選擇日期選擇器---------------------------------------
         edt_list_edate.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edt_list_edate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -179,7 +167,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showDatePickerDialog(false);
+                    showDatePickerDialog();
                 }
             }
         });
@@ -188,7 +176,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showDatePickerDialog(false);
+                showDatePickerDialog();
             }
         });
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
@@ -210,7 +198,21 @@ public class MakePlanListActivity extends AppCompatActivity{
                 Showgiftdialog();
             }
         });
+        //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
+        edt_list_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_list_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    showTimePickerDialog();
+                }
+            }
+        });
+
         edt_list_sentTime.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -328,7 +330,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         mDialog.show();
     }
     //設定送禮日期EditText傳入值---------------------------------------
-    private void showDatePickerDialog(final boolean isNew) {
+    private void showDatePickerDialog() {
         Calendar c = Calendar.getInstance();
         new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
 
@@ -337,11 +339,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                 // TODO Auto-generated method stub
                 String month;
                 String day;
-                if (isNew) {
-                    edt_list_fdate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                }else{
                     edt_list_edate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                }
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -367,6 +365,54 @@ public class MakePlanListActivity extends AppCompatActivity{
 
     }
     //-----------------------------------------------------------------
+
+    //跳出送禮輸入窗
+    private void showDialog(final boolean isNew, final int position) {
+        final Dialog dialog = new Dialog(MakePlanListActivity.this);
+        dialog.setContentView(R.layout.list_dialog);
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);//讓使用者點選背景或上一頁沒有用
+
+        //宣告
+        edt_list_message = dialog.findViewById(R.id.list_message);
+
+        if(!isNew){ //若為編輯則設定資料
+            edt_list_message.setText(mData.get(position));
+        }
+        //點選取消
+        btn_can = dialog.findViewById(R.id.btn_can);
+        btn_can.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew){
+                    edt_list_message.setText("");
+                }
+                dialog.dismiss();
+            }
+        });
+
+        //點選確認
+        btn_ent = dialog.findViewById(R.id.btn_ent);
+        btn_ent.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            //新增一個項目
+            public void onClick(View view) {
+                //抓取輸入方塊訊息
+                list_message = edt_list_message.getText().toString();
+                if (isNew) {    //新增
+                    mData.add(list_message);
+                    adapter.notifyItemInserted(mData.size());
+                }else{  //編輯
+                    mData.set(position, list_message);
+                    adapter.notifyDataSetChanged();
+                }
+                //在item內傳送文字
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
 
 }
 

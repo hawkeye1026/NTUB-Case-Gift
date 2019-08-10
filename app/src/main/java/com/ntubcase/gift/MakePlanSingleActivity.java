@@ -24,7 +24,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planUpdateAsyncTask;
@@ -32,8 +31,6 @@ import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getPlanList;
-
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,7 +54,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     private static int giftidPositionIndex = 0;
     private static int friendidPositionIndex = 0;
     static EditText edt_single_name, edt_single_message, edt_single_date, edt_single_friend, edt_single_giftName, edt_single_sentTime;
-    static TextView txtItem;
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
     private RecyclerView recycler_view;
@@ -92,7 +88,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         edt_single_friend = findViewById(R.id.add_surprise_friend);
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
-        txtItem = findViewById(R.id.txtItem);
 
         //-----------送出計畫
         btn_send.setOnClickListener(new View.OnClickListener() {
@@ -284,9 +279,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
 
     //設定選擇禮物EditText傳入值---------------------------------------
     private void Showgiftdialog(final int position) {
-
-        Log.e("***", "position: "+position + "; size: "+ single_giftcheckedItems.size());
-
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇禮物");
 
@@ -306,12 +298,12 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 for (int i = 0; i < single_giftlistItems.length; i++) {
                     if (single_giftcheckedItems.get(position)[i]) {
                         if (item.equals("")){ item += single_giftlistItems[i];
-                        Log.e("***", "if-item"+item);
-                        }else{ item += " , " + single_giftlistItems[i];
-                        Log.e("***", "else-item"+item);}
+
+                        }else{ item += " , " + single_giftlistItems[i];}
+
                     }
                     tempGiftChecked.get(position)[i] = single_giftcheckedItems.get(position)[i];
-                    Log.e("***", "item"+item);
+
                 }
 
                 edt_single_giftName.setText(item);
@@ -323,7 +315,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 for (int i = 0; i < single_giftlistItems.length; i++) {
                     single_giftcheckedItems.get(position)[i] = tempGiftChecked.get(position)[i];
                 }
-                Log.e("***", "取消"+tempGiftChecked.get(position)[1]);
             }
         });
 
@@ -532,12 +523,10 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 if (isNew) {    //新增
                     Map<String, Object> newData = new HashMap<String, Object>();
                     newData.put("giftName", single_giftName);
-
                     newData.put("sentTime", single_sentTime);
                     newData.put("message", single_message);
                     mData.add(newData);
                     adapter.notifyItemInserted(mData.size());
-                    //adapter.addItem(single_sentTime + "-" + single_giftName + single_message);
                 }else{  //編輯
                     Map<String, Object> updateData = mData.get(position);
                     updateData.put("giftName", single_giftName);
@@ -553,5 +542,4 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         });
         dialog.show();
     }
-
 }

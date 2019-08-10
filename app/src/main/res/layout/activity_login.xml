@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:orientation="vertical">
-    <!--android:background="@drawable/bg_login"-->
+    android:orientation="vertical"
+    android:background="@drawable/bg_login">
 
     <Button
         android:id="@+id/btn_main"

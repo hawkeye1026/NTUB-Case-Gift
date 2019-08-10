@@ -27,11 +27,13 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
     // 建立ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder{
         // 宣告元件
-        private TextView txtItem;
+        private TextView txtTime,txtGift,txtMessage;
         private Button btnRemove;
         ViewHolder(View itemView) {
             super(itemView);
-            txtItem = (TextView) itemView.findViewById(R.id.txtItem);
+            txtTime = (TextView) itemView.findViewById(R.id.txtTime);
+            txtGift = (TextView) itemView.findViewById(R.id.txtGift);
+            txtMessage = (TextView) itemView.findViewById(R.id.txtMessage);
             btnRemove= (Button) itemView.findViewById(R.id.btnRemove);
 
             // 點擊項目中的Button時
@@ -68,7 +70,10 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
         String giftName = mData.get(position).get("giftName").toString();
         String sentTime = mData.get(position).get("sentTime").toString();
         String message = mData.get(position).get("message").toString();
-        holder.txtItem.setText(giftName + "; " + sentTime + "; " + message);
+
+        holder.txtTime.setText(sentTime);
+        holder.txtGift.setText(giftName);
+        holder.txtMessage.setText(message);
 
     }
 
