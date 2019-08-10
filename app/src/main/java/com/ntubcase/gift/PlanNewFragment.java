@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class PlanNewFragment extends Fragment {
     private SearchView mSearchView;
     private PlanListAdapter planListAdapter;
     private ArrayAdapter spinnerAdapter;
-    private ProgressDialog barProgressDialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public PlanNewFragment() {
         // Required empty public constructor
@@ -76,6 +77,16 @@ public class PlanNewFragment extends Fragment {
             }
         });
 
+        //---------------------SwipeRefreshLayout--------------------------------
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.mSwipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                onResume();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         //------------------------------FAB_newGift----------------------
         newPlan = (FloatingActionMenu) view.findViewById(R.id.newPlan);
