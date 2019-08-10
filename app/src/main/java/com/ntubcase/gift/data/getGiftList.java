@@ -92,6 +92,9 @@ public class  getGiftList {
         return type[i];
     }
     //---------解碼表資料
+    public static int getDecodeLength(){
+        return decodeLength;
+    }
     public static String getDecodeGift(int i){
         return  gift[i];
     }
