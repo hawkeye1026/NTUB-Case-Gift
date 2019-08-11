@@ -24,14 +24,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_list_adapter;
 import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,30 +44,25 @@ public class MakePlanListActivity extends AppCompatActivity{
     int a=0;
     String[] list_giftlistItems = new String[getGiftList.getGiftLength()];
     boolean[] list_giftcheckedItems, tempGiftChecked;
+    ArrayList<String> selectGiftIds;  //選擇的禮物ID
+
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] list_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] list_friendcheckedItems, tempFriendChecked;
+    ArrayList<String> selectFriendIds;  //選擇的好友ID
     //----------------------------------------------------------------------------------------------
-    private static String[] giftid = new String[100];
-    private static String[] friendid = new String[100];
-    private static int giftidPositionIndex = 0;
-    private static int friendidPositionIndex = 0;
-    static EditText edt_list_name, edt_list_message, edt_list_fdate, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentTime;
-    static TextView txtItem;
+
+    static EditText edt_list_name, edt_list_message, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentTime;
+
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
     private RecyclerView recycler_view;
     private plan_list_adapter adapter;
-//    private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
     private List<String> mData = new ArrayList<>();
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
-    String list_giftName, list_sentTime, list_message;
+    String list_message;
 
-    //------
-    private int i;
-    private static int giftposition[];
-    int giftCount = 0;
 
     @SuppressLint("ResourceType")
     @Override
@@ -75,7 +73,6 @@ public class MakePlanListActivity extends AppCompatActivity{
         //--------------------取得資料
         getGiftList.getJSON();
         //--------------------
-        giftposition = new int[list_giftlistItems.length];
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //---------------------------------------------------------------------------------
@@ -88,7 +85,8 @@ public class MakePlanListActivity extends AppCompatActivity{
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
 
-
+        btn_save.setOnClickListener(planSaveClickListener); //設置監聽器
+        btn_send.setOnClickListener(planSendClickListener); //設置監聽器
 
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
@@ -123,10 +121,6 @@ public class MakePlanListActivity extends AppCompatActivity{
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Map<String, Object> newData = new HashMap<String, Object>();
-                newData.put("message", "");*/
-//                mData.add("");
-//                adapter.notifyItemInserted(mData.size());
                 showDialog(true, mData.size());
             }
 
@@ -221,8 +215,6 @@ public class MakePlanListActivity extends AppCompatActivity{
         });
     }
     protected void onDestroy() {
-        giftidPositionIndex = 0;
-        friendidPositionIndex = 0;
         super.onDestroy();
     }
 
@@ -234,6 +226,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+
     //設定選擇禮物EditText傳入值---------------------------------------
     private void Showgiftdialog() {
         AlertDialog.Builder gBuilder = new AlertDialog.Builder(MakePlanListActivity.this);
@@ -249,10 +242,13 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
+                selectGiftIds = new ArrayList<>();
+
                 for (int i = 0; i < list_giftcheckedItems.length; i++) {
                     if (list_giftcheckedItems[i]) {
                         if (item.equals("")) item += list_giftlistItems[i];
                         else item += " , " + list_giftlistItems[i];
+                        selectGiftIds.add(getGiftList.getGiftid(i));
                     }
                     tempGiftChecked[i] = list_giftcheckedItems[i];
                 }
@@ -281,6 +277,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         AlertDialog gDialog = gBuilder.create();
         gDialog.show();
     }
+
     //設定選擇好友EditText傳入值---------------------------------------
     private void Showfrienddialog() {
 
@@ -297,10 +294,13 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
+                selectFriendIds = new ArrayList<>();
+
                 for (int i = 0; i < list_friendcheckedItems.length; i++) {
                     if (list_friendcheckedItems[i]) {
                         if (item.equals("")) item += list_friendlistItems[i];
                         else item += " , " + list_friendlistItems[i];
+                        selectFriendIds.add(getFriendList.getFriendid(i));
                     }
                     tempFriendChecked[i] = list_friendcheckedItems[i];
                 }
@@ -329,6 +329,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
     }
+
     //設定送禮日期EditText傳入值---------------------------------------
     private void showDatePickerDialog() {
         Calendar c = Calendar.getInstance();
@@ -344,6 +345,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
     }
+
     //-----------------------------------------------------------
     public String dateAdd0(int date) {
         if (date < 10) {
@@ -353,6 +355,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         }
     }
     //-----------------------------------------------------------
+
     //設定送禮時間EditText傳入值---------------------------------------
     private void showTimePickerDialog() {
         Calendar t = Calendar.getInstance();
@@ -413,6 +416,25 @@ public class MakePlanListActivity extends AppCompatActivity{
         });
         dialog.show();
     }
+
+    //-------------------------------儲存按鈕 監聽器----------------------------------------
+    private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+
+    };
+
+
+    //-------------------------------預送禮物 監聽器----------------------------------------
+    private View.OnClickListener planSendClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+
+    };
 
 }
 

@@ -45,18 +45,16 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     int a=0;
     String[] single_giftlistItems = new String[getGiftList.getGiftLength()];
-    String[] single_giftlistIds = new String[getGiftList.getGiftLength()];
-    public static List<boolean[]> single_giftcheckedItems;
-    public static List<boolean[]> tempGiftChecked;
+    public static List<boolean[]> single_giftcheckedItems = new ArrayList<boolean[]>();
+    public static List<boolean[]> tempGiftChecked = new ArrayList<boolean[]>();
+    public static List<List<String>> mSelectGiftIds = new ArrayList<List<String>>();
+
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] single_friendcheckedItems, tempFriendChecked;
     ArrayList<String> selectFriendIds;
 
     //----------------------------------------------------------------------------------------------
-    private static String[] giftid = new String[100];
-    private static int giftidPositionIndex = 0;
-    private static int friendidPositionIndex = 0;
     static EditText edt_single_name, edt_single_message, edt_single_date, edt_single_friend, edt_single_giftName, edt_single_sentTime;
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
@@ -68,9 +66,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     String single_giftName, single_sentTime, single_message;
     private String sender= "1", planid, planType="1", dateTime;
 
-    //------
-    private static int giftposition[];
-    int giftCount = 0;
 
 
     @Override
@@ -81,12 +76,11 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
 
         //--------------------取得資料
         getGiftList.getJSON();
-        //--------------------
-        giftposition = new int[single_giftlistItems.length];
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //---------------------------------------------------------------------------------
+
         //宣告變數------------------------------------------------------------------------------
         edt_single_name = findViewById(R.id.add_surprise_name);
         edt_single_date = findViewById(R.id.add_surprise_date);
@@ -94,151 +88,16 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
 
-        //-----------送出計畫
-        btn_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-                    }
-                });
-                //---------------------------選擇日期
-
-                String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
-                //---------------------------目前時間
-                Date date = new Date();
-                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                String spCreateDate = sdFormat.format(date);
-
-                mPlanInsertAsyncTask.execute(Common.insertPlan, giftid[0], edt_single_name.getText().toString(), spCreateDate, sendPlanDate, edt_single_message.getText().toString(), "1", friendid[0]);
-*/
-                //-------------讀取時間-----------
-                barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
-                        "讀取中", "請等待...", true);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            getPlanList.getJSON();
-                            getGiftReceived.getJSON();
-                            Thread.sleep(1000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            barProgressDialog.dismiss();
-                            finish();
-
-                        }
-                    }
-                }).start();
-
-                Toast.makeText(v.getContext(), "預送成功", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        //-----------儲存計畫
-        btn_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v("planName",edt_single_name.getText().toString());
-                Log.v("single_date", edt_single_date.getText().toString());
-                Log.v("selectFriendIds", String.valueOf(selectFriendIds));
-                Log.v("mData", String.valueOf(mData));
-
-                //---------------------------選擇日期
-                String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
-                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-                Date date = new Date();
-                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                dateTime = sdFormat.format(date);
-
-                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-                planid = "sin_" + sdFormat_giftContent.format(date);
-
-                Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
-                //------------------------------上傳plan資料
-                for (int i = 0 ; i < selectFriendIds.size(); i++) {
-                    giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-                        @Override
-                        public void onFinished(String result) {
-
-                        }
-                    });
-                    Log.v("sender", sender);
-                    Log.v("selectFriendIds.get(i)", selectFriendIds.get(i));
-                    Log.v("planid", planid);
-                    Log.v("planType", planType);
-                    giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, planType);
-                }
-
-                singlePlanInsertAsyncTask singlePlanInsertAsyncTask = new singlePlanInsertAsyncTask(new singlePlanInsertAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
-                Log.v("planid", planid);
-                Log.v("planName",edt_single_name.getText().toString());
-                Log.v("dateTime", dateTime);
-                Log.v("sendPlanDate", sendPlanDate);
-                Log.v("message", edt_single_message.getText().toString());
-                singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate, edt_single_message.getText().toString());
-
-                Log.v("mData.size", String.valueOf(mData.size()));
-                for (int i = 0 ; i < mData.size(); i++) {
-                    Log.v("planid", planid);
-
-                    Log.v("sentTime", mData.get(i).get("sentTime").toString());
-                    String sendGiftDate = edt_single_date.getText().toString() + " " + mData.get(i).get("sentTime").toString();
-                    Log.v("sendGiftDate", sendGiftDate);
-                    Log.v("giftName", mData.get(i).get("giftName").toString());
-                    Log.v("message", mData.get(i).get("message").toString());
-
-                   }
-
-               //planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
-               //    @Override
-               //    public void onFinished(String result) {
-               //    }
-               //});
-               //mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
-/*
-                //-------------讀取時間-----------
-                barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
-                        "讀取中", "請等待...", true);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            getPlanList.getJSON();
-                            Thread.sleep(1000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            barProgressDialog.dismiss();
-                            finish();
-
-                        }
-                    }
-                }).start();
-
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-                */
-            }
-        });
+        btn_save.setOnClickListener(planSaveClickListener); //-----------儲存計畫
+        btn_send.setOnClickListener(planSendClickListener); //-----------送出計畫
 
 
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
         for (int i = 0; i < getGiftList.getGiftLength(); i++) {
             single_giftlistItems[i] = getGiftList.getGiftName(i);
-            single_giftlistIds[i] = getGiftList.getGiftid(i);
         }
 
-        single_giftcheckedItems = new ArrayList<boolean[]>();
-        tempGiftChecked = new ArrayList<boolean[]>();
 
         //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
         for (int i = 0; i < getFriendList.getFriendLength(); i++) {
@@ -253,16 +112,12 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //------
+                single_giftcheckedItems.add(new boolean[single_giftlistItems.length]);
+                tempGiftChecked.add(new boolean[single_giftlistItems.length]);
+                mSelectGiftIds.add(new ArrayList<String>());
 
-                boolean[] checked = new boolean[single_giftlistItems.length];
-                single_giftcheckedItems.add(checked);
-                tempGiftChecked.add(checked);
-                for (int i = 0; i < giftposition.length; i++) {
-                    checked[giftposition[i]] = false;
-                }
                 showDialog(true, mData.size());
             }
-
         });
 
         // 連結元件
@@ -328,8 +183,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
     }
 
     protected void onDestroy() {
-        giftidPositionIndex = 0;
-        friendidPositionIndex = 0;
         super.onDestroy();
     }
 
@@ -341,8 +194,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
         mBuilder.setMultiChoiceItems(single_giftlistItems, single_giftcheckedItems.get(position), new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-                giftposition[giftCount] = position;
-                giftCount++;
+
             }
         });
         //清除、取消、確認
@@ -351,20 +203,20 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
+                mSelectGiftIds.set(position, new ArrayList<String>());
+
                 for (int i = 0; i < single_giftlistItems.length; i++) {
                     if (single_giftcheckedItems.get(position)[i]) {
                         if (item.equals("")){ item += single_giftlistItems[i];
-
                         }else{ item += " , " + single_giftlistItems[i];}
-
+                        mSelectGiftIds.get(position).add(getGiftList.getGiftid(i));
                     }
-                    tempGiftChecked.get(position)[i] = single_giftcheckedItems.get(position)[i];
-
+                   tempGiftChecked.get(position)[i] = single_giftcheckedItems.get(position)[i];
                 }
-
                 edt_single_giftName.setText(item);
             }
         });
+
         mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
@@ -382,6 +234,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                     tempGiftChecked.get(position)[i] = false;
                 }
                 edt_single_giftName.setText("");
+                mSelectGiftIds.set(position, new ArrayList<String>());
             }
         });
 
@@ -563,6 +416,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 if(isNew){
                     single_giftcheckedItems.remove(position);
                     tempGiftChecked.remove(position);
+                    mSelectGiftIds.remove(position);
                 }
                 dialog.dismiss();
             }
@@ -593,12 +447,150 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                     updateData.put("message", single_message);
 
                     mData.set(position, updateData);
-                adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 }
                 //在item內傳送文字
                 dialog.cancel();
+
+                for (String s:mSelectGiftIds.get(position)) Log.e("***","position: "+ position+ "; id: " + s);
+
             }
         });
         dialog.show();
     }
+
+
+    //-------------------------------儲存按鈕 監聽器----------------------------------------
+    private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.v("planName",edt_single_name.getText().toString());
+            Log.v("single_date", edt_single_date.getText().toString());
+            Log.v("selectFriendIds", String.valueOf(selectFriendIds));
+            Log.v("mData", String.valueOf(mData));
+
+            //---------------------------選擇日期
+            String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date = new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            dateTime = sdFormat.format(date);
+
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+            planid = "sin_" + sdFormat_giftContent.format(date);
+
+            Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
+            //------------------------------上傳plan資料
+            for (int i = 0 ; i < selectFriendIds.size(); i++) {
+                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                Log.v("sender", sender);
+                Log.v("selectFriendIds.get(i)", selectFriendIds.get(i));
+                Log.v("planid", planid);
+                Log.v("planType", planType);
+                giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, planType);
+            }
+
+            singlePlanInsertAsyncTask singlePlanInsertAsyncTask = new singlePlanInsertAsyncTask(new singlePlanInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            Log.v("planid", planid);
+            Log.v("planName",edt_single_name.getText().toString());
+            Log.v("dateTime", dateTime);
+            Log.v("sendPlanDate", sendPlanDate);
+            Log.v("message", edt_single_message.getText().toString());
+            singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate, edt_single_message.getText().toString());
+
+            Log.v("mData.size", String.valueOf(mData.size()));
+            for (int i = 0 ; i < mData.size(); i++) {
+                Log.v("planid", planid);
+
+                Log.v("sentTime", mData.get(i).get("sentTime").toString());
+                String sendGiftDate = edt_single_date.getText().toString() + " " + mData.get(i).get("sentTime").toString();
+                Log.v("sendGiftDate", sendGiftDate);
+                Log.v("giftName", mData.get(i).get("giftName").toString());
+                Log.v("message", mData.get(i).get("message").toString());
+
+            }
+
+            //planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
+            //    @Override
+            //    public void onFinished(String result) {
+            //    }
+            //});
+            //mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
+/*
+                //-------------讀取時間-----------
+                barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
+                        "讀取中", "請等待...", true);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            getPlanList.getJSON();
+                            Thread.sleep(1000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            barProgressDialog.dismiss();
+                            finish();
+
+                        }
+                    }
+                }).start();
+
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                */
+        }
+    };
+
+    //-------------------------------預送禮物按鈕 監聽器----------------------------------------
+    private View.OnClickListener planSendClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+                           /*planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                    }
+                });
+                //---------------------------選擇日期
+
+                String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
+                //---------------------------目前時間
+                Date date = new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                String spCreateDate = sdFormat.format(date);
+
+                mPlanInsertAsyncTask.execute(Common.insertPlan, giftid[0], edt_single_name.getText().toString(), spCreateDate, sendPlanDate, edt_single_message.getText().toString(), "1", friendid[0]);
+*/
+            //-------------讀取時間-----------
+            barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
+                    "讀取中", "請等待...", true);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        getPlanList.getJSON();
+                        getGiftReceived.getJSON();
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        barProgressDialog.dismiss();
+                        finish();
+
+                    }
+                }
+            }).start();
+
+            Toast.makeText(v.getContext(), "預送成功", Toast.LENGTH_SHORT).show();
+        }
+    };
 }

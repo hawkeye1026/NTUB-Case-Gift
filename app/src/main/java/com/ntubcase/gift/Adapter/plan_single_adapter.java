@@ -88,6 +88,7 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
         mData.remove(position);
         MakePlanSingleActivity.single_giftcheckedItems.remove(position);
         MakePlanSingleActivity.tempGiftChecked.remove(position);
+        MakePlanSingleActivity.mSelectGiftIds.remove(position);
         notifyDataSetChanged();
     }
 
