@@ -51,18 +51,15 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
         btn_makePlan.setOnClickListener(makePlanClickListener); //設置監聽器
 
         //------------禮物詳細，判斷禮物是否有初值
-        try{
-            Bundle bundle = this.getIntent().getExtras();
-            //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
-            int position =Integer.valueOf( bundle.getString("position"));
+        Bundle bundle = this.getIntent().getExtras();
+        //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
+        int position =bundle.getInt("position");
 
+        if (position>=0){
             //-------存入禮物詳細的editText
             et_giftName.setText( getGiftList.getGiftName(position));
             et_giftContent.setText(getGiftList.getGift(position));
             //--------
-
-        }catch (Exception e){
-
         }
         //------------禮物詳細結束
 

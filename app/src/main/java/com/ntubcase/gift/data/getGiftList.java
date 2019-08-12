@@ -96,7 +96,7 @@ public class  getGiftList {
         return decodeLength;
     }
     public static String getDecodeGift(int i){
-        return  gift[i];
+        return  decodeGift[i];
     }
     public static String getDecodeMaincode(int i){
         return decodeMainCode[i];

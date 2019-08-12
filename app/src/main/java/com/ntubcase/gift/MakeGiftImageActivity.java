@@ -96,11 +96,11 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 
 
         //------------禮物詳細，判斷禮物是否有初值
-        try{
-            Bundle bundle = this.getIntent().getExtras();
-            //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
-            int position =Integer.valueOf( bundle.getString("position"));
+        Bundle bundle = this.getIntent().getExtras();
+        //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
+        int position =bundle.getInt("position");
 
+        if (position>=0){
             //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
             Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
             Log.v("gift",Common.imgPath + getGiftList.getGift(position));
@@ -110,8 +110,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             //-------存入禮物詳細的editText
             et_giftName.setText( getGiftList.getGiftName(position));
             //--------
-
-        }catch (Exception e){
 
         }
         //------------禮物詳細結束

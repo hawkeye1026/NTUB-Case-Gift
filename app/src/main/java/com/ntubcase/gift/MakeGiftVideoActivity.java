@@ -83,7 +83,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
             //-----判斷是否為修改
             Bundle bundle = this.getIntent().getExtras();
             //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
-            int position =Integer.valueOf( bundle.getString("position"));
+           int position =bundle.getInt("position");
 
             //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
             Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));

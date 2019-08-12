@@ -147,8 +147,6 @@ public class GiftActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getActivity(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_giftTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent() ;
                 Bundle bundle = new Bundle();
                 Log.v("test",mGiftsList.get(position).get("type").toString());
@@ -158,39 +156,32 @@ public class GiftActivity extends AppCompatActivity {
                     case "1":
                         //------------照片
                         intent = new Intent(GiftActivity.this, MakeGiftImageActivity.class);
-                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
-                        bundle.putString("position",String.valueOf(position));
+                        bundle.putInt("position", position);
                         break;
                     case "2":
                         //------------影片
                         intent = new Intent(GiftActivity.this, MakeGiftVideoActivity.class);
-                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
-                        bundle.putString("position",String.valueOf(position));
+                        bundle.putInt("position", position);
                         break;
                     case "3":
                         //------------悄悄話
                         intent = new Intent(GiftActivity.this, MakeGiftMessageActivity.class);
-                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
-                        bundle.putString("position",String.valueOf(position));
+                        bundle.putInt("position", position);
                         break;
                     case "4":
                         //------------兌換券
                         intent = new Intent(GiftActivity.this, MakeGiftTicketActivity.class);
-                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
-                        bundle.putString("position",String.valueOf(position));
+                        bundle.putInt("position", position);
                         break;
                     case "5":
                         //------------密碼表
                         intent = new Intent(GiftActivity.this, MakeGiftCodeActivity.class);
-                        //bundle.putString("giftid",mGiftsList.get(position).get("giftid").toString());
-                        bundle.putString("position",String.valueOf(position));
+                        bundle.putInt("position", position);
                         break;
                 }
 
-
                 intent.putExtras(bundle);
                 startActivity(intent);
-
             }
         });
 
@@ -243,6 +234,8 @@ public class GiftActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+
             switch (v.getId()) {
                 case R.id.fabPhoto:
                     intent = new Intent(GiftActivity.this, MakeGiftImageActivity.class);
@@ -263,6 +256,8 @@ public class GiftActivity extends AppCompatActivity {
             }
 
             newGift.close(true);
+            bundle.putInt("position", -1);
+            intent.putExtras(bundle);
             startActivity(intent);
         }
     };

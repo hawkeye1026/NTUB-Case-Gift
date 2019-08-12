@@ -67,36 +67,53 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
         btn_makePlan.setOnClickListener(makePlanClickListener); //設置監聽器
+        tableLayout = (TableLayout) findViewById(R.id.tab_01);
 
         btn_add.setOnClickListener(new View.OnClickListener() { //設置 新增一行按鈕 監聽器
             @Override
             public void onClick(View v) {
-                tableAddRow(1);
+                tableAddRow(1,"","");
             }
         });
         btn_addMulti.setOnClickListener(addMultiClickListener); //設置監聽器
         btn_remove.setOnClickListener(removeClickListener); //設置監聽器
         //---------------------------------------------------------------------------------
 
-        tableLayout = (TableLayout) findViewById(R.id.tab_01);
-        tabRow = new TableRow(getApplicationContext()); //---範例行
-        for (int col = 0 ; col< 2; col++){
-            EditText editText = new EditText(getApplicationContext());
+        //------------判斷禮物是否有初值------------
+        Bundle bundle = this.getIntent().getExtras();
+        int position =bundle.getInt("position");
 
-            editText.setBackgroundColor(Color.WHITE);
-            editText.setGravity(Gravity.CENTER);
-            editText.setTextSize(18);
-            editText.setPadding(10,10,10,10);
-            LinearLayout.LayoutParams lp = new TableRow.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(3,0,3,3);
-            editText.setLayoutParams(lp);
+        if (position>=0){  //-----顯示禮物詳細-----
+            et_giftName.setText( getGiftList.getGiftName(position)); //禮物名稱
 
-            if(col == 0) editText.setHint("例：A");
-            else if(col == 1) editText.setHint("我");
+            //---資料內容放進表格---
+            String giftContent=getGiftList.getGift(position);
+            for (int i=0; i<(getGiftList.getDecodeLength()); i++){
+                if (getGiftList.getDecodeGift(i).equals(giftContent))
+                    tableAddRow(1,getGiftList.getDecodeMaincode(i),getGiftList.getDecodeMatchCode(i));
+            }
 
-            tabRow.addView(editText);
+        }else{  //-----若為新增則顯示範例行-----
+            tabRow = new TableRow(getApplicationContext()); //---範例行
+            for (int col = 0 ; col< 2; col++){
+                EditText editText = new EditText(getApplicationContext());
+
+                editText.setBackgroundColor(Color.WHITE);
+                editText.setGravity(Gravity.CENTER);
+                editText.setTextSize(18);
+                editText.setPadding(10,10,10,10);
+                LinearLayout.LayoutParams lp = new TableRow.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(3,0,3,3);
+                editText.setLayoutParams(lp);
+
+                if(col == 0) editText.setHint("例：A");
+                else if(col == 1) editText.setHint("我");
+
+                tabRow.addView(editText);
+            }
+            tableLayout.addView(tabRow);
         }
-        tableLayout.addView(tabRow);
+        //----------------------------------------------------
     }
 
     //-------------------------------新增多行按鈕 監聽器----------------------------------------
@@ -115,7 +132,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     try{
                         int lines =Integer.parseInt(et.getText().toString());
-                        tableAddRow(lines);
+                        tableAddRow(lines,"","");
                     }catch (NumberFormatException e) {
                        Toast.makeText(getApplicationContext(),"請輸入有效的整數!", Toast.LENGTH_SHORT).show();
                     }
@@ -135,7 +152,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     };
 
     //------------------------------tableLayout新增行------------------------------
-    private void tableAddRow(int lines){
+    private void tableAddRow(int lines, String mainCode, String matchCode){
         for (int i=0; i<lines; i++){    //行數
             tabRow = new TableRow(getApplicationContext());
             for (int col = 0 ; col< 2; col++){
@@ -149,27 +166,13 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 lp.setMargins(3,0,3,3);
                 editText.setLayoutParams(lp);
 
-                tabRow.addView(editText);
+                if(col == 0) editText.setText(mainCode);  //設定mainCode文字
+                else if(col == 1) editText.setText(matchCode);  //設定matchCode文字
 
+                tabRow.addView(editText);
             }
             tableLayout.addView(tabRow);
         }
-
-        //------------禮物詳細，判斷禮物是否有初值
-//        try{
-//            Bundle bundle = this.getIntent().getExtras();
-//            //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
-//            int position =Integer.valueOf( bundle.getString("position"));
-//
-//            //-------存入禮物詳細的editText
-//            et_giftName.setText( getGiftList.getGiftName(position));
-//            et_giftContent.setText(getGiftList.getGift(position));
-//            //--------
-//
-//        }catch (Exception e){
-//
-//        }
-        //------------禮物詳細結束
     }
 
     //-------------------------------刪除按鈕 監聽器----------------------------------------
