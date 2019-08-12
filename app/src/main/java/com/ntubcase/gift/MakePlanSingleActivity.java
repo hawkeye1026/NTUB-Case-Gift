@@ -21,7 +21,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.ntubcase.gift.Adapter.plan_single_adapter;
@@ -41,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MakePlanSingleActivity<listview> extends AppCompatActivity {
+public class MakePlanSingleActivity extends AppCompatActivity {
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     int a=0;
     String[] single_giftlistItems = new String[getGiftList.getGiftLength()];
@@ -203,13 +202,11 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String item = "";
-                mSelectGiftIds.set(position, new ArrayList<String>());
 
                 for (int i = 0; i < single_giftlistItems.length; i++) {
                     if (single_giftcheckedItems.get(position)[i]) {
                         if (item.equals("")){ item += single_giftlistItems[i];
                         }else{ item += " , " + single_giftlistItems[i];}
-                        mSelectGiftIds.get(position).add(getGiftList.getGiftid(i));
                     }
                    tempGiftChecked.get(position)[i] = single_giftcheckedItems.get(position)[i];
                 }
@@ -234,7 +231,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                     tempGiftChecked.get(position)[i] = false;
                 }
                 edt_single_giftName.setText("");
-                mSelectGiftIds.set(position, new ArrayList<String>());
             }
         });
 
@@ -289,6 +285,7 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                     tempFriendChecked[i] = false;
                 }
                 edt_single_friend.setText("");
+                selectFriendIds = new ArrayList<>();
             }
         });
 
@@ -306,8 +303,6 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // TODO Auto-generated method stub
                 EditText add_surprise_date = findViewById(R.id.add_surprise_date);
-                String month;
-                String day;
 
                 add_surprise_date.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
             }
@@ -387,8 +382,14 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 showTimePickerDialog();
             }
         });
+
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
         edt_single_giftName.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+
+        //--暫存position的checkedbox內容--
+        final boolean[] tempChecked = new boolean[single_giftlistItems.length];
+        for (int i=0; i<single_giftlistItems.length; i++) tempChecked[i]=single_giftcheckedItems.get(position)[i];
+
         edt_single_giftName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -417,6 +418,11 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                     single_giftcheckedItems.remove(position);
                     tempGiftChecked.remove(position);
                     mSelectGiftIds.remove(position);
+                }else{
+                    for (int i=0; i<single_giftlistItems.length; i++){
+                        single_giftcheckedItems.get(position)[i]=tempChecked[i];
+                        tempGiftChecked.get(position)[i]=tempChecked[i];
+                    }
                 }
                 dialog.dismiss();
             }
@@ -433,7 +439,14 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                 single_sentTime = edt_single_sentTime.getText().toString();
                 single_message = edt_single_message.getText().toString();
 
-                if (isNew) {    //新增
+                //------儲存所選的禮物id-----
+                mSelectGiftIds.set(position, new ArrayList<String>());
+                for (int i=0; i<single_giftcheckedItems.get(position).length; i++){
+                    if (single_giftcheckedItems.get(position)[i]) mSelectGiftIds.get(position).add(getGiftList.getGiftid(i));
+                }
+
+                //------儲存輸入的資料-----
+                if (isNew) {  //新增
                     Map<String, Object> newData = new HashMap<String, Object>();
                     newData.put("giftName", single_giftName);
                     newData.put("sentTime", single_sentTime);
@@ -449,11 +462,8 @@ public class MakePlanSingleActivity<listview> extends AppCompatActivity {
                     mData.set(position, updateData);
                     adapter.notifyDataSetChanged();
                 }
-                //在item內傳送文字
+
                 dialog.cancel();
-
-                for (String s:mSelectGiftIds.get(position)) Log.e("***","position: "+ position+ "; id: " + s);
-
             }
         });
         dialog.show();

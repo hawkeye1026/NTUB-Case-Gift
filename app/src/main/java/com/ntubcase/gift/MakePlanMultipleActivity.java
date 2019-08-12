@@ -207,6 +207,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                     tempFriendChecked[i] = false;
                 }
                 add_multi_friend.setText("");
+                selectFriendIds = new ArrayList<>();
             }
         });
 

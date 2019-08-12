@@ -272,6 +272,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                     tempGiftChecked[i] = false;
                 }
                 edt_list_giftName.setText("");
+                selectGiftIds = new ArrayList<>();
             }
         });
         AlertDialog gDialog = gBuilder.create();
@@ -324,6 +325,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                     tempFriendChecked[i] = false;
                 }
                 edt_list_friend.setText("");
+                selectFriendIds = new ArrayList<>();
             }
         });
         AlertDialog mDialog = mBuilder.create();
@@ -383,6 +385,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         if(!isNew){ //若為編輯則設定資料
             edt_list_message.setText(mData.get(position));
         }
+
         //點選取消
         btn_can = dialog.findViewById(R.id.btn_can);
         btn_can.setOnClickListener(new Button.OnClickListener() {

@@ -142,8 +142,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
         });
     }
 
-    //-------------------------------------------------
-    private List<String> selectGiftIds;
     //-----------------顯示alertDialog-----------------
     private void showAlertDialog(int position, final ViewGroup parent) {
         final int gridPosition = position;
@@ -199,9 +197,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
         //----------------選擇禮物---------------
         alert_gifts.setInputType(InputType.TYPE_NULL);
 
-        selectGiftIds = new ArrayList<>();
-        for (String s:mSelectGiftIds[gridPosition]) selectGiftIds.add(s);
-
         //--暫存position的checkedbox內容--
         final boolean[] tempChecked = new boolean[giftItemList.length];
         for (int i=0; i<giftItemList.length; i++) tempChecked[i]=mCheckedItems[gridPosition][i];
@@ -229,6 +224,11 @@ public class PlanMultipleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {   // send data from the AlertDialog to the Activity
                 //------儲存所選的禮物id-----
+                List<String> selectGiftIds = new ArrayList<>();
+                for (int i=0; i<mCheckedItems[gridPosition].length; i++){
+                    if (mCheckedItems[gridPosition][i]) selectGiftIds.add(getGiftList.getGiftid(i));
+                }
+
                 if (selectGiftIds.size()==0){
                     mSelectGiftIds[gridPosition] = new String[1];
                     mSelectGiftIds[gridPosition][0]="";
@@ -237,6 +237,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
                     for(int j=0; j<selectGiftIds.size(); j++) mSelectGiftIds[gridPosition][j]=selectGiftIds.get(j);
                 }
 
+                //------儲存輸入的資料-----
                 sendDialogDataToActivity(gridPosition, alert_message.getText().toString()
                         , alert_time.getText().toString(), alert_gifts.getText().toString());
             }
@@ -359,13 +360,11 @@ public class PlanMultipleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 String mSelectGifts ="";
-                selectGiftIds = new ArrayList<>();
 
                 for (int i = 0; i < giftItemList.length; i++) {
                     if(mCheckedItems[gridPosition][i]){
                         if (mSelectGifts.equals("")) mSelectGifts += giftItemList[i];
                         else mSelectGifts += " , " + giftItemList[i];
-                        selectGiftIds.add(getGiftList.getGiftid(i));
                     }
                     tempCheckedItems[gridPosition][i]=mCheckedItems[gridPosition][i];
                 }
@@ -388,7 +387,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
                     tempCheckedItems[gridPosition][i] = false;
                 }
                 alert_gifts.setText("");
-                selectGiftIds = new ArrayList<>();
             }
         });
 
