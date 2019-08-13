@@ -1,17 +1,22 @@
 package com.ntubcase.gift;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.textclassifier.TextLinks;
 import android.widget.Button;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -24,16 +29,22 @@ import com.google.android.gms.tasks.Task;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.login.loginAsyncTask;
+import com.ntubcase.gift.login_model.facebookAccount;
 import com.ntubcase.gift.login_model.revokeAccess;
 import com.ntubcase.gift.login_model.signOut;
 
 import com.ntubcase.gift.login_model.googleAccount;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener  {
@@ -68,22 +79,59 @@ public class LoginActivity extends AppCompatActivity implements
             //--------------facebook 登入
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-            if (isLoggedIn) {
+            if (!isLoggedIn) {
 
             } else {
+                //宣告callback Manager
+                callbackManager = CallbackManager.Factory.create();
                 FacebookSdk.sdkInitialize(getApplicationContext());
                 AppEventsLogger.activateApp(getApplication());
 
-                callbackManager = CallbackManager.Factory.create();
+                loginButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        LoginManager.getInstance()
+                                .logInWithReadPermissions(LoginActivity.this,
+                                        Arrays.asList("public_profile","user_friends","email"));
+                    }
+                });
 
-                loginButton.setReadPermissions("email");
+                GraphRequest request = GraphRequest.newMeRequest(
+                        accessToken,
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                try {
+
+                                    //Log.v("abc","10000");
+                                    facebookAccount mfacebookAcocount = new facebookAccount(
+                                            object.getString("first_name") +object.getString("last_name") ,
+                                            object.getString("birthday"),
+                                            object.getString("email"),
+                                            Uri.parse(object.getString("link"))
+                                    );
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link,email");
+
+                request.setParameters(parameters);
+                request.executeAsync();
+
                 // If using in a fragment
                 loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         // App code
                     }
-
                     @Override
                     public void onCancel() {
                         // App code
@@ -150,7 +198,7 @@ public class LoginActivity extends AppCompatActivity implements
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }else{
-            //callbackManager.onActivityResult(requestCode, resultCode, data);
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
     // [END onActivityResult]

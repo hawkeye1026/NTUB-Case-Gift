@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         mSetting = (ImageView)findViewById(R.id.mSetting);
 
         //-------顯示使用者頭像
-        Uri imageURI = googleAccount.getPhotoUrl();
+        Uri imageURI = googleAccount.getPhotoUri();
         Picasso.get().load(imageURI).into(mSetting);
 
         //-------禮物區 按鈕------

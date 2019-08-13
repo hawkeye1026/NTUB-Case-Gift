@@ -39,7 +39,7 @@ public class SettingActivity extends AppCompatActivity {
         mBirthday = (TextView) findViewById(R.id.et_birthday);
 
         //-------顯示使用者頭像
-        Uri imageURI = googleAccount.getPhotoUrl();
+        Uri imageURI = googleAccount.getPhotoUri();
         Picasso.get().load(imageURI).into(mUserPhoto);
         //-------顯示使用者個人資料
         mNickname.setText("名字： " + googleAccount.getUserName());
