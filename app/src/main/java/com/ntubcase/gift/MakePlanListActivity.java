@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_list_adapter;
 import com.ntubcase.gift.Adapter.plan_single_adapter;
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
@@ -53,6 +55,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     //----------------------------------------------------------------------------------------------
 
     static EditText edt_list_name, edt_list_message, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentTime;
+    private String sender= "1", planid, planType="3", dateTime;
 
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
@@ -424,7 +427,33 @@ public class MakePlanListActivity extends AppCompatActivity{
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Log.v("selectFriendIds", String.valueOf(selectFriendIds));
+            Log.v("selectGiftIds", String.valueOf(selectGiftIds));
+            Log.v("mData", String.valueOf(mData));
 
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date = new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            dateTime = sdFormat.format(date);
+
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+            planid = "mis_" + sdFormat_giftContent.format(date);
+            Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
+
+            //---upload giftRecord
+            for (int i = 0 ; i < selectFriendIds.size(); i++) {
+                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                Log.v("sender", sender);
+                Log.v("selectFriendIds.get(i)", selectFriendIds.get(i));
+                Log.v("planid", planid);
+                Log.v("planType", planType);
+                giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, "1", planType);
+            }
         }
 
     };
