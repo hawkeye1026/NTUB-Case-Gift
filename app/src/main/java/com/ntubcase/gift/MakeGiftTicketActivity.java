@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.googleAccount;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +30,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     private static String giftName, giftContent;
 
     protected static Date date =new Date();
-    protected static String owner = "wayne";
+    protected static String owner = googleAccount.getUserMail();
     protected static String dateTime, giftType;
     ProgressDialog barProgressDialog;
 

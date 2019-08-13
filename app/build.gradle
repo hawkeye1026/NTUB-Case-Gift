@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ntubcase.gift"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -50,6 +50,8 @@ dependencies {
 
     //load internet image
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //facebook登入
+    implementation 'com.facebook.android:facebook-login:[5,6)'
 
 }
 apply plugin: 'com.google.gms.google-services'

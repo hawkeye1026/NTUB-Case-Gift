@@ -8,6 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,12 +32,16 @@ import com.ntubcase.gift.login_model.googleAccount;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener  {
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
+
+    private CallbackManager callbackManager;
 
     private static GoogleSignInClient mGoogleSignInClient;
 
@@ -43,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         //--------取得目前時間：yyyy/MM/dd hh:mm:ss
         Date date =new Date();
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -52,6 +63,43 @@ public class LoginActivity extends AppCompatActivity implements
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        try {
+            //--------------facebook 登入
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+            if (isLoggedIn) {
+
+            } else {
+                FacebookSdk.sdkInitialize(getApplicationContext());
+                AppEventsLogger.activateApp(getApplication());
+
+                callbackManager = CallbackManager.Factory.create();
+
+                loginButton.setReadPermissions("email");
+                // If using in a fragment
+                loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+            }
+            //--------------facebook 登入結束
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         // 設置登入監聽器
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         // 結束設置登入監聽器
@@ -79,7 +127,6 @@ public class LoginActivity extends AppCompatActivity implements
         });
 
     }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -102,6 +149,8 @@ public class LoginActivity extends AppCompatActivity implements
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+        }else{
+            //callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
     // [END onActivityResult]
