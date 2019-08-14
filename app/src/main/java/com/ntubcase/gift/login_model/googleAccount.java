@@ -30,7 +30,7 @@ public class googleAccount {
         return user_mail;
     }
 
-    public static Uri getPhotoUri(){
+    public static Uri getUserPhotoUri(){
         return user_photo_uri;
     }
 

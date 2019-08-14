@@ -59,6 +59,9 @@ public class LoginActivity extends AppCompatActivity implements
     private Button btn_main;
     private static String user_birthday;
 
+    //--------fb logiin
+    private String userid;
+    //--------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +80,9 @@ public class LoginActivity extends AppCompatActivity implements
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         try {
             //--------------facebook 登入
-            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            final AccessToken accessToken = AccessToken.getCurrentAccessToken();
             boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-            if (!isLoggedIn) {
 
-            } else {
                 //宣告callback Manager
                 callbackManager = CallbackManager.Factory.create();
                 FacebookSdk.sdkInitialize(getApplicationContext());
@@ -93,44 +94,43 @@ public class LoginActivity extends AppCompatActivity implements
                         LoginManager.getInstance()
                                 .logInWithReadPermissions(LoginActivity.this,
                                         Arrays.asList("public_profile","user_friends","email"));
+
                     }
                 });
-
-                GraphRequest request = GraphRequest.newMeRequest(
-                        accessToken,
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
-                                try {
-
-                                    //Log.v("abc","10000");
-                                    facebookAccount mfacebookAcocount = new facebookAccount(
-                                            object.getString("first_name") +object.getString("last_name") ,
-                                            object.getString("birthday"),
-                                            object.getString("email"),
-                                            Uri.parse(object.getString("link"))
-                                    );
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,link,email");
-
-                request.setParameters(parameters);
-                request.executeAsync();
 
                 // If using in a fragment
                 loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        // App code
+
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                accessToken,
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(
+                                            JSONObject object,
+                                            GraphResponse response) {
+                                        try {
+
+                                            //Log.v("abc","10000");
+                                            facebookAccount mfacebookAcocount = new facebookAccount(
+                                                    object.getString("name"),
+                                                    "abcdefg",
+                                                    object.getString("email"),
+                                                    object.getString("id")
+                                            );
+
+                                            Log.v("fbMail",object.getString("id"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id, name, birthday , email");
+                        request.setParameters(parameters);
+                        request.executeAsync();
                     }
                     @Override
                     public void onCancel() {
@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements
                         // App code
                     }
                 });
-            }
+
             //--------------facebook 登入結束
         }catch (Exception e){
             e.printStackTrace();
@@ -189,17 +189,13 @@ public class LoginActivity extends AppCompatActivity implements
     // [START onActivityResult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }else{
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
     // [END onActivityResult]
 

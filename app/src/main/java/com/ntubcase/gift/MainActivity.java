@@ -22,6 +22,7 @@ import com.ntubcase.gift.data.getPlanGot;
 import com.ntubcase.gift.data.getPlanList;
 import com.ntubcase.gift.data.getPlanSent;
 import com.ntubcase.gift.data.getPlanningList;
+import com.ntubcase.gift.login_model.facebookAccount;
 import com.ntubcase.gift.login_model.googleAccount;
 import com.ntubcase.gift.login_model.revokeAccess;
 import com.ntubcase.gift.login_model.signOut;
@@ -49,8 +50,11 @@ public class MainActivity extends AppCompatActivity {
         mSetting = (ImageView)findViewById(R.id.mSetting);
 
         //-------顯示使用者頭像
-        Uri imageURI = googleAccount.getPhotoUri();
+
+        Uri imageURI = facebookAccount.getUserPhotoUri();
         Picasso.get().load(imageURI).into(mSetting);
+
+
 
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);

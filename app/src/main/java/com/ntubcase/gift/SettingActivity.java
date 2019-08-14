@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ntubcase.gift.login_model.facebookAccount;
 import com.ntubcase.gift.login_model.googleAccount;
 import com.ntubcase.gift.login_model.signOut;
 import com.squareup.picasso.Picasso;
@@ -38,13 +39,27 @@ public class SettingActivity extends AppCompatActivity {
         mMail = (TextView) findViewById(R.id.et_mail);
         mBirthday = (TextView) findViewById(R.id.et_birthday);
 
-        //-------顯示使用者頭像
-        Uri imageURI = googleAccount.getPhotoUri();
-        Picasso.get().load(imageURI).into(mUserPhoto);
-        //-------顯示使用者個人資料
-        mNickname.setText("名字： " + googleAccount.getUserName());
-        mMail.setText("Email： " + googleAccount.getUserMail());
-        mBirthday.setText("Birthday："  );
+
+        if(true){
+            //-------顯示使用者頭像
+            Uri imageURI = facebookAccount.getUserPhotoUri();
+            Picasso.get().load(imageURI).into(mUserPhoto);
+            //-------顯示使用者個人資料
+            mNickname.setText("名字： " + facebookAccount.getUserName());
+            mMail.setText("Email： " + facebookAccount.getUserMail());
+            mBirthday.setText("Birthday："  );
+        }else{
+            //-------顯示使用者頭像
+            Uri imageURI = googleAccount.getUserPhotoUri();
+            Picasso.get().load(imageURI).into(mUserPhoto);
+            //-------顯示使用者個人資料
+            mNickname.setText("名字： " + googleAccount.getUserName());
+            mMail.setText("Email： " + googleAccount.getUserMail());
+            mBirthday.setText("Birthday："  );
+        }
+
+
+
         //顯示使用者資訊
 
         //------設置
