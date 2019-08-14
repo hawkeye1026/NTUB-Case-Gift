@@ -27,6 +27,7 @@ import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planUpdateAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.singleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.singlePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
@@ -63,7 +64,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String single_giftName, single_sentTime, single_message;
-    private String sender= "1", planid, planType="1", dateTime;
+    private String sender= "1", planid, planType="1", dateTime, date_time;
 
 
 
@@ -479,8 +480,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             Log.v("selectFriendIds", String.valueOf(selectFriendIds));
             Log.v("mData", String.valueOf(mData));
 
-            //---------------------------選擇日期
-            String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date = new Date();
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -489,75 +488,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "sin_" + sdFormat_giftContent.format(date);
 
-            Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
-            //------------------------------上傳plan資料
-            for (int i = 0 ; i < selectFriendIds.size(); i++) {
-                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
+            uploadPlan("0");
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
 
-                    }
-                });
-                Log.v("sender", sender);
-                Log.v("selectFriendIds.get(i)", selectFriendIds.get(i));
-                Log.v("planid", planid);
-                Log.v("planType", planType);
-                giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, planType);
-            }
-
-            singlePlanInsertAsyncTask singlePlanInsertAsyncTask = new singlePlanInsertAsyncTask(new singlePlanInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            Log.v("planid", planid);
-            Log.v("planName",edt_single_name.getText().toString());
-            Log.v("dateTime", dateTime);
-            Log.v("sendPlanDate", sendPlanDate);
-            Log.v("message", edt_single_message.getText().toString());
-            singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate, edt_single_message.getText().toString());
-
-            Log.v("mData.size", String.valueOf(mData.size()));
-            for (int i = 0 ; i < mData.size(); i++) {
-                Log.v("planid", planid);
-
-                Log.v("sentTime", mData.get(i).get("sentTime").toString());
-                String sendGiftDate = edt_single_date.getText().toString() + " " + mData.get(i).get("sentTime").toString();
-                Log.v("sendGiftDate", sendGiftDate);
-                Log.v("giftName", mData.get(i).get("giftName").toString());
-                Log.v("message", mData.get(i).get("message").toString());
-
-            }
-
-            //planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
-            //    @Override
-            //    public void onFinished(String result) {
-            //    }
-            //});
-            //mPlanInsertAsyncTask.execute(Common.insertPlan , giftid[0], add_surprise_name.getText().toString() ,spCreateDate ,sendPlanDate,add_surprice_message.getText().toString(),"1",friendid[0]);
-/*
-                //-------------讀取時間-----------
-                barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
-                        "讀取中", "請等待...", true);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            getPlanList.getJSON();
-                            Thread.sleep(1000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            barProgressDialog.dismiss();
-                            finish();
-
-                        }
-                    }
-                }).start();
-
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-                */
         }
     };
 
@@ -565,21 +498,16 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-                           /*planUpdateAsyncTask mPlanInsertAsyncTask = new planUpdateAsyncTask(new planUpdateAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-                    }
-                });
-                //---------------------------選擇日期
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date = new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            dateTime = sdFormat.format(date);
 
-                String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
-                //---------------------------目前時間
-                Date date = new Date();
-                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                String spCreateDate = sdFormat.format(date);
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+            planid = "sin_" + sdFormat_giftContent.format(date);
 
-                mPlanInsertAsyncTask.execute(Common.insertPlan, giftid[0], edt_single_name.getText().toString(), spCreateDate, sendPlanDate, edt_single_message.getText().toString(), "1", friendid[0]);
-*/
+            uploadPlan("1");
+
             //-------------讀取時間-----------
             barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
                     "讀取中", "請等待...", true);
@@ -602,5 +530,60 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
             Toast.makeText(v.getContext(), "預送成功", Toast.LENGTH_SHORT).show();
         }
+
     };
+
+    //------------------------------上傳plan資料
+    public void uploadPlan(String sent){
+        //---------------------------選擇日期
+        String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
+
+        Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
+        //---upload giftRecord
+        for (int i = 0 ; i < selectFriendIds.size(); i++) {
+            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, "1", planType);
+        }
+        Log.v("giftRecord", "//---upload giftRecord");
+
+        //--- upload singlePlan
+        singlePlanInsertAsyncTask singlePlanInsertAsyncTask = new singlePlanInsertAsyncTask(new singlePlanInsertAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+
+            }
+        });
+        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate);
+        Log.v("singlePlan", "//---upload singlePlan");
+
+        //--- upload singleList
+        Log.v("mData.size", String.valueOf(mData.size()));
+        for (int i = 0 ; i < mData.size(); i++) {
+
+            for (int j = 0; j < mSelectGiftIds.get(i).size(); j++) {
+                Log.v("get(i).size()", String.valueOf(mSelectGiftIds.get(i).size()));
+                String space=" ";
+                date_time = edt_single_date.getText().toString() +" "+mData.get(i).get("sentTime").toString();  //-- x
+
+                singleListInsertAsyncTask singleListInsertAsyncTask = new singleListInsertAsyncTask(new singleListInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                Log.v("planid", planid);
+                Log.v("get(i).get(j)", String.valueOf(mSelectGiftIds.get(i).get(j)));
+                Log.v("date_time", date_time);
+                Log.v("message", mData.get(i).get("message").toString());
+                singleListInsertAsyncTask.execute(Common.insertSinPlan, planid, mSelectGiftIds.get(i).get(j), date_time, mData.get(i).get("message").toString());
+            }
+
+        }
+        Log.v("singleList", "//---upload singleList");
+    }
 }
