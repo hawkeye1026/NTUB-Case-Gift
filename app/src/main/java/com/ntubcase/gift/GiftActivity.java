@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +42,10 @@ public class GiftActivity extends AppCompatActivity {
     private ArrayAdapter spinnerAdapter;
     private static int jslen = 0 ;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Menu mMenu;
+    //--------------------------------------------
+    private mMultiChoiceListener multiChoiceListener;  //list多選模式監聽器
+    private View actionBarView;  //多選模式中的action bar
+    private TextView selectedNum;  //顯示選中個項目個數
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +141,9 @@ public class GiftActivity extends AppCompatActivity {
         }
         giftListAdapter = new GiftListAdapter(this, mGiftsList);
 
+        multiChoiceListener = new mMultiChoiceListener();
+        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        mListView.setMultiChoiceModeListener(multiChoiceListener);
         mListView.setAdapter(giftListAdapter);
         mListView.setTextFilterEnabled(true);
 
@@ -255,7 +263,6 @@ public class GiftActivity extends AppCompatActivity {
                 case R.id.fabCode:
                     intent = new Intent(GiftActivity.this, MakeGiftCodeActivity.class);
                     break;
-
             }
 
             newGift.close(true);
@@ -268,7 +275,6 @@ public class GiftActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        mMenu=menu;
         return true;
     }
 
@@ -278,29 +284,75 @@ public class GiftActivity extends AppCompatActivity {
             case android.R.id.home: //toolbar返回建
                 finish();
                 return true;
-            case R.id.action_delete:
-                item.setVisible(false);
-                mMenu.findItem(R.id.action_confirm).setVisible(true);
-                mMenu.findItem(R.id.action_cancel).setVisible(true);
+            case R.id.action_delete_gift:  //刪除鈕，進入多選模式
+                mListView.setItemChecked(0, true);
+                mListView.clearChoices();
+                multiChoiceListener.updateSelectedCount();
+//                giftListAdapter.unCheckAll();
                 return true;
-
-            case R.id.action_confirm:
-                mMenu.findItem(R.id.action_delete).setVisible(true);
-                mMenu.findItem(R.id.action_cancel).setVisible(false);
-                item.setVisible(false);
-                Toast.makeText(this,"確認刪除",Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.action_cancel:
-                mMenu.findItem(R.id.action_delete).setVisible(true);
-                mMenu.findItem(R.id.action_confirm).setVisible(false);
-                item.setVisible(false);
-                Toast.makeText(this,"取消",Toast.LENGTH_SHORT).show();
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
+
+    //----------------刪除，多選模式的監聽器----------------------
+    class mMultiChoiceListener implements AbsListView.MultiChoiceModeListener {
+
+        //-----item狀態改變-----
+        @Override
+        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+//            if (checked) {
+//                giftListAdapter.getItemState()[position] = 1;
+//            } else {
+//                giftListAdapter.getItemState()[position] = 0;
+//            }
+            updateSelectedCount();
+            giftListAdapter.notifyDataSetChanged();
+        }
+
+        //-----顯示目前選中的項目個數-----
+        public void updateSelectedCount() {
+            int count = mListView.getCheckedItemCount();
+            selectedNum.setText("" + count);
+        }
+
+        //-----初始化ActionBar-----
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_multi_choice, menu);
+            if (actionBarView == null) {
+                actionBarView = LayoutInflater.from(GiftActivity.this).inflate(R.layout.delete_actionbar_layout, null);
+                selectedNum = (TextView) actionBarView.findViewById(R.id.selected_num);
+            }
+            mode.setCustomView(actionBarView);
+            return true;
+        }
+
+        //-----點選ActionBar的item-----
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.action_delete:  //刪除
+                    Toast.makeText(GiftActivity.this,"刪除",Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return true;
+        }
+
+        //-----退出多選模式-----
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+                mListView.clearChoices();
+//            giftListAdapter.unCheckAll();
+        }
+    }
+
 }

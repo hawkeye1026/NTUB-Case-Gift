@@ -2,6 +2,7 @@ package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
@@ -27,6 +29,12 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
     private LayoutInflater mLayout;
     private ArrayList<String> giftsType; //所有禮物種類
     public static String selectedType; //spinner所選取的種類
+    //------------------------------------
+//    private int[] mItemState;  //---紀錄多選模式時，item的選取狀態，0為未選取 1為選取---
+    private boolean isCachedBackground = false;
+    private Drawable mBackground;
+
+    private ListView mListView;
 
     public GiftListAdapter(Context context, List<Map<String, Object>> mList){
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -41,7 +49,16 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
             giftsType.add(mGiftStrings[i]);
         }
 
+//        //---item的選取狀態預設為0---
+//        mItemState = new int[item.size()];
+//        for (int i = 0; i < mItemState.length; i++) {
+//            mItemState[i] = 0;
+//        }
     }
+
+//    public int[] getItemState() {
+//        return mItemState;
+//    }
 
     @Override
     public int getCount() {
@@ -58,6 +75,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
+
     static class ViewHolder{
         public TextView tvTitle;
         public ImageView ivGiftIcon;
@@ -68,6 +86,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if(convertView == null){
+            mListView=(ListView)parent;
             viewHolder = new ViewHolder();
             //自定義的list布局
             convertView = mLayout.inflate(R.layout.giftlist_layout, parent,false);
@@ -102,8 +121,40 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
                 break;
         }
 
+        //---緩存原本的background
+        if (!isCachedBackground) {
+            isCachedBackground = true;
+            mBackground = convertView.getBackground();
+        }
+
+        updateBackground(position, convertView); //設定背景
+
         return convertView;
     }
+
+    //-----設定背景-----
+    private void updateBackground(int position,View convertView) {
+        if(mListView.isItemChecked(position)) {
+            convertView.setBackgroundColor(0xFFDFDFDF);
+        } else {
+            convertView.setBackgroundDrawable(mBackground);
+        }
+    }
+
+//    //-----設定背景-----
+//    private void updateBackground(int position,View convertView) {
+//        if (getItemState()[position] == 1) {
+//            convertView.setBackgroundColor(0xFFDFDFDF);
+//        } else if (getItemState()[position] == 0){
+//            convertView.setBackgroundDrawable(mBackground);
+//        }
+//    }
+//
+//    public void unCheckAll() {
+//        for (int i = 0; i < mItemState.length; i++) {
+//            mItemState[i] = 0;
+//        }
+//    }
 
     @Override
     public Filter getFilter() { //過濾器
