@@ -13,8 +13,8 @@
 
     <ScrollView
         android:id="@+id/scrollview"
-        android:layout_width="420dp"
-        android:layout_height="450dp"
+        android:layout_width="330dp"
+        android:layout_height="460dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:background="@drawable/list"
@@ -23,10 +23,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="50dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <!--計畫名稱-->
             <LinearLayout
@@ -50,9 +50,9 @@
                     android:layout_weight="0.9"
                     android:ems="10"
                     android:hint="輸入計畫名稱"
+                    android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:textSize="16sp"
-                    android:inputType="textPersonName"/>
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -107,15 +107,14 @@
                     android:layout_weight="0.4"
                     android:hint="收禮人"
                     android:maxLines="1"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="0.1"
-                    app:srcCompat="@drawable/gift"
-                    />
+                    app:srcCompat="@drawable/gift" />
 
                 <EditText
                     android:id="@+id/list_gift"
@@ -153,8 +152,8 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="截止日期"
-                    android:textSize="16sp"
-                    android:inputType="none"></EditText>
+                    android:inputType="none"
+                    android:textSize="16sp"></EditText>
 
 
             </LinearLayout>
@@ -213,7 +212,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingBottom="5dp">
+        android:paddingBottom="10dp">
 
         <Button
             android:id="@+id/btn_plan_save"
