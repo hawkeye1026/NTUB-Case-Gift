@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -38,6 +40,7 @@ public class GiftActivity extends AppCompatActivity {
     private ArrayAdapter spinnerAdapter;
     private static int jslen = 0 ;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,13 +265,42 @@ public class GiftActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        mMenu=menu;
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){ //toolbar返回建
-            finish();
-            return true;
+        switch (item.getItemId()){
+            case android.R.id.home: //toolbar返回建
+                finish();
+                return true;
+            case R.id.action_delete:
+                item.setVisible(false);
+                mMenu.findItem(R.id.action_confirm).setVisible(true);
+                mMenu.findItem(R.id.action_cancel).setVisible(true);
+                return true;
+
+            case R.id.action_confirm:
+                mMenu.findItem(R.id.action_delete).setVisible(true);
+                mMenu.findItem(R.id.action_cancel).setVisible(false);
+                item.setVisible(false);
+                Toast.makeText(this,"確認刪除",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.action_cancel:
+                mMenu.findItem(R.id.action_delete).setVisible(true);
+                mMenu.findItem(R.id.action_confirm).setVisible(false);
+                item.setVisible(false);
+                Toast.makeText(this,"取消",Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
-        return super.onOptionsItemSelected(item);
     }
 }

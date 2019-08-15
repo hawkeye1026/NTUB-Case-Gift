@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">預送你</string>
-    <string name="action_settings">Settings</string>
 
     <!-- 首頁按鈕-->
     <string name="mGift">製作禮物</string>
