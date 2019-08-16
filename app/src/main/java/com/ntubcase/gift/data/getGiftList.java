@@ -63,13 +63,13 @@ public class  getGiftList {
                     decodeGift      = new String[giftLength];
                     decodeMainCode  = new String[giftLength];
                     decodeMatchCode = new String[giftLength];
-                    Log.v("strArr", decodeLength+"");
+                    //Log.v("strArr", decodeLength+"");
                     for (int i = 0 ; i < decodeLength ; i++){
                         //Log.v("abc","10000");
                         decodeGift[i] = jsonArray.getJSONObject(i).getString("gift");
                         decodeMainCode[i] = jsonArray.getJSONObject(i).getString("mainCode");
                         decodeMatchCode[i] = jsonArray.getJSONObject(i).getString("matchCode");
-                        Log.v("strArr", decodeMainCode[i]);
+                        //Log.v("strArr", decodeMainCode[i]);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

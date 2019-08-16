@@ -29,8 +29,8 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
     private LayoutInflater mLayout;
     private ArrayList<String> giftsType; //所有禮物種類
     public static String selectedType; //spinner所選取的種類
+
     //------------------------------------
-//    private int[] mItemState;  //---紀錄多選模式時，item的選取狀態，0為未選取 1為選取---
     private boolean isCachedBackground = false;
     private Drawable mBackground;
 
@@ -48,17 +48,8 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         for (int i=0; i<mGiftStrings.length; i++){
             giftsType.add(mGiftStrings[i]);
         }
-
-//        //---item的選取狀態預設為0---
-//        mItemState = new int[item.size()];
-//        for (int i = 0; i < mItemState.length; i++) {
-//            mItemState[i] = 0;
-//        }
     }
 
-//    public int[] getItemState() {
-//        return mItemState;
-//    }
 
     @Override
     public int getCount() {
@@ -75,6 +66,10 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
+    @Override
+    public boolean hasStableIds() {
+        return true ;
+    }
 
     static class ViewHolder{
         public TextView tvTitle;
@@ -141,20 +136,14 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-//    //-----設定背景-----
-//    private void updateBackground(int position,View convertView) {
-//        if (getItemState()[position] == 1) {
-//            convertView.setBackgroundColor(0xFFDFDFDF);
-//        } else if (getItemState()[position] == 0){
-//            convertView.setBackgroundDrawable(mBackground);
-//        }
-//    }
-//
-//    public void unCheckAll() {
-//        for (int i = 0; i < mItemState.length; i++) {
-//            mItemState[i] = 0;
-//        }
-//    }
+    //-----刪除item-----
+    public void deleteItems(){
+        long[] checkedItems=mListView.getCheckedItemIds(); //取得勾選的項目
+        for (int i=checkedItems.length-1; i>=0; i--){
+            item.remove((int)checkedItems[i]);
+        }
+        notifyDataSetChanged();
+    }
 
     @Override
     public Filter getFilter() { //過濾器

@@ -1,8 +1,10 @@
 package com.ntubcase.gift;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,7 +96,7 @@ public class GiftActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                onResume();
+                getGiftData(); //更新資料
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -113,14 +115,13 @@ public class GiftActivity extends AppCompatActivity {
         fabCode.setOnClickListener(fabClickListener);
     }
 
-    //-----------------
-    public void onResume(){
-
-        getGiftList.getJSON();
+    //-----------------取得禮物資料-----------------
+    private void getGiftData(){
         //---------------------ListView倒入資料--------------------------------
+        getGiftList.getJSON();
         String[][] mGiftsData = new String[getGiftList.getGiftLength()][20];
 
-        Log.e("res_length",getGiftList.getGiftLength()+"");
+        //Log.e("res_length",getGiftList.getGiftLength()+"");
         for(int i = 0 ;i < getGiftList.getGiftLength(); i++){
             mGiftsData[i][0]= getGiftList.getType(i);
             mGiftsData[i][1]= getGiftList.getGiftName(i);
@@ -149,6 +150,11 @@ public class GiftActivity extends AppCompatActivity {
 
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
+    }
+
+    @Override
+    public void onResume(){
+        getGiftData();
         super.onResume();
     }
 
@@ -288,24 +294,18 @@ public class GiftActivity extends AppCompatActivity {
                 mListView.setItemChecked(0, true);
                 mListView.clearChoices();
                 multiChoiceListener.updateSelectedCount();
-//                giftListAdapter.unCheckAll();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    //----------------刪除，多選模式的監聽器----------------------
+    //----------------------刪除，多選模式的監聽器----------------------
     class mMultiChoiceListener implements AbsListView.MultiChoiceModeListener {
 
         //-----item狀態改變-----
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-//            if (checked) {
-//                giftListAdapter.getItemState()[position] = 1;
-//            } else {
-//                giftListAdapter.getItemState()[position] = 0;
-//            }
             updateSelectedCount();
             giftListAdapter.notifyDataSetChanged();
         }
@@ -330,10 +330,26 @@ public class GiftActivity extends AppCompatActivity {
 
         //-----點選ActionBar的item-----
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()){
-                case R.id.action_delete:  //刪除
-                    Toast.makeText(GiftActivity.this,"刪除",Toast.LENGTH_SHORT).show();
+                case R.id.action_delete:  //刪除禮物鈕
+                    new AlertDialog.Builder(GiftActivity.this)
+                            .setTitle("確定要刪除選取的禮物嗎?")
+                            .setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //-----刪除禮物-----
+                                    giftListAdapter.deleteItems();
+                                    mode.finish();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
+
                     break;
                 default:
                     break;
@@ -351,7 +367,6 @@ public class GiftActivity extends AppCompatActivity {
         @Override
         public void onDestroyActionMode(ActionMode mode) {
                 mListView.clearChoices();
-//            giftListAdapter.unCheckAll();
         }
     }
 
