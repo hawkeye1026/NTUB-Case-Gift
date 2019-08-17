@@ -80,7 +80,7 @@ public class PlanDoneFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                onResume();
+                getGiftData(); //更新資料
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -88,8 +88,8 @@ public class PlanDoneFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onResume(){
+    //-----------------取得禮物資料-----------------
+    private void getGiftData(){
 
         getPlanSent.getJSON();
 
@@ -122,6 +122,11 @@ public class PlanDoneFragment extends Fragment {
 
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
+    }
+
+    @Override
+    public void onResume(){
+        getGiftData();
         super.onResume();
     }
 

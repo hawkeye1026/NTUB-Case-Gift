@@ -145,6 +145,7 @@ public class GiftActivity extends AppCompatActivity {
         multiChoiceListener = new mMultiChoiceListener();
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         mListView.setMultiChoiceModeListener(multiChoiceListener);
+
         mListView.setAdapter(giftListAdapter);
         mListView.setTextFilterEnabled(true);
 
@@ -290,7 +291,7 @@ public class GiftActivity extends AppCompatActivity {
             case android.R.id.home: //toolbar返回建
                 finish();
                 return true;
-            case R.id.action_delete_gift:  //刪除鈕，進入多選模式
+            case R.id.action_enter_delete:  //刪除鈕，進入多選模式
                 mListView.setItemChecked(0, true);
                 mListView.clearChoices();
                 multiChoiceListener.updateSelectedCount();
@@ -332,7 +333,7 @@ public class GiftActivity extends AppCompatActivity {
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()){
-                case R.id.action_delete:  //刪除禮物鈕
+                case R.id.action_delete:  //刪除鈕
                     new AlertDialog.Builder(GiftActivity.this)
                             .setTitle("確定要刪除選取的禮物嗎?")
                             .setPositiveButton("確認", new DialogInterface.OnClickListener() {

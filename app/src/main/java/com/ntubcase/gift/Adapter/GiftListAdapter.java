@@ -29,7 +29,6 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
     private LayoutInflater mLayout;
     private ArrayList<String> giftsType; //所有禮物種類
     public static String selectedType; //spinner所選取的種類
-
     //------------------------------------
     private boolean isCachedBackground = false;
     private Drawable mBackground;
@@ -64,11 +63,6 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
     @Override
     public long getItemId(int position) {
         return position;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true ;
     }
 
     static class ViewHolder{
@@ -134,6 +128,11 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         } else {
             convertView.setBackgroundDrawable(mBackground);
         }
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true ;
     }
 
     //-----刪除item-----

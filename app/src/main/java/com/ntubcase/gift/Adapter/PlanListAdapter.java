@@ -2,6 +2,7 @@ package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,10 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,11 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
     private List<Map<String, Object>> selectedTypeitem;
     private ArrayList<String> plansType; //所有計畫種類
     public static String selectedType; //spinner所選取的種類
+    //------------------------------------
+    private boolean isCachedBackground = false;
+    private Drawable mBackground;
 
+    private ListView mListView;
 
     public PlanListAdapter(Context context, List<Map<String, Object>> mList){
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -70,6 +74,7 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
     public View getView(int position, View convertView, ViewGroup parent) {
         PlanListAdapter.ViewHolder viewHolder;
         if(convertView == null){
+            mListView=(ListView)parent;
             viewHolder = new PlanListAdapter.ViewHolder();
             //自定義的list布局
             convertView = mLayout.inflate(R.layout.planlist_layout, parent,false);
@@ -95,7 +100,38 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
             viewHolder.ivPlanIcon.setImageResource(R.drawable.ic_plan_list);
         }
 
+        //---緩存原本的background
+        if (!isCachedBackground) {
+            isCachedBackground = true;
+            mBackground = convertView.getBackground();
+        }
+
+        updateBackground(position, convertView); //設定背景
+
         return convertView;
+    }
+
+    //-----設定背景-----
+    private void updateBackground(int position,View convertView) {
+        if(mListView.isItemChecked(position)) {
+            convertView.setBackgroundColor(0xFFDFDFDF);
+        } else {
+            convertView.setBackgroundDrawable(mBackground);
+        }
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true ;
+    }
+
+    //-----刪除item-----
+    public void deleteItems(){
+        long[] checkedItems=mListView.getCheckedItemIds(); //取得勾選的項目
+        for (int i=checkedItems.length-1; i>=0; i--){
+            item.remove((int)checkedItems[i]);
+        }
+        notifyDataSetChanged();
     }
 
     @Override

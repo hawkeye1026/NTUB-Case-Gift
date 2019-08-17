@@ -23,6 +23,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorWhite"
         android:textSize="18dp"
-        android:text=" 個禮物"/>
+        android:text=" 項"/>
 
 </LinearLayout>
