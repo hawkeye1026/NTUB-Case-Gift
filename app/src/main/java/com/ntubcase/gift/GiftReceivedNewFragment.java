@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.GiftReceivedAdapter;
 //import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getGiftReceived;
+import com.ntubcase.gift.data.getReceiveNew;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,44 +59,6 @@ public class GiftReceivedNewFragment extends Fragment {
         //-----
         String[][] rGiftsData = new String[getGiftReceived.getGiftLength()][20];
 
-        //------------範例資料格式(計畫種類,計畫名稱,送禮人,日期)----------
-/*
-        String[][] rGiftsData = {       //禮物清單內容
-                {"驚喜式","生日賀卡","林同學","2019-02-02"},
-                {"驚喜式","結婚紀念照","老婆","2019-02-03"},
-                {"問答式","考考你","好友1","2019-02-06"},
-                {"期間式","健身計畫","陳同事","2019-02-04"},
-                {"驚喜式","按摩兌換券","兒子","2019-02-05"},
-                {"驚喜式","禮物3","好友2","2019-02-07"}
-        };
-
-        getGiftReceived.getJSON();
-
-        for(int i = 0; i < getGiftReceived.getGiftLength(); i++){
-            rGiftsData[i][0]= getGiftReceived.getType(i);
-            rGiftsData[i][1]= getGiftReceived.getPlanName(i);
-            rGiftsData[i][2]= getGiftReceived.getNickname(i);
-            rGiftsData[i][3]= getGiftReceived.getSendPlanDate(i);
-        }
-
-        for(int i=0;i<rGiftsData.length;i++) {
-            rGifts = new HashMap<String, Object>();
-            rGifts.put("type", rGiftsData[i][0]);
-            rGifts.put("title", rGiftsData[i][1]);
-            rGifts.put("sender", rGiftsData[i][2]);
-            rGifts.put("date", rGiftsData[i][3]);
-            rGiftsList.add(rGifts);
-        }
-
-        giftReceivedAdapter = new GiftReceivedAdapter(getActivity(), rGiftsList);
-
-        mListView.setAdapter(giftReceivedAdapter);
-        mListView.setTextFilterEnabled(true);
-
-        setmListViewListener(); //設定ListView的監聽
-        setSearch_function(); // 設定searchView的文字輸入監聽
-
-*/
         //-----------------------------spinner----------------------
         mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
         spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_plan_type, R.layout.spinner_layout);
@@ -126,25 +89,25 @@ public class GiftReceivedNewFragment extends Fragment {
     //-----------------
     public void onResume(){
 
-        getGiftReceived.getJSON();
+        getReceiveNew.getJSON();
 
-        String[][] rGiftsData = new String[getGiftReceived.getGiftLength()][20];
+        String[][] rGiftsData = new String[getReceiveNew.getReceiveNewLength()][20];
 
-        Log.v("res_length",getGiftReceived.getGiftLength()+"");
+        Log.v("res_length",getReceiveNew.getReceiveNewLength()+"");
 
-        for(int i = 0 ;i < getGiftReceived.getGiftLength(); i++){
-            rGiftsData[i][0]= getGiftReceived.getType(i);
-            rGiftsData[i][1]= getGiftReceived.getPlanName(i);
-            rGiftsData[i][2]= getGiftReceived.getNickname(i);
-            rGiftsData[i][3]= getGiftReceived.getSendPlanDate(i);
-            rGiftsData[i][4]= getGiftReceived.getPlanid(i);
+        for(int i = 0 ;i < getReceiveNew.getReceiveNewLength(); i++){
+            rGiftsData[i][0]= getReceiveNew.getPlanType(i);
+            rGiftsData[i][1]= getReceiveNew.getPlanName(i);
+            rGiftsData[i][2]= getReceiveNew.getNickname(i);
+            rGiftsData[i][3]= getReceiveNew.getSendPlanDate(i);
+            rGiftsData[i][4]= getReceiveNew.getPlanid(i);
         }
         rGiftsList.clear();
 
         rGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> rGifts;
 
-        for(int i=0;i<getGiftReceived.getGiftLength();i++) {
+        for(int i=0;i<getReceiveNew.getReceiveNewLength();i++) {
             rGifts = new HashMap<String, Object>();
             rGifts.put("type", rGiftsData[i][0]);
             rGifts.put("title", rGiftsData[i][1]);
