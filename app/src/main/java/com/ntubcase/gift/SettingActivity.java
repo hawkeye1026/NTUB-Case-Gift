@@ -47,24 +47,14 @@ public class SettingActivity extends AppCompatActivity {
         mMail = (TextView) findViewById(R.id.et_mail);
         mBirthday = (TextView) findViewById(R.id.et_birthday);
 
+        //-------顯示使用者頭像
+        Uri imageURI = userData.getUserPhotoUri();
+        Picasso.get().load(imageURI).into(mUserPhoto);
+        //-------顯示使用者個人資料
+        mNickname.setText("名字： " + userData.getUserName());
+        mMail.setText("Email： " + userData.getUserMail());
+        mBirthday.setText("Birthday："  );
 
-        if(true){
-            //-------顯示使用者頭像
-            Uri imageURI = userData.getUserPhotoUri();
-            Picasso.get().load(imageURI).into(mUserPhoto);
-            //-------顯示使用者個人資料
-            mNickname.setText("名字： " + userData.getUserName());
-            mMail.setText("Email： " + userData.getUserMail());
-            mBirthday.setText("Birthday："  );
-        }else{
-            //-------顯示使用者頭像
-            Uri imageURI = userData.getUserPhotoUri();
-            Picasso.get().load(imageURI).into(mUserPhoto);
-            //-------顯示使用者個人資料
-            mNickname.setText("名字： " + userData.getUserName());
-            mMail.setText("Email： " + userData.getUserMail());
-            mBirthday.setText("Birthday："  );
-        }
 
         //顯示使用者資訊
 
