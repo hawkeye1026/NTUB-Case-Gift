@@ -90,7 +90,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
 
-        int smallerDimension = 20 * 20;
+        int smallerDimension = 15 * 15;
         //---------QRcode產生
         QRGEncoder qrgEncoder = new QRGEncoder("http://140.131.114.156/NTUB_gift_server/giftList.php", null, QRGContents.Type.TEXT, smallerDimension);
         try {
