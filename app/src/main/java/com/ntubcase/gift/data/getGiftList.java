@@ -35,7 +35,7 @@ public class  getGiftList {
                     //取得禮物資料
                     JSONArray jsonArray = object.getJSONArray("result");
 
-                    Log.v("length",jsonArray.length()+"");
+
 
                     giftLength = jsonArray.length();
 
@@ -64,13 +64,12 @@ public class  getGiftList {
                     decodeGift      = new String[giftLength];
                     decodeMainCode  = new String[giftLength];
                     decodeMatchCode = new String[giftLength];
-                    Log.v("strArr", decodeLength+"");
+
                     for (int i = 0 ; i < decodeLength ; i++){
                         //Log.v("abc","10000");
                         decodeGift[i] = jsonArray.getJSONObject(i).getString("gift");
                         decodeMainCode[i] = jsonArray.getJSONObject(i).getString("mainCode");
                         decodeMatchCode[i] = jsonArray.getJSONObject(i).getString("matchCode");
-                        Log.v("strArr", decodeMainCode[i]);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

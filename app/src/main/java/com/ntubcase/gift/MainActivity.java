@@ -26,6 +26,7 @@ import com.ntubcase.gift.login_model.facebookAccount;
 import com.ntubcase.gift.login_model.googleAccount;
 import com.ntubcase.gift.login_model.revokeAccess;
 import com.ntubcase.gift.login_model.signOut;
+import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         //-------顯示使用者頭像
 
-        Uri imageURI = facebookAccount.getUserPhotoUri();
+        Uri imageURI = userData.getUserPhotoUri();
         Picasso.get().load(imageURI).into(mSetting);
 
 
