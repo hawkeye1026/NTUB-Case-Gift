@@ -48,7 +48,9 @@ public class SettingActivity extends AppCompatActivity {
         mBirthday = (TextView) findViewById(R.id.et_birthday);
 
         //-------顯示使用者頭像
-        Uri imageURI = userData.getUserPhotoUri();
+//        Uri imageURI = userData.getUserPhotoUri();
+        Uri imageURI = Uri.parse("https://lh3.googleusercontent.com/a-/AAuE7mCRxEJ_jmu1slG-m1RDRJGeLt4ni98tb2mUWT1KfQ");
+
         Picasso.get().load(imageURI).into(mUserPhoto);
         //-------顯示使用者個人資料
         mNickname.setText("名字： " + userData.getUserName());
