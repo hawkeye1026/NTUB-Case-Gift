@@ -1,17 +1,24 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+
+import com.ntubcase.gift.GiftReceivedDoneFragment;
+import com.ntubcase.gift.GiftReceivedNewFragment;
 import com.ntubcase.gift.R;
 
 import java.util.ArrayList;
@@ -19,8 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
+import static android.content.ContentValues.TAG;
 
+
+public class GiftReceivedAdapter extends RecyclerView.Adapter<GiftReceivedAdapter.ViewHolder> implements Filterable {
+    private Context context;
+    private List<Map<String, Object>> re_giftList;
     private List<Map<String, Object>> item;
     private List<Map<String, Object>> originalitem;
     private List<Map<String, Object>> selectedTypeitem;
@@ -28,75 +39,49 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
     private ArrayList<String> plansType; //所有計畫種類
     public static String selectedType; //spinner所選取的種類
 
-    public GiftReceivedAdapter(Context context, List<Map<String, Object>> mList){
-        mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.item = mList;
+    public GiftReceivedAdapter(List<Map<String, Object>> re_giftList){
+        this.context = context;
+        this.re_giftList = re_giftList;
+    }
 
-        //---從strings取得所有計畫種類---
-        Resources res = context.getResources();
-        String[] mPlanStrings = res.getStringArray(R.array.plan_type);
+    @Override
+    public GiftReceivedAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (context == null) {
+            context = parent.getContext();
+        }
+        View view = LayoutInflater.from(context).inflate(R.layout.newgiftlist_layout, parent, false);
+        return new GiftReceivedAdapter.ViewHolder(view);
+    }
+    @Override
+    public void onBindViewHolder(GiftReceivedAdapter.ViewHolder holder, int position) {
+        holder.image.setImageResource(R.drawable.newgift);
+        holder.giftName.setText(re_giftList.get(position).get("title").toString());
+        holder.sender.setText(re_giftList.get(position).get("sender").toString());
+        holder.date.setText(re_giftList.get(position).get("date").toString());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //觸發事件
+            }
+        });
+    }
+    @Override
+    public int getItemCount() {
+        return re_giftList.size();
+    }
 
-        plansType = new ArrayList<String>();
-        for (int i=0; i<mPlanStrings.length; i++){
-            plansType.add(mPlanStrings[i]);
+    //Adapter 需要一個 ViewHolder，只要實作它的 constructor 就好，保存起來的view會放在itemView裡面
+    class ViewHolder extends RecyclerView.ViewHolder{
+        TextView giftName,sender,date;
+        ImageView image;
+        ViewHolder(View itemView) {
+            super(itemView);
+            giftName = (TextView) itemView.findViewById(R.id.tv_giftname);
+            sender=(TextView) itemView.findViewById(R.id.tv_sender);
+            date=(TextView) itemView.findViewById(R.id.tv_date);
+            image = (ImageView) itemView.findViewById(R.id.iv_photo);
         }
     }
-
-    @Override
-    public int getCount() {
-        return item.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return position;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    static class ViewHolder{
-        public TextView tvTitle, tvSender;
-        public ImageView ivGiftIcon;
-        public TextView tvDate;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if(convertView == null){
-            viewHolder = new ViewHolder();
-            //自定義的list布局
-            convertView = mLayout.inflate(R.layout.giftreceived_layout, parent,false);
-
-            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_giftTitle);
-            viewHolder.ivGiftIcon = (ImageView) convertView.findViewById(R.id.iv_giftIcon);
-            viewHolder.tvSender = (TextView) convertView.findViewById(R.id.tv_sender);
-            viewHolder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
-
-            convertView.setTag(viewHolder); //設置好的布局保存到緩存中，並將其設置在tag裡
-        }else{
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        viewHolder.tvSender.setText("From : "+item.get(position).get("sender").toString());
-        viewHolder.tvTitle.setText(item.get(position).get("title").toString());
-        viewHolder.tvDate.setText(item.get(position).get("date").toString());
-
-        String a =  item.get(position).get("type").toString();
-        if(a.equals(plansType.get(0))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_surprise);
-        }else if(a.equals(plansType.get(1))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_calendar);
-        }else if(a.equals(plansType.get(2))){
-            viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_plan_list);
-        }
-
-        return convertView;
-    }
-
     @Override
     public Filter getFilter() { //過濾器
         Filter filter = new Filter() {
@@ -172,7 +157,8 @@ public class GiftReceivedAdapter extends BaseAdapter implements Filterable {
                 if(results.count>0){
                     notifyDataSetChanged();
                 }else{
-                    notifyDataSetInvalidated();
+                    notifyDataSetChanged();
+                    //我覺得應該是這邊錯了...但是用原本的的方法會是紅字
                 }
             }
         };

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ntubcase.gift.GiftReceivedNewFragment;
 import com.ntubcase.gift.R;
 import com.ntubcase.gift.SurpriseCardviewGiftItem;
 
@@ -23,7 +24,7 @@ public class reSurpriseGiftAdapter extends RecyclerView.Adapter<reSurpriseGiftAd
             this.giftList = giftList;
         }
 
-        @Override
+    @Override
         public reSurpriseGiftAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.surprise_gift_item, parent, false);
             return new ViewHolder(view);

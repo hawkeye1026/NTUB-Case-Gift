@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_gift2"
+    android:padding="20dp"
     tools:context=".MakeGiftImageActivity">
 
     <LinearLayout
@@ -14,18 +16,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
-            android:gravity="center">
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_giftIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_gift_camera"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_gift_camera" />
 
             <EditText
                 android:id="@+id/et_giftName"
@@ -33,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:hint="@string/enterGiftName"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -42,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_margin="20dp"
-            android:background="@drawable/bg_message"/>
+            android:background="@drawable/picture" />
 
         <Button
             android:id="@+id/btn_selectImage"
@@ -50,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="從相簿選取"/>
+            android:text="從相簿選取" />
 
         <Button
             android:id="@+id/btn_openCamera"
@@ -58,39 +60,42 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="從相機拍攝"/>
+            android:text="從相機拍攝" />
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="50dp"
         android:gravity="center"
-        android:layout_alignParentBottom="true">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_normalbutton"
             android:text="儲存"
-            android:textSize="18sp"
             android:textColor="#FFF"
-            android:background="@drawable/bg_normalbutton"/>
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/btn_makePlan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_normalbutton"
             android:text="製作送禮計畫"
-            android:textSize="18sp"
             android:textColor="#FFF"
-            android:background="@drawable/bg_normalbutton"/>
+            android:textSize="18sp" />
 
     </LinearLayout>
 

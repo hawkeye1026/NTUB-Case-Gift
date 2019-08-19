@@ -5,20 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_plan"
-    android:orientation="vertical"
-    tools:context=".MakePlanSingleActivity"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".MakePlanSingleActivity">
 
     <ScrollView
         android:id="@+id/scrollview"
-        android:layout_width="350dp"
+        android:layout_width="330dp"
         android:layout_height="450dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
-        android:layout_marginRight="5dp"
         android:background="@drawable/card"
         android:paddingTop="40dp"
         android:paddingBottom="60dp">
@@ -27,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
             android:orientation="vertical">
 
             <!--計畫名稱-->
