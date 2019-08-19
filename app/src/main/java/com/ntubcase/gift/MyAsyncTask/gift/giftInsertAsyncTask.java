@@ -79,7 +79,7 @@ public class giftInsertAsyncTask extends AsyncTask<String, Integer, String> {
             os.close();
 
             int statusCode = conn.getResponseCode();
-
+            Log.v("status",statusCode+"");
             if (statusCode >= 200 && statusCode < 400) {
                 // Create an InputStream in order to extract the response object
                 inputStream = conn.getInputStream();

@@ -250,62 +250,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            getCodeData(); //取得使用者輸入的資料
-
-            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date =new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
-            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            giftContent = sdFormat_giftContent.format(date);
-            Log.v("giftType", giftType);
-
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner, giftType);
-            Log.v("maincodes", String.valueOf(mainCodes));
-            Log.v("matchcodes", String.valueOf(matchCodes));
-
-            for (int i = 0 ; i< mainCodes.size(); i++){
-                giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
-                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode , giftContent, mainCodes.get(i), matchCodes.get(i));
-
-            }
-
-
-            //-------------讀取Dialog-----------
-            barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
-                    "讀取中", "請等待...",true);
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    try{
-                        getGiftList.getJSON();
-                        Thread.sleep(1000);
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-                    finally{
-                        barProgressDialog.dismiss();
-                        finish();
-                    }
-                }
-            }).start();
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            uploadGift(v);
         }
     };
 
@@ -314,39 +259,8 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            getCodeData(); //取得使用者輸入的資料
+            uploadGift(v);
 
-            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date =new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
-            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            giftContent = sdFormat_giftContent.format(date);
-            Log.v("giftType", giftType);
-
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner, giftType);
-            Log.v("maincodes", String.valueOf(mainCodes));
-            Log.v("matchcodes", String.valueOf(matchCodes));
-
-            for (int i = 0 ; i< mainCodes.size(); i++){
-                giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
-                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode , giftContent, mainCodes.get(i), matchCodes.get(i));
-
-            }
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             Intent intent;
             intent = new Intent(MakeGiftCodeActivity.this, PlanActivity.class);
             startActivity(intent);
@@ -374,5 +288,55 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void uploadGift(View v) {
+
+        getCodeData(); //取得使用者輸入的資料
+
+        giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
+
+        if(checkRepeatGift.checkRepeatGift(giftName)) {
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date =new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            dateTime = sdFormat.format(date);
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+            giftContent = sdFormat_giftContent.format(date);
+            //------------------------------上傳禮物資料
+            new uploadGift(giftContent,  giftName, owner, giftType);
+
+            for (int i = 0; i < mainCodes.size(); i++) {
+                giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode, giftContent, mainCodes.get(i), matchCodes.get(i));
+            }
+
+            //-------------讀取Dialog-----------
+            barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
+                    "讀取中", "請等待...", true);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        getGiftList.getJSON();
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        barProgressDialog.dismiss();
+                        finish();
+                    }
+                }
+            }).start();
+
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+        }
     }
 }

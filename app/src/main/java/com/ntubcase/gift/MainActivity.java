@@ -3,9 +3,11 @@ package com.ntubcase.gift;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +23,12 @@ import com.ntubcase.gift.data.getPlanGot;
 import com.ntubcase.gift.data.getPlanList;
 import com.ntubcase.gift.data.getPlanSent;
 import com.ntubcase.gift.data.getPlanningList;
+import com.ntubcase.gift.login_model.facebookAccount;
 import com.ntubcase.gift.login_model.googleAccount;
 import com.ntubcase.gift.login_model.revokeAccess;
 import com.ntubcase.gift.login_model.signOut;
+import com.ntubcase.gift.login_model.userData;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //----------取得禮物、計畫、收禮、好友資料
         getGiftList.getJSON();
         getPlanList.getJSON();
         getPlanningList.getJSON();
@@ -43,9 +48,16 @@ public class MainActivity extends AppCompatActivity {
         getFriendList.getJSON();
         getGiftReceived.getJSON();
         getGiftReceivedDone.getJSON();
+        //----------
+        mSetting = (ImageView)findViewById(R.id.mSetting);
 
-        Toast.makeText(this, "親愛的"+googleAccount.getUserName()+"您好,登入成功", Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "親愛的"+googleAccount.getPhotoUrl()+"您好,登入成功", Toast.LENGTH_SHORT).show();
+        //-------顯示使用者頭像
+
+//        Uri imageURI = userData.getUserPhotoUri();
+        Uri imageURI = Uri.parse("https://lh3.googleusercontent.com/a-/AAuE7mCRxEJ_jmu1slG-m1RDRJGeLt4ni98tb2mUWT1KfQ");
+        Picasso.get().load(imageURI).into(mSetting);
+
+
 
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);

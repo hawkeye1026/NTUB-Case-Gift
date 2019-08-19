@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.googleAccount;
+import com.ntubcase.gift.login_model.userData;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,8 +32,9 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     private static String giftName, giftContent;
 
     protected static Date date =new Date();
-    protected static String owner = "wayne";
-    protected static String dateTime, giftType;
+//    protected static String owner = userData.getUserMail();
+    protected static String owner = userData.getUserMail();
+    protected static String giftType = "4";
     ProgressDialog barProgressDialog;
 
     @Override
@@ -69,44 +73,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
-            giftType="4";
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date =new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
-
-
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner, giftType);
-
-            //-------------讀取Dialog-----------
-            barProgressDialog = ProgressDialog.show(MakeGiftTicketActivity.this,
-                    "讀取中", "請等待...",true);
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    try{
-                        getGiftList.getJSON();
-                        Thread.sleep(1000);
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-                    finally{
-                        barProgressDialog.dismiss();
-                        finish();
-                    }
-                }
-            }).start();
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            uploadGift(v);
         }
     };
 
@@ -114,24 +81,9 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            giftName = et_giftName.getText().toString();    //取得使用者輸入的禮物名稱
-            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
-            giftType="4";
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date =new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
 
+            uploadGift(v);
 
-            giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            mgiftInsertAsyncTask.execute(Common.insertGift , giftContent, dateTime ,giftName ,owner,giftType);
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             Intent intent;
             intent = new Intent(MakeGiftTicketActivity.this, PlanActivity.class);
             startActivity(intent);
@@ -159,5 +111,40 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void uploadGift(View v) {
+        giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
+
+        if(checkRepeatGift.checkRepeatGift(giftName)) {
+            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
+
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+
+            //------------------------------上傳禮物資料
+            new uploadGift(giftContent, giftName, owner, giftType);
+
+            //-------------讀取Dialog-----------
+            barProgressDialog = ProgressDialog.show(MakeGiftTicketActivity.this,
+                    "讀取中", "請等待...", true);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        getGiftList.getJSON();
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        barProgressDialog.dismiss();
+                        finish();
+                    }
+                }
+            }).start();
+
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+        }
     }
 }

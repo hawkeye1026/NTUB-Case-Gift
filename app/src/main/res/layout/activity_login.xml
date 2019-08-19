@@ -21,12 +21,16 @@
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_gravity="center">
+        android:layout_marginTop="160dp"
+        android:layout_gravity="center"/>
 
-    </com.google.android.gms.common.SignInButton>
-        <!--android:visibility="visible"-->
-        <!--tools:visibility="gone"-->
-        />
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="登入"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp" />
 
 </LinearLayout>
