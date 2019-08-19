@@ -34,7 +34,7 @@ public class PlanActivity extends AppCompatActivity {
 
         adapter.addFragment(new PlanNewFragment(), "已儲存");
         adapter.addFragment(new PlanDoneFragment(), "已預送");
-        adapter.addFragment(new PlanDoneFragment(), "已送出");
+        adapter.addFragment(new PlanDoneFragment(), "已送達");
 
         viewPager.setAdapter(adapter);
     }
