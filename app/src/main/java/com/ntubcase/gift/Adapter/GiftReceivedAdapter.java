@@ -3,6 +3,7 @@ package com.ntubcase.gift.Adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
-
+import com.ntubcase.gift.GiftReceivedDoneFragment;
+import com.ntubcase.gift.GiftReceivedNewFragment;
 import com.ntubcase.gift.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 public class GiftReceivedAdapter extends RecyclerView.Adapter<GiftReceivedAdapter.ViewHolder> implements Filterable {
@@ -154,6 +158,7 @@ public class GiftReceivedAdapter extends RecyclerView.Adapter<GiftReceivedAdapte
                     notifyDataSetChanged();
                 }else{
                     notifyDataSetChanged();
+                    //我覺得應該是這邊錯了...但是用原本的的方法會是紅字
                 }
             }
         };

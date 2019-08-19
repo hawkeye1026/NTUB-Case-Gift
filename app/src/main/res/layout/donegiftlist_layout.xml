@@ -25,31 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:src="@drawable/newgift" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="From："
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_sender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="From"
-                android:textColor="#000"
-                android:textSize="14sp" />
-
-        </LinearLayout>
+            android:src="@drawable/opengift" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,8 +41,32 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="giftname"
-                android:textSize="16sp"
-                android:visibility="gone" />
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From："
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_sender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="From"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_date"
