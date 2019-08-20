@@ -476,7 +476,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "mul_" + sdFormat_giftContent.format(date);
-            Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
 
             uploadPlan("1");
             Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
@@ -492,6 +491,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     //------------------------------上傳plan資料
     public void uploadPlan(String sent){
         //---upload giftRecord
+        Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
         for (int i = 0 ; i < receiveFriendId.size(); i++) {
             giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
                 @Override
@@ -499,12 +499,9 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
                 }
             });
-            Log.v("sender", sender);
-            Log.v("friendids.get(i)", receiveFriendId.get(i));
-            Log.v("planid", planid);
-            Log.v("planType", planType);
             giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, receiveFriendId.get(i), planid, sent, planType);
         }
+        Log.v("giftRecord", "//---upload giftRecord");
 
         //---upload multiplePlan
         multiplePlanInsertAsyncTask multiplePlanInsertAsyncTask = new multiplePlanInsertAsyncTask(new multiplePlanInsertAsyncTask.TaskListener() {
@@ -513,13 +510,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
             }
         });
-        Log.v("planid", planid);
-        Log.v("planName", planName);
-        Log.v("createDate", dateTime);
-        Log.v("startDate", startDate);
-        Log.v("endDate", endDate);
-        Log.v("message", message);
         multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message);
+        Log.v("multiplePlan", "//---upload multiplePlan");
 
         //--- upload multipleList
         Log.v("selectDates.size", String.valueOf(selectDates.size()));
@@ -540,10 +532,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
                         }
                     });
-                    Log.v("planid", planid);
-                    Log.v("goal", goal);
-                    Log.v("date_time", date_time);
-                    Log.v("mSelectGiftIds[i][j]", mSelectGiftIds[i][j]);
                     multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds[i][j], date_time, goal);
                 }
 
@@ -558,12 +546,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
                     }
                 });
-                Log.v("planid", planid);
-                Log.v("goal", goal);
-                Log.v("date_time", date_time);
                 multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "0", date_time, goal);
             }
         }
+        Log.v("multipleList", "//---upload multipleList");
 
     }
 

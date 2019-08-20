@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, String> {
+public class missionPlanInsertAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -25,12 +25,12 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final singlePlanInsertAsyncTask.TaskListener taskListener;
+    private final missionPlanInsertAsyncTask.TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public singlePlanInsertAsyncTask(singlePlanInsertAsyncTask.TaskListener taskListener) {
+    public missionPlanInsertAsyncTask(missionPlanInsertAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -65,7 +65,8 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
                     "planid=" + URLEncoder.encode(params[1], "UTF-8") +
                             "&planName=" + URLEncoder.encode(params[2], "UTF-8") +
                             "&createDate=" + URLEncoder.encode(params[3], "UTF-8") +
-                            "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8");
+                            "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8") +
+                            "&deadline=" + URLEncoder.encode(params[5], "UTF-8");
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
@@ -122,5 +123,5 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
     protected void onCancelled() {
         super.onCancelled();
     }
-}
 
+}

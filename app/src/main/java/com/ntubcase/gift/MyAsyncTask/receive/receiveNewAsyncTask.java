@@ -1,6 +1,8 @@
-package com.ntubcase.gift.MyAsyncTask.plan;
+package com.ntubcase.gift.MyAsyncTask.receive;
 
 import android.os.AsyncTask;
+
+import com.ntubcase.gift.MyAsyncTask.plan.planningListAsyncTask;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, String> {
+public class receiveNewAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -25,12 +27,12 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final singlePlanInsertAsyncTask.TaskListener taskListener;
+    private final receiveNewAsyncTask.TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public singlePlanInsertAsyncTask(singlePlanInsertAsyncTask.TaskListener taskListener) {
+    public receiveNewAsyncTask(receiveNewAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -44,7 +46,7 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
     //=========================================================
     @Override
     protected String doInBackground(String... params) {
-        String data = null;
+        String data=null;
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -62,11 +64,7 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "planid=" + URLEncoder.encode(params[1], "UTF-8") +
-                            "&planName=" + URLEncoder.encode(params[2], "UTF-8") +
-                            "&createDate=" + URLEncoder.encode(params[3], "UTF-8") +
-                            "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8");
-
+                    "userid=" + URLEncoder.encode(params[1], "UTF-8");
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -80,23 +78,24 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
             if (statusCode >= 200 && statusCode < 400) {
                 // Create an InputStream in order to extract the response object
                 inputStream = conn.getInputStream();
-            } else {
+            }
+            else {
                 inputStream = conn.getErrorStream();
             }
             conn.connect();
             inputStream = conn.getInputStream();
 
-            BufferedReader bufferedReader = new BufferedReader(
+            BufferedReader bufferedReader=new BufferedReader(
                     new InputStreamReader(inputStream, "UTF-8"));
 
-            data = bufferedReader.readLine();
-        } catch (Exception e) {
+            data=bufferedReader.readLine();
+        } catch(Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 inputStream.close();
                 outputStream.close();
-            } catch (Exception e) {
+            } catch(Exception e) {
                 e.printStackTrace();
             }
         }
@@ -123,4 +122,3 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
         super.onCancelled();
     }
 }
-

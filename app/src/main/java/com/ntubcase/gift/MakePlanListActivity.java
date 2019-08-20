@@ -28,6 +28,11 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_list_adapter;
 import com.ntubcase.gift.Adapter.plan_single_adapter;
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.missionItemInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.missionListInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.missionPlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
@@ -53,6 +58,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     //----------------------------------------------------------------------------------------------
 
     static EditText edt_list_name, edt_list_message, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentTime;
+    private String sender= "1", planid, planType="3", dateTime, dateOnly;
 
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
@@ -424,6 +430,18 @@ public class MakePlanListActivity extends AppCompatActivity{
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date = new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            dateTime = sdFormat.format(date);
+            SimpleDateFormat _sdFormat = new SimpleDateFormat("yyyy-MM-dd ");
+            dateOnly = _sdFormat.format(date);
+
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+            planid = "mis_" + sdFormat_giftContent.format(date);
+
+            uploadPlan("0");
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -434,10 +452,72 @@ public class MakePlanListActivity extends AppCompatActivity{
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            Date date = new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            dateTime = sdFormat.format(date);
+            SimpleDateFormat _sdFormat = new SimpleDateFormat("yyyy-MM-dd ");
+            dateOnly = _sdFormat.format(date);
+
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+            planid = "mis_" + sdFormat_giftContent.format(date);
+
+            uploadPlan("1");
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
 
         }
 
     };
+
+    //------------------------------上傳plan資料
+    public void uploadPlan(String sent){
+        //---upload giftRecord
+        Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
+        for (int i = 0 ; i < selectFriendIds.size(); i++) {
+            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, sent, planType);
+        }
+        Log.v("giftRecord", "//---upload giftRecord");
+
+        //---upload missionPlan
+        missionPlanInsertAsyncTask missionPlanInsertAsyncTask = new missionPlanInsertAsyncTask(new missionPlanInsertAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+
+            }
+        });
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, dateOnly+" "+edt_list_sentTime.getText().toString(), edt_list_edate.getText().toString());
+        Log.v("missionPlan", "//---upload missionPlan");
+
+        //---upload missionItem
+        for(int i = 0 ; i < mData.size(); i++) {
+            missionItemInsertAsyncTask missionItemInsertAsyncTask = new missionItemInsertAsyncTask(new missionItemInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            missionItemInsertAsyncTask.execute(Common.insertMisPlan, planid, mData.get(i));
+        }
+        Log.v("missionItem", "//---upload missionItem");
+
+        //---upload missionList
+        for(int i = 0 ; i < selectGiftIds.size(); i++) {
+            missionListInsertAsyncTask missionListInsertAsyncTask = new missionListInsertAsyncTask(new missionListInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            missionListInsertAsyncTask.execute(Common.insertMisPlan, planid, selectGiftIds.get(i));
+        }
+        Log.v("missionList", "//---upload missionList");
+    }
 
 }
 
