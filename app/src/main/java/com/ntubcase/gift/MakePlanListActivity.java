@@ -57,7 +57,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     ArrayList<String> selectFriendIds;  //選擇的好友ID
     //----------------------------------------------------------------------------------------------
 
-    static EditText edt_list_name, edt_list_message, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentTime;
+    static EditText edt_list_name, edt_list_message, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentTime,edt_list_lastTime;
     private String sender= "1", planid, planType="3", dateTime, dateOnly;
 
     //----------------------------------------------------------------------------------------------
@@ -88,6 +88,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         edt_list_friend = findViewById(R.id.list_friend);
         edt_list_giftName = findViewById(R.id.list_gift);
         edt_list_sentTime = findViewById(R.id.list_time);
+        edt_list_lastTime= findViewById(R.id.list_lasttime);
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
 
@@ -198,7 +199,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                 Showgiftdialog();
             }
         });
-        //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
+        //點選送禮時間EditText跳出選擇時間選擇器---------------------------------------
         edt_list_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edt_list_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -206,7 +207,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showTimePickerDialog();
+                    showTimePickerDialog(true);
                 }
             }
         });
@@ -216,9 +217,32 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showTimePickerDialog();
+                showTimePickerDialog(true);
             }
         });
+
+        //點選截止時間EditText跳出選擇時間選擇器---------------------------------------
+        edt_list_lastTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_list_lastTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    showTimePickerDialog(false);
+                }
+            }
+        });
+
+        edt_list_lastTime.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                showTimePickerDialog(false);
+            }
+        });
+
     }
     protected void onDestroy() {
         super.onDestroy();
@@ -365,12 +389,17 @@ public class MakePlanListActivity extends AppCompatActivity{
     //-----------------------------------------------------------
 
     //設定送禮時間EditText傳入值---------------------------------------
-    private void showTimePickerDialog() {
+    private void showTimePickerDialog(final boolean isNew) {
         Calendar t = Calendar.getInstance();
         new TimePickerDialog(MakePlanListActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                edt_list_sentTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+                if (isNew==false){
+                    edt_list_lastTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+                }else{
+                    edt_list_sentTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+                }
+
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false).show();
 

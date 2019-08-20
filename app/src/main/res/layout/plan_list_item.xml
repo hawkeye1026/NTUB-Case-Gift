@@ -11,13 +11,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.1" />
+
     <TextView
         android:id="@+id/Textview"
         android:layout_width="0dp"
-        android:layout_weight="0.8"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="0.8"
         android:ellipsize="end"
-        android:maxLines="1"/>
+        android:maxLines="1" />
 
     <Button
         android:id="@+id/btn_delete_item"

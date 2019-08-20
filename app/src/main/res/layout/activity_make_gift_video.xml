@@ -1,98 +1,111 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MakeGiftVideoActivity">
-
-    <LinearLayout
+    android:background="@drawable/bg_gift"
+    android:padding="20dp"
+    tools:context=".MakeGiftVideoActivity"
+    android:orientation="vertical">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_giftIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_gift_video"
-                android:layout_gravity="center_vertical"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_giftName"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/iv_giftIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_gift_video"
+                        android:layout_gravity="center_vertical"/>
+
+                    <EditText
+                        android:id="@+id/et_giftName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:hint="@string/enterGiftName"
+                        android:textSize="20sp"/>
+
+                </LinearLayout>
+
+                <VideoView
+                    android:id="@+id/vv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_margin="15dp"/>
+
+                <Button
+                    android:id="@+id/btn_selectVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="從相簿選取"/>
+
+                <Button
+                    android:id="@+id/btn_openCamera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="從相機拍攝"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:hint="@string/enterGiftName"
-                android:textSize="20sp"/>
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:layout_alignParentBottom="true">
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:text="儲存"
+                    android:textSize="18sp"
+                    android:textColor="#FFF"
+                    android:background="@drawable/bg_normalbutton"/>
 
-        <VideoView
-            android:id="@+id/vv_content"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_margin="15dp"/>
+                <Button
+                    android:id="@+id/btn_makePlan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:text="製作送禮計畫"
+                    android:textSize="18sp"
+                    android:textColor="#FFF"
+                    android:background="@drawable/bg_normalbutton"/>
 
-        <Button
-            android:id="@+id/btn_selectVideo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="從相簿選取"/>
-
-        <Button
-            android:id="@+id/btn_openCamera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="從相機拍攝"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            android:text="儲存"
-            android:textSize="18sp"
-            android:textColor="#FFF"
-            android:background="@drawable/bg_normalbutton"/>
-
-        <Button
-            android:id="@+id/btn_makePlan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            android:text="製作送禮計畫"
-            android:textSize="18sp"
-            android:textColor="#FFF"
-            android:background="@drawable/bg_normalbutton"/>
-
-    </LinearLayout>
+            </LinearLayout>
 
 
-</RelativeLayout>
+        </LinearLayout>>
+    </ScrollView>
+</LinearLayout>
