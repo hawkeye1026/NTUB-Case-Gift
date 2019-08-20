@@ -8,14 +8,10 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Spinner;
 
 import com.ntubcase.gift.Adapter.GiftReceivedNewAdapter;
-//import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getGiftReceived;
 
 import java.util.ArrayList;
@@ -33,7 +29,6 @@ public class GiftReceivedNewFragment extends Fragment {
     private List<Map<String, Object>> rGiftsList; //禮物清單
     private View view;
     private SearchView mSearchView;
-    private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,27 +37,6 @@ public class GiftReceivedNewFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
 
-        //-----------------------------spinner----------------------
-        mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
-        spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_plan_type, R.layout.spinner_layout);
-        spinnerAdapter.setDropDownViewResource(R.layout.spinner_itm_layout);
-        mSpinner.setAdapter(spinnerAdapter);
-
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String str = parent.getItemAtPosition(position).toString();
-
-                giftReceivedAdapter.selectedType=str;
-                String query = mSearchView.getQuery().toString();
-                giftReceivedAdapter.getFilter().filter(query);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         return view;
     }
 

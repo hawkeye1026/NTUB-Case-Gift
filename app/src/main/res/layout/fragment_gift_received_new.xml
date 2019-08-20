@@ -18,26 +18,13 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="搜尋："
-                android:textSize="18sp"
-                android:textColor="@android:color/black"/>
-
-            <Spinner
-                android:id="@+id/mSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:dropDownVerticalOffset="25dp"/>
-
             <SearchView
                 android:id="@+id/mSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:iconifiedByDefault="false"
                 android:focusable="false"
-                android:queryHint="禮物名稱"
+                android:queryHint="請輸入欲搜尋的送禮人名稱"
                 android:textSize="16sp"
                 android:paddingLeft="-16dp"/>
 
