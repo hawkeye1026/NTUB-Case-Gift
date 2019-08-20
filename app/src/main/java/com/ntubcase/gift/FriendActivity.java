@@ -18,10 +18,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.FriendListAdapter;
 import com.ntubcase.gift.data.getFriendList;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,13 +54,10 @@ public class FriendActivity extends AppCompatActivity {
                 Toast.makeText(FriendActivity.this, "新增好友", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
-    //-----------------
-    public void onResume(){
-
+    //-----------------取得好友資料-----------------
+    private void getFriendData(){
         getFriendList.getJSON();
         //---------------------ListView倒入資料--------------------------------
         String[][] mFriendsData = new String[getFriendList.getFriendLength()][20];
@@ -103,6 +97,11 @@ public class FriendActivity extends AppCompatActivity {
         });
 
         setSearch_function(); // 設定searchView的文字輸入監聽
+    }
+
+    @Override
+    public void onResume(){
+        getFriendData();
         super.onResume();
     }
 

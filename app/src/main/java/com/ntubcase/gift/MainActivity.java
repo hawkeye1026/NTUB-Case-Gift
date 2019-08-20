@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
         getGiftReceived.getJSON();
         getGiftReceivedDone.getJSON();
         //----------
-        mSetting = (ImageView)findViewById(R.id.mSetting);
 
         //-------顯示使用者頭像
+        mSetting = (ImageView)findViewById(R.id.mSetting);
 
 //        Uri imageURI = userData.getUserPhotoUri();
         Uri imageURI = Uri.parse("https://lh3.googleusercontent.com/a-/AAuE7mCRxEJ_jmu1slG-m1RDRJGeLt4ni98tb2mUWT1KfQ");
@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //-------設定 按鈕------
-        mSetting = findViewById(R.id.mSetting);
         mSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

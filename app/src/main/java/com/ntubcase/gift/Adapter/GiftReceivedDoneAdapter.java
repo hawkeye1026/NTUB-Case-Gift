@@ -23,23 +23,20 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
         private List<Map<String, Object>> item;
         private List<Map<String, Object>> originalitem;
         private List<Map<String, Object>> selectedTypeitem;
-        private LayoutInflater mLayout;
         private ArrayList<String> plansType; //所有計畫種類
         public static String selectedType; //spinner所選取的種類
 
-        public GiftReceivedDoneAdapter(List<Map<String, Object>> re_giftList){
+        public GiftReceivedDoneAdapter(Context context, List<Map<String, Object>> re_giftList){
             this.context = context;
             this.re_giftList = re_giftList;
         }
 
         @Override
         public com.ntubcase.gift.Adapter.GiftReceivedDoneAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (context == null) {
-                context = parent.getContext();
-            }
-            View view = LayoutInflater.from(context).inflate(R.layout.donegiftlist_layout, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.received_done_gift_layout, parent, false);
             return new com.ntubcase.gift.Adapter.GiftReceivedDoneAdapter.ViewHolder(view);
         }
+
         @Override
         public void onBindViewHolder(com.ntubcase.gift.Adapter.GiftReceivedDoneAdapter.ViewHolder holder, int position) {
             holder.image.setImageResource(R.drawable.opengift);
@@ -53,6 +50,7 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
                 }
             });
         }
+
         @Override
         public int getItemCount() {
             return re_giftList.size();
@@ -70,6 +68,7 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
                 image = (ImageView) itemView.findViewById(R.id.iv_photo);
             }
         }
+
         @Override
         public Filter getFilter() { //過濾器
             Filter filter = new Filter() {
@@ -142,12 +141,7 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
                     item = (List<Map<String, Object>>)results.values;
-                    if(results.count>0){
-                        notifyDataSetChanged();
-                    }else{
-                        notifyDataSetChanged();
-                        //我覺得應該是這邊錯了...但是用原本的的方法會是紅字
-                    }
+                    if(results.count>0) notifyDataSetChanged();
                 }
             };
 
