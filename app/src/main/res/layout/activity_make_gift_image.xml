@@ -11,8 +11,7 @@
     android:orientation="vertical">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,40 +68,40 @@
                 android:layout_marginRight="10dp"
                 android:text="從相機拍攝" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="50dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_normalbutton"
-                android:text="儲存"
-                android:textColor="#FFF"
-                android:textSize="18sp" />
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="50dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_makePlan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_normalbutton"
-                android:text="製作送禮計畫"
-                android:textColor="#FFF"
-                android:textSize="18sp" />
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_normalbutton"
+                    android:text="儲存"
+                    android:textColor="#FFF"
+                    android:textSize="18sp" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btn_makePlan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_normalbutton"
+                    android:text="製作送禮計畫"
+                    android:textColor="#FFF"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
         </LinearLayout>>
 
     </ScrollView>
