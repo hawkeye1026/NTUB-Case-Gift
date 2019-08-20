@@ -32,8 +32,7 @@ public class SettingActivity extends AppCompatActivity {
     ImageView mUserPhoto;
     TextView mNickname,mMail,mBirthday;
 
-    Button mLogout;
-    ImageView mQrcode;
+    ImageView mQrcode,mLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +52,15 @@ public class SettingActivity extends AppCompatActivity {
 
         Picasso.get().load(imageURI).into(mUserPhoto);
         //-------顯示使用者個人資料
-        mNickname.setText("名字： " + userData.getUserName());
-        mMail.setText("Email： " + userData.getUserMail());
-        mBirthday.setText("Birthday："  );
+        mNickname.setText(userData.getUserName());
+        mMail.setText(userData.getUserMail());
+        mBirthday.setText("");
 
 
         //顯示使用者資訊
 
         //------設置
-        mLogout = (Button)findViewById(R.id.iv_logout);
+        mLogout = (ImageView)findViewById(R.id.iv_logout);
         mQrcode = (ImageView)findViewById(R.id.iv_qrcode);
 
         String protal = userData.getLoginProtal();
