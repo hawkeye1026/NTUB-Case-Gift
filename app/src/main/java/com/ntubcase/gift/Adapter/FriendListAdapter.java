@@ -48,7 +48,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         Log.v("imgURL",mFriendList.get(position).get("imgURL").toString());
         Picasso.get().load(imageURI).into(holder.iv_photo);
 
-        //holder.iv_photo.setImageResource(R.drawable.ic_gift_camera);
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());
 
@@ -105,14 +104,16 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
                 if(constraint != null && constraint.toString().length()>0){
                     List<Map<String, Object>> filteredItem = new ArrayList<Map<String, Object>>();
                     for(int i=0;i<originalitem.size();i++){
-                        String photo = originalitem.get(i).get("photo").toString();
+                        String friendID = originalitem.get(i).get("friendID").toString();
                         String nickname = originalitem.get(i).get("nickname").toString();
                         String email = originalitem.get(i).get("email").toString();
+                        String imgURL = originalitem.get(i).get("imgURL").toString();
                         if(nickname.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
-                            filteredItemContent.put("photo", photo);
+                            filteredItemContent.put("friendID", friendID);
                             filteredItemContent.put("nickname", nickname);
                             filteredItemContent.put("email", email);
+                            filteredItemContent.put("imgURL", imgURL);
                             filteredItem.add(filteredItemContent);
                         }
                     }
@@ -132,7 +133,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 mFriendList = (List<Map<String, Object>>)results.values;
-                if(results.count>0) notifyDataSetChanged();
+                notifyDataSetChanged();
             }
         };
 

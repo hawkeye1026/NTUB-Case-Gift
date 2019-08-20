@@ -70,20 +70,16 @@
         <ImageView
             android:id="@+id/mSetting"
             style="?android:borderlessButtonStyle"
-            android:layout_width="109dp"
+            android:layout_width="80dp"
             android:layout_height="80dp"
-
-
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.948"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.022"
-            app:srcCompat="@drawable/user"
+            app:srcCompat="@drawable/ic_user"
             tools:ignore="MissingConstraints" />
 
 

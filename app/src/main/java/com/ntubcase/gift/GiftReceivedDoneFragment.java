@@ -10,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
-import com.ntubcase.gift.Adapter.GiftReceivedAdapter;
 import com.ntubcase.gift.Adapter.GiftReceivedDoneAdapter;
 import com.ntubcase.gift.data.getGiftReceived;
 
@@ -33,10 +31,8 @@ public class GiftReceivedDoneFragment extends Fragment {
     private List<Map<String, Object>> rGiftsList; //禮物清單
     private View view;
     private SearchView mSearchView;
-    private ListView mListView;
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
-
 
     public GiftReceivedDoneFragment() {
         // Required empty public constructor
@@ -48,7 +44,7 @@ public class GiftReceivedDoneFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_gift_received_done, container, false);
         rGiftsList = new ArrayList<Map<String, Object>>();
-        mListView = (ListView) view.findViewById(R.id.giftList);
+        recyclerView = view.findViewById(R.id.recyclerView);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
         //-----------------------------spinner----------------------
         mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
@@ -72,12 +68,12 @@ public class GiftReceivedDoneFragment extends Fragment {
         });
         return view;
     }
-    //-----------------
-    public void onResume() {
 
+    //-----------------取得收禮箱 已接收禮物資料-----------------
+    private void getDoneReceivedGiftData() {
         getGiftReceived.getJSON();
+
         String[][] rGiftsData = new String[getGiftReceived.getGiftLength()][20];
-        rGiftsList = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < getGiftReceived.getGiftLength(); i++) {
             rGiftsData[i][0] = getGiftReceived.getType(i);
             rGiftsData[i][1] = getGiftReceived.getPlanName(i);
@@ -85,7 +81,7 @@ public class GiftReceivedDoneFragment extends Fragment {
             rGiftsData[i][3] = getGiftReceived.getSendPlanDate(i);
             rGiftsData[i][4] = getGiftReceived.getPlanid(i);
         }
-        rGiftsList.clear();
+
         rGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> rGifts;
 
@@ -95,14 +91,19 @@ public class GiftReceivedDoneFragment extends Fragment {
             rGifts.put("title", rGiftsData[i][1]);
             rGifts.put("sender", rGiftsData[i][2]);
             rGifts.put("date", rGiftsData[i][3]);
-            rGifts.put("planid", rGiftsData[i][4]);
+            rGifts.put("planID", rGiftsData[i][4]);
             rGiftsList.add(rGifts);
         }
-        recyclerView = view.findViewById(R.id.recyclerView);
+
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        giftReceivedDoneAdapter = new GiftReceivedDoneAdapter(this.rGiftsList);
+        giftReceivedDoneAdapter = new GiftReceivedDoneAdapter(getActivity(), rGiftsList);
         recyclerView.setAdapter(giftReceivedDoneAdapter);
         setSearch_function(); // 設定searchView的文字輸入監聽
+    }
+
+    @Override
+    public void onResume() {
+        getDoneReceivedGiftData();
         super.onResume();
     }
 
@@ -120,7 +121,6 @@ public class GiftReceivedDoneFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 giftReceivedDoneAdapter.getFilter().filter(newText);
-
                 return true;
             }
         });
@@ -135,7 +135,5 @@ public class GiftReceivedDoneFragment extends Fragment {
         });
 
     }
-
-
 
 }

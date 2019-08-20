@@ -6,14 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
@@ -49,13 +44,16 @@ public class MainActivity extends AppCompatActivity {
         getGiftReceived.getJSON();
         getGiftReceivedDone.getJSON();
         //----------
-        mSetting = (ImageView)findViewById(R.id.mSetting);
 
         //-------顯示使用者頭像
+        mSetting = (ImageView)findViewById(R.id.mSetting);
 
-//        Uri imageURI = userData.getUserPhotoUri();
-        Uri imageURI = Uri.parse("https://lh3.googleusercontent.com/a-/AAuE7mCRxEJ_jmu1slG-m1RDRJGeLt4ni98tb2mUWT1KfQ");
-        Picasso.get().load(imageURI).into(mSetting);
+        Uri imageURI = userData.getUserPhotoUri();
+        if (imageURI!=null){
+            Picasso.get().load(imageURI)
+                    .transform(new CircleTransform())
+                    .into(mSetting);
+        }
 
 
 
@@ -104,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //-------設定 按鈕------
-        mSetting = findViewById(R.id.mSetting);
         mSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
