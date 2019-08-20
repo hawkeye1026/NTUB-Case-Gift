@@ -52,22 +52,14 @@ public class getGiftReceivedDone {
 
                         switch(type[i]){
                             case "1":
-                                type[i] = "驚喜式";
-//                                Log.v("1",
-//                                        type[i]);
+                                type[i] = "單日送禮";
                                 break;
                             case "2":
-                                type[i] = "期間式";
-//                                Log.v("2",
-//                                        type[i]);
+                                type[i] = "多日規劃";
                                 break;
                             case "3":
-                                type[i] = "問答式";
-//                                Log.v("3",
-//                                        type[i]);
+                                type[i] = "任務清單";
                                 break;
-                            default:
-                                type[i] = "驚喜式";
                         }
 
                     }

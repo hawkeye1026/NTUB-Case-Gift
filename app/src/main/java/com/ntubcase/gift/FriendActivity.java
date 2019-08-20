@@ -75,9 +75,7 @@ public class FriendActivity extends AppCompatActivity {
 
         for(int i=0; i<mFriendsData.length; i++) {
             mFriends = new HashMap<String, Object>();
-            //Bitmap img = getBitmapFromURL(mFriendsData[i][0]);
-            //mFriends.put("photo", img);
-            mFriends.put("friedid", mFriendsData[i][0]);
+            mFriends.put("friendID", mFriendsData[i][0]);
             mFriends.put("nickname", mFriendsData[i][1]);
             mFriends.put("email", mFriendsData[i][2]);
             mFriends.put("imgURL", mFriendsData[i][3]);

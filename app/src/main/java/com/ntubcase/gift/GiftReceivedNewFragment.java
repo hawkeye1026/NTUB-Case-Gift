@@ -64,7 +64,6 @@ public class GiftReceivedNewFragment extends Fragment {
             }
         });
         return view;
-
     }
 
     //-----------------取得收禮箱 新禮物資料-----------------
@@ -89,7 +88,7 @@ public class GiftReceivedNewFragment extends Fragment {
             rGifts.put("title", rGiftsData[i][1]);
             rGifts.put("sender", rGiftsData[i][2]);
             rGifts.put("date", rGiftsData[i][3]);
-            rGifts.put("planid", rGiftsData[i][4]);
+            rGifts.put("planID", rGiftsData[i][4]);
             rGiftsList.add(rGifts);
         }
 

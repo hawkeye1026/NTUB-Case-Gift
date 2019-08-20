@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -92,7 +91,7 @@ public class GiftReceivedDoneFragment extends Fragment {
             rGifts.put("title", rGiftsData[i][1]);
             rGifts.put("sender", rGiftsData[i][2]);
             rGifts.put("date", rGiftsData[i][3]);
-            rGifts.put("planid", rGiftsData[i][4]);
+            rGifts.put("planID", rGiftsData[i][4]);
             rGiftsList.add(rGifts);
         }
 
@@ -122,7 +121,6 @@ public class GiftReceivedDoneFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 giftReceivedDoneAdapter.getFilter().filter(newText);
-
                 return true;
             }
         });
