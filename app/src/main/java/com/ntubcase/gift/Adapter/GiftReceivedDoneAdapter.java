@@ -130,7 +130,7 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
                             String date = selectedTypeitem.get(i).get("date").toString();
                             String planID = selectedTypeitem.get(i).get("planID").toString();
 
-                            if(title.contains(constraint)){
+                            if(sender.contains(constraint)){
                                 Map<String, Object> filteredItemContent = new HashMap<String, Object>();
                                 filteredItemContent.put("type", type);
                                 filteredItemContent.put("title", title);

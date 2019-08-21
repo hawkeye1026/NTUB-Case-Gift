@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:iconifiedByDefault="false"
                 android:focusable="false"
-                android:queryHint="請輸入欲搜尋的送禮人名稱"
+                android:queryHint="請輸入欲搜尋的送禮人名字"
                 android:textSize="16sp"
                 android:paddingLeft="-16dp"/>
 
