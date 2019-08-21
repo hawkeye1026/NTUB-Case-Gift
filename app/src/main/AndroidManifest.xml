@@ -14,17 +14,27 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".PlanMultipleActivity"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".MakeGiftCodeActivity"
+        <activity
+            android:name=".MakeGiftMessageActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".MakeGiftVideoActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".MakeGiftImageActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".MakeGiftTicketActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".MakeGiftCodeActivity"
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".SettingActivity" />
         <activity android:name=".MakePlanListActivity"></activity>
-        <activity android:name=".MakeGiftMessageActivity" />
-        <activity android:name=".MakeGiftVideoActivity" />
-        <activity android:name=".MakeGiftImageActivity" />
-        <activity android:name=".MakeGiftTicketActivity" />
         <activity android:name=".GiftReceivedActivity" />
         <activity android:name=".FriendActivity" />
         <activity android:name=".PlanDetailActivity" />

@@ -170,6 +170,8 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 else if(col == 1) editText.setText(matchCode);  //設定matchCode文字
 
                 tabRow.addView(editText);
+
+                if (i==0 && col==0) editText.requestFocus(); //新增行數的第一行第一欄取得focus
             }
             tableLayout.addView(tabRow);
         }
