@@ -1,23 +1,30 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.ntubcase.gift.CircleTransform;
+import com.ntubcase.gift.FriendActivity;
 import com.ntubcase.gift.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +33,12 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     private Context context;
     private List<Map<String, Object>> mFriendList;
     private List<Map<String, Object>> originalitem;
-
+    //----------------------------------------------------------------------------
     private OnItemClickListener mOnItemClickListener;
+    private View actionBarView;  //多選模式中的action bar
+    private TextView selectedNum;  //顯示選中個項目個數
+    private boolean isCachedBackground = false;
+    private ColorStateList mBackground;
 
     public FriendListAdapter(Context context, List<Map<String, Object>> mFriendList) {
         this.context = context;
@@ -45,8 +56,11 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
         //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
         Uri imageURI = Uri.parse(mFriendList.get(position).get("imgURL").toString());
-        Log.v("imgURL",mFriendList.get(position).get("imgURL").toString());
-        Picasso.get().load(imageURI).into(holder.iv_photo);
+        if (imageURI!=null){
+            Picasso.get().load(imageURI)
+                    .transform(new CircleTransform())
+                    .into(holder.iv_photo);
+        }
 
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
         holder.tv_email.setText(mFriendList.get(position).get("email").toString());
@@ -58,6 +72,39 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
                     mOnItemClickListener.onItemClick(holder.itemView, position);
                 }
             });
+        }
+
+        if (!multiSelect){
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() { //-----長按事件(刪除多選模式)-----
+                @Override
+                public boolean onLongClick(View v) {
+                    multiSelect = true; //開啟多選模式
+                    ((AppCompatActivity)v.getContext()).startSupportActionMode(actionModeCallbacks);
+                    selectItem(position);
+                    notifyDataSetChanged();
+                    return true;
+                }
+            });
+        }else{
+            holder.itemView.setOnLongClickListener(null);
+        }
+
+        //---緩存原本的background
+        if (!isCachedBackground) {
+            isCachedBackground = true;
+            mBackground = ((CardView)holder.itemView).getCardBackgroundColor();
+        }
+        updateBackground(position, holder.itemView); //設定背景
+
+    }
+
+    //-----設定背景-----
+    public void updateBackground(int position, View convertView) {
+        CardView cardView = (CardView)convertView;
+        if(selectedItems.contains(position)) {
+            cardView.setCardBackgroundColor(0xFF7CA2C2);
+        } else {
+            cardView.setCardBackgroundColor(mBackground);
         }
     }
 
@@ -139,4 +186,60 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
         return filter;
     }
+
+    //----------------------刪除，多選模式的監聽器----------------------
+    public boolean multiSelect = false; //是否開啟多選模式
+    private ArrayList<Integer> selectedItems = new ArrayList<Integer>(); //選取的項目
+
+    private ActionMode.Callback actionModeCallbacks = new ActionMode.Callback() {
+        //-----初始化ActionBar-----
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            ((FriendActivity)context).getMenuInflater().inflate(R.menu.menu_multi_choice, menu);
+            if (actionBarView == null) {
+                actionBarView = LayoutInflater.from((FriendActivity)context).inflate(R.layout.delete_actionbar_layout, null);
+                selectedNum = (TextView) actionBarView.findViewById(R.id.selected_num);
+            }
+            mode.setCustomView(actionBarView);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        //-----點選ActionBar的item-----
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            Collections.sort(selectedItems); //按position排序
+
+            for (int i=selectedItems.size()-1; i>=0; i--){
+                mFriendList.remove((int)selectedItems.get(i));
+            }
+            mode.finish();
+            notifyDataSetChanged();
+            return true;
+        }
+
+        //-----退出多選模式-----
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            multiSelect = false;
+            selectedItems.clear();
+            notifyDataSetChanged();
+        }
+    };
+
+    public void selectItem(Integer item) {
+        if (multiSelect) {
+            if (selectedItems.contains(item)) {
+                selectedItems.remove(item);
+            } else {
+                selectedItems.add(item);
+            }
+            selectedNum.setText("" + selectedItems.size());
+        }
+    }
+
 }

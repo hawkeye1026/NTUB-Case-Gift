@@ -1,8 +1,7 @@
 package com.ntubcase.gift;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,7 +31,7 @@ public class FriendActivity extends AppCompatActivity {
     private FloatingActionButton fab_add;
     private SearchView mSearchView;
     private FriendListAdapter friendListAdapter;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +53,18 @@ public class FriendActivity extends AppCompatActivity {
                 Toast.makeText(FriendActivity.this, "新增好友", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //---------------------SwipeRefreshLayout--------------------------------
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.mSwipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                getFriendData(); //更新資料
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
     }
 
     //-----------------取得好友資料-----------------
@@ -89,8 +100,13 @@ public class FriendActivity extends AppCompatActivity {
         friendListAdapter.setOnItemClickListener(new FriendListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                TextView tv = view.findViewById(R.id.tv_nickname);
-                Toast.makeText(FriendActivity.this, tv.getText().toString(), Toast.LENGTH_SHORT).show();
+                if (friendListAdapter.multiSelect){ //刪除模式
+                    friendListAdapter.selectItem(position);
+                    friendListAdapter.updateBackground(position, view); //設定背景
+                }else{
+                    TextView tv = view.findViewById(R.id.tv_nickname);
+                    Toast.makeText(FriendActivity.this, tv.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
