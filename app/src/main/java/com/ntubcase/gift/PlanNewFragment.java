@@ -151,6 +151,7 @@ public class PlanNewFragment extends Fragment {
         mListView.setAdapter(planListAdapter);
         mListView.setTextFilterEnabled(true);
 
+        mSpinner.setSelection(0); //spinner預設為全部
         setmListViewListener(); //設定ListView的監聽
         setSearch_function(); // 設定searchView的文字輸入監聽
     }

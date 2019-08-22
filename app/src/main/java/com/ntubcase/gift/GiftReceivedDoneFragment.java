@@ -98,6 +98,8 @@ public class GiftReceivedDoneFragment extends Fragment {
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         giftReceivedDoneAdapter = new GiftReceivedDoneAdapter(getActivity(), rGiftsList);
         recyclerView.setAdapter(giftReceivedDoneAdapter);
+
+        mSpinner.setSelection(0); //spinner預設為全部
         setSearch_function(); // 設定searchView的文字輸入監聽
     }
 
