@@ -15,12 +15,12 @@ import java.net.URLEncoder;
 
 public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String> {
 
-    //----------------------------------------------------
-    // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
-    //----------------------------------------------------
-    public interface TaskListener {
-        void onFinished(String result);
-    }
+//----------------------------------------------------
+// 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
+//----------------------------------------------------
+public interface TaskListener {
+    void onFinished(String result);
+}
 
     //----------------------
     // 接收回傳值的物件參考
@@ -64,9 +64,9 @@ public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String
             String args =
                     "senderid=" + URLEncoder.encode(params[1], "UTF-8") +
                             "&receiverid=" + URLEncoder.encode(params[2], "UTF-8") +
-                            "&planid=" + URLEncoder.encode(params[3], "UTF-8") +
-                            "&sent" + URLEncoder.encode(params[4], "UTF-8") +
-                            "&planType=" + URLEncoder.encode(params[5], "UTF-8");
+            "&planid=" + URLEncoder.encode(params[3], "UTF-8") +
+            "&store=" + URLEncoder.encode(params[4], "UTF-8") +
+            "&planType=" + URLEncoder.encode(params[5], "UTF-8");
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
@@ -123,4 +123,5 @@ public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String
     protected void onCancelled() {
         super.onCancelled();
     }
+
 }

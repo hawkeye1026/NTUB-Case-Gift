@@ -26,13 +26,11 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
-import com.ntubcase.gift.MyAsyncTask.plan.planUpdateAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.singleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.singlePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
-import com.ntubcase.gift.data.getGiftReceived;
-import com.ntubcase.gift.data.getPlanList;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -488,8 +486,13 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "sin_" + sdFormat_giftContent.format(date);
 
-            uploadPlan("0");
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            if (edt_single_date.getText().toString()==null || mData==null){
+                Toast.makeText(MakePlanSingleActivity.this,
+                        "請設定規劃期間", Toast.LENGTH_SHORT).show();
+            }else{
+                uploadPlan("0");
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            }
 
         }
     };
@@ -506,35 +509,19 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "sin_" + sdFormat_giftContent.format(date);
 
-            uploadPlan("1");
-
-            //-------------讀取時間-----------
-            barProgressDialog = ProgressDialog.show(MakePlanSingleActivity.this,
-                    "讀取中", "請等待...", true);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        getPlanList.getJSON();
-                        getGiftReceived.getJSON();
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        barProgressDialog.dismiss();
-                        finish();
-
-                    }
-                }
-            }).start();
-
-            Toast.makeText(v.getContext(), "預送成功", Toast.LENGTH_SHORT).show();
+            if (edt_single_date.getText().toString()==null || mData==null){
+                Toast.makeText(MakePlanSingleActivity.this,
+                        "請設定規劃期間", Toast.LENGTH_SHORT).show();
+            }else{
+                uploadPlan("1");
+                Toast.makeText(v.getContext(), "預送成功", Toast.LENGTH_SHORT).show();
+            }
         }
 
     };
 
     //------------------------------上傳plan資料
-    public void uploadPlan(String sent){
+    public void uploadPlan(String store){
         //---------------------------選擇日期
         String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
 
@@ -547,7 +534,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
                 }
             });
-            giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, "1", planType);
+            Log.v("store:::::::",store);
+            giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
 

@@ -22,12 +22,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_list_adapter;
-import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.missionItemInsertAsyncTask;
@@ -40,9 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MakePlanListActivity extends AppCompatActivity{
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
@@ -499,7 +495,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     };
 
     //------------------------------上傳plan資料
-    public void uploadPlan(String sent){
+    public void uploadPlan(String store){
         //---upload giftRecord
         Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
         for (int i = 0 ; i < selectFriendIds.size(); i++) {
@@ -509,7 +505,7 @@ public class MakePlanListActivity extends AppCompatActivity{
 
                 }
             });
-            giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, sent, planType);
+            giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
 

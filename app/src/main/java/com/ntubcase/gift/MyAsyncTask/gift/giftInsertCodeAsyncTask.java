@@ -63,8 +63,9 @@ public class giftInsertCodeAsyncTask extends AsyncTask<String, Integer, String> 
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
                     "gift=" + URLEncoder.encode(params[1], "UTF-8")+
-                            "&mainCode=" + URLEncoder.encode(params[2], "UTF-8" )+
-                            "&matchCode=" + URLEncoder.encode(params[3], "UTF-8" );
+                            "&rowNumber=" + URLEncoder.encode(params[2], "UTF-8")+
+                            "&mainCode=" + URLEncoder.encode(params[3], "UTF-8" )+
+                            "&matchCode=" + URLEncoder.encode(params[4], "UTF-8" );
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(

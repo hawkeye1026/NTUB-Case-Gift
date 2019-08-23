@@ -313,7 +313,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
                     }
                 });
-                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode, giftContent, mainCodes.get(i), matchCodes.get(i));
+                String rowNumber = String.valueOf(i+1);
+                Log.v("rowNumber",rowNumber);
+                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode, giftContent, rowNumber, mainCodes.get(i), matchCodes.get(i));
             }
 
             //-------------讀取Dialog-----------
