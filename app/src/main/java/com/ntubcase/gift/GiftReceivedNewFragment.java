@@ -3,12 +3,12 @@ package com.ntubcase.gift;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 
 import com.ntubcase.gift.Adapter.GiftReceivedNewAdapter;
@@ -30,13 +30,24 @@ public class GiftReceivedNewFragment extends Fragment {
     private List<Map<String, Object>> rGiftsList; //禮物清單
     private View view;
     private SearchView mSearchView;
-    private ArrayAdapter spinnerAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_gift_received_new, container, false);
         rGiftsList = new ArrayList<Map<String, Object>>();
         recyclerView = view.findViewById(R.id.recyclerView);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
+
+        //---------------------SwipeRefreshLayout--------------------------------
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.mSwipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                getNewReceivedGiftData(); //更新資料
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return view;
     }
