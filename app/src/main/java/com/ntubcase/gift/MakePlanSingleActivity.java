@@ -67,7 +67,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     private String sender= "1", planid, planType="1", dateTime, date_time;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,60 +185,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    //設定選擇禮物EditText傳入值---------------------------------------
-    private void Showgiftdialog(final int position) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
-        mBuilder.setTitle("選擇禮物");
-
-        mBuilder.setMultiChoiceItems(single_giftlistItems, single_giftcheckedItems.get(position), new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-
-            }
-        });
-        //清除、取消、確認
-        mBuilder.setCancelable(false);
-        mBuilder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                String item = "";
-
-                for (int i = 0; i < single_giftlistItems.length; i++) {
-                    if (single_giftcheckedItems.get(position)[i]) {
-                        if (item.equals("")){ item += single_giftlistItems[i];
-                        }else{ item += " , " + single_giftlistItems[i];}
-                    }
-                   tempGiftChecked.get(position)[i] = single_giftcheckedItems.get(position)[i];
-                }
-                edt_single_giftName.setText(item);
-            }
-        });
-
-        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                for (int i = 0; i < single_giftlistItems.length; i++) {
-                    single_giftcheckedItems.get(position)[i] = tempGiftChecked.get(position)[i];
-                }
-            }
-        });
-
-        mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {  //清除鈕
-                for (int i = 0; i < single_giftlistItems.length; i++) {
-                    single_giftcheckedItems.get(position)[i] = false;
-                    tempGiftChecked.get(position)[i] = false;
-                }
-                edt_single_giftName.setText("");
-            }
-        });
-
-
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
-    }
-
     //設定選擇好友EditText傳入值---------------------------------------
     private void Showfrienddialog() {
 
@@ -311,39 +256,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     }
 
-    //設定送禮時間EditText傳入值---------------------------------------
-    private void showTimePickerDialog() {
-        Calendar t = Calendar.getInstance();
-        new TimePickerDialog(MakePlanSingleActivity.this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                edt_single_sentTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-            }
-        }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false).show();
-
-    }
-
-    //-----------------------------------------------------------
-    public String dateAdd0(int date) {
-        if (date < 10) {
-            return "0" + date;
-        } else {
-            return String.valueOf(date);
-        }
-    }
-
-    //-----------------------------------------------------------
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { //toolbar返回建
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    //跳出送禮輸入窗
+    //-----------------------------------------------新增一筆禮物----------------------------------------------
     private void showDialog(final boolean isNew, final int position) {
         final Dialog dialog = new Dialog(MakePlanSingleActivity.this);
         dialog.setContentView(R.layout.single_dialog);
@@ -362,10 +275,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             edt_single_message.setText(mData.get(position).get("message").toString());
         }
 
-        //點選送禮日期EditText跳出選擇時間選擇器---------------------------------------
+        //點選送禮時間EditText跳出選擇時間選擇器---------------------------------------
         edt_single_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edt_single_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
@@ -469,6 +381,93 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+    //設定選擇禮物EditText傳入值---------------------------------------
+    private void Showgiftdialog(final int position) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
+        mBuilder.setTitle("選擇禮物");
+
+        mBuilder.setMultiChoiceItems(single_giftlistItems, single_giftcheckedItems.get(position), new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+
+            }
+        });
+        //清除、取消、確認
+        mBuilder.setCancelable(false);
+        mBuilder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                String item = "";
+
+                for (int i = 0; i < single_giftlistItems.length; i++) {
+                    if (single_giftcheckedItems.get(position)[i]) {
+                        if (item.equals("")){ item += single_giftlistItems[i];
+                        }else{ item += " , " + single_giftlistItems[i];}
+                    }
+                    tempGiftChecked.get(position)[i] = single_giftcheckedItems.get(position)[i];
+                }
+                edt_single_giftName.setText(item);
+            }
+        });
+
+        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                for (int i = 0; i < single_giftlistItems.length; i++) {
+                    single_giftcheckedItems.get(position)[i] = tempGiftChecked.get(position)[i];
+                }
+            }
+        });
+
+        mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {  //清除鈕
+                for (int i = 0; i < single_giftlistItems.length; i++) {
+                    single_giftcheckedItems.get(position)[i] = false;
+                    tempGiftChecked.get(position)[i] = false;
+                }
+                edt_single_giftName.setText("");
+            }
+        });
+
+
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+    }
+
+    //設定送禮時間EditText傳入值---------------------------------------
+    private void showTimePickerDialog() {
+        Calendar t = Calendar.getInstance();
+        new TimePickerDialog(MakePlanSingleActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                edt_single_sentTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+            }
+        }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false).show();
+
+    }
+
+    //-----------------------------------------------------------
+    public String dateAdd0(int date) {
+        if (date < 10) {
+            return "0" + date;
+        } else {
+            return String.valueOf(date);
+        }
+    }
+
+    //-----------------------------------------------------------
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) { //toolbar返回建
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 
     //-------------------------------儲存按鈕 監聽器----------------------------------------
