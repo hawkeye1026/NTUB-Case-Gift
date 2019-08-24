@@ -3,6 +3,7 @@ package com.ntubcase.gift;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ public class GiftReceivedDoneFragment extends Fragment {
     private SearchView mSearchView;
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public GiftReceivedDoneFragment() {
         // Required empty public constructor
@@ -46,6 +48,7 @@ public class GiftReceivedDoneFragment extends Fragment {
         rGiftsList = new ArrayList<Map<String, Object>>();
         recyclerView = view.findViewById(R.id.recyclerView);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
+
         //-----------------------------spinner----------------------
         mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
         spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.spinner_plan_type, R.layout.spinner_layout);
@@ -66,6 +69,18 @@ public class GiftReceivedDoneFragment extends Fragment {
 
             }
         });
+
+        //---------------------SwipeRefreshLayout--------------------------------
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.mSwipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                getDoneReceivedGiftData(); //更新資料
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return view;
     }
 
