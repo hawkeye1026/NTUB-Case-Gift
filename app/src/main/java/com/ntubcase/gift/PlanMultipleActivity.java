@@ -29,7 +29,6 @@ import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multipleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
-import com.ntubcase.gift.data.getPlanningList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,9 +75,9 @@ public class PlanMultipleActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //---------------------------------------------------------------------------------
         btn_plan_save = findViewById(R.id.btn_plan_save);
-        //btn_plan_send = (Button) findViewById(R.id.btn_plan_send);
+        btn_plan_send = (Button) findViewById(R.id.btn_plan_send);
         btn_plan_save.setOnClickListener(planSaveClickListener); //設置監聽器
-        //btn_plan_send.setOnClickListener(planSendClickListener); //設置監聽器
+        btn_plan_send.setOnClickListener(planSendClickListener); //設置監聽器
 
         //---------------------------------上一頁資料-----------------------------------
         Bundle bundle = getIntent().getExtras();
@@ -435,30 +434,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
             Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
 
             uploadPlan("0");
-
-            //-------------讀取Dialog-----------
-            /*
-            barProgressDialog = ProgressDialog.show(PlanMultipleActivity.this,
-                    "讀取中", "請等待...",true);
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    try{
-                        //uploadFile(imagepath);
-                        getPlanningList.getJSON();
-                        Thread.sleep(1000);
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-                    finally{
-                        barProgressDialog.dismiss();
-                        finish();
-                    }
-                }
-            }).start();
-            */
-            //-------------結束Dialog-----------
             Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
         }
 
@@ -489,7 +464,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     //-------------------------------結束預送禮物按鈕 監聽器----------------------------------------
 
     //------------------------------上傳plan資料
-    public void uploadPlan(String sent){
+    public void uploadPlan(String store){
         //---upload giftRecord
         Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
         for (int i = 0 ; i < receiveFriendId.size(); i++) {
@@ -499,7 +474,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
                 }
             });
-            giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, receiveFriendId.get(i), planid, sent, planType);
+            giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, receiveFriendId.get(i), planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
 
