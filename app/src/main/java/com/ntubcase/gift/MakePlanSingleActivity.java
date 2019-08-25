@@ -31,10 +31,13 @@ import com.ntubcase.gift.MyAsyncTask.plan.singlePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +69,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     private List<List<String>> mSelectGiftIds;
 
     //---------------------------------------------------------------------------------------------------------------
-    private List<Date> selectTime=new ArrayList<>();
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     @Override
@@ -285,7 +287,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showTimePickerDialog();
+                    showTimePickerDialog(position);
                 }
             }
         });
@@ -295,7 +297,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showTimePickerDialog();
+                showTimePickerDialog(position);
             }
         });
 
@@ -343,8 +345,23 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 newData.put("sentTime", single_sentTime);
                 newData.put("message", single_message);
                 newData.put("mCheckedGift", mCheckedGift);
-
                 mData.set(position, newData);
+
+                //--------按時間排序--------
+                Collections.sort(mData, new Comparator<Map<String, Object>>() {
+                    @Override
+                    public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                        try {
+                            Date time1 = sdfT.parse((String)o1.get("sentTime"));
+                            Date time2 = sdfT.parse((String)o2.get("sentTime"));
+                            return time1.compareTo(time2);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        return 0;
+                    }
+                });
+
                 adapter.notifyDataSetChanged();
 
                 dialog.cancel();
@@ -418,23 +435,23 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     }
 
     //設定送禮時間EditText傳入值---------------------------------------
-    private void showTimePickerDialog() {
+    private void showTimePickerDialog(int position) {
         Calendar t = Calendar.getInstance();
+
+        //---若有資料則預設為上次輸入的時間---
+        try {
+            String time = (String)mData.get(position).get("sentTime");
+            if (!time.equals("")) t.setTime(sdfT.parse(time));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         new TimePickerDialog(MakePlanSingleActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 edt_single_sentTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-//                try {
-//                    selectTime.add(sdfT.parse(dateAdd0(hourOfDay) + ":" + dateAdd0(minute)));
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                };
-//
-//                Log.e("***",""+selectTime);
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false).show();
-
     }
 
     //-----------------------------------------------------------
