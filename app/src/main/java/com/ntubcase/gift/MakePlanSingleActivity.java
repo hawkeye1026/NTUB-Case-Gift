@@ -239,19 +239,18 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     }
 
     //設定送禮日期EditText傳入值---------------------------------------
-    private void showDatePickerDialog() {
+    private void showDatePickerDialog(){
         Calendar c = Calendar.getInstance();
-        new DatePickerDialog(MakePlanSingleActivity.this, new DatePickerDialog.OnDateSetListener() {
 
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanSingleActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                // TODO Auto-generated method stub
-                EditText add_surprise_date = findViewById(R.id.add_surprise_date);
-
-                add_surprise_date.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                edt_single_date.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
             }
-        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
+        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        datePickerDialog.show();
     }
 
     //-----------------------------------------------新增一筆禮物----------------------------------------------
