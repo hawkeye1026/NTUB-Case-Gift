@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -50,7 +51,8 @@ public class FriendActivity extends AppCompatActivity {
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(FriendActivity.this, "新增好友", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FriendActivity.this, FriendAddActivity.class);
+                startActivity(intent);
             }
         });
 

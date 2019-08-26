@@ -62,14 +62,14 @@
     <string name="server_client_id">958103176081–1mqjgnfvt7ae2266rcfp8i9a16lsqjuq.apps.googleusercontent.com</string>
 
     <!-- facebook 登入-->
-    <string name="facebook_app_id">587211255018725</string> <string name="fb_login_protocol_scheme">fb587211255018725</string>
+    <string name="facebook_app_id">587211255018725</string>
+    <string name="fb_login_protocol_scheme">fb587211255018725</string>
 
 
     <!--製作禮物-->
     <string name="enterGiftName">請輸入禮物名稱</string>
     <string name="enterMainCode">請輸入秘密代碼</string>
     <string name="enterMatchCode">請輸入對應訊息</string>
-
 
 
 </resources>
