@@ -74,33 +74,37 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/code"
+            android:padding="30dp">
 
             <TableLayout
                 android:id="@+id/tab_01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="*"
-                android:background="@color/colorBlack">
+                android:stretchColumns="*">
 
-                <TableRow>
+                <TableRow android:layout_height="30dp">
+
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/bg_text"
+                        android:gravity="center"
                         android:text="秘密代碼"
-                        android:textSize="20sp"
-                        android:gravity="center"
-                        android:background="@color/colorPrimaryLight"
-                        android:layout_margin="1dp"/>
+                        android:textColor="@color/text"
+                        android:textSize="20sp" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="對應訊息"
-                        android:textSize="20sp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/bg_text"
                         android:gravity="center"
-                        android:background="@color/colorPrimaryLight"
-                        android:layout_margin="1dp"/>
+                        android:text="對應訊息"
+                        android:textColor="@color/text"
+                        android:textSize="20sp" />
                 </TableRow>
 
             </TableLayout>

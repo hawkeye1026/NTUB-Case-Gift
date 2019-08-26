@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ import com.ntubcase.gift.MyAsyncTask.plan.missionPlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,7 +59,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     ArrayList<String> selectFriendIds;  //選擇的好友ID
     //----------------------------------------------------------------------------------------------
 
-    static EditText edt_list_name, edt_list_message, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentTime,edt_list_lastTime;
+    static EditText edt_list_name, edt_list_message, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentDate,edt_list_lastTime;
     private String sender= "1", planid, planType="3", dateTime, dateOnly;
 
     //----------------------------------------------------------------------------------------------
@@ -68,6 +70,7 @@ public class MakePlanListActivity extends AppCompatActivity{
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String list_message;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
     @SuppressLint("ResourceType")
@@ -87,13 +90,18 @@ public class MakePlanListActivity extends AppCompatActivity{
         edt_list_edate = findViewById(R.id.list_edate);
         edt_list_friend = findViewById(R.id.list_friend);
         edt_list_giftName = findViewById(R.id.list_gift);
-        edt_list_sentTime = findViewById(R.id.list_time);
+        edt_list_sentDate = findViewById(R.id.list_time);
         edt_list_lastTime= findViewById(R.id.list_lasttime);
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
 
+
+
+
         btn_save.setOnClickListener(planSaveClickListener); //設置監聽器
         btn_send.setOnClickListener(planSendClickListener); //設置監聽器
+
+
 
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
@@ -168,7 +176,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showDatePickerDialog();
+                    showDatePickerDialog(false);
                 }
             }
         });
@@ -177,7 +185,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showDatePickerDialog();
+                showDatePickerDialog(false);
             }
         });
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
@@ -199,25 +207,25 @@ public class MakePlanListActivity extends AppCompatActivity{
                 Showgiftdialog();
             }
         });
-        //點選送禮時間EditText跳出選擇時間選擇器---------------------------------------
-        edt_list_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        edt_list_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        //點選送禮日期EditText跳出選擇日期選擇器---------------------------------------
+        edt_list_sentDate.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_list_sentDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showTimePickerDialog(true);
+                    showDatePickerDialog(true);
                 }
             }
         });
 
-        edt_list_sentTime.setOnClickListener(new View.OnClickListener() {
+        edt_list_sentDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showTimePickerDialog(true);
+                showDatePickerDialog(true);
             }
         });
 
@@ -229,7 +237,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showTimePickerDialog(false);
+                    showTimePickerDialog();
                 }
             }
         });
@@ -239,11 +247,13 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showTimePickerDialog(false);
+                showTimePickerDialog();
             }
         });
 
     }
+
+
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -363,19 +373,25 @@ public class MakePlanListActivity extends AppCompatActivity{
     }
 
     //設定送禮日期EditText傳入值---------------------------------------
-    private void showDatePickerDialog() {
+    private void showDatePickerDialog(final boolean isNew){
         Calendar c = Calendar.getInstance();
-        new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
 
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                // TODO Auto-generated method stub
-                String month;
-                String day;
-                    edt_list_edate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-            }
-        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 
+                if (isNew==true){
+
+                        edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                }else{
+                        edt_list_edate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                }
+
+            }
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        datePickerDialog.show();
     }
 
     //-----------------------------------------------------------
@@ -389,17 +405,12 @@ public class MakePlanListActivity extends AppCompatActivity{
     //-----------------------------------------------------------
 
     //設定送禮時間EditText傳入值---------------------------------------
-    private void showTimePickerDialog(final boolean isNew) {
+    private void showTimePickerDialog() {
         Calendar t = Calendar.getInstance();
         new TimePickerDialog(MakePlanListActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                if (isNew==false){
                     edt_list_lastTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-                }else{
-                    edt_list_sentTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-                }
-
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false).show();
 
@@ -459,18 +470,19 @@ public class MakePlanListActivity extends AppCompatActivity{
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date = new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            dateTime = sdFormat.format(date);
-            SimpleDateFormat _sdFormat = new SimpleDateFormat("yyyy-MM-dd ");
-            dateOnly = _sdFormat.format(date);
+                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+                Date date = new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                dateTime = sdFormat.format(date);
+                SimpleDateFormat _sdFormat = new SimpleDateFormat("yyyy-MM-dd ");
+                dateOnly = _sdFormat.format(date);
 
-            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            planid = "mis_" + sdFormat_giftContent.format(date);
+                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+                planid = "mis_" + sdFormat_giftContent.format(date);
 
-            uploadPlan("0");
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                uploadPlan("0");
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+
 
         }
 
@@ -482,6 +494,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         @Override
         public void onClick(View v) {
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+
             Date date = new Date();
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             dateTime = sdFormat.format(date);
@@ -520,7 +533,7 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, dateOnly+" "+edt_list_sentTime.getText().toString(), edt_list_edate.getText().toString());
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, dateOnly+" "+edt_list_sentDate.getText().toString(), edt_list_edate.getText().toString());
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem
@@ -546,6 +559,21 @@ public class MakePlanListActivity extends AppCompatActivity{
             missionListInsertAsyncTask.execute(Common.insertMisPlan, planid, selectGiftIds.get(i));
         }
         Log.v("missionList", "//---upload missionList");
+    }
+
+
+
+    public void check(){
+        String a=edt_list_sentDate.getText().toString();
+        String b=edt_list_edate.getText().toString();
+
+        if (a.compareTo(b)<0) {
+            Toast.makeText(MakePlanListActivity.this, "截止日期不能早於送出日期", Toast.LENGTH_SHORT).show();
+        }
+        if (edt_list_name == null || edt_list_edate == null || edt_list_friend == null || edt_list_giftName == null|
+                edt_list_sentDate == null || edt_list_lastTime == null) {
+            Toast.makeText(MakePlanListActivity.this, "請輸入完整計畫資訊", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

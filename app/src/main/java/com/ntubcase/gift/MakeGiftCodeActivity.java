@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
@@ -98,11 +99,14 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             for (int col = 0 ; col< 2; col++){
                 EditText editText = new EditText(getApplicationContext());
 
-                editText.setBackgroundColor(Color.WHITE);
+                //editText.setBackgroundColor(Color.WHITE);
+                editText.setTextColor(Color.BLACK);
+                editText.setBackgroundResource(R.drawable.bg_text);
                 editText.setGravity(Gravity.CENTER);
                 editText.setTextSize(18);
                 editText.setPadding(10,10,10,10);
-                LinearLayout.LayoutParams lp = new TableRow.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                LinearLayout.LayoutParams lp = new TableRow.LayoutParams(50,100);
                 lp.setMargins(3,0,3,3);
                 editText.setLayoutParams(lp);
 
@@ -158,11 +162,12 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             for (int col = 0 ; col< 2; col++){
                 EditText editText = new EditText(getApplicationContext());
 
-                editText.setBackgroundColor(Color.WHITE);
+                editText.setTextColor(Color.BLACK);
+                editText.setBackgroundResource(R.drawable.bg_text);
                 editText.setGravity(Gravity.CENTER);
                 editText.setTextSize(18);
                 editText.setPadding(10,10,10,10);
-                LinearLayout.LayoutParams lp = new TableRow.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams lp = new TableRow.LayoutParams(50,100);
                 lp.setMargins(3,0,3,3);
                 editText.setLayoutParams(lp);
 
@@ -189,17 +194,18 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
                 for (int row=0; row<lineNum; row++){
                     tabRow = (TableRow) tableLayout.getChildAt(row);
-                    int rowHeight = tabRow.getHeight()-3;  //減掉marginBottom
+                    //int rowHeight = tabRow.getHeight()-3;  //減掉marginBottom
 
                     ImageView imageView = new ImageView(getApplicationContext());
-                    imageView.setBackgroundColor(Color.WHITE);
-                    imageView.setPadding(10,10,10,10);
-                    LinearLayout.LayoutParams lp = new TableRow.LayoutParams(rowHeight, rowHeight);
+
+                    //imageView.setBackgroundColor(Color.WHITE);
+                    LinearLayout.LayoutParams lp = new TableRow.LayoutParams(30, 90);
 
                     if (row==0){
-                        lp.setMargins(3,0,0,3);
+                        lp.setMargins(3,3,0,0);
                     }else{
-                        lp.setMargins(3,0,3,3);
+                        lp.setMargins(3,3,0,0);
+
                         imageView.setImageResource(R.drawable.delete);
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
