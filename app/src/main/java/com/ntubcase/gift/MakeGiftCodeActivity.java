@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,8 +25,9 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertCodeAsyncTask;
+import com.ntubcase.gift.checkPackage.checkGiftid;
+import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
 
 import java.text.SimpleDateFormat;
@@ -82,7 +82,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
         //------------判斷禮物是否有初值------------
         Bundle bundle = this.getIntent().getExtras();
-        int position =bundle.getInt("position");
+        int position ;
+        int giftid =bundle.getInt("giftid");
+        position = checkGiftid.checkGiftid(giftid);
 
         if (position>=0){  //-----顯示禮物詳細-----
             et_giftName.setText( getGiftList.getGiftName(position)); //禮物名稱

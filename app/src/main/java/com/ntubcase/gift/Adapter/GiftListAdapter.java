@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class GiftListAdapter extends BaseAdapter implements Filterable {
 
-    private List<Map<String, Object>> item;
+    private static List<Map<String, Object>> item;
     private List<Map<String, Object>> originalitem;
     private List<Map<String, Object>> selectedTypeitem;
     private LayoutInflater mLayout;
@@ -164,11 +164,13 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
                         String type = originalitem.get(i).get("type").toString();
                         String title = originalitem.get(i).get("title").toString();
                         String date = originalitem.get(i).get("date").toString();
+                        String giftid = originalitem.get(i).get("giftid").toString();
                         if(type.equals(selectedType)){
                             Map<String, Object> itemContent = new HashMap<String, Object>();
                             itemContent.put("type", type);
                             itemContent.put("title", title);
                             itemContent.put("date", date);
+                            itemContent.put("giftid", giftid);
                             selectedTypeitem.add(itemContent);
                         }
                     }
@@ -187,11 +189,13 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
                         String type = selectedTypeitem.get(i).get("type").toString();
                         String title = selectedTypeitem.get(i).get("title").toString();
                         String date = selectedTypeitem.get(i).get("date").toString();
+                        String giftid = selectedTypeitem.get(i).get("giftid").toString();
                         if(title.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
                             filteredItemContent.put("type", type);
                             filteredItemContent.put("title", title);
                             filteredItemContent.put("date", date);
+                            filteredItemContent.put("giftid", giftid);
                             filteredItem.add(filteredItemContent);
                         }
                     }
@@ -221,5 +225,8 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         };
 
         return filter;
+    }
+    public static List<Map<String, Object>> getItem(){
+        return item;
     }
 }
