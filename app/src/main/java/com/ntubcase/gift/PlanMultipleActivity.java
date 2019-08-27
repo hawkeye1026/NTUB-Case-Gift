@@ -53,7 +53,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private String sender= "1", planid, planType="2", dateTime, date_time, goal;
     ProgressDialog barProgressDialog;
 
-    private Date dateStart, dateEnd, selectTime;
+    private Date dateStart, dateEnd;
     private List<Map<String, Object>> selectDates; //選取的時間區段
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
@@ -342,21 +342,21 @@ public class PlanMultipleActivity extends AppCompatActivity {
         mDialog.show();
     }
 
-    //--------------顯示TimePicker------------------          ****設定上次選的時間要從selectDates裡面取,不然前到後就沒資料了 ****selectTime現在只記錄一個時間
+    //--------------顯示TimePicker------------------
     private void showTimePickerDialog () {
         Calendar t = Calendar.getInstance();
 
-        if (selectTime!=null) t.setTime(selectTime);  //取得上次選的時間
+        try {
+            String oldTime = alert_time.getText().toString();  //取得上次選的時間
+            if (!oldTime.equals("")) t.setTime(sdfT.parse(oldTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                try {
-                    alert_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-                    selectTime = sdfT.parse(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                alert_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE),false).show();
     }

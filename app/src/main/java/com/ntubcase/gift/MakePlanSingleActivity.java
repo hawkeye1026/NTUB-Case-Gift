@@ -440,8 +440,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         //---若有資料則預設為上次輸入的時間---
         try {
-            String time = (String)mData.get(position).get("sentTime");
-            if (!time.equals("")) t.setTime(sdfT.parse(time));
+            String oldTime = edt_single_sentTime.getText().toString();  //取得上次選的時間
+            if (!oldTime.equals("")) t.setTime(sdfT.parse(oldTime));
         } catch (ParseException e) {
             e.printStackTrace();
         }
