@@ -34,6 +34,7 @@ import com.ntubcase.gift.data.getGiftList;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,9 +63,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     private String[] giftItemList = new String[getGiftList.getGiftLength()];  //所有禮物
-    private boolean[][] mCheckedItems;
-    private boolean[][] tempCheckedItems;
-    private String[][] mSelectGiftIds;
+    private boolean[] mCheckedItems;
+    private List<List<String>> mSelectGiftIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         startDate = bundle.getString("startDate");  //起始日期
         endDate = bundle.getString("endDate");  //結束日期
         message = bundle.getString("message");  //祝福
-
+        if (receiveFriendId==null) receiveFriendId = new ArrayList<>();
 
         setTitle(planName); //-----標題為計畫名稱-----
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend);
@@ -111,12 +111,13 @@ public class PlanMultipleActivity extends AppCompatActivity {
         Map<String, Object> mDates;
 
         for(int i=0; i < allDates.size(); i++) {
+            mCheckedItems = new boolean[getGiftList.getGiftLength()];
             mDates = new HashMap<String, Object>();
             mDates.put("date", allDates.get(i));  //日期
             mDates.put("message", "");  //留言
             mDates.put("time", ""); //時間
             mDates.put("gifts", "");    //禮物
-            mDates.put("giftsId", new String[0]);  //禮物ID
+            mDates.put("mCheckedItems", mCheckedItems); //禮物選取的項目
             selectDates.add(mDates);
         }
 
@@ -124,10 +125,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
             giftItemList[i] = getGiftList.getGiftName(i);  //禮物名稱資料
         }
-        mCheckedItems = new boolean[selectDates.size()][giftItemList.length];
-        tempCheckedItems = new boolean[selectDates.size()][giftItemList.length];
-        mSelectGiftIds = new String[selectDates.size()][1];
-        for (int i = 0; i< mSelectGiftIds.length; i++) mSelectGiftIds[i][0]="";
 
         //---------------------------------GridView---------------------------------------------
         gridView = (GridView) findViewById(R.id.gridView);
@@ -182,9 +179,9 @@ public class PlanMultipleActivity extends AppCompatActivity {
         //----------------選擇禮物---------------
         alert_gifts.setInputType(InputType.TYPE_NULL);
 
-        //--暫存position的checkedbox內容--
-        final boolean[] tempChecked = new boolean[giftItemList.length];
-        for (int i=0; i<giftItemList.length; i++) tempChecked[i]=mCheckedItems[gridPosition][i];
+        //---取得position原選取資料---
+        boolean[] checked = (boolean[]) selectDates.get(position).get("mCheckedItems");
+        mCheckedItems = Arrays.copyOf(checked, checked.length);
 
         alert_gifts.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -226,33 +223,15 @@ public class PlanMultipleActivity extends AppCompatActivity {
         builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {   // send data from the AlertDialog to the Activity
-                //------儲存所選的禮物id-----
-                List<String> selectGiftIds = new ArrayList<>();
-                for (int i=0; i<mCheckedItems[gridPosition].length; i++){
-                    if (mCheckedItems[gridPosition][i]) selectGiftIds.add(getGiftList.getGiftid(i));
-                }
-
-                if (selectGiftIds.size()==0){
-                    mSelectGiftIds[gridPosition] = new String[1];
-                    mSelectGiftIds[gridPosition][0]="";
-                }else{
-                    mSelectGiftIds[gridPosition] = new String[selectGiftIds.size()];
-                    for(int j=0; j<selectGiftIds.size(); j++) mSelectGiftIds[gridPosition][j]=selectGiftIds.get(j);
-                }
-
                 //------儲存輸入的資料-----
                 sendDialogDataToActivity(gridPosition, alert_message.getText().toString()
-                        , alert_time.getText().toString(), alert_gifts.getText().toString());
+                        , alert_time.getText().toString(), alert_gifts.getText().toString(),mCheckedItems);
             }
         });
 
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                for (int i=0; i<giftItemList.length; i++){
-                    mCheckedItems[gridPosition][i]=tempChecked[i];
-                    tempCheckedItems[gridPosition][i]=tempChecked[i];
-                }
             }
         });
 
@@ -262,17 +241,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
         final AlertDialog mDialog = builder.create();
         mDialog.show();
 
-        //----------點dialog外圍取消---------
-        mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                for (int i=0; i<giftItemList.length; i++){
-                    mCheckedItems[gridPosition][i]=tempChecked[i];
-                    tempCheckedItems[gridPosition][i]=tempChecked[i];
-                }
-            }
-        });
-
         mDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,21 +249,15 @@ public class PlanMultipleActivity extends AppCompatActivity {
                         .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                sendDialogDataToActivity(gridPosition, "", "", "");
+                                sendDialogDataToActivity(gridPosition, "", ""
+                                        , "",new boolean[giftItemList.length]);
 
-                                for (int i = 0; i < giftItemList.length; i++) {
-                                    mCheckedItems[gridPosition][i] = false;
-                                    tempCheckedItems[gridPosition][i] = false;
-                                }
-                                mSelectGiftIds[gridPosition] = new String[1];
-                                mSelectGiftIds[gridPosition][0]="";
                                 mDialog.dismiss();
                             }
                         })
                         .setNeutralButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                             }
                         })
                         .show();
@@ -305,12 +267,12 @@ public class PlanMultipleActivity extends AppCompatActivity {
     }
 
     //--------------------- 處理AlertDialog回傳的資料-----------------------------
-    private void sendDialogDataToActivity(int gridPosition, String newMessage, String newTime, String newGifts) {
+    private void sendDialogDataToActivity(int gridPosition, String newMessage, String newTime, String newGifts, boolean[] mCheckedItems) {
         Map<String, Object> updateData = selectDates.get(gridPosition);
         updateData.put("message", newMessage);
         updateData.put("time", newTime);
         updateData.put("gifts", newGifts);
-        updateData.put("giftsId", mSelectGiftIds[gridPosition]);
+        updateData.put("mCheckedItems", mCheckedItems);
         selectDates.set(gridPosition, updateData);  //更新item資料
 
         planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
@@ -323,7 +285,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         mBuilder.setTitle("選擇禮物");
 
-        mBuilder.setMultiChoiceItems(giftItemList, mCheckedItems[gridPosition], new DialogInterface.OnMultiChoiceClickListener() {
+        //---暫存資料以備取消後復原---
+        final boolean[] tempCheckedItems = Arrays.copyOf(mCheckedItems, mCheckedItems.length);
+
+        mBuilder.setMultiChoiceItems(giftItemList, mCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
             }
@@ -336,11 +301,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 String mSelectGifts ="";
 
                 for (int i = 0; i < giftItemList.length; i++) {
-                    if(mCheckedItems[gridPosition][i]){
+                    if(mCheckedItems[i]){
                         if (mSelectGifts.equals("")) mSelectGifts += giftItemList[i];
                         else mSelectGifts += " , " + giftItemList[i];
                     }
-                    tempCheckedItems[gridPosition][i]=mCheckedItems[gridPosition][i];
                 }
                 alert_gifts.setText(mSelectGifts);
 
@@ -358,20 +322,17 @@ public class PlanMultipleActivity extends AppCompatActivity {
         mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                for (int i=0; i<giftItemList.length; i++) mCheckedItems[gridPosition][i]=tempCheckedItems[gridPosition][i];
+                for (int i=0; i<giftItemList.length; i++)
+                    mCheckedItems[i]=tempCheckedItems[i];
             }
         });
 
         mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {   //清除鈕
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                for (int i = 0; i < giftItemList.length; i++) {
-                    mCheckedItems[gridPosition][i] = false;
-                    tempCheckedItems[gridPosition][i] = false;
-                }
+                mCheckedItems = new boolean[giftItemList.length];
                 alert_gifts.setText("");
-                //---沒有禮物不能選時間
-                ll_time.setVisibility(View.GONE);
+                ll_time.setVisibility(View.GONE);  //---沒有禮物不能選時間
                 alert_time.setText("");
             }
         });
@@ -505,42 +466,39 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
         //--- upload multipleList
         Log.v("selectDates.size", String.valueOf(selectDates.size()));
+
+        //----------取得禮物ID----------
+        mSelectGiftIds = new ArrayList<List<String>>();
         for (int i = 0 ; i < selectDates.size(); i++) {
+            boolean[] checked = (boolean[]) selectDates.get(i).get("mCheckedItems");
+            List<String> giftIds = new ArrayList<>();
+            for (int k= 0; k< giftItemList.length; k++){
+                if (checked[k]) giftIds.add(getGiftList.getGiftid(k));
+            }
+            mSelectGiftIds.add(giftIds);
+        }
 
-            if (!mSelectGiftIds[i][0].equals("") ){
+        for (int i = 0 ; i < selectDates.size(); i++) {
+            String space=" ";
+            date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
+            goal = selectDates.get(i).get("message").toString();
 
-                Log.v("mSelectGiftIds.length", String.valueOf(mSelectGiftIds[i].length));
-
-                for (int j = 0; j < mSelectGiftIds[i].length; j++) {
-                    String space=" ";
-                    date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
-                    goal = selectDates.get(i).get("message").toString();
-
-                    multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
-                        @Override
-                        public void onFinished(String result) {
-
-                        }
-                    });
-                    multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds[i][j], date_time, goal);
+            multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
                 }
+            });
 
+            if (mSelectGiftIds.get(i).size()>0){
+                Log.v("mSelectGiftIds.length", ""+mSelectGiftIds.get(i).size());
+                for (int j = 0; j < mSelectGiftIds.get(i).size(); j++) {
+                    multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds.get(i).get(j), date_time, goal);
+                }
             }else{
-                String space=" ";
-                date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
-                goal = selectDates.get(i).get("message").toString();
-
-                multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
                 multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "0", date_time, goal);
             }
         }
         Log.v("multipleList", "//---upload multipleList");
-
     }
 
     @Override
