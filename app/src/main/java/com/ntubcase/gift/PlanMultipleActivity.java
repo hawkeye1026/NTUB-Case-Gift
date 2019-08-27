@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -56,9 +57,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     //-----cutomlayout內物件
-    private EditText alert_message;
-    private EditText alert_time;
-    private EditText alert_gifts;
+    private EditText alert_message, alert_time, alert_gifts;
+    private LinearLayout ll_time;
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     private String[] giftItemList = new String[getGiftList.getGiftLength()];  //所有禮物
@@ -158,6 +158,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         alert_message  = customLayout.findViewById(R.id.alert_message);
         alert_time  = customLayout.findViewById(R.id.alert_time);
         alert_gifts  = customLayout.findViewById(R.id.alert_gifts);
+        ll_time = customLayout.findViewById(R.id.ll_time);
 
         alert_message.setText(selectDates.get(gridPosition).get("message").toString());
         alert_time.setText(selectDates.get(gridPosition).get("time").toString());
@@ -175,23 +176,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
             }
         });
 
-        //----------------選擇時間---------------
-        alert_time.setInputType(InputType.TYPE_NULL);
-        alert_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showTimePickerDialog(); //顯示TimePicker
-                }
-            }
-        });
-
-        alert_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog(); //顯示TimePicker
-            }
-        });
+        if ((alert_gifts.getText().toString()).equals(""))
+            ll_time.setVisibility(View.GONE); //若禮物空白則不能選時間
 
         //----------------選擇禮物---------------
         alert_gifts.setInputType(InputType.TYPE_NULL);
@@ -213,6 +199,24 @@ public class PlanMultipleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showGiftsDialog(gridPosition);
+            }
+        });
+
+        //----------------選擇時間---------------
+        alert_time.setInputType(InputType.TYPE_NULL);
+        alert_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    showTimePickerDialog(); //顯示TimePicker
+                }
+            }
+        });
+
+        alert_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog(); //顯示TimePicker
             }
         });
         //--------------------------------------------------------------------------------------------------------------------------------
@@ -312,35 +316,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
         planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
     }
 
-
-    //--------------顯示TimePicker------------------
-    private void showTimePickerDialog () {
-        Calendar t = Calendar.getInstance();
-
-        if (selectTime!=null) t.setTime(selectTime);  //取得上次選的時間
-
-        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                try {
-                    alert_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-                    selectTime = sdfT.parse(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE),false).show();
-    }
-
-    //--------------時間加0------------------
-    private String dateAdd0(int date){
-        if(date <10){
-            return "0"+date;
-        }else{
-            return String.valueOf(date);
-        }
-    }
-
     //--------------顯示選擇禮物dialog------------------
     private void showGiftsDialog(int position){
         final int gridPosition = position;
@@ -368,6 +343,15 @@ public class PlanMultipleActivity extends AppCompatActivity {
                     tempCheckedItems[gridPosition][i]=mCheckedItems[gridPosition][i];
                 }
                 alert_gifts.setText(mSelectGifts);
+
+                //---禮物有值才可選時間---
+                if (mSelectGifts.equals("")){
+                    ll_time.setVisibility(View.GONE);
+                    alert_time.setText("");
+                }else{  //時間預設為上午十二點
+                    ll_time.setVisibility(View.VISIBLE);
+                    if ((alert_time.getText().toString()).equals("")) alert_time.setText("00:00");
+                }
             }
         });
 
@@ -386,12 +370,43 @@ public class PlanMultipleActivity extends AppCompatActivity {
                     tempCheckedItems[gridPosition][i] = false;
                 }
                 alert_gifts.setText("");
+                //---沒有禮物不能選時間
+                ll_time.setVisibility(View.GONE);
+                alert_time.setText("");
             }
         });
 
 
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
+    }
+
+    //--------------顯示TimePicker------------------          ****設定上次選的時間要從selectDates裡面取,不然前到後就沒資料了 ****selectTime現在只記錄一個時間
+    private void showTimePickerDialog () {
+        Calendar t = Calendar.getInstance();
+
+        if (selectTime!=null) t.setTime(selectTime);  //取得上次選的時間
+
+        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                try {
+                    alert_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+                    selectTime = sdfT.parse(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE),false).show();
+    }
+
+    //--------------時間加0------------------
+    private String dateAdd0(int date){
+        if(date <10){
+            return "0"+date;
+        }else{
+            return String.valueOf(date);
+        }
     }
 
     //--------------取得兩個日期間所有日期------------------
