@@ -1,4 +1,4 @@
-package com.ntubcase.gift;
+package com.ntubcase.gift.checkPackage;
 
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getPlanGot;

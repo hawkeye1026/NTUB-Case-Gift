@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -24,34 +23,25 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
-import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_giftAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_imageAsyncTask;
+import com.ntubcase.gift.checkPackage.checkGiftid;
+import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
-import com.ntubcase.gift.login_model.googleAccount;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -98,8 +88,11 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         //------------禮物詳細，判斷禮物是否有初值
         Bundle bundle = this.getIntent().getExtras();
         //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
-        int position =bundle.getInt("position");
+        int position;
+        int giftid =bundle.getInt("giftid");
+        position = checkGiftid.checkGiftid(giftid);
 
+        Log.v("giftid",position + "");
         if (position>=0){
             //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
             Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
