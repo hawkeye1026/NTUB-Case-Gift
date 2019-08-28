@@ -31,6 +31,7 @@ import com.ntubcase.gift.MyAsyncTask.plan.multipleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,8 +54,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private String sender= "1", planid, planType="2", dateTime, date_time, goal;
     ProgressDialog barProgressDialog;
 
-    private Date dateStart, dateEnd;
-    private List<Map<String, Object>> selectDates; //選取的時間區段
+    private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>();  //選取的時間區段
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     //-----cutomlayout內物件
@@ -84,10 +84,11 @@ public class PlanMultipleActivity extends AppCompatActivity {
         planName = bundle.getString("planName");    //計畫名稱
         receiveFriend = bundle.getString("receiveFriend");  //收禮人名稱
         receiveFriendId = bundle.getStringArrayList("receiveFriendId"); //收禮人ID
+        if (receiveFriendId==null) receiveFriendId = new ArrayList<>();
         startDate = bundle.getString("startDate");  //起始日期
         endDate = bundle.getString("endDate");  //結束日期
         message = bundle.getString("message");  //祝福
-        if (receiveFriendId==null) receiveFriendId = new ArrayList<>();
+        selectDates = (ArrayList<Map<String, Object>>) bundle.getSerializable("selectDates");  //選取的時間區段
 
         setTitle(planName); //-----標題為計畫名稱-----
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend);
@@ -95,31 +96,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         tv_sender = (TextView) findViewById(R.id.tv_sender);
         tv_receiveFriend.setText("To. " + receiveFriend);   //-----顯示收禮人-----
         tv_message.setText(message); //-----顯示祝福-----
-        tv_sender.setText("From. " + sender); //-----顯示祝福-----
-
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            dateStart = sdf.parse(startDate);
-            dateEnd = sdf.parse(endDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        List<String> allDates = findDates(dateStart, dateEnd);  //取得兩個日期間所有日期
-        selectDates = new ArrayList<Map<String, Object>>();
-        Map<String, Object> mDates;
-
-        for(int i=0; i < allDates.size(); i++) {
-            mCheckedItems = new boolean[getGiftList.getGiftLength()];
-            mDates = new HashMap<String, Object>();
-            mDates.put("date", allDates.get(i));  //日期
-            mDates.put("message", "");  //留言
-            mDates.put("time", ""); //時間
-            mDates.put("gifts", "");    //禮物
-            mDates.put("mCheckedItems", mCheckedItems); //禮物選取的項目
-            selectDates.add(mDates);
-        }
+        tv_sender.setText("From. " + sender); //-----顯示送禮人-----
 
         //------選擇禮物用-----
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
@@ -217,7 +194,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
             }
         });
         //--------------------------------------------------------------------------------------------------------------------------------
-
 
         //-------------alert按鈕-------------
         builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
@@ -370,26 +346,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
         }
     }
 
-    //--------------取得兩個日期間所有日期------------------
-    public List<String> findDates(Date dBegin, Date dEnd){
-        List<String> lDate = new ArrayList<String>();
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-        lDate.add(sd.format(dBegin));
-        Calendar calBegin = Calendar.getInstance();
-        // 使用给定的 Date 设置此 Calendar 的时间
-        calBegin.setTime(dBegin);
-        Calendar calEnd = Calendar.getInstance();
-        // 使用给定的 Date 设置此 Calendar 的时间
-        calEnd.setTime(dEnd);
-        // 测试此日期是否在指定日期之后
-        while (dEnd.after(calBegin.getTime())) {
-            // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
-            calBegin.add(Calendar.DAY_OF_MONTH, 1);
-            lDate.add(sd.format(calBegin.getTime()));
-        }
-        return lDate;
-    }
-
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
@@ -501,9 +457,16 @@ public class PlanMultipleActivity extends AppCompatActivity {
         Log.v("multipleList", "//---upload multipleList");
     }
 
+    private static final int REQUEST_CODE=1;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){ //toolbar返回建
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selectDates", (Serializable) selectDates);
+            intent.putExtras(bundle);
+
+            setResult(REQUEST_CODE, intent);    //-----回傳資料-----
             finish();
             return true;
         }
