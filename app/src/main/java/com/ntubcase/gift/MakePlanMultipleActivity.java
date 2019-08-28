@@ -41,7 +41,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     private Date selectStartDate, selectEndDate;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     //----------------------------------------------------------------------------------------
-    private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>(); //選取的時間區段
+    private List<Map<String, Object>> selectDates; //選取的時間區段
     private List<Map<String, Object>> oldSelectDates = new ArrayList<Map<String, Object>>();; //原有資料
 
     @Override
@@ -294,20 +294,33 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     //---------------設定傳入下一頁的日期資料-------------
     private void setNextPageDateData(){
         List<String> allDates = findDates(selectStartDate, selectEndDate);  //取得兩個日期間所有日期
+        selectDates = new ArrayList<Map<String, Object>>();
+        Map<String, Object> mDates;
 
-        if (oldSelectDates.size()<=0){ //---沒有舊資料---
-            Map<String, Object> mDates;
-            for(int i=0; i < allDates.size(); i++) {
-                mDates = new HashMap<String, Object>();
-                mDates.put("date", allDates.get(i));  //日期
-                mDates.put("message", "");  //留言
-                mDates.put("time", ""); //時間
-                mDates.put("gifts", "");    //禮物
-                mDates.put("mCheckedItems", new boolean[getGiftList.getGiftLength()]); //禮物選取的項目
-                selectDates.add(mDates);
+        for(int i=0; i < allDates.size(); i++) {
+            mDates = new HashMap<String, Object>();
+            mDates.put("date", allDates.get(i));  //日期
+            mDates.put("message", "");  //留言
+            mDates.put("time", ""); //時間
+            mDates.put("gifts", "");    //禮物
+            mDates.put("mCheckedItems", new boolean[getGiftList.getGiftLength()]); //禮物選取的項目
+            selectDates.add(mDates);
+        }
+
+        //-----------若有舊資料則設定舊資料-----------
+        if (oldSelectDates.size()>0){
+            //---取得舊資料所有日期---
+            List<String> oldAllDates = new ArrayList<>();
+            for (int i=0; i<oldSelectDates.size(); i++) {
+                oldAllDates.add((String)oldSelectDates.get(i).get("date"));
             }
-        }else{  //---設定舊資料---
-            selectDates = oldSelectDates;
+
+            //---檢查新選擇的日期期間內是否包含舊日期---
+            for(int i=0; i<allDates.size(); i++) {
+                if (oldAllDates.contains(allDates.get(i))){ //若新的日期期間有包含舊的日期
+                    selectDates.set(i, oldSelectDates.get(oldAllDates.indexOf(allDates.get(i)))); //設定成舊資料
+                }
+            }
         }
     }
 
@@ -316,14 +329,14 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         List<String> lDate = new ArrayList<String>();
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
         lDate.add(sd.format(dBegin));
+
         Calendar calBegin = Calendar.getInstance();
-        // 使用给定的 Date 设置此 Calendar 的时间
         calBegin.setTime(dBegin);
+
         Calendar calEnd = Calendar.getInstance();
-        // 使用给定的 Date 设置此 Calendar 的时间
         calEnd.setTime(dEnd);
-        // 测试此日期是否在指定日期之后
-        while (dEnd.after(calBegin.getTime())) {
+
+        while (dEnd.after(calBegin.getTime())) { // 测试此日期是否在指定日期之后
             // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
             calBegin.add(Calendar.DAY_OF_MONTH, 1);
             lDate.add(sd.format(calBegin.getTime()));
