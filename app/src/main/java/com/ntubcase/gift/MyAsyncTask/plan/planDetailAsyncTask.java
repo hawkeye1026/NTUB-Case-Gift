@@ -111,10 +111,6 @@ public class planDetailAsyncTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        Log.v("onPostExecute",
-                "執行完非同步工作之後執行");
-        Log.v("result",
-                result);
         if(result==null) {
             Log.v("result",
                     "null");
