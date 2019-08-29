@@ -65,9 +65,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.9"
-                    android:inputType="none"
                     android:hint="nickname"
-                    android:textSize="14sp"></EditText>
+                    android:inputType="none"
+                    android:textSize="16sp"></EditText>
 
             </LinearLayout>
             <LinearLayout
@@ -90,8 +90,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.9"
                     android:hint="email"
-                    android:textSize="14sp"
-                    android:inputType="none"></EditText>
+                    android:inputType="none"
+                    android:textSize="16sp"></EditText>
 
             </LinearLayout>
 
@@ -115,8 +115,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.9"
                     android:hint="birthday"
-                    android:textSize="14sp"
-                    android:inputType="none"></EditText>
+                    android:inputType="none"
+                    android:textSize="16sp"></EditText>
 
             </LinearLayout>
 
