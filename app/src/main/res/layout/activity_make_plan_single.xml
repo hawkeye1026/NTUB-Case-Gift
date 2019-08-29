@@ -14,7 +14,7 @@
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="320dp"
-        android:layout_height="430dp"
+        android:layout_height="420dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:layout_marginTop="15dp"
@@ -186,23 +186,21 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-
         <Button
             android:id="@+id/btn_plan_save"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginRight="20dp"
-            android:layout_weight="0.5"
             android:background="@drawable/bg_save" />
 
         <Button
             android:id="@+id/btn_plan_send"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="0.5"
-            android:background="@drawable/bg_send" />
+            android:background="@drawable/bg_send"
+            android:layout_marginLeft="30dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

@@ -372,27 +372,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //---若預送按鈕尚未出現---
-            if (btn_plan_send.getVisibility()==View.GONE){
-                if (isDataCompleted()){ //若填完必填資料
-                    btn_plan_send.setVisibility(View.VISIBLE);
-                    new AlertDialog.Builder(PlanMultipleActivity.this)
-                            .setTitle("是否直接預送您的計畫?")
-                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(getApplicationContext(), "已預送!", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .setNeutralButton("否", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            })
-                            .show();
-                }
-            }
 //            Log.v("planName + message", planName+message);  //需存入plan database
 //            Log.v("receiveFriendId", String.valueOf(receiveFriendId));  //需存入plan database
 //            Log.v("receiveFriend + sender", receiveFriend+sender);  //需存入plan database
@@ -408,10 +387,30 @@ public class PlanMultipleActivity extends AppCompatActivity {
             planid = "mul_" + sdFormat_giftContent.format(date);
             Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
 
-            uploadPlan("0");
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            //----若預送按鈕尚未出現 並填完必填資料---
+            if (btn_plan_send.getVisibility()==View.GONE && isDataCompleted()){
+                btn_plan_send.setVisibility(View.VISIBLE);
+                new AlertDialog.Builder(PlanMultipleActivity.this)
+                        .setTitle("是否直接預送您的計畫?")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadPlan("1");
+                                Toast.makeText(getApplicationContext(), "已預送!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNeutralButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadPlan("0");
+                            }
+                        })
+                        .show();
+            }else{
+                uploadPlan("0");
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            }
         }
-
     };
     //-------------------------------結束儲存按鈕 監聽器----------------------------------------
 
@@ -419,8 +418,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (isDataCompleted()){
-                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+            if (isDataCompleted()){ //---資料填完才能預送---
+                //取得目前時間：yyyy/MM/dd hh:mm:ss
                 Date date = new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                 dateTime = sdFormat.format(date);
@@ -429,10 +428,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 planid = "mul_" + sdFormat_giftContent.format(date);
 
                 uploadPlan("1");
-//                Intent intent;
-//                intent = new Intent(PlanMultipleActivity.this, PlanActivity.class);
-//                startActivity(intent);
-//                finish();
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();

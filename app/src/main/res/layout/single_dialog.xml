@@ -17,32 +17,6 @@
         android:layout_marginLeft="30dp">
 
         <ImageView
-            android:id="@+id/gift"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="0.2"
-            app:srcCompat="@drawable/gift" />
-
-        <EditText
-            android:id="@+id/single_giftName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.8"
-            android:hint="禮物名稱" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        >
-
-        <ImageView
             android:id="@+id/time"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -60,6 +34,31 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:hint="送禮時間"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
+
+        <ImageView
+            android:id="@+id/gift"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.2"
+            app:srcCompat="@drawable/gift" />
+
+        <EditText
+            android:id="@+id/single_giftName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.8"
+            android:hint="禮物名稱" />
     </LinearLayout>
 
     <LinearLayout

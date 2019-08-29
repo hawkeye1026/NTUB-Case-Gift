@@ -184,6 +184,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 showDatePickerDialog();
             }
         });
+
+        //----------------檢查必填資料是否填完----------------
+        if (isDataCompleted()) btn_send.setVisibility(View.VISIBLE);
     }
 
     protected void onDestroy() {
@@ -282,6 +285,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         //點選送禮時間EditText跳出選擇時間選擇器---------------------------------------
         edt_single_sentTime.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        if (edt_single_sentTime.getText().toString().equals(""))
+            edt_single_sentTime.setText("00:00"); //一定要有時間,預設為00:00
         edt_single_sentTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -463,24 +468,36 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         }
     }
 
-    //-----------------------------------------------------------
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { //toolbar返回建
-            finish();
+    //----------------檢查必填資料是否填完----------------
+    private boolean isDataCompleted(){
+        //---檢查每個送禮時間點是否有禮物---
+        boolean isTimeHaveGift=false;
+        for (int i=0; i<mData.size(); i++){
+            String gifts =(String)mData.get(i).get("giftName");
+            if (gifts.equals("")) break;
+            if (i==mData.size()-1) isTimeHaveGift = true;
+        }
+
+        String planName = edt_single_name.getText().toString();
+        String sendPlanDate = edt_single_date.getText().toString();
+        String receiveFriend = edt_single_friend.getText().toString();
+
+        if (!planName.equals("") && !sendPlanDate.equals("")
+                && !receiveFriend.equals("") && isTimeHaveGift){
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.v("planName",edt_single_name.getText().toString());
-            Log.v("single_date", edt_single_date.getText().toString());
-            Log.v("selectFriendIds", String.valueOf(selectFriendIds));
-            Log.v("mData", String.valueOf(mData));
+
+//            Log.v("planName",edt_single_name.getText().toString());
+//            Log.v("single_date", edt_single_date.getText().toString());
+//            Log.v("selectFriendIds", String.valueOf(selectFriendIds));
+//            Log.v("mData", String.valueOf(mData));
 
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date = new Date();
@@ -490,14 +507,29 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "sin_" + sdFormat_giftContent.format(date);
 
-            if (edt_single_date.getText().toString()==null || mData==null){
-                Toast.makeText(MakePlanSingleActivity.this,
-                        "請設定規劃期間", Toast.LENGTH_SHORT).show();
+            //----若預送按鈕尚未出現 並填完必填資料---
+            if (btn_send.getVisibility()==View.GONE && isDataCompleted()){
+                btn_send.setVisibility(View.VISIBLE);
+                new AlertDialog.Builder(MakePlanSingleActivity.this)
+                        .setTitle("是否直接預送您的計畫?")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadPlan("1");
+                                Toast.makeText(getApplicationContext(), "已預送!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNeutralButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadPlan("0");
+                            }
+                        })
+                        .show();
             }else{
                 uploadPlan("0");
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }
-
         }
     };
 
@@ -505,23 +537,21 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date = new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            dateTime = sdFormat.format(date);
+            if (isDataCompleted()){ //---資料填完才能預送---
+                //取得目前時間：yyyy/MM/dd hh:mm:ss
+                Date date = new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                dateTime = sdFormat.format(date);
 
-            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            planid = "sin_" + sdFormat_giftContent.format(date);
+                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+                planid = "sin_" + sdFormat_giftContent.format(date);
 
-            if (edt_single_date.getText().toString()==null || mData==null){
-                Toast.makeText(MakePlanSingleActivity.this,
-                        "請設定規劃期間", Toast.LENGTH_SHORT).show();
-            }else{
                 uploadPlan("1");
-                Toast.makeText(v.getContext(), "預送成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
             }
         }
-
     };
 
     //------------------------------上傳plan資料
@@ -589,5 +619,17 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         }
         Log.v("singleList", "//---upload singleList");
+        finish(); //結束製作計畫
+    }
+
+
+    //-----------------------------------------------------------
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) { //toolbar返回建
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
