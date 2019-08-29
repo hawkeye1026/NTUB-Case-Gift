@@ -113,6 +113,9 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 showAlertDialog(position,parent);  //顯示alertDialog
             }
         });
+
+        //----------------檢查必填資料是否填完----------------
+        if (isDataCompleted()) btn_plan_send.setVisibility(View.VISIBLE);
     }
 
     //-----------------顯示alertDialog-----------------
@@ -346,15 +349,55 @@ public class PlanMultipleActivity extends AppCompatActivity {
         }
     }
 
+    //----------------檢查必填資料是否填完----------------
+    private boolean isDataCompleted(){
+        //---檢查選取的日期期間內有沒有填資料---
+        boolean isDatesHaveData=false;
+        for (int i=0; i<selectDates.size(); i++){
+            String message =(String)selectDates.get(i).get("message");
+            String gifts =(String)selectDates.get(i).get("gifts");
+            if (!message.equals("") || !gifts.equals("")){ //留言或是禮物有填資料
+                isDatesHaveData = true;
+                break;
+            }
+        }
+
+        if (!planName.equals("") && !receiveFriend.equals("") && isDatesHaveData){
+            return true;
+        }
+        return false;
+    }
+
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.v("planName + message", planName+message);  //需存入plan database
-            Log.v("receiveFriendId", String.valueOf(receiveFriendId));  //需存入plan database
-            Log.v("receiveFriend + sender", receiveFriend+sender);  //需存入plan database
-            Log.v("startDate+endDate", startDate+endDate);
-            Log.v("selectDates", String.valueOf(selectDates));  //需存入list database
+            //---若預送按鈕尚未出現---
+            if (btn_plan_send.getVisibility()==View.GONE){
+                if (isDataCompleted()){ //若填完必填資料
+                    btn_plan_send.setVisibility(View.VISIBLE);
+                    new AlertDialog.Builder(PlanMultipleActivity.this)
+                            .setTitle("是否直接預送您的計畫?")
+                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(), "已預送!", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setNeutralButton("否", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+//            Log.v("planName + message", planName+message);  //需存入plan database
+//            Log.v("receiveFriendId", String.valueOf(receiveFriendId));  //需存入plan database
+//            Log.v("receiveFriend + sender", receiveFriend+sender);  //需存入plan database
+//            Log.v("startDate+endDate", startDate+endDate);
+//            Log.v("selectDates", String.valueOf(selectDates));  //需存入list database
 
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date = new Date();
@@ -376,21 +419,24 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date = new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
+            if (isDataCompleted()){
+                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+                Date date = new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                dateTime = sdFormat.format(date);
 
-            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            planid = "mul_" + sdFormat_giftContent.format(date);
+                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+                planid = "mul_" + sdFormat_giftContent.format(date);
 
-            uploadPlan("1");
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-
-            Intent intent;
-            intent = new Intent(PlanMultipleActivity.this, PlanActivity.class);
-            startActivity(intent);
-            finish();
+                uploadPlan("1");
+//                Intent intent;
+//                intent = new Intent(PlanMultipleActivity.this, PlanActivity.class);
+//                startActivity(intent);
+//                finish();
+                Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
+            }
         }
     };
     //-------------------------------結束預送禮物按鈕 監聽器----------------------------------------

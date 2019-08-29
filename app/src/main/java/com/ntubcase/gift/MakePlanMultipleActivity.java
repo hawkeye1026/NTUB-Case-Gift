@@ -327,8 +327,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     //--------------取得兩個日期間所有日期------------------
     public List<String> findDates(Date dBegin, Date dEnd){
         List<String> lDate = new ArrayList<String>();
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-        lDate.add(sd.format(dBegin));
+        lDate.add(sdf.format(dBegin));
 
         Calendar calBegin = Calendar.getInstance();
         calBegin.setTime(dBegin);
@@ -339,7 +338,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         while (dEnd.after(calBegin.getTime())) { // 测试此日期是否在指定日期之后
             // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
             calBegin.add(Calendar.DAY_OF_MONTH, 1);
-            lDate.add(sd.format(calBegin.getTime()));
+            lDate.add(sdf.format(calBegin.getTime()));
         }
         return lDate;
     }
