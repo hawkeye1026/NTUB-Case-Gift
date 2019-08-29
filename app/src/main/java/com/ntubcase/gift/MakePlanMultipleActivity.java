@@ -349,7 +349,11 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode){
             case REQUEST_CODE:
-                oldSelectDates = (ArrayList<Map<String, Object>>) data.getExtras().getSerializable("selectDates");
+                if (resultCode==RESULT_OK){
+                    oldSelectDates = (ArrayList<Map<String, Object>>) data.getExtras().getSerializable("selectDates");
+                }else {
+                    finish();  //結束製作計畫
+                }
                 break;
         }
     }

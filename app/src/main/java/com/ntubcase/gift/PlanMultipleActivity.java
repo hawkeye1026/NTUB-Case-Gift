@@ -496,9 +496,13 @@ public class PlanMultipleActivity extends AppCompatActivity {
             }
         }
         Log.v("multipleList", "//---upload multipleList");
+        
+        //-----回前頁結束製作計畫-----
+        setResult(FINISH_ACTIVITY);
+        finish();
     }
 
-    private static final int REQUEST_CODE=1;
+    private static final int FINISH_ACTIVITY = 2;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){ //toolbar返回建
@@ -507,7 +511,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
             bundle.putSerializable("selectDates", (Serializable) selectDates);
             intent.putExtras(bundle);
 
-            setResult(REQUEST_CODE, intent);    //-----回傳資料-----
+            setResult(RESULT_OK, intent);    //-----回傳資料-----
             finish();
             return true;
         }
