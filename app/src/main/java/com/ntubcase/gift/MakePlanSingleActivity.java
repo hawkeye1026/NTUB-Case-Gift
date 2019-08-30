@@ -522,6 +522,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 uploadPlan("0");
+                                Toast.makeText(getApplicationContext(), "儲存成功", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .show();
