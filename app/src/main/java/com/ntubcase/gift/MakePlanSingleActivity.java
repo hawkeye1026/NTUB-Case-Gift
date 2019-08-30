@@ -96,7 +96,15 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         btn_save.setOnClickListener(planSaveClickListener); //-----------儲存計畫
         btn_send.setOnClickListener(planSendClickListener); //-----------送出計畫
+/*
+        Bundle bundle = this.getIntent().getExtras();
+        String type = bundle.getString("type");
+        String planid = bundle.getString("planid");
 
+        if(!(planid==null)){
+            showPlan(planid);
+        }
+*/
 
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
@@ -186,22 +194,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 showDatePickerDialog();
             }
         });
-    }
-
-    //-----------------
-    public void onResume() {
-
-        Bundle bundle = this.getIntent().getExtras();
-        String type = bundle.getString("type");
-        String planid = bundle.getString("planid");
-
-        if(!(planid==null)){
-            showPlan(planid);
-        }
-
-
-
-        super.onResume();
     }
 
     protected void onDestroy() {
