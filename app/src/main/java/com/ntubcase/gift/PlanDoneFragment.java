@@ -16,6 +16,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 
 import com.ntubcase.gift.Adapter.PlanListAdapter;
+import com.ntubcase.gift.data.getPlanGot;
 import com.ntubcase.gift.data.getPlanList;
 import com.ntubcase.gift.data.getPlanSent;
 
@@ -91,30 +92,33 @@ public class PlanDoneFragment extends Fragment {
     //-----------------取得禮物資料-----------------
     private void getGiftData(){
 
-        getPlanSent.getJSON();
+        getPlanGot.getJSON();
 
         //---------------------ListView倒入資料--------------------------------
 
-        String[][] mPlansData = new String[getPlanSent.getPlansentgLength()][20];
-        //Log.e("Plan","onResume: "+getPlanList.getPlanLength());
-        for(int i = 0 ;i < getPlanSent.getPlansentgLength(); i++){
-            mPlansData[i][0]= getPlanSent.getPlanType(i);
-            mPlansData[i][1]= getPlanSent.getPlanName(i);
-            mPlansData[i][2]= getPlanSent.getCreateDate(i);
-            mPlansData[i][3]= getPlanSent.getPlanid(i);
+        String[][] mPlansData = new String[getPlanGot.getPlangotgLength()][20];
+        //Log.e("Planning","onResume: "+getPlanningList.getPlanningLength());
+        for(int i = 0 ;i < getPlanGot.getPlangotgLength(); i++){
+            mPlansData[i][0]= getPlanGot.getPlanid(i);
+            mPlansData[i][1]= getPlanGot.getPlanType(i);
+            mPlansData[i][2]= getPlanGot.getPlanName(i);
+            mPlansData[i][3]= getPlanGot.getCreateDate(i);
+            mPlansData[i][4]= getPlanGot.getSendPlanDate(i);
         }
 
         mPlansList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mPlans;
 
-        for(int i=0;i<getPlanSent.getPlansentgLength();i++) {
+        for(int i=0;i<getPlanGot.getPlangotgLength();i++) {
             mPlans = new HashMap<String, Object>();
-            mPlans.put("type", mPlansData[i][0]);
-            mPlans.put("title", mPlansData[i][1]);
-            mPlans.put("date", mPlansData[i][2]);
-            mPlans.put("planid", mPlansData[i][3]);
+            mPlans.put("planid", mPlansData[i][0]);
+            mPlans.put("type", mPlansData[i][1]);
+            mPlans.put("title", mPlansData[i][2]);
+            mPlans.put("date", mPlansData[i][3]);
+            mPlans.put("sendPlanDate", mPlansData[i][4]);
             mPlansList.add(mPlans);
         }
+
         planListAdapter = new PlanListAdapter(getContext(), mPlansList);
 
         mListView.setAdapter(planListAdapter);
