@@ -1,6 +1,7 @@
 package com.ntubcase.gift.MyAsyncTask.plan;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -92,6 +93,8 @@ public class planListAsyncTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        Log.v("result",
+                result);
         taskListener.onFinished(result);
     }
 

@@ -28,6 +28,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.PlanListAdapter;
 import com.ntubcase.gift.data.getPlanGot;
+import com.ntubcase.gift.data.getPlanList;
 import com.ntubcase.gift.data.getPlanningList;
 
 import java.util.ArrayList;
@@ -169,8 +170,10 @@ public class PlanNewFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getApplicationContext(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_planTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
 
+                //getPlanList.getJSON("1", mPlansList.get(position).get("planid").toString());
+
                 Intent intent = new Intent();
-                intent = new Intent(getActivity(), PlanDetailActivity.class);
+                intent = new Intent(getActivity(), MakePlanSingleActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("planid",mPlansList.get(position).get("planid").toString());
                 bundle.putString("type",mPlansList.get(position).get("type").toString());

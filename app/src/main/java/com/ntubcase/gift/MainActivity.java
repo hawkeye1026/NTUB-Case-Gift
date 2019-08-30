@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //----------取得禮物、計畫、收禮、好友資料
         getGiftList.getJSON();
-        getPlanList.getJSON();
         getPlanningList.getJSON();
         getPlanSent.getJSON();
         getPlanGot.getJSON();

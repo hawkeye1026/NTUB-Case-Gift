@@ -18,16 +18,22 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.spPlanDetailAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getPlanList;
+import com.ntubcase.gift.data.getPlanningList;
+import com.ntubcase.gift.data.getSinglePlan;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class PlanDetailActivity extends AppCompatActivity {
@@ -44,10 +50,14 @@ public class PlanDetailActivity extends AppCompatActivity {
     private static String[] friendid = new String[100];
     private static int giftidPositionIndex = 0 ;
     private static int friendidPositionIndex = 0 ;
-    private String receiveid;
+    private String receiveid, userid="1";
 
     private int[] gift_position = new int[1] ;
     private int[] friend_position = new int[1] ;
+
+    private List<Map<String, Object>> mPlansList; //計畫清單
+    private List<Map<String, Object>> friends;
+    private List<Map<String, Object>> gifts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,6 +237,8 @@ public class PlanDetailActivity extends AppCompatActivity {
         String type = bundle.getString("type");
         String planid = bundle.getString("planid");
 
+        //getPlanList.getJSON(userid, planid);
+
         //et_giftName.setText(giftName);
         //et_giftContent.setText(giftid);
 
@@ -239,6 +251,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         final EditText edit_surprice_message = (EditText) findViewById(R.id.edit_surprice_message);
         edit_giftcheckedItems = new boolean[edit_giftlistItems.length];
         edit_friendcheckedItems = new boolean[edit_friendlistItems.length];
+        /*
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
         for(int i = 0; i < getGiftList.getGiftLength(); i++){
             edit_giftlistItems[i] = getGiftList.getGiftName(i);
@@ -349,74 +362,89 @@ public class PlanDetailActivity extends AppCompatActivity {
                 showTimePickerDialog();
             }
         });
-        Log.v("type", type);
-        Log.v("planid", planid);
+        */
 
-        if(type.equals("驚喜式")){
-            spPlanDetailAsyncTask spPlanDetailAsyncTask = new spPlanDetailAsyncTask(new spPlanDetailAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-                    try {
-                        if (result == null) {
-                            Toast.makeText(PlanDetailActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        JSONObject object = new JSONObject(result);
-                        JSONArray jsonArray = object.getJSONArray("result");
-
-                        String spid =jsonArray.getJSONObject(0).getString("spid");
-                        String spPlanName =jsonArray.getJSONObject(0).getString("spPlanName");
-                        String sendPlanDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("sendPlanDate"));
-                        String message =jsonArray.getJSONObject(0).getString("message");
-                        String giftid =jsonArray.getJSONObject(0).getString("giftid");
-                        String giftName =jsonArray.getJSONObject(0).getString("giftName");
-                        receiveid =jsonArray.getJSONObject(0).getString("receiveid");
-                        String nickname =jsonArray.getJSONObject(0).getString("nickname");
-
-                        //SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
-                        //SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
-                        String[] arr = sendPlanDate.split(" ");
-                        //Date date = sdfDate.parse(arr[0]);
-                        //Date time = sdfTime.parse(arr[1]);
-
-                        edit_surprise_name.setText(spPlanName);
-                        //--- Q. 時間格式顯示方式不同!!! ---
-                        edit_surprise_date.setText(arr[0]); //2019-05-09
-                        edit_surprise_time.setText(arr[1]);  //05:59
-                        //---
-                        edit_surprise_gift.setText(giftName);
-                        edit_surprise_friend.setText(nickname);
-                        edit_surprice_message.setText(message);
-
-                        //---------------------------------傳入好友初始勾選方塊
-                        for(int j = 0 ; j < getFriendList.getFriendLength(); j++){
-                            Log.v("friendid",getFriendList.getFriendid(j));
-                            Log.v("friendid",receiveid);
-
-                            if(getFriendList.getFriendid(j).equals(receiveid)){
-                                edit_friendcheckedItems[j] = true;
-                                edit_friendItems.add(j);
-                                friendidPositionIndex++;
-                                break;
-                            }
-                        }
-
-                    } catch (Exception e) {
-                        Toast.makeText(PlanDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(PlanDetailActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    JSONObject object = new JSONObject(result);
+
+                    //取得禮物紀錄
+                    JSONArray jsonArray = object.getJSONArray("record");
+                    int recordLength = jsonArray.length();
+                    Log.v("recordLength", String.valueOf(recordLength));
+
+                    friends = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mFriends;
+
+                    for (int i = 0; i < recordLength; i++) {
+                        String receiverid =jsonArray.getJSONObject(i).getString("receiverid");
+                        String nickname =jsonArray.getJSONObject(i).getString("nickname");
+
+                        edit_surprise_friend.setText(nickname);
+
+                        mFriends = new HashMap<String, Object>();
+                        mFriends.put("receiverid", receiverid);
+                        mFriends.put("nickname", nickname);
+                        friends.add(mFriends);
+                    }
+                    Log.v("friends", String.valueOf(friends));
+
+                    //取得單日計畫
+                    jsonArray = object.getJSONArray("sinPlan");
+                    int sinPlanLength = jsonArray.length();
+                    Log.v("sinPlanLength", String.valueOf(sinPlanLength));
+
+                    String sinPlanid =jsonArray.getJSONObject(0).getString("sinid");
+                    String sinPlanName =jsonArray.getJSONObject(0).getString("sinPlanName");
+                    String sinCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("createDate"));
+                    String sinSendPlanDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("sendPlanDate"));
+
+                    edit_surprise_name.setText(sinPlanName);
+                    edit_surprise_date.setText(sinSendPlanDate);
+
+                    //取得單日禮物清單
+                    jsonArray = object.getJSONArray("sinList");
+                    int sinListLength = jsonArray.length();
+                    Log.v("sinListLength", String.valueOf(sinListLength));
+
+                    gifts = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mGifts;
+
+                    for (int i = 0 ; i < sinListLength ; i++){
+                        //Log.v("abc","10000");
+                        String sinListid = jsonArray.getJSONObject(i).getString("sinid");
+                        String sinGiftid = jsonArray.getJSONObject(i).getString("giftid");
+                        String sinSendGiftDate = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
+                        String sinMessage = jsonArray.getJSONObject(i).getString("message");
+                        String sinGift = jsonArray.getJSONObject(i).getString("gift");
+                        String sinGiftName = jsonArray.getJSONObject(i).getString("giftName");
+
+                        mGifts = new HashMap<String, Object>();
+                        mGifts.put("giftid", sinGiftid);
+                        mGifts.put("sendGiftDate", sinSendGiftDate);
+                        mGifts.put("message", sinMessage);
+                        mGifts.put("sinGift", sinGift);
+                        mGifts.put("sinGiftName", sinGiftName);
+                        gifts.add(mGifts);
+
+                        edit_surprise_gift.setText(sinListid+sinGift);
+                        edit_surprice_message.setText(sinMessage+sinGiftName);
+                    }
+                    Log.v("gifts", String.valueOf(gifts));
+
+
+                } catch (Exception e) {
+                    Toast.makeText(PlanDetailActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
                 }
-            });
-            spPlanDetailAsyncTask.execute(Common.spPalnDetail , planid);
-        }
-
-        if(type.equals("期間式")){
-
-        }
-
-        if(type.equals("問答式")){
-
-        }
+            }
+        });
+        planDetailAsyncTask.execute(Common.planList , userid, planid);
 
         super.onResume();
     }
