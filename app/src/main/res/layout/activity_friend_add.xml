@@ -32,32 +32,28 @@ tools:context=".FriendAddActivity"
                 android:layout_margin="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:src="@drawable/search" />
-
                 <EditText
                     android:id="@+id/edt_sEmail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.7"
                     android:ems="1"
+                    android:hint="請輸入好友Email"
                     android:inputType="textEmailAddress" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnSearch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.3"
                     android:text="搜尋" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="200dp"
                 android:layout_height="250dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/friendcard"
                 android:gravity="center"
                 android:orientation="vertical"

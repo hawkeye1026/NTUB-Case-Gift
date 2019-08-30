@@ -13,7 +13,7 @@ public class FriendAddActivity extends AppCompatActivity {
     EditText edt_sEmail;
     ImageView imgFriend;
     TextView txtFriend;
-    Button btnAdd;
+    Button btnAdd,btnSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +27,7 @@ public class FriendAddActivity extends AppCompatActivity {
         edt_sEmail = (EditText) findViewById(R.id.edt_sEmail); //搜尋的email
         imgFriend = (ImageView) findViewById(R.id.img_Friend);//好友照片
         txtFriend = (TextView) findViewById(R.id.txt_Friend);//好友帳號
+        btnSearch = (Button) findViewById(R.id.btnSearch);//加入按鈕
         btnAdd = (Button) findViewById(R.id.btnAdd);//加入按鈕
     }
 
