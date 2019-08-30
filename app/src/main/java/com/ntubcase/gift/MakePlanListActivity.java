@@ -568,7 +568,8 @@ public class MakePlanListActivity extends AppCompatActivity{
         }
         if (edt_list_name == null || edt_list_edate == null || edt_list_friend == null || edt_list_giftName == null|
                 edt_list_sentDate == null || edt_list_lastTime == null) {
-            Toast.makeText(MakePlanListActivity.this, "請輸入完整計畫資訊", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MakePlanListActivity.this, "請輸入完整計畫資訊", Toast.LENGTH_SHORT).show();
+            btn_send.setVisibility(View.VISIBLE);
         }
     }
 
