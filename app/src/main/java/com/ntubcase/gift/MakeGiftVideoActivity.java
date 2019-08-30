@@ -185,7 +185,11 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            uploadViedo(v);
+            if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
+                Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
+            }else{
+                uploadViedo(v);
+            }
         }
     };
 
