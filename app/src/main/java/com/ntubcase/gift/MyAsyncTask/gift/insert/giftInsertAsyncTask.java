@@ -1,6 +1,7 @@
-package com.ntubcase.gift.MyAsyncTask.plan;
+package com.ntubcase.gift.MyAsyncTask.gift.insert;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,7 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class multipleInsertAsyncTask extends AsyncTask<String, Integer, String> {
+
+public class giftInsertAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -25,12 +27,12 @@ public class multipleInsertAsyncTask extends AsyncTask<String, Integer, String> 
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final multipleInsertAsyncTask.TaskListener taskListener;
+    private final TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public multipleInsertAsyncTask(multipleInsertAsyncTask.TaskListener taskListener) {
+    public giftInsertAsyncTask(TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -44,7 +46,7 @@ public class multipleInsertAsyncTask extends AsyncTask<String, Integer, String> 
     //=========================================================
     @Override
     protected String doInBackground(String... params) {
-        String data = null;
+        String data=null;
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -62,10 +64,11 @@ public class multipleInsertAsyncTask extends AsyncTask<String, Integer, String> 
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "senderid=" + URLEncoder.encode(params[1], "UTF-8") +
-                    "&receiverid=" + URLEncoder.encode(params[2], "UTF-8") +
-                    "&planid=" + URLEncoder.encode(params[3], "UTF-8") +
-                    "&planType=" + URLEncoder.encode(params[4], "UTF-8");
+                    "giftContent=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&giftCreateDate=" + URLEncoder.encode(params[2], "UTF-8" )+
+                    "&giftName=" + URLEncoder.encode(params[3], "UTF-8" )+
+                    "&owner=" + URLEncoder.encode(params[4], "UTF-8" )+
+                    "&giftType=" + URLEncoder.encode(params[5], "UTF-8");
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
@@ -76,27 +79,28 @@ public class multipleInsertAsyncTask extends AsyncTask<String, Integer, String> 
             os.close();
 
             int statusCode = conn.getResponseCode();
-
+            Log.v("status",statusCode+"");
             if (statusCode >= 200 && statusCode < 400) {
                 // Create an InputStream in order to extract the response object
                 inputStream = conn.getInputStream();
-            } else {
+            }
+            else {
                 inputStream = conn.getErrorStream();
             }
             conn.connect();
             inputStream = conn.getInputStream();
 
-            BufferedReader bufferedReader = new BufferedReader(
+            BufferedReader bufferedReader=new BufferedReader(
                     new InputStreamReader(inputStream, "UTF-8"));
 
-            data = bufferedReader.readLine();
-        } catch (Exception e) {
+            data=bufferedReader.readLine();
+        } catch(Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 inputStream.close();
                 outputStream.close();
-            } catch (Exception e) {
+            } catch(Exception e) {
                 e.printStackTrace();
             }
         }

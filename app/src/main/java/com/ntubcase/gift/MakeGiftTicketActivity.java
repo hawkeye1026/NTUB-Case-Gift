@@ -33,7 +33,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     protected static String owner = userData.getUserMail();
     protected static String giftType = "4";
     ProgressDialog barProgressDialog;
-
+    private static int giftid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +51,12 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
         btn_makePlan.setOnClickListener(makePlanClickListener); //設置監聽器
 
+        giftid = 0;
         //------------禮物詳細，判斷禮物是否有初值
         Bundle bundle = this.getIntent().getExtras();
         //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
         int position ;
-        int giftid =bundle.getInt("giftid");
+        giftid =bundle.getInt("giftid");
         position = checkGiftid.checkGiftid(giftid);
 
         if (position>=0){
@@ -121,8 +122,12 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
 
             //------------------------------上傳禮物資料
-            new uploadGift(giftContent, giftName, owner, giftType);
 
+            if(giftid > 0){
+                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+            }else{
+                new uploadGift(giftContent, giftName, owner, giftType);
+            }
             //-------------讀取Dialog-----------
             barProgressDialog = ProgressDialog.show(MakeGiftTicketActivity.this,
                     "讀取中", "請等待...", true);

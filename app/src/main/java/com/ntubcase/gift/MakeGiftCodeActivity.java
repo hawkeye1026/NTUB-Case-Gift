@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
@@ -13,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +25,7 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.giftInsertCodeAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertCodeAsyncTask;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
@@ -50,7 +50,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private TableRow tabRow;
     private ArrayList<String> mainCodes = new ArrayList<>();
     private ArrayList<String> matchCodes = new ArrayList<>();
-
+    private static int giftid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,11 +79,11 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         btn_addMulti.setOnClickListener(addMultiClickListener); //設置監聽器
         btn_remove.setOnClickListener(removeClickListener); //設置監聽器
         //---------------------------------------------------------------------------------
-
+        giftid = 0;
         //------------判斷禮物是否有初值------------
         Bundle bundle = this.getIntent().getExtras();
         int position ;
-        int giftid =bundle.getInt("giftid");
+        giftid =bundle.getInt("giftid");
         position = checkGiftid.checkGiftid(giftid);
 
         if (position>=0){  //-----顯示禮物詳細-----
@@ -314,7 +314,11 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             giftContent = sdFormat_giftContent.format(date);
             //------------------------------上傳禮物資料
-            new uploadGift(giftContent,  giftName, owner, giftType);
+            if(giftid > 0){
+                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+            }else{
+                new uploadGift(giftContent, giftName, owner, giftType);
+            }
 
             for (int i = 0; i < mainCodes.size(); i++) {
                 giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {

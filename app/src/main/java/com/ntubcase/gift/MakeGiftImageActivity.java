@@ -32,7 +32,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.giftInsertImg_imageAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertImg_imageAsyncTask;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
@@ -59,6 +59,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 //    protected static String owner = googleAccount.getUserName()
     protected static String dateTime, giftType = "1";
     ProgressDialog barProgressDialog;
+    private static int giftid;
 
     int currentapiVersion = android.os.Build.VERSION.SDK_INT; //取得目前版本
 
@@ -85,11 +86,14 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         btn_openCamera.setOnClickListener(openCameraClickListener); //設置監聽器
 
 
+
         //------------禮物詳細，判斷禮物是否有初值
+        giftid = 0;
+
         Bundle bundle = this.getIntent().getExtras();
         //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
         int position;
-        int giftid =bundle.getInt("giftid");
+        giftid =bundle.getInt("giftid");
         position = checkGiftid.checkGiftid(giftid);
 
         Log.v("giftid",position + "");
@@ -98,8 +102,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
             Log.v("gift",Common.imgPath + getGiftList.getGift(position));
             Picasso.get().load(imageURI).into(iv_image);
-            //-------
-
             //-------存入禮物詳細的editText
             et_giftName.setText( getGiftList.getGiftName(position));
             //--------
@@ -347,6 +349,14 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             dateTime = sdFormat.format(date);
 
+            //------------------------------上傳禮物資料
+
+            if(giftid > 0){
+                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+            }else{
+                new uploadGift(giftContent, giftName, owner, giftType);
+            }
+
             //------------------------------上傳禮物圖片
             giftInsertImg_imageAsyncTask mGiftInsertImgAsyncTask = new giftInsertImg_imageAsyncTask(new giftInsertImg_imageAsyncTask.TaskListener() {
                 @Override
@@ -356,8 +366,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             }, ImageFilePath.getPath(getApplicationContext(), cam_imageUri));
             mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri), giftContent);
 
-            //------------------------------上傳禮物資料
-            new uploadGift(giftContent, giftName, owner, giftType);
+
 
             //-------------讀取Dialog-----------
             barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,
