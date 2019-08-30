@@ -31,14 +31,20 @@ import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.missionItemInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.missionListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.missionPlanInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MakePlanListActivity extends AppCompatActivity{
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
@@ -66,6 +72,10 @@ public class MakePlanListActivity extends AppCompatActivity{
     String list_message;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+    //--showPlan
+    private List<Map<String, Object>> friends;
+    private List<Map<String, Object>> gifts;
+    private List<Map<String, Object>> items;
 
     @SuppressLint("ResourceType")
     @Override
@@ -585,6 +595,108 @@ public class MakePlanListActivity extends AppCompatActivity{
         }
         //Log.v("missionList", "//---upload missionList");
         finish(); //結束製作計畫
+    }
+
+    @Override
+    protected void onResume() {
+        showPlan("mis_20190830215741");
+        super.onResume();
+    }
+
+    //------------------------------顯示plan資料mis_20190830215741
+    public void showPlan(String planid){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(MakePlanListActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    JSONObject object = new JSONObject(result);
+
+                    //取得禮物紀錄
+                    JSONArray jsonArray = object.getJSONArray("record");
+                    int recordLength = jsonArray.length();
+                    Log.v("recordLength", String.valueOf(recordLength));
+
+                    friends = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mFriends;
+
+                    for (int i = 0; i < recordLength; i++) {
+                        String receiverid =jsonArray.getJSONObject(i).getString("receiverid");
+                        String nickname =jsonArray.getJSONObject(i).getString("nickname");
+
+                        edt_list_friend.setText(nickname);
+
+                        mFriends = new HashMap<String, Object>();
+                        mFriends.put("receiverid", receiverid);
+                        mFriends.put("nickname", nickname);
+                        friends.add(mFriends);
+                    }
+                    Log.v("friends", String.valueOf(friends));
+
+                    //取得單日計畫
+                    jsonArray = object.getJSONArray("misPlan");
+                    int misPlanLength = jsonArray.length();
+                    Log.v("misPlanLength", String.valueOf(misPlanLength));
+
+                    String misPlanid =jsonArray.getJSONObject(0).getString("misid");
+                    String misPlanName =jsonArray.getJSONObject(0).getString("misPlanName");
+                    String misCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("createDate"));
+                    String misSendPlanDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("sendPlanDate"));
+                    String deadline = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("deadline"));
+
+                    edt_list_name.setText(misPlanName);
+
+                    //取得任務禮物清單
+                    jsonArray = object.getJSONArray("misList");
+                    int misListLength = jsonArray.length();
+                    Log.v("misListLength", String.valueOf(misListLength));
+
+                    gifts = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mGifts;
+
+                    for (int i = 0 ; i < misListLength ; i++){
+                        String misListid = jsonArray.getJSONObject(i).getString("misid");
+                        String misGiftid = jsonArray.getJSONObject(i).getString("giftid");
+                        String misGift = jsonArray.getJSONObject(i).getString("gift");
+                        String misGiftName = jsonArray.getJSONObject(i).getString("giftName");
+
+                        mGifts = new HashMap<String, Object>();
+                        mGifts.put("giftid", misGiftid);
+                        mGifts.put("misGift", misGift);
+                        mGifts.put("misGiftName", misGiftName);
+                        gifts.add(mGifts);
+                    }
+                    Log.v("gifts", String.valueOf(gifts));
+
+                    //取得任務項目
+                    jsonArray = object.getJSONArray("misItem");
+                    int misItemLength = jsonArray.length();
+                    Log.v("misItemLength", String.valueOf(misItemLength));
+
+                    items = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mItems;
+
+                    for (int i = 0 ; i < misListLength ; i++){
+                        String misItemid = jsonArray.getJSONObject(i).getString("misid");
+                        String content = jsonArray.getJSONObject(i).getString("content");
+
+                        mItems = new HashMap<String, Object>();
+                        mItems.put("misid", misItemid);
+                        mItems.put("content", content);
+                        items.add(mItems);
+                    }
+                    Log.v("items", String.valueOf(items));
+
+
+                } catch (Exception e) {
+                    Toast.makeText(MakePlanListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.planList , sender, planid);
     }
 
 

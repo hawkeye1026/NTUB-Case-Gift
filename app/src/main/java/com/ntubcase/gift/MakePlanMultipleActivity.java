@@ -17,8 +17,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -43,6 +48,11 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     //----------------------------------------------------------------------------------------
     private List<Map<String, Object>> selectDates; //選取的時間區段
     private List<Map<String, Object>> oldSelectDates = new ArrayList<Map<String, Object>>();; //原有資料
+
+    //--showPlan
+    private String sender="1";
+    private List<Map<String, Object>> friends;
+    private List<Map<String, Object>> gifts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,6 +366,96 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        showPlan("mul_20190830225610");
+        super.onResume();
+    }
+
+    //------------------------------顯示plan資料mul_20190830225610
+    public void showPlan(String planid){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(MakePlanMultipleActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    JSONObject object = new JSONObject(result);
+
+                    //取得禮物紀錄
+                    JSONArray jsonArray = object.getJSONArray("record");
+                    int recordLength = jsonArray.length();
+                    Log.v("recordLength", String.valueOf(recordLength));
+
+                    friends = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mFriends;
+
+                    for (int i = 0; i < recordLength; i++) {
+                        String receiverid =jsonArray.getJSONObject(i).getString("receiverid");
+                        String nickname =jsonArray.getJSONObject(i).getString("nickname");
+
+                        add_multi_friend.setText(nickname);
+
+                        mFriends = new HashMap<String, Object>();
+                        mFriends.put("receiverid", receiverid);
+                        mFriends.put("nickname", nickname);
+                        friends.add(mFriends);
+                    }
+                    Log.v("friends", String.valueOf(friends));
+
+                    //取得多日計畫
+                    jsonArray = object.getJSONArray("mulPlan");
+                    int mulPlanLength = jsonArray.length();
+                    Log.v("mulPlanLength", String.valueOf(mulPlanLength));
+
+                    String mulPlanid =jsonArray.getJSONObject(0).getString("mulid");
+                    String mulPlanName =jsonArray.getJSONObject(0).getString("mulPlanName");
+                    String mulCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("createDate"));
+                    String mulStartDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("startDate"));
+                    String mulEndDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("endDate"));
+                    String message =jsonArray.getJSONObject(0).getString("message");
+
+                    add_multi_name.setText(mulPlanName);
+                    add_multi_dateS.setText(mulStartDate);
+                    add_multi_dateE.setText(mulEndDate);
+                    add_multi_message.setText(message);
+/*   該段程式碼為"下一步"後，所顯示的資料。
+                    //取得單日禮物清單
+                    jsonArray = object.getJSONArray("mulList");
+                    int mulListLength = jsonArray.length();
+                    Log.v("mulListLength", String.valueOf(mulListLength));
+
+                    gifts = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mGifts;
+
+                    for (int i = 0 ; i < mulListLength ; i++){
+                        String mulListid = jsonArray.getJSONObject(i).getString("mulid");
+                        String mulGiftid = jsonArray.getJSONObject(i).getString("giftid");
+                        String mulSendGiftDate = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
+                        String mulGoal = jsonArray.getJSONObject(i).getString("goal");
+                        String mulGift = jsonArray.getJSONObject(i).getString("gift");
+                        String mulGiftName = jsonArray.getJSONObject(i).getString("giftName");
+
+                        mGifts = new HashMap<String, Object>();
+                        mGifts.put("giftid", mulGiftid);
+                        mGifts.put("sendGiftDate", mulSendGiftDate);
+                        mGifts.put("goal", mulGoal);
+                        mGifts.put("mulGift", mulGift);
+                        mGifts.put("mulGiftName", mulGiftName);
+                        gifts.add(mGifts);
+                    }
+                    Log.v("gifts", String.valueOf(gifts));
+*/
+                } catch (Exception e) {
+                    Toast.makeText(MakePlanMultipleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.planList , sender, planid);
     }
 
     @Override

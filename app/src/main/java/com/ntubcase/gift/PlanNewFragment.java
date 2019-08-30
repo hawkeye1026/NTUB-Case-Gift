@@ -173,7 +173,18 @@ public class PlanNewFragment extends Fragment {
                 //getPlanList.getJSON("1", mPlansList.get(position).get("planid").toString());
 
                 Intent intent = new Intent();
-                intent = new Intent(getActivity(), MakePlanSingleActivity.class);
+                switch (mPlansList.get(position).get("type").toString()) {
+                    case "單日送禮":
+                        intent = new Intent(getActivity(), MakePlanSingleActivity.class);
+                        break;
+                    case "多日規劃":
+                        intent = new Intent(getActivity(), MakePlanMultipleActivity.class);
+                        break;
+                    case "任務清單":
+                        intent = new Intent(getActivity(), MakePlanListActivity.class);
+                        break;
+                }
+
                 Bundle bundle = new Bundle();
                 bundle.putString("planid",mPlansList.get(position).get("planid").toString());
                 bundle.putString("type",mPlansList.get(position).get("type").toString());

@@ -29,7 +29,11 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multipleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -60,6 +64,9 @@ public class PlanMultipleActivity extends AppCompatActivity {
     //-----cutomlayout內物件
     private EditText alert_message, alert_time, alert_gifts;
     private LinearLayout ll_time;
+
+    //--showPlan
+    private List<Map<String, Object>> gifts;
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     private String[] giftItemList = new String[getGiftList.getGiftLength()];  //所有禮物
@@ -501,6 +508,52 @@ public class PlanMultipleActivity extends AppCompatActivity {
         //-----回前頁結束製作計畫-----
         setResult(FINISH_ACTIVITY);
         finish();
+    }
+
+    //------------------------------顯示plan資料mul_20190830225610
+    public void showPlan(String planid){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(PlanMultipleActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    JSONObject object = new JSONObject(result);
+
+                    //取得單日禮物清單
+                    JSONArray jsonArray = object.getJSONArray("mulList");
+                    int mulListLength = jsonArray.length();
+                    Log.v("mulListLength", String.valueOf(mulListLength));
+
+                    gifts = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mGifts;
+
+                    for (int i = 0 ; i < mulListLength ; i++){
+                        String mulListid = jsonArray.getJSONObject(i).getString("mulid");
+                        String mulGiftid = jsonArray.getJSONObject(i).getString("giftid");
+                        String mulSendGiftDate = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
+                        String mulGoal = jsonArray.getJSONObject(i).getString("goal");
+                        String mulGift = jsonArray.getJSONObject(i).getString("gift");
+                        String mulGiftName = jsonArray.getJSONObject(i).getString("giftName");
+
+                        mGifts = new HashMap<String, Object>();
+                        mGifts.put("giftid", mulGiftid);
+                        mGifts.put("sendGiftDate", mulSendGiftDate);
+                        mGifts.put("goal", mulGoal);
+                        mGifts.put("mulGift", mulGift);
+                        mGifts.put("mulGiftName", mulGiftName);
+                        gifts.add(mGifts);
+                    }
+                    Log.v("gifts", String.valueOf(gifts));
+
+                } catch (Exception e) {
+                    Toast.makeText(PlanMultipleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.planList , sender, planid);
     }
 
     private static final int FINISH_ACTIVITY = 2;
