@@ -30,7 +30,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.giftInsertVid_viedoAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertVid_viedoAsyncTask;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
@@ -55,6 +55,8 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     ProgressDialog barProgressDialog;
 
     int currentapiVersion = android.os.Build.VERSION.SDK_INT; //取得目前版本
+
+    private static int giftid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +83,13 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
         mc = new MediaController(this); // 設定影片控制台
         vv_content.setMediaController(mc);
         vv_content.setOnPreparedListener(this); // 呼叫 VideoView.setVideoURI() 後觸發
+
+        giftid = 0;
         //-----判斷是否為修改
         Bundle bundle = this.getIntent().getExtras();
         //position 代表第幾個禮物的位置(按照giftActivity的順序排) EX: 第一筆是粽子(position = 0) ，第二筆是湯圓(position = 1)
         int position ;
-        int giftid =bundle.getInt("giftid");
+        giftid =bundle.getInt("giftid");
         position = checkGiftid.checkGiftid(giftid);
 
         if (position>=0){
@@ -235,6 +239,39 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
     }
+    public void updateGift(View v) {
+        giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
+
+        if(checkRepeatGift.checkRepeatGift(giftName)) {
+            giftContent = getFileName(cam_videoUri);    //取得使用者欲上傳的檔案名稱
+
+            //------------------------------上傳禮物資料
+            new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+
+            //-------------讀取Dialog-----------
+            barProgressDialog = ProgressDialog.show(MakeGiftVideoActivity.this,
+                    "讀取中", "請等待...", true);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        getGiftList.getJSON();
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        barProgressDialog.dismiss();
+                        finish();
+                    }
+                }
+            }).start();
+
+            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void uploadViedo(View v) {
         giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
         //--------若沒有選擇照片，跳出提醒
@@ -249,11 +286,15 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
 
         if(checkRepeatGift.checkRepeatGift(giftName)) {
 
-            giftContent = getFileName(cam_videoUri);
+            giftContent = getFileName(cam_videoUri);        //取得使用者欲上傳的檔案名稱
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
 
             //------------------------------上傳禮物資料
-            new uploadGift(giftContent, giftName, owner, giftType);
+            if(giftid > 0){
+                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+            }else{
+                new uploadGift(giftContent, giftName, owner, giftType);
+            }
             //------------------------------上傳禮物圖片
             giftInsertVid_viedoAsyncTask mGiftInsertImgAsyncTask = new giftInsertVid_viedoAsyncTask(new giftInsertVid_viedoAsyncTask.TaskListener() {
                 @Override

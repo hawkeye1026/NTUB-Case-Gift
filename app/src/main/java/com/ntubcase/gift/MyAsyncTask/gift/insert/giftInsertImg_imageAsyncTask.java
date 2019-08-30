@@ -1,4 +1,4 @@
-package com.ntubcase.gift.MyAsyncTask.gift;
+package com.ntubcase.gift.MyAsyncTask.gift.insert;
 
 import android.app.ProgressDialog;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.ntubcase.gift.MyAsyncTask.gift;
+package com.ntubcase.gift.MyAsyncTask.gift.update;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -6,9 +6,6 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -17,12 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, String> {
 
+public class giftUpdateAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
-    //上傳照片至資料表
     //----------------------------------------------------
     public interface TaskListener {
         void onFinished(String result);
@@ -32,10 +28,11 @@ public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, Stri
     // 接收回傳值的物件參考
     //----------------------
     private final TaskListener taskListener;
+
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftInsertImg_giftAsyncTask(TaskListener taskListener) {
+    public giftUpdateAsyncTask(TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -49,7 +46,6 @@ public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, Stri
     //=========================================================
     @Override
     protected String doInBackground(String... params) {
-
         String data=null;
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -68,12 +64,13 @@ public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, Stri
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "giftContent=" + URLEncoder.encode(params[1], "UTF-8")+
-                     "&giftCreateDate=" + URLEncoder.encode(params[2], "UTF-8" )+
-                     "&giftName=" + URLEncoder.encode(params[3], "UTF-8" )+
-                     "&owner=" + URLEncoder.encode(params[4], "UTF-8" )+
-                     "&giftType=" + URLEncoder.encode(params[5], "UTF-8");
-            Log.v("gift",args);
+                    "giftid=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&giftContent=" + URLEncoder.encode(params[2], "UTF-8")+
+                    "&giftCreateDate=" + URLEncoder.encode(params[3], "UTF-8" )+
+                    "&giftName=" + URLEncoder.encode(params[4], "UTF-8" )+
+                    "&owner=" + URLEncoder.encode(params[5], "UTF-8" )+
+                    "&giftType=" + URLEncoder.encode(params[6], "UTF-8");
+            Log.v("args",args);
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -83,7 +80,7 @@ public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, Stri
             os.close();
 
             int statusCode = conn.getResponseCode();
-
+            Log.v("status",statusCode+"");
             if (statusCode >= 200 && statusCode < 400) {
                 // Create an InputStream in order to extract the response object
                 inputStream = conn.getInputStream();
@@ -108,7 +105,7 @@ public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, Stri
                 e.printStackTrace();
             }
         }
-        return "Executed";
+        return data;
     }
 
 
@@ -130,5 +127,4 @@ public class giftInsertImg_giftAsyncTask extends AsyncTask<String, Integer, Stri
     protected void onCancelled() {
         super.onCancelled();
     }
-
 }

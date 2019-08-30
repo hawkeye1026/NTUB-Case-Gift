@@ -281,7 +281,7 @@ public class GiftActivity extends AppCompatActivity {
             }
 
             newGift.close(true);
-            bundle.putInt("position", -1);
+            bundle.putInt("gift", -1);
             intent.putExtras(bundle);
             startActivity(intent);
         }

@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.textclassifier.TextLinks;
 import android.widget.Button;
 
 import com.facebook.AccessToken;
@@ -19,7 +18,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,12 +26,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.giftInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.login.loginAsyncTask;
-import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.login_model.facebookAccount;
-import com.ntubcase.gift.login_model.revokeAccess;
-import com.ntubcase.gift.login_model.signOut;
 
 import com.ntubcase.gift.login_model.googleAccount;
 
@@ -45,7 +39,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.ntubcase.gift.login_model.userData;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

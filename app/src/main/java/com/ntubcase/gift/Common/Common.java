@@ -14,10 +14,13 @@ public class Common {
     //-------------------------------------login
     public static String login ="http://140.131.114.156/NTUB_gift_server/login.php?";
     //-------------------------------------gift
-    public static String insertGift="http://140.131.114.156/NTUB_gift_server/insertGift.php?";                  //上傳圖片_資料表
-    public static String insertGiftImg_image="http://140.131.114.156/NTUB_gift_server/insertGiftImg.php"; //上傳圖片_圖片擋
-    public static String insertGiftImg_video="http://140.131.114.156/NTUB_gift_server/insertGiftVid.php"; //上傳圖片_影片擋
-    public static String insertGiftCode="http://140.131.114.156/NTUB_gift_server/insertGiftCode.php?";                  //上傳圖片_資料表
+    public static String insertGift =           "http://140.131.114.156/NTUB_gift_server/insertGift.php?";          //上傳圖片_資料表
+    public static String updateGift =           "http://140.131.114.156/NTUB_gift_server/updateGift.php?";          //更新圖片_資料表
+    public static String insertGiftImg_image=   "http://140.131.114.156/NTUB_gift_server/insertGiftImg.php";        //上傳圖片_圖片擋
+    public static String updateGiftImg_image =  "http://140.131.114.156/NTUB_gift_server/updateGiftImg.php";        //更新圖片_圖片擋
+    public static String insertGiftImg_video =  "http://140.131.114.156/NTUB_gift_server/insertGiftVid.php";        //上傳圖片_影片擋
+    public static String updateGiftImg_video =  "http://140.131.114.156/NTUB_gift_server/updateGiftVid.php";        //更新圖片_影片擋
+    public static String insertGiftCode =       "http://140.131.114.156/NTUB_gift_server/insertGiftCode.php?";      //上傳解碼表_資料表
     //-------------------------------------gift_detail
     public static String giftDetail="http://140.131.114.156/NTUB_gift_server/giftDetail.php?";
     //-------------------------------------friend
