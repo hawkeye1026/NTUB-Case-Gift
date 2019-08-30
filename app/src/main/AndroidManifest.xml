@@ -14,18 +14,35 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FriendAddActivity"></activity>
+
+        <!-- 登入頁 -->
         <activity
-            android:name=".PlanMultipleActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 主頁 -->
         <activity
-            android:name=".MakeGiftMessageActivity"
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- *****製作禮物區***** -->
+        <activity android:name=".GiftActivity" />
+        <activity
+            android:name=".MakeGiftImageActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MakeGiftVideoActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MakeGiftImageActivity"
+            android:name=".MakeGiftMessageActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MakeGiftTicketActivity"
@@ -33,35 +50,40 @@
         <activity
             android:name=".MakeGiftCodeActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".MakePlanListActivity" />
-        <activity android:name=".GiftReceivedActivity" />
-        <activity android:name=".FriendActivity" />
-        <activity android:name=".PlanDetailActivity" />
-        <activity android:name=".GiftReceivedDetailActivity" />
-        <activity android:name=".GiftDetailActivity" />
+
+        <!-- *****預送計畫區***** -->
+        <activity android:name=".PlanActivity" />
+        <activity
+            android:name=".MakePlanSingleActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MakePlanMultipleActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".MakePlanSingleActivity" />
-        <activity android:name=".PlanActivity" />
-        <activity android:name=".GiftActivity" />
         <activity
-            android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".PlanMultipleActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".MakePlanListActivity"
+            android:windowSoftInputMode="adjustPan"  />
 
+        <activity android:name=".PlanDetailActivity" />  <!-- 測試用 -->
+
+        <!-- *****收禮箱區***** -->
+        <activity android:name=".GiftReceivedActivity" />
+        <activity android:name=".GiftReceivedDetailActivity" />
+
+        <!-- *****我的好友區***** -->
+        <activity android:name=".FriendActivity" />
+        <activity
+            android:name=".FriendAddActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- 設定頁 -->
+        <activity
+            android:name=".SettingActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- ************************ -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

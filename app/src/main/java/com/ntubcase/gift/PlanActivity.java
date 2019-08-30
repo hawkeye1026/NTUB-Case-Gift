@@ -32,7 +32,7 @@ public class PlanActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new PlanNewFragment(), "已儲存");
+        adapter.addFragment(new PlanNewFragment(), "未送出");
         adapter.addFragment(new PlanDoneFragment(), "已預送");
         adapter.addFragment(new PlanDoneFragment(), "已送達");
 
