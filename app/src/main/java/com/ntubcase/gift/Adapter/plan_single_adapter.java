@@ -74,9 +74,7 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
         holder.txtTime.setText(sentTime);
         holder.txtGift.setText(giftName);
         holder.txtMessage.setText(message);
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -86,9 +84,6 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
     // 刪除項目
     public void removeItem(int position){
         mData.remove(position);
-        MakePlanSingleActivity.single_giftcheckedItems.remove(position);
-        MakePlanSingleActivity.tempGiftChecked.remove(position);
-        MakePlanSingleActivity.mSelectGiftIds.remove(position);
         notifyDataSetChanged();
     }
 

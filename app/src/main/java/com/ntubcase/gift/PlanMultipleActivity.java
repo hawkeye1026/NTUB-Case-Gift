@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,9 +31,11 @@ import com.ntubcase.gift.MyAsyncTask.plan.multipleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,20 +54,17 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private String sender= "1", planid, planType="2", dateTime, date_time, goal;
     ProgressDialog barProgressDialog;
 
-    private Date dateStart, dateEnd, selectTime;
-    private List<Map<String, Object>> selectDates; //選取的時間區段
+    private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>();  //選取的時間區段
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     //-----cutomlayout內物件
-    private EditText alert_message;
-    private EditText alert_time;
-    private EditText alert_gifts;
+    private EditText alert_message, alert_time, alert_gifts;
+    private LinearLayout ll_time;
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     private String[] giftItemList = new String[getGiftList.getGiftLength()];  //所有禮物
-    private boolean[][] mCheckedItems;
-    private boolean[][] tempCheckedItems;
-    private String[][] mSelectGiftIds;
+    private boolean[] mCheckedItems;
+    private List<List<String>> mSelectGiftIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +84,11 @@ public class PlanMultipleActivity extends AppCompatActivity {
         planName = bundle.getString("planName");    //計畫名稱
         receiveFriend = bundle.getString("receiveFriend");  //收禮人名稱
         receiveFriendId = bundle.getStringArrayList("receiveFriendId"); //收禮人ID
+        if (receiveFriendId==null) receiveFriendId = new ArrayList<>();
         startDate = bundle.getString("startDate");  //起始日期
         endDate = bundle.getString("endDate");  //結束日期
         message = bundle.getString("message");  //祝福
-
+        selectDates = (ArrayList<Map<String, Object>>) bundle.getSerializable("selectDates");  //選取的時間區段
 
         setTitle(planName); //-----標題為計畫名稱-----
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend);
@@ -95,39 +96,12 @@ public class PlanMultipleActivity extends AppCompatActivity {
         tv_sender = (TextView) findViewById(R.id.tv_sender);
         tv_receiveFriend.setText("To. " + receiveFriend);   //-----顯示收禮人-----
         tv_message.setText(message); //-----顯示祝福-----
-        tv_sender.setText("From. " + sender); //-----顯示祝福-----
-
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            dateStart = sdf.parse(startDate);
-            dateEnd = sdf.parse(endDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        List<String> allDates = findDates(dateStart, dateEnd);  //取得兩個日期間所有日期
-        selectDates = new ArrayList<Map<String, Object>>();
-        Map<String, Object> mDates;
-
-        for(int i=0; i < allDates.size(); i++) {
-            mDates = new HashMap<String, Object>();
-            mDates.put("date", allDates.get(i));  //日期
-            mDates.put("message", "");  //留言
-            mDates.put("time", ""); //時間
-            mDates.put("gifts", "");    //禮物
-            mDates.put("giftsId", new String[0]);  //禮物ID
-            selectDates.add(mDates);
-        }
+        tv_sender.setText("From. " + sender); //-----顯示送禮人-----
 
         //------選擇禮物用-----
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
             giftItemList[i] = getGiftList.getGiftName(i);  //禮物名稱資料
         }
-        mCheckedItems = new boolean[selectDates.size()][giftItemList.length];
-        tempCheckedItems = new boolean[selectDates.size()][giftItemList.length];
-        mSelectGiftIds = new String[selectDates.size()][1];
-        for (int i = 0; i< mSelectGiftIds.length; i++) mSelectGiftIds[i][0]="";
 
         //---------------------------------GridView---------------------------------------------
         gridView = (GridView) findViewById(R.id.gridView);
@@ -139,6 +113,9 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 showAlertDialog(position,parent);  //顯示alertDialog
             }
         });
+
+        //----------------檢查必填資料是否填完----------------
+        if (isDataCompleted()) btn_plan_send.setVisibility(View.VISIBLE);
     }
 
     //-----------------顯示alertDialog-----------------
@@ -158,6 +135,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         alert_message  = customLayout.findViewById(R.id.alert_message);
         alert_time  = customLayout.findViewById(R.id.alert_time);
         alert_gifts  = customLayout.findViewById(R.id.alert_gifts);
+        ll_time = customLayout.findViewById(R.id.ll_time);
 
         alert_message.setText(selectDates.get(gridPosition).get("message").toString());
         alert_time.setText(selectDates.get(gridPosition).get("time").toString());
@@ -172,6 +150,32 @@ public class PlanMultipleActivity extends AppCompatActivity {
                         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);  //---關閉軟鍵盤---
                     }
                 }
+            }
+        });
+
+        if ((alert_gifts.getText().toString()).equals(""))
+            ll_time.setVisibility(View.GONE); //若禮物空白則不能選時間
+
+        //----------------選擇禮物---------------
+        alert_gifts.setInputType(InputType.TYPE_NULL);
+
+        //---取得position原選取資料---
+        boolean[] checked = (boolean[]) selectDates.get(position).get("mCheckedItems");
+        mCheckedItems = Arrays.copyOf(checked, checked.length);
+
+        alert_gifts.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    showGiftsDialog(gridPosition);
+                }
+            }
+        });
+
+        alert_gifts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showGiftsDialog(gridPosition);
             }
         });
 
@@ -192,63 +196,21 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 showTimePickerDialog(); //顯示TimePicker
             }
         });
-
-        //----------------選擇禮物---------------
-        alert_gifts.setInputType(InputType.TYPE_NULL);
-
-        //--暫存position的checkedbox內容--
-        final boolean[] tempChecked = new boolean[giftItemList.length];
-        for (int i=0; i<giftItemList.length; i++) tempChecked[i]=mCheckedItems[gridPosition][i];
-
-        alert_gifts.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showGiftsDialog(gridPosition);
-                }
-            }
-        });
-
-        alert_gifts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showGiftsDialog(gridPosition);
-            }
-        });
         //--------------------------------------------------------------------------------------------------------------------------------
-
 
         //-------------alert按鈕-------------
         builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {   // send data from the AlertDialog to the Activity
-                //------儲存所選的禮物id-----
-                List<String> selectGiftIds = new ArrayList<>();
-                for (int i=0; i<mCheckedItems[gridPosition].length; i++){
-                    if (mCheckedItems[gridPosition][i]) selectGiftIds.add(getGiftList.getGiftid(i));
-                }
-
-                if (selectGiftIds.size()==0){
-                    mSelectGiftIds[gridPosition] = new String[1];
-                    mSelectGiftIds[gridPosition][0]="";
-                }else{
-                    mSelectGiftIds[gridPosition] = new String[selectGiftIds.size()];
-                    for(int j=0; j<selectGiftIds.size(); j++) mSelectGiftIds[gridPosition][j]=selectGiftIds.get(j);
-                }
-
                 //------儲存輸入的資料-----
                 sendDialogDataToActivity(gridPosition, alert_message.getText().toString()
-                        , alert_time.getText().toString(), alert_gifts.getText().toString());
+                        , alert_time.getText().toString(), alert_gifts.getText().toString(),mCheckedItems);
             }
         });
 
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                for (int i=0; i<giftItemList.length; i++){
-                    mCheckedItems[gridPosition][i]=tempChecked[i];
-                    tempCheckedItems[gridPosition][i]=tempChecked[i];
-                }
             }
         });
 
@@ -258,17 +220,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
         final AlertDialog mDialog = builder.create();
         mDialog.show();
 
-        //----------點dialog外圍取消---------
-        mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                for (int i=0; i<giftItemList.length; i++){
-                    mCheckedItems[gridPosition][i]=tempChecked[i];
-                    tempCheckedItems[gridPosition][i]=tempChecked[i];
-                }
-            }
-        });
-
         mDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -277,21 +228,15 @@ public class PlanMultipleActivity extends AppCompatActivity {
                         .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                sendDialogDataToActivity(gridPosition, "", "", "");
+                                sendDialogDataToActivity(gridPosition, "", ""
+                                        , "",new boolean[giftItemList.length]);
 
-                                for (int i = 0; i < giftItemList.length; i++) {
-                                    mCheckedItems[gridPosition][i] = false;
-                                    tempCheckedItems[gridPosition][i] = false;
-                                }
-                                mSelectGiftIds[gridPosition] = new String[1];
-                                mSelectGiftIds[gridPosition][0]="";
                                 mDialog.dismiss();
                             }
                         })
                         .setNeutralButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                             }
                         })
                         .show();
@@ -301,33 +246,96 @@ public class PlanMultipleActivity extends AppCompatActivity {
     }
 
     //--------------------- 處理AlertDialog回傳的資料-----------------------------
-    private void sendDialogDataToActivity(int gridPosition, String newMessage, String newTime, String newGifts) {
+    private void sendDialogDataToActivity(int gridPosition, String newMessage, String newTime, String newGifts, boolean[] mCheckedItems) {
         Map<String, Object> updateData = selectDates.get(gridPosition);
         updateData.put("message", newMessage);
         updateData.put("time", newTime);
         updateData.put("gifts", newGifts);
-        updateData.put("giftsId", mSelectGiftIds[gridPosition]);
+        updateData.put("mCheckedItems", mCheckedItems);
         selectDates.set(gridPosition, updateData);  //更新item資料
 
         planMultiAdapter.refreshOneView(gridView,gridPosition); //刷新item
     }
 
+    //--------------顯示選擇禮物dialog------------------
+    private void showGiftsDialog(int position){
+        final int gridPosition = position;
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        mBuilder.setTitle("選擇禮物");
+
+        //---暫存資料以備取消後復原---
+        final boolean[] tempCheckedItems = Arrays.copyOf(mCheckedItems, mCheckedItems.length);
+
+        mBuilder.setMultiChoiceItems(giftItemList, mCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+            }
+        });
+
+        mBuilder.setCancelable(false);
+        mBuilder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() { //確認鈕
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                String mSelectGifts ="";
+
+                for (int i = 0; i < giftItemList.length; i++) {
+                    if(mCheckedItems[i]){
+                        if (mSelectGifts.equals("")) mSelectGifts += giftItemList[i];
+                        else mSelectGifts += " , " + giftItemList[i];
+                    }
+                }
+                alert_gifts.setText(mSelectGifts);
+
+                //---禮物有值才可選時間---
+                if (mSelectGifts.equals("")){
+                    ll_time.setVisibility(View.GONE);
+                    alert_time.setText("");
+                }else{  //時間預設為上午十二點
+                    ll_time.setVisibility(View.VISIBLE);
+                    if ((alert_time.getText().toString()).equals("")) alert_time.setText("00:00");
+                }
+            }
+        });
+
+        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                for (int i=0; i<giftItemList.length; i++)
+                    mCheckedItems[i]=tempCheckedItems[i];
+            }
+        });
+
+        mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {   //清除鈕
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mCheckedItems = new boolean[giftItemList.length];
+                alert_gifts.setText("");
+                ll_time.setVisibility(View.GONE);  //---沒有禮物不能選時間
+                alert_time.setText("");
+            }
+        });
+
+
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+    }
 
     //--------------顯示TimePicker------------------
     private void showTimePickerDialog () {
         Calendar t = Calendar.getInstance();
 
-        if (selectTime!=null) t.setTime(selectTime);  //取得上次選的時間
+        try {
+            String oldTime = alert_time.getText().toString();  //取得上次選的時間
+            if (!oldTime.equals("")) t.setTime(sdfT.parse(oldTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                try {
-                    alert_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-                    selectTime = sdfT.parse(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                alert_time.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE),false).show();
     }
@@ -341,88 +349,34 @@ public class PlanMultipleActivity extends AppCompatActivity {
         }
     }
 
-    //--------------顯示選擇禮物dialog------------------
-    private void showGiftsDialog(int position){
-        final int gridPosition = position;
-
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-        mBuilder.setTitle("選擇禮物");
-
-        mBuilder.setMultiChoiceItems(giftItemList, mCheckedItems[gridPosition], new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+    //----------------檢查必填資料是否填完----------------
+    private boolean isDataCompleted(){
+        //---檢查選取的日期期間內有沒有填資料---
+        boolean isDatesHaveData=false;
+        for (int i=0; i<selectDates.size(); i++){
+            String message =(String)selectDates.get(i).get("message");
+            String gifts =(String)selectDates.get(i).get("gifts");
+            if (!message.equals("") || !gifts.equals("")){ //留言或是禮物有填資料
+                isDatesHaveData = true;
+                break;
             }
-        });
-
-        mBuilder.setCancelable(false);
-        mBuilder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() { //確認鈕
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                String mSelectGifts ="";
-
-                for (int i = 0; i < giftItemList.length; i++) {
-                    if(mCheckedItems[gridPosition][i]){
-                        if (mSelectGifts.equals("")) mSelectGifts += giftItemList[i];
-                        else mSelectGifts += " , " + giftItemList[i];
-                    }
-                    tempCheckedItems[gridPosition][i]=mCheckedItems[gridPosition][i];
-                }
-                alert_gifts.setText(mSelectGifts);
-            }
-        });
-
-        mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //取消鈕
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                for (int i=0; i<giftItemList.length; i++) mCheckedItems[gridPosition][i]=tempCheckedItems[gridPosition][i];
-            }
-        });
-
-        mBuilder.setNeutralButton("清除", new DialogInterface.OnClickListener() {   //清除鈕
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                for (int i = 0; i < giftItemList.length; i++) {
-                    mCheckedItems[gridPosition][i] = false;
-                    tempCheckedItems[gridPosition][i] = false;
-                }
-                alert_gifts.setText("");
-            }
-        });
-
-
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
-    }
-
-    //--------------取得兩個日期間所有日期------------------
-    public List<String> findDates(Date dBegin, Date dEnd){
-        List<String> lDate = new ArrayList<String>();
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-        lDate.add(sd.format(dBegin));
-        Calendar calBegin = Calendar.getInstance();
-        // 使用给定的 Date 设置此 Calendar 的时间
-        calBegin.setTime(dBegin);
-        Calendar calEnd = Calendar.getInstance();
-        // 使用给定的 Date 设置此 Calendar 的时间
-        calEnd.setTime(dEnd);
-        // 测试此日期是否在指定日期之后
-        while (dEnd.after(calBegin.getTime())) {
-            // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
-            calBegin.add(Calendar.DAY_OF_MONTH, 1);
-            lDate.add(sd.format(calBegin.getTime()));
         }
-        return lDate;
+
+        if (!planName.equals("") && !receiveFriend.equals("") && isDatesHaveData){
+            return true;
+        }
+        return false;
     }
 
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.v("planName + message", planName+message);  //需存入plan database
-            Log.v("receiveFriendId", String.valueOf(receiveFriendId));  //需存入plan database
-            Log.v("receiveFriend + sender", receiveFriend+sender);  //需存入plan database
-            Log.v("startDate+endDate", startDate+endDate);
-            Log.v("selectDates", String.valueOf(selectDates));  //需存入list database
+//            Log.v("planName + message", planName+message);  //需存入plan database
+//            Log.v("receiveFriendId", String.valueOf(receiveFriendId));  //需存入plan database
+//            Log.v("receiveFriend + sender", receiveFriend+sender);  //需存入plan database
+//            Log.v("startDate+endDate", startDate+endDate);
+//            Log.v("selectDates", String.valueOf(selectDates));  //需存入list database
 
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date = new Date();
@@ -433,10 +387,30 @@ public class PlanMultipleActivity extends AppCompatActivity {
             planid = "mul_" + sdFormat_giftContent.format(date);
             Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
 
-            uploadPlan("0");
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            //----若預送按鈕尚未出現 並填完必填資料---
+            if (btn_plan_send.getVisibility()==View.GONE && isDataCompleted()){
+                btn_plan_send.setVisibility(View.VISIBLE);
+                new AlertDialog.Builder(PlanMultipleActivity.this)
+                        .setTitle("是否直接預送您的計畫?")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadPlan("1");
+                                Toast.makeText(getApplicationContext(), "已預送!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNeutralButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadPlan("0");
+                            }
+                        })
+                        .show();
+            }else{
+                uploadPlan("0");
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            }
         }
-
     };
     //-------------------------------結束儲存按鈕 監聽器----------------------------------------
 
@@ -444,21 +418,20 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date = new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
+            if (isDataCompleted()){ //---資料填完才能預送---
+                //取得目前時間：yyyy/MM/dd hh:mm:ss
+                Date date = new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                dateTime = sdFormat.format(date);
 
-            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            planid = "mul_" + sdFormat_giftContent.format(date);
+                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+                planid = "mul_" + sdFormat_giftContent.format(date);
 
-            uploadPlan("1");
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-
-            Intent intent;
-            intent = new Intent(PlanMultipleActivity.this, PlanActivity.class);
-            startActivity(intent);
-            finish();
+                uploadPlan("1");
+                Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
+            }
         }
     };
     //-------------------------------結束預送禮物按鈕 監聽器----------------------------------------
@@ -490,47 +463,55 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
         //--- upload multipleList
         Log.v("selectDates.size", String.valueOf(selectDates.size()));
+
+        //----------取得禮物ID----------
+        mSelectGiftIds = new ArrayList<List<String>>();
         for (int i = 0 ; i < selectDates.size(); i++) {
+            boolean[] checked = (boolean[]) selectDates.get(i).get("mCheckedItems");
+            List<String> giftIds = new ArrayList<>();
+            for (int k= 0; k< giftItemList.length; k++){
+                if (checked[k]) giftIds.add(getGiftList.getGiftid(k));
+            }
+            mSelectGiftIds.add(giftIds);
+        }
 
-            if (!mSelectGiftIds[i][0].equals("") ){
+        for (int i = 0 ; i < selectDates.size(); i++) {
+            String space=" ";
+            date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
+            goal = selectDates.get(i).get("message").toString();
 
-                Log.v("mSelectGiftIds.length", String.valueOf(mSelectGiftIds[i].length));
-
-                for (int j = 0; j < mSelectGiftIds[i].length; j++) {
-                    String space=" ";
-                    date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
-                    goal = selectDates.get(i).get("message").toString();
-
-                    multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
-                        @Override
-                        public void onFinished(String result) {
-
-                        }
-                    });
-                    multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds[i][j], date_time, goal);
+            multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
                 }
+            });
 
+            if (mSelectGiftIds.get(i).size()>0){
+                Log.v("mSelectGiftIds.length", ""+mSelectGiftIds.get(i).size());
+                for (int j = 0; j < mSelectGiftIds.get(i).size(); j++) {
+                    multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds.get(i).get(j), date_time, goal);
+                }
             }else{
-                String space=" ";
-                date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
-                goal = selectDates.get(i).get("message").toString();
-
-                multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
                 multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "0", date_time, goal);
             }
         }
         Log.v("multipleList", "//---upload multipleList");
-
+        
+        //-----回前頁結束製作計畫-----
+        setResult(FINISH_ACTIVITY);
+        finish();
     }
 
+    private static final int FINISH_ACTIVITY = 2;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){ //toolbar返回建
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selectDates", (Serializable) selectDates);
+            intent.putExtras(bundle);
+
+            setResult(RESULT_OK, intent);    //-----回傳資料-----
             finish();
             return true;
         }
