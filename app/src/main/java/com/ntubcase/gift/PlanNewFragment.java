@@ -172,7 +172,7 @@ public class PlanNewFragment extends Fragment {
                 //getPlanList.getJSON("1", mPlansList.get(position).get("planid").toString());
 
                 Intent intent = new Intent();
-                intent = new Intent(getActivity(), PlanDetailActivity.class);
+                intent = new Intent(getActivity(), MakePlanSingleActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("planid",mPlansList.get(position).get("planid").toString());
                 bundle.putString("type",mPlansList.get(position).get("type").toString());

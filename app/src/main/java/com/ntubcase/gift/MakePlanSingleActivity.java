@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -26,10 +27,14 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.singleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.singlePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,8 +67,11 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String single_giftName, single_sentTime, single_message;
-    private String sender= "1", planid, planType="1", dateTime, date_time;
+    private String sender= "1", planid, planType="1", dateTime, date_time, userid="1";
 
+   //---showPlan
+    private List<Map<String, Object>> friends;
+    private List<Map<String, Object>> gifts;
 
 
     @Override
@@ -178,6 +186,22 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 showDatePickerDialog();
             }
         });
+    }
+
+    //-----------------
+    public void onResume() {
+
+        Bundle bundle = this.getIntent().getExtras();
+        String type = bundle.getString("type");
+        String planid = bundle.getString("planid");
+
+        if(!(planid==null)){
+            showPlan(planid);
+        }
+
+
+
+        super.onResume();
     }
 
     protected void onDestroy() {
@@ -573,5 +597,83 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         }
         Log.v("singleList", "//---upload singleList");
+    }
+
+    public void showPlan(String planid){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(MakePlanSingleActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    JSONObject object = new JSONObject(result);
+
+                    //取得禮物紀錄
+                    JSONArray jsonArray = object.getJSONArray("record");
+                    int recordLength = jsonArray.length();
+                    Log.v("recordLength", String.valueOf(recordLength));
+
+                    friends = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mFriends;
+
+                    for (int i = 0; i < recordLength; i++) {
+                        String receiverid =jsonArray.getJSONObject(i).getString("receiverid");
+                        String nickname =jsonArray.getJSONObject(i).getString("nickname");
+
+                        mFriends = new HashMap<String, Object>();
+                        mFriends.put("receiverid", receiverid);
+                        mFriends.put("nickname", nickname);
+                        friends.add(mFriends);
+                    }
+                    Log.v("friends", String.valueOf(friends));
+
+                    //取得單日計畫
+                    jsonArray = object.getJSONArray("sinPlan");
+                    int sinPlanLength = jsonArray.length();
+                    Log.v("sinPlanLength", String.valueOf(sinPlanLength));
+
+                    String sinPlanid =jsonArray.getJSONObject(0).getString("sinid");
+                    String sinPlanName =jsonArray.getJSONObject(0).getString("sinPlanName");
+                    String sinCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("createDate"));
+                    String sinSendPlanDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("sendPlanDate"));
+
+                    edt_single_name.setText(sinPlanName);
+
+                    //取得單日禮物清單
+                    jsonArray = object.getJSONArray("sinList");
+                    int sinListLength = jsonArray.length();
+                    Log.v("sinListLength", String.valueOf(sinListLength));
+
+                    gifts = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mGifts;
+
+                    for (int i = 0 ; i < sinListLength ; i++){
+                        //Log.v("abc","10000");
+                        String sinListid = jsonArray.getJSONObject(i).getString("sinid");
+                        String sinGiftid = jsonArray.getJSONObject(i).getString("giftid");
+                        String sinSendGiftDate = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
+                        String sinMessage = jsonArray.getJSONObject(i).getString("message");
+                        String sinGift = jsonArray.getJSONObject(i).getString("gift");
+                        String sinGiftName = jsonArray.getJSONObject(i).getString("giftName");
+
+                        mGifts = new HashMap<String, Object>();
+                        mGifts.put("giftid", sinGiftid);
+                        mGifts.put("sendGiftDate", sinSendGiftDate);
+                        mGifts.put("message", sinMessage);
+                        mGifts.put("sinGift", sinGift);
+                        mGifts.put("sinGiftName", sinGiftName);
+                        gifts.add(mGifts);
+                    }
+                    Log.v("gifts", String.valueOf(gifts));
+
+
+                } catch (Exception e) {
+                    Toast.makeText(MakePlanSingleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.planList , userid, planid);
     }
 }
