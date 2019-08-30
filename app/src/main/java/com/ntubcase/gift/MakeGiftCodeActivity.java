@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -324,7 +325,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                     }
                 });
                 String rowNumber = String.valueOf(i+1);
-                Log.v("rowNumber",rowNumber);
+//                Log.v("rowNumber",rowNumber);
                 mgiftInsertCodAsyncTask.execute(Common.insertGiftCode, giftContent, rowNumber, mainCodes.get(i), matchCodes.get(i));
             }
 

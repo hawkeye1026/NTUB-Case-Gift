@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -35,7 +34,6 @@ import com.ntubcase.gift.MyAsyncTask.plan.missionPlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,7 +53,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     ArrayList<String> selectFriendIds;  //選擇的好友ID
     //----------------------------------------------------------------------------------------------
 
-    static EditText edt_list_name, edt_list_message, edt_list_edate,edt_list_friend, edt_list_giftName, edt_list_sentDate,edt_list_lastTime;
+    static EditText edt_list_name, edt_list_message, edt_list_lastDate,edt_list_friend, edt_list_giftName, edt_list_sentDate,edt_list_lastTime;
     private String sender= "1", planid, planType="3", dateTime, dateOnly;
 
     //----------------------------------------------------------------------------------------------
@@ -83,21 +81,15 @@ public class MakePlanListActivity extends AppCompatActivity{
         //---------------------------------------------------------------------------------
         //宣告變數------------------------------------------------------------------------------
         edt_list_name = findViewById(R.id.list_name);
-        edt_list_edate = findViewById(R.id.list_edate);
+        edt_list_lastDate = findViewById(R.id.list_lastDate);
         edt_list_friend = findViewById(R.id.list_friend);
         edt_list_giftName = findViewById(R.id.list_gift);
         edt_list_sentDate = findViewById(R.id.list_time);
-        edt_list_lastTime= findViewById(R.id.list_lasttime);
+        edt_list_lastTime= findViewById(R.id.list_lastTime);
         btn_save = findViewById(R.id.btn_plan_save);
         btn_send = findViewById(R.id.btn_plan_send);
-
-
-
-
         btn_save.setOnClickListener(planSaveClickListener); //設置監聽器
         btn_send.setOnClickListener(planSendClickListener); //設置監聽器
-
-
 
         //------------------------------------------------------------------------------
         //選擇禮物 使用的變數宣告-------------------------------------------------------------------------- 禮物資料
@@ -115,17 +107,12 @@ public class MakePlanListActivity extends AppCompatActivity{
         list_friendcheckedItems = new boolean[list_friendlistItems.length];
         tempFriendChecked = new boolean[list_friendlistItems.length];
 
-        // 連結元件
-        recycler_view = findViewById(R.id.list_recycle_view);
-        // 設置RecyclerView為列表型態
-        recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        // 設置格線
+        recycler_view = findViewById(R.id.list_recycle_view);  // 設置RecyclerView為列表型態
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));  // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        // 將資料交給adapter
-        adapter = new plan_list_adapter(mData);
-        // 設置adapter給recycler_view
-        recycler_view.setAdapter(adapter);
+        adapter = new plan_list_adapter(mData);  // 將資料交給adapter
+        recycler_view.setAdapter(adapter); // 設置adapter給recycler_view
 
         //--------點選新增事件
         btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -165,8 +152,8 @@ public class MakePlanListActivity extends AppCompatActivity{
         });
        
         //點選結束日期EditText跳出選擇日期選擇器---------------------------------------
-        edt_list_edate.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
-        edt_list_edate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        edt_list_lastDate.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
+        edt_list_lastDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -177,7 +164,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             }
         });
 
-        edt_list_edate.setOnClickListener(new View.OnClickListener() {
+        edt_list_lastDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -247,8 +234,9 @@ public class MakePlanListActivity extends AppCompatActivity{
             }
         });
 
+        //----------------檢查必填資料是否填完----------------
+        if (isDataCompleted()) btn_send.setVisibility(View.VISIBLE);
     }
-
 
     protected void onDestroy() {
         super.onDestroy();
@@ -377,10 +365,9 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
                 if (isNew==true){
-
                         edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
                 }else{
-                        edt_list_edate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                        edt_list_lastDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
                 }
 
             }
@@ -462,35 +449,32 @@ public class MakePlanListActivity extends AppCompatActivity{
         dialog.show();
     }
 
+    //----------------檢查必填資料是否填完----------------
+    private boolean isDataCompleted(){
+        //---檢查每個任務項目是否有內容---
+        boolean isMissonHaveContent=false;
+        for (int i=0; i<mData.size(); i++){
+            if (mData.get(i).equals("")) break;
+            if (i==mData.size()-1) isMissonHaveContent = true;
+        }
+
+        String planName = edt_list_name.getText().toString();
+        String sendPlanDate = edt_list_sentDate.getText().toString();
+        String receiveFriend = edt_list_friend.getText().toString();
+        String gifts = edt_list_giftName.getText().toString();
+
+        if (!planName.equals("") && !sendPlanDate.equals("") && !receiveFriend.equals("")
+                 && !gifts.equals("") && mData.size()>0 && isMissonHaveContent){
+            return true;
+        }
+        return false;
+    }
+
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-                //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-                Date date = new Date();
-                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                dateTime = sdFormat.format(date);
-                SimpleDateFormat _sdFormat = new SimpleDateFormat("yyyy-MM-dd ");
-                dateOnly = _sdFormat.format(date);
-
-                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-                planid = "mis_" + sdFormat_giftContent.format(date);
-
-                uploadPlan("0");
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-
-
-        }
-
-    };
-
-
-    //-------------------------------預送禮物 監聽器----------------------------------------
-    private View.OnClickListener planSendClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-
             Date date = new Date();
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             dateTime = sdFormat.format(date);
@@ -500,9 +484,54 @@ public class MakePlanListActivity extends AppCompatActivity{
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "mis_" + sdFormat_giftContent.format(date);
 
-            uploadPlan("1");
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            //----若預送按鈕尚未出現 並填完必填資料---
+            if (btn_send.getVisibility()==View.GONE && isDataCompleted()){
+                btn_send.setVisibility(View.VISIBLE);
+                new AlertDialog.Builder(MakePlanListActivity.this)
+                        .setTitle("是否直接預送您的計畫?")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadPlan("1");
+                                Toast.makeText(getApplicationContext(), "已預送!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNeutralButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadPlan("0");
+                                Toast.makeText(getApplicationContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+            }else{
+                uploadPlan("0");
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            }
+        }
 
+    };
+
+    //-------------------------------預送禮物 監聽器----------------------------------------
+    private View.OnClickListener planSendClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (isDataCompleted()) { //---資料填完才能預送---
+                //取得目前時間：yyyy/MM/dd hh:mm:ss
+                Date date = new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                dateTime = sdFormat.format(date);
+                SimpleDateFormat _sdFormat = new SimpleDateFormat("yyyy-MM-dd ");
+                dateOnly = _sdFormat.format(date);
+
+                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+                planid = "mis_" + sdFormat_giftContent.format(date);
+
+                uploadPlan("1");
+                Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
+            }
         }
 
     };
@@ -529,7 +558,7 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, dateOnly+" "+edt_list_sentDate.getText().toString(), edt_list_edate.getText().toString());
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, dateOnly+" "+edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString());
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem
@@ -554,19 +583,19 @@ public class MakePlanListActivity extends AppCompatActivity{
             });
             missionListInsertAsyncTask.execute(Common.insertMisPlan, planid, selectGiftIds.get(i));
         }
-        Log.v("missionList", "//---upload missionList");
+        //Log.v("missionList", "//---upload missionList");
+        finish(); //結束製作計畫
     }
-
 
 
     public void check(){
         String a=edt_list_sentDate.getText().toString();
-        String b=edt_list_edate.getText().toString();
+        String b= edt_list_lastDate.getText().toString();
 
         if (a.compareTo(b)<0) {
             Toast.makeText(MakePlanListActivity.this, "截止日期不能早於送出日期", Toast.LENGTH_SHORT).show();
         }
-        if (edt_list_name == null || edt_list_edate == null || edt_list_friend == null || edt_list_giftName == null|
+        if (edt_list_name == null || edt_list_lastDate == null || edt_list_friend == null || edt_list_giftName == null|
                 edt_list_sentDate == null || edt_list_lastTime == null) {
             Toast.makeText(MakePlanListActivity.this, "請輸入完整計畫資訊", Toast.LENGTH_SHORT).show();
         }
