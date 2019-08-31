@@ -168,8 +168,8 @@ public class GiftActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent() ;
                 Bundle bundle = new Bundle();
-                String type =  GiftListAdapter.getItem().get(position).get("type").toString();
-                int giftid =  Integer.valueOf(GiftListAdapter.getItem().get(position).get("giftid").toString());
+                String type =  giftListAdapter.getItem().get(position).get("type").toString();
+                int giftid =  Integer.valueOf(giftListAdapter.getItem().get(position).get("giftid").toString());
 //                try {
 //                    Log.v("test", GiftListAdapter.getItem().get(position).get("type").toString());
 //                    Log.v("test", GiftListAdapter.getItem().get(position).get("giftid").toString());
@@ -182,30 +182,26 @@ public class GiftActivity extends AppCompatActivity {
                     case "1":
                         //------------照片
                         intent = new Intent(GiftActivity.this, MakeGiftImageActivity.class);
-                        bundle.putInt("giftid", giftid);
                         break;
                     case "2":
                         //------------影片
                         intent = new Intent(GiftActivity.this, MakeGiftVideoActivity.class);
-                        bundle.putInt("giftid", giftid);
                         break;
                     case "3":
                         //------------悄悄話
                         intent = new Intent(GiftActivity.this, MakeGiftMessageActivity.class);
-                        bundle.putInt("giftid", giftid);
                         break;
                     case "4":
                         //------------兌換券
                         intent = new Intent(GiftActivity.this, MakeGiftTicketActivity.class);
-                        bundle.putInt("giftid", giftid);
                         break;
                     case "5":
                         //------------密碼表
                         intent = new Intent(GiftActivity.this, MakeGiftCodeActivity.class);
-                        bundle.putInt("giftid", giftid);
                         break;
                 }
 
+                bundle.putInt("giftid", giftid);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

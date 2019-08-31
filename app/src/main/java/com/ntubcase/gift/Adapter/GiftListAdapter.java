@@ -226,7 +226,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
 
         return filter;
     }
-    public static List<Map<String, Object>> getItem(){
+    public List<Map<String, Object>> getItem(){
         return item;
     }
 }
