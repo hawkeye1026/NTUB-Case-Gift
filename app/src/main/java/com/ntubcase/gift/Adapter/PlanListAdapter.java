@@ -151,11 +151,13 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
                 if(plansType.contains(selectedType)){ //篩選選取的type
                     selectedTypeitem = new ArrayList<Map<String, Object>>();
                     for(int i=0;i<originalitem.size();i++) {
+                        String planID = originalitem.get(i).get("planID").toString();
                         String type = originalitem.get(i).get("type").toString();
                         String title = originalitem.get(i).get("title").toString();
                         String date = originalitem.get(i).get("date").toString();
                         if(type.equals(selectedType)){
                             Map<String, Object> itemContent = new HashMap<String, Object>();
+                            itemContent.put("planID", planID);
                             itemContent.put("type", type);
                             itemContent.put("title", title);
                             itemContent.put("date", date);
@@ -174,11 +176,13 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
                 if(constraint != null && constraint.toString().length()>0){
                     List<Map<String, Object>> filteredItem = new ArrayList<Map<String, Object>>();
                     for(int i=0;i<selectedTypeitem.size();i++){
+                        String planID = selectedTypeitem.get(i).get("planID").toString();
                         String type = selectedTypeitem.get(i).get("type").toString();
                         String title = selectedTypeitem.get(i).get("title").toString();
                         String date = selectedTypeitem.get(i).get("date").toString();
                         if(title.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
+                            filteredItemContent.put("planID", planID);
                             filteredItemContent.put("type", type);
                             filteredItemContent.put("title", title);
                             filteredItemContent.put("date", date);
@@ -192,7 +196,6 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
                         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(selectedTypeitem);
                         result.values = list;
                         result.count = list.size();
-
                     }
                 }
 
@@ -211,5 +214,9 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
         };
 
         return filter;
+    }
+
+    public List<Map<String, Object>> getItem(){
+        return item;
     }
 }
