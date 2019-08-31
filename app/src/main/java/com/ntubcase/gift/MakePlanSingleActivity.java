@@ -52,7 +52,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] single_friendcheckedItems, tempFriendChecked;
-    ArrayList<String> selectFriendIds;
+    private ArrayList<String> selectFriendIds = new ArrayList<>();
 
     //----------------------------------------------------------------------------------------------
     static EditText edt_single_name, edt_single_message, edt_single_date, edt_single_friend, edt_single_giftName, edt_single_sentTime;
@@ -72,13 +72,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     private boolean[] mCheckedGift;
     private List<List<String>> mSelectGiftIds;
 
-    //--showPlan
-    private List<Map<String, Object>> friends;
-    private List<Map<String, Object>> gifts;
-
     //---------------------------------------------------------------------------------------------------------------
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
-
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,29 +116,23 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckedGift = new boolean[single_giftlistItems.length];
                 Map<String, Object> newData = new HashMap<String, Object>();
                 newData.put("giftName", "");
                 newData.put("sentTime", "");
                 newData.put("message", "");
-                newData.put("mCheckedGift", mCheckedGift);
+                newData.put("mCheckedGift", new boolean[single_giftlistItems.length]);
                 mData.add(newData);
 
                 showDialog(true, mData.size()-1);  //新增一筆禮物
             }
         });
 
-        // 連結元件
+        //-----------------------------------------------------------------------
         recycler_view = findViewById(R.id.recycler_view);
-        // 設置RecyclerView為列表型態
-        recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        // 設置格線
-        recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-        // 將資料交給adapter
-        adapter = new plan_single_adapter(mData);
-        // 設置adapter給recycler_view
-        recycler_view.setAdapter(adapter);
+        recycler_view.setLayoutManager(new LinearLayoutManager(this)); // 設置RecyclerView為列表型態
+        recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // 設置格線
+        adapter = new plan_single_adapter(mData); // 將資料交給adapter
+        recycler_view.setAdapter(adapter);  // 設置adapter給recycler_view
         adapter.setOnItemClickListener(new plan_single_adapter.OnItemClickListener(){
             @Override
             public void onItemClick(View view, int position){
@@ -150,7 +140,14 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             }
         });
 
-        //--------------------------------------
+        //---------------------------------若是計畫詳細-----------------------------------
+        Bundle bundle =getIntent().getExtras();
+        if (bundle!=null){
+            String planID = bundle.getString("planID");
+            showPlanDetail(planID);  //顯示計畫詳細資料
+        }
+        //--------------------------------------------------------------------------------------
+
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
         edt_single_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
@@ -174,7 +171,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         //點選送禮日期EditText跳出選擇日期選擇器---------------------------------------
         edt_single_date.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
         edt_single_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
@@ -185,16 +181,12 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         });
 
         edt_single_date.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 showDatePickerDialog();
             }
         });
-
-        //----------------檢查必填資料是否填完----------------
-        if (isDataCompleted()) btn_send.setVisibility(View.VISIBLE);
     }
 
     protected void onDestroy() {
@@ -203,7 +195,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     //設定選擇好友EditText傳入值---------------------------------------
     private void Showfrienddialog() {
-
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MakePlanSingleActivity.this);
         mBuilder.setTitle("選擇好友");
         mBuilder.setMultiChoiceItems(single_friendlistItems, single_friendcheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
@@ -259,6 +250,13 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     //設定送禮日期EditText傳入值---------------------------------------
     private void showDatePickerDialog(){
         Calendar c = Calendar.getInstance();
+
+        try {
+            String oldDate = edt_single_date.getText().toString();  //取得上次選的日期
+            if (!edt_single_date.equals("")) c.setTime(sdf.parse(oldDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanSingleActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -500,12 +498,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-//            Log.v("planName",edt_single_name.getText().toString());
-//            Log.v("single_date", edt_single_date.getText().toString());
-//            Log.v("selectFriendIds", String.valueOf(selectFriendIds));
-//            Log.v("mData", String.valueOf(mData));
-
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date = new Date();
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -514,8 +506,10 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "sin_" + sdFormat_giftContent.format(date);
 
-            //----若預送按鈕尚未出現 並填完必填資料---
-            if (btn_send.getVisibility()==View.GONE && isDataCompleted()){
+            //-----檢查是否有輸入計畫名稱-----
+            if (edt_single_name.getText().toString().equals("")) {
+                Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
+            }else if (btn_send.getVisibility()==View.GONE && isDataCompleted()){  //----若預送按鈕尚未出現 並填完必填資料---
                 btn_send.setVisibility(View.VISIBLE);
                 new AlertDialog.Builder(MakePlanSingleActivity.this)
                         .setTitle("是否直接預送您的計畫?")
@@ -632,12 +626,11 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        showPlan("sin_20190825005416");
         super.onResume();
     }
 
-    //------------------------------顯示plan資料
-    public void showPlan(String planid){
+    //------------------------------計畫詳細，顯示plan資料------------------------------
+    private void showPlanDetail(String planid){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
@@ -647,66 +640,67 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                         return;
                     }
                     JSONObject object = new JSONObject(result);
+                    JSONArray jsonArray;
 
-                    //取得禮物紀錄
-                    JSONArray jsonArray = object.getJSONArray("record");
-                    int recordLength = jsonArray.length();
-                    Log.v("recordLength", String.valueOf(recordLength));
-
-                    friends = new ArrayList<Map<String, Object>>();
-                    Map<String, Object> mFriends;
-
-                    for (int i = 0; i < recordLength; i++) {
-                        String receiverid =jsonArray.getJSONObject(i).getString("receiverid");
-                        String nickname =jsonArray.getJSONObject(i).getString("nickname");
-
-                        edt_single_friend.setText(nickname);
-
-                        mFriends = new HashMap<String, Object>();
-                        mFriends.put("receiverid", receiverid);
-                        mFriends.put("nickname", nickname);
-                        friends.add(mFriends);
-                    }
-                    Log.v("friends", String.valueOf(friends));
-
-                    //取得單日計畫
+                    //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("sinPlan");
-                    int sinPlanLength = jsonArray.length();
-                    Log.v("sinPlanLength", String.valueOf(sinPlanLength));
+                    //String sinPlanid =jsonArray.getJSONObject(0).getString("sinid"); //計畫ID
+                    //String sinCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("createDate")); //計畫建立日期
+                    String sinPlanName =jsonArray.getJSONObject(0).getString("sinPlanName"); //計畫名稱
+                    String sinSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
 
-                    String sinPlanid =jsonArray.getJSONObject(0).getString("sinid");
-                    String sinPlanName =jsonArray.getJSONObject(0).getString("sinPlanName");
-                    String sinCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("createDate"));
-                    String sinSendPlanDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("sendPlanDate"));
+                    edt_single_name.setText(sinPlanName); //計畫名稱
+                    edt_single_date.setText(sinSendPlanDate); //送禮日期
 
-                    edt_single_name.setText(sinPlanName);
+                    //----------------------------取得好友資料----------------------------
+                    jsonArray = object.getJSONArray("record");
+                    int friendsLength = jsonArray.length();
 
-                    //取得單日禮物清單
+                    String friendName = "";
+                    for (int i = 0; i < friendsLength; i++) {
+                        selectFriendIds.add(jsonArray.getJSONObject(i).getString("receiverid")); //好友ID
+                        if (friendName.equals("")) friendName += jsonArray.getJSONObject(i).getString("nickname");
+                        else friendName += " , " + jsonArray.getJSONObject(i).getString("nickname");
+
+                        //---好友checkbox---
+                        for (int k=0; k<single_friendcheckedItems.length; k++){
+                            if (getFriendList.getFriendid(k).equals(selectFriendIds.get(i)) ){
+                                single_friendcheckedItems[k]=true;
+                                tempFriendChecked[k]=true;
+                            }
+                        }
+                    }
+                    edt_single_friend.setText(friendName); //好友名稱
+
+                    //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("sinList");
                     int sinListLength = jsonArray.length();
-                    Log.v("sinListLength", String.valueOf(sinListLength));
-
-                    gifts = new ArrayList<Map<String, Object>>();
-                    Map<String, Object> mGifts;
 
                     for (int i = 0 ; i < sinListLength ; i++){
-                        String sinListid = jsonArray.getJSONObject(i).getString("sinid");
-                        String sinGiftid = jsonArray.getJSONObject(i).getString("giftid");
-                        String sinSendGiftDate = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
-                        String sinMessage = jsonArray.getJSONObject(i).getString("message");
-                        String sinGift = jsonArray.getJSONObject(i).getString("gift");
-                        String sinGiftName = jsonArray.getJSONObject(i).getString("giftName");
+                        //String sinListid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
+                        //String sinGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
+                        String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
+                        String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
+                        String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
+                        String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
 
-                        mGifts = new HashMap<String, Object>();
-                        mGifts.put("giftid", sinGiftid);
-                        mGifts.put("sendGiftDate", sinSendGiftDate);
-                        mGifts.put("message", sinMessage);
-                        mGifts.put("sinGift", sinGift);
-                        mGifts.put("sinGiftName", sinGiftName);
-                        gifts.add(mGifts);
+                        Map<String, Object> mGiftsData = new HashMap<String, Object>();
+                        mGiftsData.put("giftName", sinGiftName);
+                        mGiftsData.put("sentTime", sinSendGiftDate.substring(11,16));
+                        mGiftsData.put("message", sinMessage);
+                        //---禮物checkbox---
+                        mCheckedGift = new boolean[single_giftlistItems.length];
+                        for (int k=0; k<single_giftlistItems.length; k++){
+                            if (getGiftList.getGiftid(k).equals(sinGiftid)) mCheckedGift[k]=true;
+                        }
+                        mGiftsData.put("mCheckedGift", mCheckedGift);
+
+                        mData.add(mGiftsData);
                     }
-                    Log.v("gifts", String.valueOf(gifts));
+                    adapter.notifyDataSetChanged();
 
+                    //----------------檢查必填資料是否填完----------------
+                    if (isDataCompleted()) btn_send.setVisibility(View.VISIBLE);
 
                 } catch (Exception e) {
                     Toast.makeText(MakePlanSingleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();

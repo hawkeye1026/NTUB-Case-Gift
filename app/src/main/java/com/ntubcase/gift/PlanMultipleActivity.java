@@ -379,12 +379,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            Log.v("planName + message", planName+message);  //需存入plan database
-//            Log.v("receiveFriendId", String.valueOf(receiveFriendId));  //需存入plan database
-//            Log.v("receiveFriend + sender", receiveFriend+sender);  //需存入plan database
-//            Log.v("startDate+endDate", startDate+endDate);
-//            Log.v("selectDates", String.valueOf(selectDates));  //需存入list database
-
             //--------取得目前時間：yyyy/MM/dd hh:mm:ss
             Date date = new Date();
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -394,8 +388,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
             planid = "mul_" + sdFormat_giftContent.format(date);
             Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
 
-            //----若預送按鈕尚未出現 並填完必填資料---
-            if (btn_plan_send.getVisibility()==View.GONE && isDataCompleted()){
+            //-----檢查是否有輸入計畫名稱-----
+            if (planName.equals("")) {
+                Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
+            }else if (btn_plan_send.getVisibility()==View.GONE && isDataCompleted()){  //----若預送按鈕尚未出現 並填完必填資料---
                 btn_plan_send.setVisibility(View.VISIBLE);
                 new AlertDialog.Builder(PlanMultipleActivity.this)
                         .setTitle("是否直接預送您的計畫?")

@@ -65,23 +65,29 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
-        //---------------------------------------------------------------------------------
+
         //宣告變數------------------------------------------------------------------------------
         add_multi_name = (EditText) findViewById(R.id.add_multi_name);
         add_multi_dateS = findViewById(R.id.add_multi_dateS);
         add_multi_dateE = findViewById(R.id.add_multi_dateE);
         add_multi_friend = (EditText) findViewById(R.id.add_multi_friend);
         add_multi_message = (EditText) findViewById(R.id.add_multi_message);
-
         //------------------------------------------------------------------------------
 
-        //選擇好友使用的變數宣告--------------------------------------------------------------------------- 好友資料
+        //選擇好友使用的變數宣告---------------------------------------------------------------------------
         for(int i = 0; i < getFriendList.getFriendLength(); i++){
             friendItemList[i] = getFriendList.getFriendName(i);
         }
         mFriendChecked = new boolean[friendItemList.length];
         tempFriendChecked = new boolean[friendItemList.length];
 
+        //---------------------------------若是計畫詳細-----------------------------------
+        Bundle bundle =getIntent().getExtras();
+        if (bundle!=null){
+            String planID = bundle.getString("planID");
+            showPlanDetail(planID);  //顯示計畫詳細資料
+        }
+        //--------------------------------------------------------------------------------------
 
         //點選選擇好友EditText跳出選擇好友選擇器------------------------------------------------------------------------
         add_multi_friend.setInputType(InputType.TYPE_NULL); //不显示系统输入键盘</span>
@@ -146,7 +152,6 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         //-----------下一步------------
         Button btn_next = (Button) findViewById(R.id.btn_plan_next);
         btn_next.setOnClickListener(nextPageListener);
-
     }
 
     protected void onDestroy() {
@@ -370,12 +375,11 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        showPlan("mul_20190830225610");
         super.onResume();
     }
 
-    //------------------------------顯示plan資料mul_20190830225610
-    public void showPlan(String planid){
+    //------------------------------計畫詳細，顯示plan資料------------------------------
+    private void showPlanDetail(String planid){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {

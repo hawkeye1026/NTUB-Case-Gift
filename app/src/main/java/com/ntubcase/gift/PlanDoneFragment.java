@@ -111,7 +111,7 @@ public class PlanDoneFragment extends Fragment {
 
         for(int i=0;i<getPlanGot.getPlangotgLength();i++) {
             mPlans = new HashMap<String, Object>();
-            mPlans.put("planid", mPlansData[i][0]);
+            mPlans.put("planID", mPlansData[i][0]);
             mPlans.put("type", mPlansData[i][1]);
             mPlans.put("title", mPlansData[i][2]);
             mPlans.put("date", mPlansData[i][3]);
@@ -140,25 +140,25 @@ public class PlanDoneFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getApplicationContext(), "You Choose "+ ((TextView)view.findViewById(R.id.tv_planTitle)).getText().toString() , Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent();
-                //intent = new Intent(getActivity(), PlanDetailActivity.class);
-                switch (mPlansList.get(position).get("type").toString()) {
-                    case "單日送禮":
+                Bundle bundle = new Bundle();
+
+                String type = planListAdapter.getItem().get(position).get("type").toString();
+                String planID = planListAdapter.getItem().get(position).get("planID").toString();
+
+                switch (type){
+                    case "單日送禮" :
                         intent = new Intent(getActivity(), MakePlanSingleActivity.class);
                         break;
-                    case "多日規劃":
+                    case "多日規劃" :
                         intent = new Intent(getActivity(), MakePlanMultipleActivity.class);
                         break;
-                    case "任務清單":
+                    case "任務清單" :
                         intent = new Intent(getActivity(), MakePlanListActivity.class);
                         break;
                 }
 
-                Bundle bundle = new Bundle();
-                bundle.putString("type",mPlansList.get(position).get("type").toString());
-                bundle.putString("planid",mPlansList.get(position).get("planid").toString());
+                bundle.putString("planID", planID);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

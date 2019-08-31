@@ -117,6 +117,15 @@ public class MakePlanListActivity extends AppCompatActivity{
         list_friendcheckedItems = new boolean[list_friendlistItems.length];
         tempFriendChecked = new boolean[list_friendlistItems.length];
 
+
+        //---------------------------------若是計畫詳細-----------------------------------
+        Bundle bundle =getIntent().getExtras();
+        if (bundle!=null){
+            String planID = bundle.getString("planID");
+            showPlanDetail(planID);  //顯示計畫詳細資料
+        }
+        //--------------------------------------------------------------------------------------
+
         recycler_view = findViewById(R.id.list_recycle_view);  // 設置RecyclerView為列表型態
         recycler_view.setLayoutManager(new LinearLayoutManager(this));  // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -494,8 +503,10 @@ public class MakePlanListActivity extends AppCompatActivity{
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "mis_" + sdFormat_giftContent.format(date);
 
-            //----若預送按鈕尚未出現 並填完必填資料---
-            if (btn_send.getVisibility()==View.GONE && isDataCompleted()){
+            //-----檢查是否有輸入計畫名稱-----
+            if (edt_list_name.getText().toString().equals("")) {
+                Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
+            }else if (btn_send.getVisibility()==View.GONE && isDataCompleted()){  //----若預送按鈕尚未出現 並填完必填資料---
                 btn_send.setVisibility(View.VISIBLE);
                 new AlertDialog.Builder(MakePlanListActivity.this)
                         .setTitle("是否直接預送您的計畫?")
@@ -599,12 +610,11 @@ public class MakePlanListActivity extends AppCompatActivity{
 
     @Override
     protected void onResume() {
-        showPlan("mis_20190830215741");
         super.onResume();
     }
 
-    //------------------------------顯示plan資料mis_20190830215741
-    public void showPlan(String planid){
+    //------------------------------計畫詳細，顯示plan資料------------------------------
+    public void showPlanDetail(String planid){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
