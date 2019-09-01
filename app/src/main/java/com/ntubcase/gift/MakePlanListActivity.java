@@ -38,6 +38,7 @@ import com.ntubcase.gift.data.getGiftList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,6 +71,8 @@ public class MakePlanListActivity extends AppCompatActivity{
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String list_message;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    private Date selectStartDate, selectEndDate;
 
     @SuppressLint("ResourceType")
     @Override
@@ -169,7 +172,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showDatePickerDialog(false);
+                    showDateEPickerDialog();
                 }
             }
         });
@@ -178,7 +181,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showDatePickerDialog(false);
+                showDateEPickerDialog();
             }
         });
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
@@ -208,7 +211,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
                 if (hasFocus) {
-                    showDatePickerDialog(true);
+                    showDateSPickerDialog();
                 }
             }
         });
@@ -218,7 +221,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                showDatePickerDialog(true);
+                showDateSPickerDialog();
             }
         });
 
@@ -351,19 +354,58 @@ public class MakePlanListActivity extends AppCompatActivity{
     }
 
     //設定送禮日期EditText傳入值---------------------------------------
-    private void showDatePickerDialog(final boolean isNew){
+    private void showDateSPickerDialog () {
         Calendar c = Calendar.getInstance();
+
+        if (selectStartDate!=null) c.setTime(selectStartDate);  //取得上次選的日期
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                if (isNew==true){
+                try {
                     edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                }else{
-                    edt_list_lastDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    selectStartDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+
+                    if (selectEndDate!=null && selectStartDate.after(selectEndDate)){ //若開始日期比結束日期晚
+                        selectEndDate = selectStartDate;
+                        edt_list_lastDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        datePickerDialog.show();
+    }
+
+    //設定結束日期EditText傳入值---------------------------------------
+    private void showDateEPickerDialog () {
+        Calendar c = Calendar.getInstance();
+
+        if (selectEndDate!=null) c.setTime(selectEndDate);  //取得上次選的日期
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                try {
+                    edt_list_lastDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    selectEndDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+
+                    if (selectStartDate!=null && !selectEndDate.after(selectStartDate)){ //若結束日期比開始日期早
+                        selectStartDate = selectEndDate;
+                        edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
 
         datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
         datePickerDialog.show();
@@ -678,19 +720,6 @@ public class MakePlanListActivity extends AppCompatActivity{
         planDetailAsyncTask.execute(Common.planList , sender, planid);
     }
 
-    public void check(){
-        String a=edt_list_sentDate.getText().toString();
-        String b= edt_list_lastDate.getText().toString();
-
-        if (a.compareTo(b)<0) {
-            Toast.makeText(MakePlanListActivity.this, "截止日期不能早於送出日期", Toast.LENGTH_SHORT).show();
-        }
-        if (edt_list_name == null || edt_list_lastDate == null || edt_list_friend == null || edt_list_giftName == null|
-                edt_list_sentDate == null || edt_list_lastTime == null) {
-            //Toast.makeText(MakePlanListActivity.this, "請輸入完整計畫資訊", Toast.LENGTH_SHORT).show();
-            btn_send.setVisibility(View.VISIBLE);
-        }
-    }
 
     //-----------------------------------------------------------
     @Override
