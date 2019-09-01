@@ -40,7 +40,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] friendItemList = new String[getFriendList.getFriendLength()];
     boolean[] mFriendChecked, tempFriendChecked;
-    ArrayList<String> selectFriendIds;
+    ArrayList<String> selectFriendIds = new ArrayList<>();
     //----------------------------------------------------------------------------------------------
     private EditText add_multi_name,add_multi_message,add_multi_friend,add_multi_dateS,add_multi_dateE;
     private Date selectStartDate, selectEndDate;
@@ -51,8 +51,6 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
 
     //--showPlan
     private String sender="1";
-    private List<Map<String, Object>> friends;
-    private List<Map<String, Object>> gifts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -389,71 +387,73 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                         return;
                     }
                     JSONObject object = new JSONObject(result);
+                    JSONArray jsonArray;
 
-                    //取得禮物紀錄
-                    JSONArray jsonArray = object.getJSONArray("record");
-                    int recordLength = jsonArray.length();
-                    Log.v("recordLength", String.valueOf(recordLength));
+                    //----------------------------取得計畫資料----------------------------
+                    jsonArray = object.getJSONArray("mulPlan");
+                    //String mulPlanid =jsonArray.getJSONObject(0).getString("mulid"); //計畫ID
+                    //String mulCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
+                    String mulPlanName =jsonArray.getJSONObject(0).getString("mulPlanName"); //計畫名稱
+                    String mulStartDate = jsonArray.getJSONObject(0).getString("startDate"); //送禮日期
+                    String mulEndDate = jsonArray.getJSONObject(0).getString("endDate"); //結束日期
+                    String message =jsonArray.getJSONObject(0).getString("message"); //祝福
 
-                    friends = new ArrayList<Map<String, Object>>();
-                    Map<String, Object> mFriends;
+                    add_multi_name.setText(mulPlanName); //計畫名稱
+                    add_multi_dateS.setText(mulStartDate.substring(0,10)); //送禮日期
+                    selectStartDate = sdf.parse(mulStartDate);
+                    add_multi_dateE.setText(mulEndDate.substring(0,10)); //結束日期
+                    selectEndDate = sdf.parse(mulEndDate);
+                    add_multi_message.setText(message); //祝福
 
-                    for (int i = 0; i < recordLength; i++) {
-                        String receiverid =jsonArray.getJSONObject(i).getString("receiverid");
+                    //----------------------------取得好友資料----------------------------
+                    jsonArray = object.getJSONArray("record");
+                    int friendsLength = jsonArray.length();
+
+                    String friendName = "";
+                    for (int i = 0; i < friendsLength; i++) {
+                        selectFriendIds.add(jsonArray.getJSONObject(i).getString("receiverid")); //好友ID
                         String nickname =jsonArray.getJSONObject(i).getString("nickname");
 
-                        add_multi_friend.setText(nickname);
+                        if (friendName.equals("")) friendName += jsonArray.getJSONObject(i).getString("nickname");
+                        else friendName += " , " + jsonArray.getJSONObject(i).getString("nickname");
 
-                        mFriends = new HashMap<String, Object>();
-                        mFriends.put("receiverid", receiverid);
-                        mFriends.put("nickname", nickname);
-                        friends.add(mFriends);
+                        //---好友checkbox---
+                        for (int k=0; k<mFriendChecked.length; k++){
+                            if (getFriendList.getFriendid(k).equals(selectFriendIds.get(i)) ){
+                                mFriendChecked[k]=true;
+                                tempFriendChecked[k]=true;
+                            }
+                        }
                     }
-                    Log.v("friends", String.valueOf(friends));
+                    add_multi_friend.setText(friendName);
 
-                    //取得多日計畫
-                    jsonArray = object.getJSONArray("mulPlan");
-                    int mulPlanLength = jsonArray.length();
-                    Log.v("mulPlanLength", String.valueOf(mulPlanLength));
-
-                    String mulPlanid =jsonArray.getJSONObject(0).getString("mulid");
-                    String mulPlanName =jsonArray.getJSONObject(0).getString("mulPlanName");
-                    String mulCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("createDate"));
-                    String mulStartDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("startDate"));
-                    String mulEndDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("endDate"));
-                    String message =jsonArray.getJSONObject(0).getString("message");
-
-                    add_multi_name.setText(mulPlanName);
-                    add_multi_dateS.setText(mulStartDate);
-                    add_multi_dateE.setText(mulEndDate);
-                    add_multi_message.setText(message);
-/*   該段程式碼為"下一步"後，所顯示的資料。
-                    //取得單日禮物清單
+                    //----------------------------取得下一頁計畫的資料----------------------------
                     jsonArray = object.getJSONArray("mulList");
                     int mulListLength = jsonArray.length();
-                    Log.v("mulListLength", String.valueOf(mulListLength));
 
-                    gifts = new ArrayList<Map<String, Object>>();
-                    Map<String, Object> mGifts;
-
+                    Map<String, Object> mDates;
                     for (int i = 0 ; i < mulListLength ; i++){
-                        String mulListid = jsonArray.getJSONObject(i).getString("mulid");
-                        String mulGiftid = jsonArray.getJSONObject(i).getString("giftid");
-                        String mulSendGiftDate = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendGiftDate"));
-                        String mulGoal = jsonArray.getJSONObject(i).getString("goal");
-                        String mulGift = jsonArray.getJSONObject(i).getString("gift");
-                        String mulGiftName = jsonArray.getJSONObject(i).getString("giftName");
+                        //String mulGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
+                        String mulSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //禮物送禮日期時間
+                        String date = mulSendGiftDate.substring(0,10); //日期
+                        String sendTime = mulSendGiftDate.substring(11,16); //送禮時間
+                        String mulGoal = jsonArray.getJSONObject(i).getString("goal"); //禮物留言
+                        String mulGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
+                        String mulGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
 
-                        mGifts = new HashMap<String, Object>();
-                        mGifts.put("giftid", mulGiftid);
-                        mGifts.put("sendGiftDate", mulSendGiftDate);
-                        mGifts.put("goal", mulGoal);
-                        mGifts.put("mulGift", mulGift);
-                        mGifts.put("mulGiftName", mulGiftName);
-                        gifts.add(mGifts);
+                        mDates = new HashMap<String, Object>();
+                        mDates.put("date", date); //日期
+                        mDates.put("message", mulGoal); //留言
+                        mDates.put("time", sendTime); //時間
+                        mDates.put("gifts", mulGiftName); //禮物
+                        //---禮物checkbox---
+                        boolean[] mCheckedGift = new boolean[getGiftList.getGiftLength()];
+                        for (int k=0; k<mCheckedGift.length; k++){
+                            if (getGiftList.getGiftid(k).equals(mulGiftid)) mCheckedGift[k]=true;
+                        }
+                        mDates.put("mCheckedItems", mCheckedGift); //禮物選取的項目
+                        oldSelectDates.add(mDates);
                     }
-                    Log.v("gifts", String.valueOf(gifts));
-*/
                 } catch (Exception e) {
                     Toast.makeText(MakePlanMultipleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
                 }
