@@ -142,20 +142,22 @@ public class PlanSentFragment extends Fragment {
 
                 String type = planListAdapter.getItem().get(position).get("type").toString();
                 String planID = planListAdapter.getItem().get(position).get("planID").toString();
+                String from = "PlanSentFragment";
 
                 switch (type){
                     case "單日送禮" :
-                        intent = new Intent(getActivity(), MakePlanSingleActivity.class);
+                        intent = new Intent(getActivity(), SentPlanSingleActivity.class);
                         break;
                     case "多日規劃" :
-                        intent = new Intent(getActivity(), MakePlanMultipleActivity.class);
+                        intent = new Intent(getActivity(), SentPlanMultipleActivity.class);
                         break;
                     case "任務清單" :
-                        intent = new Intent(getActivity(), MakePlanListActivity.class);
+                        intent = new Intent(getActivity(), SentPlanListActivity.class);
                         break;
                 }
 
                 bundle.putString("planID", planID);
+                bundle.putString("from", from);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

@@ -65,6 +65,18 @@
         <activity
             android:name=".MakePlanListActivity"
             android:windowSoftInputMode="adjustPan"  />
+        <activity
+            android:name=".SentPlanSingleActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".SentPlanMultipleActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".SentPlanMultiActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".SentPlanListActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity android:name=".PlanDetailActivity" />  <!-- 測試用 -->
 
