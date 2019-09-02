@@ -16,7 +16,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 
 import com.ntubcase.gift.Adapter.PlanListAdapter;
-import com.ntubcase.gift.data.getPlanGot;
+import com.ntubcase.gift.data.getPlanSent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlanDoneFragment extends Fragment {
+public class PlanSentFragment extends Fragment {
 
     private ListView mListView;
     private List<Map<String, Object>> mPlansList; //計畫清單
@@ -37,7 +37,7 @@ public class PlanDoneFragment extends Fragment {
     private ArrayAdapter spinnerAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public PlanDoneFragment() {
+    public PlanSentFragment() {
         // Required empty public constructor
     }
 
@@ -79,7 +79,7 @@ public class PlanDoneFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                getPlanGotData(); //更新資料
+                getPlanSentData(); //更新資料
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -87,26 +87,26 @@ public class PlanDoneFragment extends Fragment {
         return view;
     }
 
-    //-----------------取得已送達計畫資料-----------------
-    private void getPlanGotData(){
+    //-----------------取得已預送計畫資料-----------------
+    private void getPlanSentData(){
 
-        getPlanGot.getJSON();
+        getPlanSent.getJSON();
 
         //---------------------ListView倒入資料--------------------------------
-        String[][] mPlansData = new String[getPlanGot.getPlangotgLength()][20];
+        String[][] mPlansData = new String[getPlanSent.getPlansentgLength()][20];
 
-        for(int i = 0 ;i < getPlanGot.getPlangotgLength(); i++){
-            mPlansData[i][0]= getPlanGot.getPlanid(i);
-            mPlansData[i][1]= getPlanGot.getPlanType(i);
-            mPlansData[i][2]= getPlanGot.getPlanName(i);
-            mPlansData[i][3]= getPlanGot.getCreateDate(i);
-            mPlansData[i][4]= getPlanGot.getSendPlanDate(i);
+        for(int i = 0 ;i < getPlanSent.getPlansentgLength(); i++){
+            mPlansData[i][0]= getPlanSent.getPlanid(i);
+            mPlansData[i][1]= getPlanSent.getPlanType(i);
+            mPlansData[i][2]= getPlanSent.getPlanName(i);
+            mPlansData[i][3]= getPlanSent.getCreateDate(i);
+            mPlansData[i][4]= getPlanSent.getSendPlanDate(i);
         }
 
         mPlansList = new ArrayList<Map<String, Object>>();
         Map<String, Object> mPlans;
 
-        for(int i=0;i<getPlanGot.getPlangotgLength();i++) {
+        for(int i=0;i<getPlanSent.getPlansentgLength();i++) {
             mPlans = new HashMap<String, Object>();
             mPlans.put("planID", mPlansData[i][0]);
             mPlans.put("type", mPlansData[i][1]);
@@ -128,7 +128,7 @@ public class PlanDoneFragment extends Fragment {
 
     @Override
     public void onResume(){
-        getPlanGotData();
+        getPlanSentData();
         super.onResume();
     }
 

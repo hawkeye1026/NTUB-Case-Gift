@@ -1,14 +1,12 @@
 package com.ntubcase.gift;
 
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,8 +25,6 @@ import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.PlanListAdapter;
-import com.ntubcase.gift.data.getPlanGot;
-import com.ntubcase.gift.data.getPlanList;
 import com.ntubcase.gift.data.getPlanningList;
 
 import java.util.ArrayList;
@@ -97,7 +93,7 @@ public class PlanNewFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                getGiftData(); //更新資料
+                getPlanningData(); //更新資料
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -114,15 +110,14 @@ public class PlanNewFragment extends Fragment {
         return view;
     }
 
-    //-----------------取得禮物資料-----------------
-    private void getGiftData(){
+    //-----------------取得未送出計畫資料-----------------
+    private void getPlanningData(){
 
         getPlanningList.getJSON();
 
         //---------------------ListView倒入資料--------------------------------
-
         String[][] mPlansData = new String[getPlanningList.getPlanningLength()][20];
-        //Log.e("Planning","onResume: "+getPlanningList.getPlanningLength());
+
         for(int i = 0 ;i < getPlanningList.getPlanningLength(); i++){
             mPlansData[i][0]= getPlanningList.getPlanid(i);
             mPlansData[i][1]= getPlanningList.getPlanType(i);
@@ -159,7 +154,7 @@ public class PlanNewFragment extends Fragment {
 
     @Override
     public void onResume(){
-        getGiftData();
+        getPlanningData();
         super.onResume();
     }
 
