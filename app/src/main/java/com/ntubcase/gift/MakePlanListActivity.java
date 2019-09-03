@@ -65,7 +65,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     private String sender= "1", planid, planType="3", dateTime, dateOnly;
 
     //----------------------------------------------------------------------------------------------
-    ProgressDialog barProgressDialog;
+
     private RecyclerView recycler_view;
     private plan_list_adapter adapter;
     private List<String> mData = new ArrayList<>();
@@ -73,6 +73,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String list_message;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     private Date selectStartDate, selectEndDate;
 
@@ -388,7 +389,12 @@ public class MakePlanListActivity extends AppCompatActivity{
     private void showDateEPickerDialog () {
         final Calendar c = Calendar.getInstance();
 
-        if (selectEndDate!=null) c.setTime(selectEndDate);  //取得上次選的日期
+        try {
+            String oldTime = edt_list_lastDate.getText().toString();  //取得上次選的時間
+            if (!oldTime.equals("")) c.setTime(sdf.parse(oldTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
 
@@ -407,8 +413,6 @@ public class MakePlanListActivity extends AppCompatActivity{
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-
 
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
@@ -437,6 +441,12 @@ public class MakePlanListActivity extends AppCompatActivity{
     //設定送禮時間EditText傳入值---------------------------------------
     private void showTimePickerDialog() {
         Calendar t = Calendar.getInstance();
+        try {
+            String oldTime = edt_list_lastTime.getText().toString();  //取得上次選的時間
+            if (!oldTime.equals("")) t.setTime(sdfT.parse(oldTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         TimePickerDialog TimePickerDialog = new TimePickerDialog(MakePlanListActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -445,12 +455,10 @@ public class MakePlanListActivity extends AppCompatActivity{
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false);
 
-
         TimePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "清除", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 edt_list_lastTime.setText("");
-
             }
         });
 
@@ -568,7 +576,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         }
         return false;//不可預送
     }
-    
+
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
