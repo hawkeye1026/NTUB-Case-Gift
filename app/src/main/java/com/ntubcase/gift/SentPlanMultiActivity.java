@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,9 +108,9 @@ public class SentPlanMultiActivity extends AppCompatActivity {
         alert_message.setText(selectDates.get(gridPosition).get("message").toString());
         alert_time.setText(selectDates.get(gridPosition).get("time").toString());
         alert_gifts.setText(selectDates.get(gridPosition).get("gifts").toString());
-        alert_message.setFocusable(false);
-        alert_time.setFocusable(false);
-        alert_gifts.setFocusable(false);
+        alert_message.setInputType(InputType.TYPE_NULL);
+        alert_time.setInputType(InputType.TYPE_NULL);
+        alert_gifts.setInputType(InputType.TYPE_NULL);
 
         if ((alert_gifts.getText().toString()).equals(""))
             ll_time.setVisibility(View.GONE); //若禮物空白則不能選時間

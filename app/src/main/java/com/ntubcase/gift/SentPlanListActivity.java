@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,12 +63,12 @@ public class SentPlanListActivity extends AppCompatActivity{
         edt_list_giftName = findViewById(R.id.list_gift);
         edt_list_lastDate = findViewById(R.id.list_lastDate);
         edt_list_lastTime= findViewById(R.id.list_lastTime);
-        edt_list_name.setFocusable(false);
-        edt_list_sentDate.setFocusable(false);
-        edt_list_friend.setFocusable(false);
-        edt_list_giftName.setFocusable(false);
-        edt_list_lastDate.setFocusable(false);
-        edt_list_name.setFocusable(false);
+        edt_list_name.setInputType(InputType.TYPE_NULL);
+        edt_list_sentDate.setInputType(InputType.TYPE_NULL);
+        edt_list_friend.setInputType(InputType.TYPE_NULL);
+        edt_list_giftName.setInputType(InputType.TYPE_NULL);
+        edt_list_lastDate.setInputType(InputType.TYPE_NULL);
+        edt_list_name.setInputType(InputType.TYPE_NULL);
         btnAdd = (Button) findViewById(R.id.btnAdd); //新增按鈕
         btnAdd.setVisibility(View.INVISIBLE);
 
@@ -114,7 +115,7 @@ public class SentPlanListActivity extends AppCompatActivity{
         //----------------------------------------------------------------------------------------------
         edt_list_message = dialog.findViewById(R.id.list_message);
         edt_list_message.setText(mData.get(position));
-        edt_list_message.setFocusable(false);
+        edt_list_message.setInputType(InputType.TYPE_NULL);
 
         btnEnt = dialog.findViewById(R.id.btn_ent);
         btnEnt.setOnClickListener(new Button.OnClickListener() {

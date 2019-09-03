@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,9 +57,9 @@ public class SentPlanSingleActivity extends AppCompatActivity {
         edt_single_name = findViewById(R.id.add_surprise_name);
         edt_single_date = findViewById(R.id.add_surprise_date);
         edt_single_friend = findViewById(R.id.add_surprise_friend);
-        edt_single_name.setFocusable(false);
-        edt_single_date.setFocusable(false);
-        edt_single_friend.setFocusable(false);
+        edt_single_name.setInputType(InputType.TYPE_NULL);
+        edt_single_date.setInputType(InputType.TYPE_NULL);
+        edt_single_friend.setInputType(InputType.TYPE_NULL);
         btnAdd = (Button) findViewById(R.id.btnAdd); //新增按鈕
         btnAdd.setVisibility(View.INVISIBLE);
 
@@ -108,9 +109,9 @@ public class SentPlanSingleActivity extends AppCompatActivity {
         edt_single_giftName.setText(mData.get(position).get("giftName").toString());
         edt_single_sentTime.setText(mData.get(position).get("sentTime").toString());
         edt_single_message.setText(mData.get(position).get("message").toString());
-        edt_single_giftName.setFocusable(false);
-        edt_single_sentTime.setFocusable(false);
-        edt_single_message.setFocusable(false);
+        edt_single_giftName.setInputType(InputType.TYPE_NULL);
+        edt_single_sentTime.setInputType(InputType.TYPE_NULL);
+        edt_single_message.setInputType(InputType.TYPE_NULL);
 
         btnEnt = dialog.findViewById(R.id.btn_ent);
         btnEnt.setOnClickListener(new Button.OnClickListener() {

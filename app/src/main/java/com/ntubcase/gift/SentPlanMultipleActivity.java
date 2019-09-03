@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -49,11 +51,11 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
         add_multi_dateS = findViewById(R.id.add_multi_dateS);
         add_multi_dateE = findViewById(R.id.add_multi_dateE);
         add_multi_message = (EditText) findViewById(R.id.add_multi_message);
-        add_multi_name.setFocusable(false);
-        add_multi_friend.setFocusable(false);
-        add_multi_dateS.setFocusable(false);
-        add_multi_dateE.setFocusable(false);
-        add_multi_message.setFocusable(false);
+        add_multi_name.setInputType(InputType.TYPE_NULL);
+        add_multi_friend.setInputType(InputType.TYPE_NULL);
+        add_multi_dateS.setInputType(InputType.TYPE_NULL);
+        add_multi_dateE.setInputType(InputType.TYPE_NULL);
+        add_multi_message.setKeyListener(null);
 
         Button btn_next = (Button) findViewById(R.id.btn_plan_next);
         btn_next.setOnClickListener(nextPageListener);
@@ -125,7 +127,7 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
                     //----------------------------取得下一頁計畫的資料----------------------------
                     jsonArray = object.getJSONArray("mulList");
                     int mulListLength = jsonArray.length();
-
+                    
                     Map<String, Object> mDates;
                     for (int i = 0 ; i < mulListLength ; i++){
                         String mulSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //禮物送禮日期時間
