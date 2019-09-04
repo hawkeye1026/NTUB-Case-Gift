@@ -180,6 +180,12 @@ public class SentPlanListActivity extends AppCompatActivity{
                     String lastDate = deadline.substring(0,10); //截止日期
                     String lastTime = deadline.substring(11,16); //截止時間
 
+                    //若為0則顯示空值
+                    if (deadline.equals("0000-00-00 00:00:00")){
+                        lastDate="";
+                        lastTime="";
+                    }
+
                     edt_list_name.setText(misPlanName); //計畫名稱
                     edt_list_sentDate.setText(misSendPlanDate); //送禮日期
                     edt_list_lastDate.setText(lastDate); //截止日期

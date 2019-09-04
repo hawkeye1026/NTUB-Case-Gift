@@ -424,6 +424,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    if (friendName.equals("null")) friendName="";  //若為null則顯示空值
                     add_multi_friend.setText(friendName);
 
                     //----------------------------取得下一頁計畫的資料----------------------------
@@ -439,6 +440,8 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                         String mulGoal = jsonArray.getJSONObject(i).getString("goal"); //禮物留言
                         String mulGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String mulGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
+
+                        if (mulGiftName.equals("null")) mulGiftName="";  //若為null則顯示空值
 
                         mDates = new HashMap<String, Object>();
                         mDates.put("date", date); //日期
