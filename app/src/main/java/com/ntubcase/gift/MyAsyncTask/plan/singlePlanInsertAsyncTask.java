@@ -1,6 +1,7 @@
 package com.ntubcase.gift.MyAsyncTask.plan;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -66,6 +67,7 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
                             "&planName=" + URLEncoder.encode(params[2], "UTF-8") +
                             "&createDate=" + URLEncoder.encode(params[3], "UTF-8") +
                             "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8");
+            Log.v("singlePlanInsert", args);
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(

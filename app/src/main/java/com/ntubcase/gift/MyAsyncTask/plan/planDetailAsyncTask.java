@@ -65,7 +65,7 @@ public class planDetailAsyncTask extends AsyncTask<String, Integer, String> {
             String args =
                     "userid=" + URLEncoder.encode(params[1], "UTF-8")+
                     "&planid=" + URLEncoder.encode(params[2], "UTF-8");
-            Log.v("args",args);
+            Log.v("planDetail",args);
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(

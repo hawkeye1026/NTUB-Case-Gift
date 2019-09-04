@@ -1,6 +1,7 @@
 package com.ntubcase.gift.MyAsyncTask.plan;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -64,6 +65,7 @@ public class missionItemInsertAsyncTask extends AsyncTask<String, Integer, Strin
             String args =
                     "planid=" + URLEncoder.encode(params[1], "UTF-8") +
                             "&content=" + URLEncoder.encode(params[2], "UTF-8") ;
+            Log.v("missionItemInsert", args);
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(

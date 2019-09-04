@@ -485,20 +485,25 @@ public class PlanMultipleActivity extends AppCompatActivity {
             date_time = selectDates.get(i).get("date").toString()+space+selectDates.get(i).get("time").toString();  //-- x
             goal = selectDates.get(i).get("message").toString();
 
-            multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-                }
-            });
-
-
             Log.v("mSelectGiftIds.length", ""+mSelectGiftIds.get(i).size());
             if (mSelectGiftIds.get(i).size()>0){
                 for (int j = 0; j < mSelectGiftIds.get(i).size(); j++) {
-                    if (mSelectGiftIds.get(i).get(j).equals("") && goal.equals("")) ;
-                    else multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds.get(i).get(j), date_time, goal);
+                    Log.v("mSelectGiftIds", mSelectGiftIds.get(i).get(j));
+                    if (!(mSelectGiftIds.get(i).get(j).equals("") && goal.equals(""))){
+                        multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
+                            @Override
+                            public void onFinished(String result) {
+                            }
+                        });
+                        multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds.get(i).get(j), date_time, goal);
+                    }
                 }
             }else{
+                multipleListInsertAsyncTask multipleListInsertAsyncTask = new multipleListInsertAsyncTask(new multipleListInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                    }
+                });
                 multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "0", date_time, goal);
             }
         }

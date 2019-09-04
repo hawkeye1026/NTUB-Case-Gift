@@ -628,18 +628,24 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             Log.v("get(i).size()", String.valueOf(mSelectGiftIds.get(i).size()));
             sendGiftDate += mData.get(i).get("sentTime").toString();  //-- x
 
-            singleListInsertAsyncTask singleListInsertAsyncTask = new singleListInsertAsyncTask(new singleListInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
             Log.v("sendGiftDate", sendGiftDate);
             if(mSelectGiftIds.get(i).size() > 0 ){
                 for (int j = 0; j < mSelectGiftIds.get(i).size(); j++) {
+                    singleListInsertAsyncTask singleListInsertAsyncTask = new singleListInsertAsyncTask(new singleListInsertAsyncTask.TaskListener() {
+                        @Override
+                        public void onFinished(String result) {
+
+                        }
+                    });
                     singleListInsertAsyncTask.execute(Common.insertSinPlan, planid, mSelectGiftIds.get(i).get(j), sendGiftDate, mData.get(i).get("message").toString());
                 }
             }else{
+                singleListInsertAsyncTask singleListInsertAsyncTask = new singleListInsertAsyncTask(new singleListInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
                 singleListInsertAsyncTask.execute(Common.insertSinPlan, planid, "", sendGiftDate, mData.get(i).get("message").toString());
             }
         }

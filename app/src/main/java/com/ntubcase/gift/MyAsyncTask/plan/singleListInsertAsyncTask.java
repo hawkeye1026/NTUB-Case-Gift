@@ -67,7 +67,7 @@ public class singleListInsertAsyncTask extends AsyncTask<String, Integer, String
                             "&giftid=" + URLEncoder.encode(params[2], "UTF-8") +
                             "&sendGiftDate=" + URLEncoder.encode(params[3], "UTF-8") +
                             "&message=" + URLEncoder.encode(params[4], "UTF-8");
-            Log.v("args", args);
+            Log.v("singleListInsert", args);
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(

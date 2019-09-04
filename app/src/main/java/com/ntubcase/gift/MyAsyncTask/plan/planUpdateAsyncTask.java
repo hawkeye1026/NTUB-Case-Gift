@@ -1,6 +1,7 @@
 package com.ntubcase.gift.MyAsyncTask.plan;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -70,6 +71,7 @@ public class planUpdateAsyncTask extends AsyncTask<String, Integer, String> {
                     "&message=" + URLEncoder.encode(params[5], "UTF-8")+
                     "&senderid=" + URLEncoder.encode(params[6], "UTF-8")+
                     "&receiveid=" + URLEncoder.encode(params[7], "UTF-8");
+
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

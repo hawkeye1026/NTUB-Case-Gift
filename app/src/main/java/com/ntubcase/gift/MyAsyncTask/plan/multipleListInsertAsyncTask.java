@@ -1,6 +1,7 @@
 package com.ntubcase.gift.MyAsyncTask.plan;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -66,6 +67,7 @@ public class multipleListInsertAsyncTask extends AsyncTask<String, Integer, Stri
                     "&giftid=" + URLEncoder.encode(params[2], "UTF-8") +
                     "&sendGiftDate=" + URLEncoder.encode(params[3], "UTF-8") +
                     "&goal=" + URLEncoder.encode(params[4], "UTF-8") ;
+            Log.v("multipleListInsert", args);
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
