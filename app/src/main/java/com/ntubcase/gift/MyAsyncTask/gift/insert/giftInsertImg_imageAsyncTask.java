@@ -94,14 +94,41 @@ public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, Str
                             "multipart/form-data");
                     conn.setRequestProperty("Content-Type",
                             "multipart/form-data;boundary=" + boundary);
-                    conn.setRequestProperty("image", params[2]);
+
+                    switch (params[4]){
+                        case "img":
+                            conn.setRequestProperty("image", params[2]);
+                            break;
+                        case "vid":
+                            conn.setRequestProperty("video", params[2]);
+                            break;
+                    }
+                    String args =
+                            "old_filename=" + URLEncoder.encode(params[2], "UTF-8")+
+                            "&userid=" + URLEncoder.encode(params[3], "UTF-8" )+
+                            "&file_type=" + URLEncoder.encode(params[4], "UTF-8" )+
+                            "&crud=" + URLEncoder.encode(params[5], "UTF-8" );
 
                     conn.connect();
                     dos = new DataOutputStream(conn.getOutputStream());
-                    
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(dos, "UTF-8"));
+                    writer.write(args);
+                    writer.flush();
+
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
-                    dos.writeBytes("Content-Disposition:form-data; name=\"image\";filename=\""
-                            + params[2] + "\"" + lineEnd);
+                    switch (params[4]){
+                        case "img":
+                            dos.writeBytes("Content-Disposition:form-data; name=\"image\";filename=\""
+                                    + params[1] + "\"" + lineEnd);
+                            break;
+                        case "vid":
+                            dos.writeBytes("Content-Disposition:form-data; name=\"video\";filename=\""
+                                    + params[1] + "\"" + lineEnd);
+                            break;
+                    }
+                    dos.writeBytes("Content-Disposition:form-data; name="+ params[2] + ";filename=\""
+                            + params[1] + "\"" + lineEnd);
                     dos.writeBytes(lineEnd);
 
                     // create a buffer of maximum size
@@ -144,8 +171,8 @@ public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, Str
                         // recursiveDelete(mDirectory1);
 
                     }
-
                     // close the streams //
+                    writer.close();
                     fileInputStream.close();
                     dos.flush();
                     dos.close();

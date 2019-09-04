@@ -300,13 +300,13 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
                 new uploadGift(giftContent, giftName, owner, giftType);
             }
             //------------------------------上傳禮物圖片
-            giftInsertVid_viedoAsyncTask mGiftInsertImgAsyncTask = new giftInsertVid_viedoAsyncTask(new giftInsertVid_viedoAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            }, ImageFilePath.getPath(getApplicationContext(), cam_videoUri));
-            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_video, String.valueOf(cam_videoUri), giftContent);
+//            giftInsertVid_viedoAsyncTask mGiftInsertImgAsyncTask = new giftInsertVid_viedoAsyncTask(new giftInsertVid_viedoAsyncTask.TaskListener() {
+//                @Override
+//                public void onFinished(String result) {
+//
+//                }
+//            }, ImageFilePath.getPath(getApplicationContext(), cam_videoUri));
+//            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_video, String.valueOf(cam_videoUri), giftContent);
 
             //-------------讀取Dialog-----------
             barProgressDialog = ProgressDialog.show(MakeGiftVideoActivity.this,

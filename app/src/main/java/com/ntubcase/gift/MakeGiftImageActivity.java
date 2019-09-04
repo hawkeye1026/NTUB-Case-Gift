@@ -36,6 +36,7 @@ import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertImg_imageAsyncTask;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -59,7 +60,9 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 //    protected static String owner = googleAccount.getUserName()
     protected static String dateTime, giftType = "1";
     ProgressDialog barProgressDialog;
+
     private static int giftid;
+    private static String old_giftContent = "";
 
     int currentapiVersion = android.os.Build.VERSION.SDK_INT; //取得目前版本
 
@@ -99,8 +102,10 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         Log.v("giftid",position + "");
         if (position>=0){
             //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
-            Uri imageURI = Uri.parse(Common.imgPath + getGiftList.getGift(position));
-            Log.v("gift",Common.imgPath + getGiftList.getGift(position));
+//            Uri imageURI = Uri.parse(Common.imgPath + userData.getUserName()+" /" + getGiftList.getGift(position)); google帳號
+            Uri imageURI = Uri.parse(Common.imgPath + "wayne/" + getGiftList.getGift(position));
+            old_giftContent = getGiftList.getGift(position);
+            Log.v("gift",Common.imgPath+ "wayne/" + getGiftList.getGift(position));
             Picasso.get().load(imageURI).into(iv_image);
             //-------存入禮物詳細的editText
             et_giftName.setText( getGiftList.getGiftName(position));
@@ -345,57 +350,63 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         }
         giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
 
-        if(checkRepeatGift.checkRepeatGift(giftName)) {
-            giftContent = getFileName(cam_imageUri);    //取得使用者輸入的禮物內容
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-            Date date =new Date();
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            dateTime = sdFormat.format(date);
+        giftContent = getFileName(cam_imageUri);    //取得使用者輸入的禮物內容
+        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+        Date date =new Date();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        dateTime = sdFormat.format(date);
 
+        if(giftid > 0) {
+
+            //                //------------------------------上傳禮物圖片
+            //                giftInsertImg_imageAsyncTask mGiftInsertImgAsyncTask = new giftInsertImg_imageAsyncTask(new giftInsertImg_imageAsyncTask.TaskListener() {
+            //                    @Override
+            //                    public void onFinished(String result) {
+            //
+            //                    }
+            //                }, ImageFilePath.getPath(getApplicationContext(), cam_imageUri));
+            //                mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, giftContent, old_giftContent,owner,"img","update");
+            //                //excute( URL , newgiftcontent ,old_filename , userid , file_type , crud  )
             //------------------------------上傳禮物資料
-
-            if(giftid > 0){
-                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+            Log.v("upload", giftid + "");
+            new updateGift(String.valueOf(giftid), "wayne/" + giftContent, giftName, owner, giftType);
+            new uploadGiftFile(getApplicationContext(), cam_imageUri, "wayne/" + giftContent, old_giftContent, owner, "img", "update");
+        }else {
+            if(checkRepeatGift.checkRepeatGift(giftName)) {
+                //------------------------------上傳禮物資料
+                Log.v("upload", giftid + "");
+                new uploadGift("wayne/" + giftContent, giftName, owner, giftType);
+                new uploadGiftFile(getApplicationContext(), cam_imageUri, "wayne/" + giftContent, old_giftContent, owner, "img", "insert");
             }else{
-                new uploadGift(giftContent, giftName, owner, giftType);
+                Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
             }
-
-            //------------------------------上傳禮物圖片
-            giftInsertImg_imageAsyncTask mGiftInsertImgAsyncTask = new giftInsertImg_imageAsyncTask(new giftInsertImg_imageAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            }, ImageFilePath.getPath(getApplicationContext(), cam_imageUri));
-            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, String.valueOf(cam_imageUri), giftContent);
-
-
-
-            //-------------讀取Dialog-----------
-            barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,
-                    "讀取中", "請等待...",true);
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    try{
-                        //uploadFile(imagepath);
-                        getGiftList.getJSON();
-                        Thread.sleep(1000);
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-                    finally{
-                        barProgressDialog.dismiss();
-                        finish();
-                    }
-                }
-            }).start();
-            //-------------結束Dialog-----------
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
         }
+
+        //-------------讀取Dialog-----------
+        barProgressDialog = ProgressDialog.show(MakeGiftImageActivity.this,
+                "讀取中", "請等待...",true);
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try{
+                    //uploadFile(imagepath);
+                    getGiftList.getJSON();
+                    Thread.sleep(1000);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                finally{
+                    barProgressDialog.dismiss();
+                    finish();
+                }
+            }
+        }).start();
+        //-------------結束Dialog-----------
+        Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+
+
+
     }
 
 }
