@@ -47,7 +47,7 @@ import java.util.Date;
 
 public class MakeGiftImageActivity extends AppCompatActivity {
 
-    private Button btn_save, btn_makePlan, btn_selectImage, btn_openCamera;
+    private Button btn_save, btn_directly_send, btn_selectImage, btn_openCamera;
     private static EditText et_giftName;
     private ImageView iv_image;
     private Uri cam_imageUri;
@@ -76,9 +76,9 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         iv_image =(ImageView) findViewById(R.id.iv_image);
         btn_save = findViewById(R.id.btn_save);
-        btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
+        btn_directly_send = (Button) findViewById(R.id.btn_directly_send);
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
-        btn_makePlan.setOnClickListener(makePlanClickListener); //設置監聽器
+        btn_directly_send.setOnClickListener(directlySendClickListener); //設置監聽器
 
         btn_selectImage = (Button) findViewById(R.id.btn_selectImage);
         btn_selectImage.setOnClickListener(selectImageClickListener); //設置監聽器
@@ -175,20 +175,20 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     };
     //-------------------------------結束儲存按鈕 監聽器----------------------------------------
 
-    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
-    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
+    //-------------------------------直接送禮按鈕 監聽器----------------------------------------
+    private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             //上傳圖片
-            uploadImage(v);
+            //uploadImage(v);
 
             Intent intent;
-            intent = new Intent(MakeGiftImageActivity.this, PlanActivity.class);
+            intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
             startActivity(intent);
             finish();
         }
     };
-    //-------------------------------結束製作計畫按鈕 監聽器----------------------------------------
+    //-------------------------------結束直接送禮按鈕 監聽器----------------------------------------
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -273,8 +273,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         }
     }
 
-
-
     String getFileName(Uri uri){
         String result = null;
         if (uri.getScheme().equals("content")) {
@@ -333,6 +331,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
     }
+
     public void uploadImage(View v){
 
         //--------若沒有選擇照片，跳出提醒
