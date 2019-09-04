@@ -671,7 +671,13 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, dateOnly+" "+edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString());
+        Log.v("missionPlan", planid);
+        Log.v("missionPlan", edt_list_name.getText().toString());
+        Log.v("missionPlan", dateTime);
+        Log.v("missionPlan", dateOnly);
+        Log.v("missionPlan",edt_list_sentDate.getText().toString());
+        Log.v("missionPlan", edt_list_lastDate.getText().toString());
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString());
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem
@@ -683,7 +689,6 @@ public class MakePlanListActivity extends AppCompatActivity{
             });
             missionItemInsertAsyncTask.execute(Common.insertMisPlan, planid, mData.get(i));
         }
-
         Log.v("missionItem", "//---upload missionItem");
 
         //---upload missionList
