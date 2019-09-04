@@ -558,12 +558,21 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     //------------------------------上傳plan資料
     public void uploadPlan(String store){
-        //---------------------------選擇日期
-        String sendPlanDate = edt_single_date.getText().toString() + " " + edt_single_sentTime.getText().toString();
 
         Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
         //---upload giftRecord
-        for (int i = 0 ; i < selectFriendIds.size(); i++) {
+        if(selectFriendIds.size()>0){
+            for (int i = 0 ; i < selectFriendIds.size(); i++) {
+                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                Log.v("store:::::::",store);
+                giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, store, planType);
+            }
+        }else {
             giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
                 @Override
                 public void onFinished(String result) {
@@ -571,17 +580,25 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 }
             });
             Log.v("store:::::::",store);
-            giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, store, planType);
+            giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, "", planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
 
         //--- upload singlePlan
+        String sendPlanDate = "0000-00-00 ";
+        if(edt_single_date.getText().toString() != null){
+            if(mData.size() >0) sendPlanDate = edt_single_date.getText().toString() + " " + mData.get(0).get("sentTime").toString();
+            else sendPlanDate = edt_single_date.getText().toString();
+        }else{
+            if(mData.size() >0) sendPlanDate += mData.get(0).get("sentTime").toString();
+        }
         singlePlanInsertAsyncTask singlePlanInsertAsyncTask = new singlePlanInsertAsyncTask(new singlePlanInsertAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
 
             }
         });
+        Log.v("sendPlanDate", sendPlanDate);
         singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate);
         Log.v("singlePlan", "//---upload singlePlan");
 
@@ -601,11 +618,25 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         }
 
         for (int i = 0 ; i < mData.size(); i++) {
-            for (int j = 0; j < mSelectGiftIds.get(i).size(); j++) {
-                Log.v("get(i).size()", String.valueOf(mSelectGiftIds.get(i).size()));
-                String space=" ";
-                date_time = edt_single_date.getText().toString() +" "+mData.get(i).get("sentTime").toString();  //-- x
+            Log.v("get(i).size()", String.valueOf(mSelectGiftIds.get(i).size()));
+            String space=" ";
+            date_time = edt_single_date.getText().toString() +" "+mData.get(i).get("sentTime").toString();  //-- x
 
+            if(mSelectGiftIds.get(i).size() > 0 ){
+                for (int j = 0; j < mSelectGiftIds.get(i).size(); j++) {
+                    singleListInsertAsyncTask singleListInsertAsyncTask = new singleListInsertAsyncTask(new singleListInsertAsyncTask.TaskListener() {
+                        @Override
+                        public void onFinished(String result) {
+
+                        }
+                    });
+                    Log.v("planid", planid);
+                    Log.v("get(i).get(j)", String.valueOf(mSelectGiftIds.get(i).get(j)));
+                    Log.v("date_time", date_time);
+                    Log.v("message", mData.get(i).get("message").toString());
+                    singleListInsertAsyncTask.execute(Common.insertSinPlan, planid, mSelectGiftIds.get(i).get(j), date_time, mData.get(i).get("message").toString());
+                }
+            }else{
                 singleListInsertAsyncTask singleListInsertAsyncTask = new singleListInsertAsyncTask(new singleListInsertAsyncTask.TaskListener() {
                     @Override
                     public void onFinished(String result) {
@@ -613,11 +644,12 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     }
                 });
                 Log.v("planid", planid);
-                Log.v("get(i).get(j)", String.valueOf(mSelectGiftIds.get(i).get(j)));
                 Log.v("date_time", date_time);
                 Log.v("message", mData.get(i).get("message").toString());
-                singleListInsertAsyncTask.execute(Common.insertSinPlan, planid, mSelectGiftIds.get(i).get(j), date_time, mData.get(i).get("message").toString());
+                singleListInsertAsyncTask.execute(Common.insertSinPlan, planid, "", date_time, mData.get(i).get("message").toString());
             }
+
+
 
         }
         Log.v("singleList", "//---upload singleList");

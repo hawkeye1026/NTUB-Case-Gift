@@ -490,10 +490,12 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 }
             });
 
+
+            Log.v("mSelectGiftIds.length", ""+mSelectGiftIds.get(i).size());
             if (mSelectGiftIds.get(i).size()>0){
-                Log.v("mSelectGiftIds.length", ""+mSelectGiftIds.get(i).size());
                 for (int j = 0; j < mSelectGiftIds.get(i).size(); j++) {
-                    multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds.get(i).get(j), date_time, goal);
+                    if (mSelectGiftIds.get(i).get(j).equals("") && goal.equals("")) ;
+                    else multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, mSelectGiftIds.get(i).get(j), date_time, goal);
                 }
             }else{
                 multipleListInsertAsyncTask.execute(Common.insertMulPlan, planid, "0", date_time, goal);
