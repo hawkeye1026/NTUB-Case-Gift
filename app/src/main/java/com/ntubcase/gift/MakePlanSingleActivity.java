@@ -677,6 +677,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     String sinPlanName =jsonArray.getJSONObject(0).getString("sinPlanName"); //計畫名稱
                     String sinSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
 
+                    if (sinSendPlanDate.equals("0000-00-00")) sinSendPlanDate="";  //若為0則顯示空值
+
                     edt_single_name.setText(sinPlanName); //計畫名稱
                     edt_single_date.setText(sinSendPlanDate); //送禮日期
 
@@ -698,6 +700,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    if (friendName.equals("null")) friendName="";  //若為null則顯示空值
                     edt_single_friend.setText(friendName); //好友名稱
 
                     //----------------------------取得禮物資料----------------------------
@@ -711,6 +714,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
                         String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
                         String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
+
+                        if (sinGiftName.equals("null")) sinGiftName="";  //若為null則顯示空值
 
                         Map<String, Object> mGiftsData = new HashMap<String, Object>();
                         mGiftsData.put("giftName", sinGiftName);

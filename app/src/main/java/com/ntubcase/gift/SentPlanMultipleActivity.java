@@ -136,6 +136,8 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
                         String mulGoal = jsonArray.getJSONObject(i).getString("goal"); //禮物留言
                         String mulGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
 
+                        if (mulGiftName.equals("null")) mulGiftName="";  //若為null則顯示空值
+
                         mDates = new HashMap<String, Object>();
                         mDates.put("date", date); //日期
                         mDates.put("message", mulGoal); //留言
