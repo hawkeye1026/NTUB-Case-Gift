@@ -65,9 +65,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private EditText alert_message, alert_time, alert_gifts;
     private LinearLayout ll_time;
 
-    //--showPlan
-    private List<Map<String, Object>> gifts;
-
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     private String[] giftItemList = new String[getGiftList.getGiftLength()];  //所有禮物
     private boolean[] mCheckedItems;

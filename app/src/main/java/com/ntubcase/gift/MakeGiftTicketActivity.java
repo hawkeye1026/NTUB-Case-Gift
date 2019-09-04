@@ -23,7 +23,7 @@ import java.util.Date;
 
 public class MakeGiftTicketActivity extends AppCompatActivity {
 
-    private Button btn_save, btn_makePlan;
+    private Button btn_save, btn_directly_send;
     private static EditText et_giftName, et_giftContent;
 
     private static String giftName, giftContent;
@@ -47,9 +47,9 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         et_giftContent = (EditText) findViewById(R.id.et_giftContent);
         btn_save = findViewById(R.id.btn_save);
-        btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
+        btn_directly_send = (Button) findViewById(R.id.btn_directly_send);
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
-        btn_makePlan.setOnClickListener(makePlanClickListener); //設置監聽器
+        btn_directly_send.setOnClickListener(directlySendClickListener); //設置監聽器
 
         giftid = 0;
         //------------禮物詳細，判斷禮物是否有初值
@@ -81,15 +81,15 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
         }
     };
 
-    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
-    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
+    //-------------------------------直接送禮按鈕 監聽器----------------------------------------
+    private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            uploadGift(v);
+            //uploadGift(v);
 
             Intent intent;
-            intent = new Intent(MakeGiftTicketActivity.this, PlanActivity.class);
+            intent = new Intent(MakeGiftTicketActivity.this, SendGiftDirectlyActivity.class);
             startActivity(intent);
             finish();
         }

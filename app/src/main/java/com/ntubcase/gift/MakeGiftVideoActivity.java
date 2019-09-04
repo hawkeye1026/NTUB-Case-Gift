@@ -41,7 +41,7 @@ import java.util.Date;
 
 public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPlayer.OnPreparedListener {
 
-    private Button btn_save, btn_makePlan, btn_selectVideo, btn_openCamera;
+    private Button btn_save, btn_directly_send, btn_selectVideo, btn_openCamera;
     private static EditText et_giftName;
     private VideoView vv_content;
     private MediaController mc;
@@ -70,9 +70,9 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
         //---------------------------------------------------------------------------------
         et_giftName = (EditText) findViewById(R.id.et_giftName);
         btn_save = findViewById(R.id.btn_save);
-        btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
+        btn_directly_send = (Button) findViewById(R.id.btn_directly_send);
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
-        btn_makePlan.setOnClickListener(makePlanClickListener); //設置監聽器
+        btn_directly_send.setOnClickListener(directlySendClickListener); //設置監聽器
 
         btn_selectVideo = (Button) findViewById(R.id.btn_selectVideo);
         btn_selectVideo.setOnClickListener(selectVideoClickListener); //設置監聽器
@@ -193,15 +193,15 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
         }
     };
 
-    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
-    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
+    //-------------------------------直接送禮按鈕 監聽器----------------------------------------
+    private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            uploadViedo(v);
+            //uploadViedo(v);
 
             Intent intent;
-            intent = new Intent(MakeGiftVideoActivity.this, PlanActivity.class);
+            intent = new Intent(MakeGiftVideoActivity.this, SendGiftDirectlyActivity.class);
             startActivity(intent);
             finish();
         }

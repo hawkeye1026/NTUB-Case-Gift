@@ -1,29 +1,23 @@
 package com.ntubcase.gift.Adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
 
 
 import java.util.List;
-import java.util.Map;
 
 
 public class plan_list_adapter extends RecyclerView.Adapter<plan_list_adapter.ViewHolder>{
-    //private List<Map<String, Object>> mData;
     private List<String> mData;
     private OnItemClickListener mOnItemClickListener;
+    public static boolean isFromMake = true;
 
     public plan_list_adapter(List<String> data) {
         mData = data;
@@ -36,7 +30,6 @@ public class plan_list_adapter extends RecyclerView.Adapter<plan_list_adapter.Vi
         private TextView textView;
         private Button btnRemove;
         private CheckBox checkBox;
-        String message;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -44,16 +37,19 @@ public class plan_list_adapter extends RecyclerView.Adapter<plan_list_adapter.Vi
             btnRemove= (Button) itemView.findViewById(R.id.btn_delete_item);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
 
-            // 點擊項目中的Button時
-            btnRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // 移除項目，getAdapterPosition為點擊的項目位置
-                    mData.remove(getAdapterPosition());
-                    notifyDataSetChanged();
-                }
-            });
-
+            if (isFromMake){
+                // 點擊項目中的Button時
+                btnRemove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // 移除項目，getAdapterPosition為點擊的項目位置
+                        mData.remove(getAdapterPosition());
+                        notifyDataSetChanged();
+                    }
+                });
+            }else {
+                btnRemove.setVisibility(View.INVISIBLE); //若是唯讀狀態則不顯示刪除按鈕
+            }
 
         }
     }

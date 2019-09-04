@@ -12,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MakeGiftCodeActivity extends AppCompatActivity {
-    private Button btn_add, btn_addMulti, btn_remove, btn_save, btn_makePlan;
+    private Button btn_add, btn_addMulti, btn_remove, btn_save, btn_directly_send;
     private static EditText et_giftName;
 
     private static String giftName, giftContent;
@@ -65,9 +64,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         btn_addMulti = findViewById(R.id.btn_addMulti);
         btn_remove = findViewById(R.id.btn_remove);
         btn_save = findViewById(R.id.btn_save);
-        btn_makePlan = (Button) findViewById(R.id.btn_makePlan);
+        btn_directly_send = (Button) findViewById(R.id.btn_directly_send);
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
-        btn_makePlan.setOnClickListener(makePlanClickListener); //設置監聽器
+        btn_directly_send.setOnClickListener(directlySendClickListener); //設置監聽器
         tableLayout = (TableLayout) findViewById(R.id.tab_01);
 
         btn_add.setOnClickListener(new View.OnClickListener() { //設置 新增一行按鈕 監聽器
@@ -268,15 +267,15 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         }
     };
 
-    //-------------------------------製作計畫按鈕 監聽器----------------------------------------
-    private View.OnClickListener makePlanClickListener = new View.OnClickListener() {
+    //-------------------------------直接送禮按鈕 監聽器----------------------------------------
+    private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            uploadGift(v);
+            //uploadGift(v);
 
             Intent intent;
-            intent = new Intent(MakeGiftCodeActivity.this, PlanActivity.class);
+            intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
             startActivity(intent);
             finish();
         }

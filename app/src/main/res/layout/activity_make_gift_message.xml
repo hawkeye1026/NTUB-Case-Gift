@@ -73,26 +73,22 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btn_save"
-            android:layout_width="0dp"
+            android:id="@+id/btn_directly_send"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="5dp"
-            android:text="儲存"
+            android:text="直接送禮"
             android:textSize="18sp"
             android:textColor="#FFF"
             android:background="@drawable/bg_normalbutton"/>
 
         <Button
-            android:id="@+id/btn_makePlan"
-            android:layout_width="0dp"
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="5dp"
-            android:text="製作送禮計畫"
-            android:textSize="18sp"
-            android:textColor="#FFF"
-            android:background="@drawable/bg_normalbutton"/>
+            android:background="@drawable/bg_save"/>
+
 
     </LinearLayout>
 

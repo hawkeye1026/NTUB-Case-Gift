@@ -412,7 +412,6 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                     String friendName = "";
                     for (int i = 0; i < friendsLength; i++) {
                         selectFriendIds.add(jsonArray.getJSONObject(i).getString("receiverid")); //好友ID
-                        String nickname =jsonArray.getJSONObject(i).getString("nickname");
 
                         if (friendName.equals("")) friendName += jsonArray.getJSONObject(i).getString("nickname");
                         else friendName += " , " + jsonArray.getJSONObject(i).getString("nickname");
