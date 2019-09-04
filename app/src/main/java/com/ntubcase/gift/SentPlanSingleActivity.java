@@ -68,6 +68,7 @@ public class SentPlanSingleActivity extends AppCompatActivity {
         recycler_view.setLayoutManager(new LinearLayoutManager(this)); // 設置RecyclerView為列表型態
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // 設置格線
         adapter = new plan_single_adapter(mData); // 將資料交給adapter
+        adapter.isFromMake=false;
         recycler_view.setAdapter(adapter);  // 設置adapter給recycler_view
         adapter.setOnItemClickListener(new plan_single_adapter.OnItemClickListener(){
             @Override
@@ -167,8 +168,6 @@ public class SentPlanSingleActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("sinPlan");
-                    //String sinPlanid =jsonArray.getJSONObject(0).getString("sinid"); //計畫ID
-                    //String sinCreateDate = DateFormat.dateFormat(jsonArray.getJSONObject(0).getString("createDate")); //計畫建立日期
                     String sinPlanName =jsonArray.getJSONObject(0).getString("sinPlanName"); //計畫名稱
                     String sinSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
 
@@ -191,12 +190,9 @@ public class SentPlanSingleActivity extends AppCompatActivity {
                     int sinListLength = jsonArray.length();
 
                     for (int i = 0 ; i < sinListLength ; i++){
-                        //String sinListid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
-                        //String sinGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
                         String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
                         String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
-                        String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
 
                         Map<String, Object> mGiftsData = new HashMap<String, Object>();
                         mGiftsData.put("giftName", sinGiftName);

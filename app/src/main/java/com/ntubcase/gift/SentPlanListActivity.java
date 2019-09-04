@@ -68,7 +68,7 @@ public class SentPlanListActivity extends AppCompatActivity{
         edt_list_friend.setInputType(InputType.TYPE_NULL);
         edt_list_giftName.setInputType(InputType.TYPE_NULL);
         edt_list_lastDate.setInputType(InputType.TYPE_NULL);
-        edt_list_name.setInputType(InputType.TYPE_NULL);
+        edt_list_lastTime.setInputType(InputType.TYPE_NULL);
         btnAdd = (Button) findViewById(R.id.btnAdd); //新增按鈕
         btnAdd.setVisibility(View.INVISIBLE);
 
@@ -77,6 +77,7 @@ public class SentPlanListActivity extends AppCompatActivity{
         recycler_view.setLayoutManager(new LinearLayoutManager(this));  // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new plan_list_adapter(mData);  // 將資料交給adapter
+        adapter.isFromMake=false;
         recycler_view.setAdapter(adapter); // 設置adapter給recycler_view
         adapter.setOnItemClickListener(new plan_list_adapter.OnItemClickListener(){
             @Override

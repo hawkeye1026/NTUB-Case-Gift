@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.ntubcase.gift.MakePlanSingleActivity;
 import com.ntubcase.gift.R;
 
 
@@ -18,6 +17,7 @@ import java.util.Map;
 public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapter.ViewHolder>{
     private List<Map<String, Object>> mData;
     private OnItemClickListener mOnItemClickListener;
+    public static boolean isFromMake = true;
 
     public plan_single_adapter(List<Map<String, Object>> data) {
         mData = data;
@@ -36,14 +36,18 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
             txtMessage = (TextView) itemView.findViewById(R.id.txtMessage);
             btnRemove= (Button) itemView.findViewById(R.id.btnRemove);
 
-            // 點擊項目中的Button時
-            btnRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // 移除項目，getAdapterPosition為點擊的項目位置
-                    removeItem(getAdapterPosition());
-                }
-            });
+            if (isFromMake){
+                // 點擊項目中的Button時
+                btnRemove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // 移除項目，getAdapterPosition為點擊的項目位置
+                        removeItem(getAdapterPosition());
+                    }
+                });
+            }else {
+                btnRemove.setVisibility(View.INVISIBLE); //若是唯讀狀態則不顯示刪除按鈕
+            }
 
         }
     }
