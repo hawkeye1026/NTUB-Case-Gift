@@ -534,14 +534,18 @@ public class MakePlanListActivity extends AppCompatActivity{
     public void uploadPlan(String store){
         //---upload giftRecord
         Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
-        for (int i = 0 ; i < selectFriendIds.size(); i++) {
-            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
+        giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
 
-                }
-            });
-            giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, store, planType);
+            }
+        });
+        if(selectFriendIds.size()>0){
+            for (int i = 0 ; i < selectFriendIds.size(); i++) {
+                giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, store, planType);
+            }
+        }else {
+            giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, "", planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
 
@@ -552,12 +556,6 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        Log.v("missionPlan", planid);
-        Log.v("missionPlan", edt_list_name.getText().toString());
-        Log.v("missionPlan", dateTime);
-        Log.v("missionPlan", dateOnly);
-        Log.v("missionPlan",edt_list_sentDate.getText().toString());
-        Log.v("missionPlan", edt_list_lastDate.getText().toString());
         missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString());
         Log.v("missionPlan", "//---upload missionPlan");
 
