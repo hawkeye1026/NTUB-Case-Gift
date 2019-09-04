@@ -1,7 +1,6 @@
 package com.ntubcase.gift;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertImg_giftAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.gift.update.giftUpdateAsyncTask;
 
 import java.text.SimpleDateFormat;

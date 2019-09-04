@@ -1,7 +1,7 @@
 package com.ntubcase.gift;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertImg_giftAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertAsyncTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +15,7 @@ public class uploadGift {
         String dateTime = sdFormat.format(date);
 //        Log.v("gift",giftContent+"||"+giftName+"||"+owner+"||"+giftType);
         //------------------------------上傳禮物資料
-        giftInsertImg_giftAsyncTask mgiftInsertAsyncTask = new giftInsertImg_giftAsyncTask(new giftInsertImg_giftAsyncTask.TaskListener() {
+        giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
 
