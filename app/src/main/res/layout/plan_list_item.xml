@@ -6,12 +6,6 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <CheckBox
-        android:id="@+id/checkbox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1" />
-
     <TextView
         android:id="@+id/Textview"
         android:layout_width="0dp"
