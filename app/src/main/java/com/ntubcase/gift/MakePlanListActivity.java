@@ -819,7 +819,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-   
+
 
 
 }
