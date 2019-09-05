@@ -101,7 +101,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 EditText editText = new EditText(getApplicationContext());
 
                 //editText.setBackgroundColor(Color.WHITE);
-                editText.setTextColor(Color.BLACK);
+                editText.setTextColor(Color.rgb(135,51,36));
                 editText.setBackgroundResource(R.drawable.bg_text);
                 editText.setGravity(Gravity.CENTER);
                 editText.setTextSize(18);
@@ -163,7 +163,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             for (int col = 0 ; col< 2; col++){
                 EditText editText = new EditText(getApplicationContext());
 
-                editText.setTextColor(Color.BLACK);
+                editText.setTextColor(Color.rgb(135,51,36));
                 editText.setBackgroundResource(R.drawable.bg_text);
                 editText.setGravity(Gravity.CENTER);
                 editText.setTextSize(18);

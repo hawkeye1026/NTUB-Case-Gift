@@ -545,6 +545,7 @@ public class MakePlanListActivity extends AppCompatActivity{
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
         Calendar t = Calendar.getInstance();
         String dateSend = edt_list_sentDate.getText().toString();//送禮時間
+        String dateLast = edt_list_lastDate.getText().toString();//截止日期
         String timeLast = edt_list_lastTime.getText().toString();//截止時間
 
 
@@ -571,11 +572,18 @@ public class MakePlanListActivity extends AppCompatActivity{
             e.printStackTrace();
         }
         //任務期限日期為今天的情況下，截止時間不可為今天過去時間
-        if (dateSend.equals(dateNow)) {
-            if (a.after(b))
+        if (dateLast.equals(dateNow)) {
+            if (a.after(b)){
                 return true;//可預送
+            }else{
+                return false;
+            }
+        } else if (dateSend.equals(dateLast) == false){
+            return true;
+        } else{
+            return false;
         }
-        return false;//不可預送
+
     }
 
     //-------------------------------儲存按鈕 監聽器----------------------------------------
@@ -591,12 +599,16 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "mis_" + sdFormat_giftContent.format(date);
+            boolean isTimenull = !edt_list_lastTime.getText().toString().equals("") || !edt_list_lastDate.getText().toString().equals("");
 
             //-----檢查是否有輸入計畫名稱-----
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
-            }else if (isTimeCheck()==false){
-                    Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
+            }else if(isTimenull && !isTimeCheck()) {
+                Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
+            }else if(isTimenull && isTimeCheck()){
+                uploadPlan("0");
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }else if (btn_send.getVisibility()==View.GONE && isDataCompleted() && isTimeCheck()){  //----若預送按鈕尚未出現 並填完必填資料---
                 btn_send.setVisibility(View.VISIBLE);
                 new AlertDialog.Builder(MakePlanListActivity.this)
@@ -819,6 +831,8 @@ public class MakePlanListActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
 
