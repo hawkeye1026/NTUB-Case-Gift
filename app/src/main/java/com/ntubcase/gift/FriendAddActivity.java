@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class FriendAddActivity extends AppCompatActivity {
     ImageView imgFriend;
     TextView txtFriend;
     Button btnAdd,btnSearch;
+    LinearLayout find_friend;
 
     //---
     private String userid="1", friendid;
@@ -49,8 +51,9 @@ public class FriendAddActivity extends AppCompatActivity {
         edt_sEmail = (EditText) findViewById(R.id.edt_sEmail); //搜尋的email
         imgFriend = (ImageView) findViewById(R.id.img_Friend);//好友照片
         txtFriend = (TextView) findViewById(R.id.txt_Friend);//好友帳號
-        btnSearch = (Button) findViewById(R.id.btnSearch);//加入按鈕
+        btnSearch = (Button) findViewById(R.id.btnSearch);//搜尋按鈕
         btnAdd = (Button) findViewById(R.id.btn_add);//加入按鈕
+        find_friend =(LinearLayout) findViewById(R.id.find_friend);
 
         //--搜尋
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +72,7 @@ public class FriendAddActivity extends AppCompatActivity {
                                     return;
                                 }
                                 JSONObject object = new JSONObject(result);
-
+                                
                                 //取得禮物紀錄
                                 JSONArray jsonArray = object.getJSONArray("result");
                                 int resultLength = jsonArray.length();
@@ -82,16 +85,17 @@ public class FriendAddActivity extends AppCompatActivity {
 
                                 //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
                                 Uri imageURI = Uri.parse(image);
-                                if (imageURI!=null){
+                                if (imageURI!=null && !imageURI.toString().equals("")){
                                     Picasso.get().load(imageURI)
                                             .transform(new CircleTransform())
                                             .into(imgFriend);
                                 }
 
                                 txtFriend.setText(nickname);
-
+                                find_friend.setVisibility(View.VISIBLE);
                             } catch (Exception e) {
-                                Toast.makeText(FriendAddActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FriendAddActivity.this, "沒找到此email的使用者!", Toast.LENGTH_SHORT).show();
+                                find_friend.setVisibility(View.INVISIBLE);
                             }
                         }
                     });

@@ -56,7 +56,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
         //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
         Uri imageURI = Uri.parse(mFriendList.get(position).get("imgURL").toString());
-        if (imageURI!=null){
+        if (imageURI!=null && !imageURI.toString().equals("")){
             Picasso.get().load(imageURI)
                     .transform(new CircleTransform())
                     .into(holder.iv_photo);

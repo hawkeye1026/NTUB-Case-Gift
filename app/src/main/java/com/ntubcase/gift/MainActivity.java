@@ -50,12 +50,11 @@ public class MainActivity extends AppCompatActivity {
         mSetting = (ImageView)findViewById(R.id.mSetting);
 
         Uri imageURI = userData.getUserPhotoUri();
-        if (imageURI!=null){
+        if (imageURI!=null && !imageURI.toString().equals("")){
             Picasso.get().load(imageURI)
                     .transform(new CircleTransform())
                     .into(mSetting);
         }
-
 
 
         //-------禮物區 按鈕------

@@ -20,7 +20,7 @@
             android:id="@+id/iv_photo"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_gift_camera"
+            android:src="@drawable/ic_user"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"/>
 

@@ -48,7 +48,7 @@ public class SettingActivity extends AppCompatActivity {
 
         //-------顯示使用者頭像
         Uri imageURI = userData.getUserPhotoUri();
-        if (imageURI!=null){
+        if (imageURI!=null && !imageURI.toString().equals("")){
             Picasso.get().load(imageURI)
                     .transform(new CircleTransform())
                     .into(mUserPhoto);
