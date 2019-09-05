@@ -176,7 +176,7 @@ public class SentPlanSingleActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("sinPlan");
-                    sinPlanid =jsonArray.getJSONObject(0).getString("sinPlanid");
+                    sinPlanid =jsonArray.getJSONObject(0).getString("sinid");
                     String sinPlanName =jsonArray.getJSONObject(0).getString("sinPlanName"); //計畫名稱
                     String sinSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
 
