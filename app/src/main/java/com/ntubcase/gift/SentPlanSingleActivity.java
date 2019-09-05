@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.planCancelSentAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 
 import org.json.JSONArray;
@@ -42,7 +43,7 @@ public class SentPlanSingleActivity extends AppCompatActivity {
     private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
     private Button btn_save, btn_cancel, btnAdd, btnEnt, btnCan;
-    private String sender= "1";
+    private String sender= "1", sinPlanid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +142,13 @@ public class SentPlanSingleActivity extends AppCompatActivity {
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            planCancelSentAsyncTask planCancelSentAsyncTask = new planCancelSentAsyncTask(new planCancelSentAsyncTask.TaskListener() {
+                                @Override
+                                public void onFinished(String result) {
+
+                                }
+                            });
+                            planCancelSentAsyncTask.execute(Common.planCancelSent, sender, sinPlanid, "0");
                             Toast.makeText(getApplicationContext(), "已取消預送", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -168,6 +176,7 @@ public class SentPlanSingleActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("sinPlan");
+                    sinPlanid =jsonArray.getJSONObject(0).getString("sinPlanid");
                     String sinPlanName =jsonArray.getJSONObject(0).getString("sinPlanName"); //計畫名稱
                     String sinSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
 

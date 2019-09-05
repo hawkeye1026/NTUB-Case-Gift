@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_list_adapter;
 import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.planCancelSentAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 
@@ -35,7 +36,7 @@ public class SentPlanListActivity extends AppCompatActivity{
 
     //----------------------------------------------------------------------------------------------
     static EditText edt_list_name, edt_list_message, edt_list_lastDate,edt_list_friend, edt_list_giftName, edt_list_sentDate,edt_list_lastTime;
-    private String sender= "1";
+    private String sender= "1", misPlanid;
 
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
@@ -145,6 +146,14 @@ public class SentPlanListActivity extends AppCompatActivity{
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            planCancelSentAsyncTask planCancelSentAsyncTask = new planCancelSentAsyncTask(new planCancelSentAsyncTask.TaskListener() {
+                                @Override
+                                public void onFinished(String result) {
+
+                                }
+                            });
+                            planCancelSentAsyncTask.execute(Common.planCancelSent, sender, misPlanid, "0");
+
                             Toast.makeText(getApplicationContext(), "已取消預送", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -172,7 +181,7 @@ public class SentPlanListActivity extends AppCompatActivity{
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("misPlan");
-                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
+                    misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
                     //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
                     String misPlanName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
                     String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
