@@ -654,17 +654,23 @@ public class MakePlanListActivity extends AppCompatActivity{
     public void uploadPlan(String store){
         //---upload giftRecord
         Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
-        giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-            @Override
-            public void onFinished(String result) {
-
-            }
-        });
         if(selectFriendIds.size()>0){
             for (int i = 0 ; i < selectFriendIds.size(); i++) {
+                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
                 giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, store, planType);
             }
         }else {
+            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
             giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, "", planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
