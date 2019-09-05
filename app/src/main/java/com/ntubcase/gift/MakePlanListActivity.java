@@ -593,10 +593,11 @@ public class MakePlanListActivity extends AppCompatActivity{
             planid = "mis_" + sdFormat_giftContent.format(date);
 
             //-----檢查是否有輸入計畫名稱-----
+
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
-            }else if (isTimeCheck()==false){
-                    Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
+            /*}else if (isTimeCheck()==false){
+                    Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();*/
             }else if (btn_send.getVisibility()==View.GONE && isDataCompleted() && isTimeCheck()){  //----若預送按鈕尚未出現 並填完必填資料---
                 btn_send.setVisibility(View.VISIBLE);
                 new AlertDialog.Builder(MakePlanListActivity.this)
@@ -682,7 +683,8 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString());
+        Log.v("deadline", edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem
