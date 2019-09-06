@@ -221,12 +221,6 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                 try {
                     add_multi_dateS.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
                     selectStartDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-
-                    if (selectEndDate!=null && selectStartDate.after(selectEndDate)){ //若開始日期比結束日期晚
-                        selectEndDate = selectStartDate;
-                        add_multi_dateE.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                    }
-
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -234,6 +228,9 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        if (selectEndDate!=null){
+            datePickerDialog.getDatePicker().setMaxDate(selectEndDate.getTime()); //最大日期為結束日期
+        }
         datePickerDialog.show();
     }
 
@@ -249,12 +246,6 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                 try {
                     add_multi_dateE.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
                     selectEndDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-
-                    if (selectStartDate!=null && !selectEndDate.after(selectStartDate)){ //若結束日期比開始日期早
-                        selectStartDate = selectEndDate;
-                        add_multi_dateS.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                    }
-
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -262,8 +253,11 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
-
-        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        if (selectStartDate!=null){
+            datePickerDialog.getDatePicker().setMinDate(selectStartDate.getTime());  //最小日期為開始日期
+        }else{
+            datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        }
         datePickerDialog.show();
     }
 
