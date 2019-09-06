@@ -115,74 +115,44 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
         }
         return false;
     }
-    //更新禮物
-    public void updateGift(View v) {
-        giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
-
-        if(checkRepeatGift.checkRepeatGift(giftName)) {
-            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
-
-            //------------------------------上傳禮物資料
-            new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
-
-            //-------------讀取Dialog-----------
-            barProgressDialog = ProgressDialog.show(MakeGiftMessageActivity.this,
-                    "讀取中", "請等待...", true);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        getGiftList.getJSON();
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        barProgressDialog.dismiss();
-                        finish();
-                    }
-                }
-            }).start();
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
-        }
-    }
     //上傳禮物
     public void uploadGift(View v) {
         giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
+        giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
 
-        if(checkRepeatGift.checkRepeatGift(giftName)) {
-            giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
+        if(giftid > 0){
+            //------------------------------更新禮物資料
+            new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+        }else{
 
-            //------------------------------上傳禮物資料
-            if(giftid > 0){
-                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
-            }else{
+            if(checkRepeatGift.checkRepeatGift(giftName)) {
+                //------------------------------上傳禮物資料
                 new uploadGift(giftContent, giftName, owner, giftType);
+
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            //-------------讀取Dialog-----------
-            barProgressDialog = ProgressDialog.show(MakeGiftMessageActivity.this,
-                    "讀取中", "請等待...", true);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        getGiftList.getJSON();
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        barProgressDialog.dismiss();
-                        finish();
-                    }
-                }
-            }).start();
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
         }
+        //-------------讀取Dialog-----------
+        barProgressDialog = ProgressDialog.show(MakeGiftMessageActivity.this,
+                "讀取中", "請等待...", true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getGiftList.getJSON();
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    barProgressDialog.dismiss();
+                    finish();
+                }
+            }
+        }).start();
+
     }
 }

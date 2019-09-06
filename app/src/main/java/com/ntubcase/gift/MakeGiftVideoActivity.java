@@ -285,6 +285,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
             if(cam_videoUri == null) {
                 //顯示提示訊息
                 Toast.makeText(v.getContext(), "儲存失敗，請選擇一個影片！", Toast.LENGTH_SHORT).show();
+                return;
             }
         }catch (Exception e){
             e.printStackTrace();

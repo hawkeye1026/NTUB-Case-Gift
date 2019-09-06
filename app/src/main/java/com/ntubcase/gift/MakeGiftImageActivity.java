@@ -346,6 +346,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             if(cam_imageUri == null) {
                 //顯示提示訊息
                 Toast.makeText(v.getContext(), "儲存失敗，請選擇一張照片！", Toast.LENGTH_SHORT).show();
+                return;
             }
         }catch (Exception e){
             e.printStackTrace();
