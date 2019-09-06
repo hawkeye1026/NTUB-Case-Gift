@@ -602,6 +602,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             boolean isTimenull = !edt_list_lastTime.getText().toString().equals("") || !edt_list_lastDate.getText().toString().equals("");
 
             //-----檢查是否有輸入計畫名稱-----
+
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
             }else if(isTimenull && !isTimeCheck()) {
@@ -666,17 +667,23 @@ public class MakePlanListActivity extends AppCompatActivity{
     public void uploadPlan(String store){
         //---upload giftRecord
         Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
-        giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-            @Override
-            public void onFinished(String result) {
-
-            }
-        });
         if(selectFriendIds.size()>0){
             for (int i = 0 ; i < selectFriendIds.size(); i++) {
+                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
                 giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, store, planType);
             }
         }else {
+            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
             giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, "", planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
@@ -688,7 +695,8 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString());
+        Log.v("deadline", edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem

@@ -441,17 +441,23 @@ public class PlanMultipleActivity extends AppCompatActivity {
     public void uploadPlan(String store){
         //---upload giftRecord
         Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
-        giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-            @Override
-            public void onFinished(String result) {
-
-            }
-        });
         if(receiveFriendId.size()>0){
             for (int i = 0 ; i < receiveFriendId.size(); i++) {
+                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
                 giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, receiveFriendId.get(i), planid, store, planType);
             }
         }else {
+            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
             giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, "", planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
