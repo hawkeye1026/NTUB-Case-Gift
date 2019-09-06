@@ -75,9 +75,6 @@ public class MakePlanListActivity extends AppCompatActivity{
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
-    private Date selectStartDate, selectEndDate;
-
-
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -366,63 +363,56 @@ public class MakePlanListActivity extends AppCompatActivity{
     //設定送禮日期EditText傳入值---------------------------------------
     private void showDateSPickerDialog () {
         final Calendar c = Calendar.getInstance();
-        if (selectStartDate!=null) c.setTime(selectStartDate);  //取得上次選的日期
-
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                try {
-                    edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                    selectStartDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-
-                    if (selectEndDate!=null && selectStartDate.after(selectEndDate)){ //若開始日期比結束日期晚
-                        selectEndDate = selectStartDate;
-                        edt_list_lastDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                    }
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-
-        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
-        datePickerDialog.show();
-    }
-
-    //設定結束日期EditText傳入值---------------------------------------
-    private void showDateEPickerDialog () {
-        final Calendar c = Calendar.getInstance();
 
         try {
-            String oldTime = edt_list_lastDate.getText().toString();  //取得上次選的時間
-            if (!oldTime.equals("")) c.setTime(sdf.parse(oldTime));
+            String oldDate = edt_list_sentDate.getText().toString();  //取得上次選的日期
+            if (!oldDate.equals("")) c.setTime(sdf.parse(oldDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+            }
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        try {
+            if (!edt_list_lastDate.getText().toString().equals("")){
+                Date lastDate =  sdf.parse(edt_list_lastDate.getText().toString());
+                datePickerDialog.getDatePicker().setMaxDate(lastDate.getTime()); //最大日期為截止日期
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        datePickerDialog.show();
+    }
+
+    //設定截止日期EditText傳入值---------------------------------------
+    private void showDateEPickerDialog () {
+        final Calendar c = Calendar.getInstance();
+
+        try {
+            String oldDate = edt_list_lastDate.getText().toString();  //取得上次選的日期
+            if (!oldDate.equals("")) c.setTime(sdf.parse(oldDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                edt_list_lastDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
 
-                try {
-                    edt_list_lastDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                    selectEndDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-
-                    if (selectStartDate!=null && !selectEndDate.after(selectStartDate)){ //若結束日期比開始日期早
-                        selectStartDate = selectEndDate;
-                        edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                    }
-                    String dateLast = edt_list_lastDate.getText().toString();//截止日期
-                    String timeLast = edt_list_lastTime.getText().toString();//截止時間
-                    if (!dateLast.equals("") && timeLast.equals(""))
-                        edt_list_lastTime.setText("23:59");
-                    
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
+                //-----設定截止時間初值-----
+                String dateLast = edt_list_lastDate.getText().toString();//截止日期
+                String timeLast = edt_list_lastTime.getText().toString();//截止時間
+                if (!dateLast.equals("") && timeLast.equals(""))
+                    edt_list_lastTime.setText("23:59");
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
@@ -430,10 +420,21 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 edt_list_lastDate.setText("");
+                edt_list_lastTime.setText("");
             }
         });
 
-        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+        try {
+            if (!edt_list_sentDate.getText().toString().equals("")){
+                Date sentDate =  sdf.parse(edt_list_sentDate.getText().toString());
+                datePickerDialog.getDatePicker().setMinDate(sentDate.getTime());  //最小日期為送禮日期
+            }else{
+                datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         datePickerDialog.show();
     }
 
@@ -447,7 +448,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     }
     //-----------------------------------------------------------
 
-    //設定送禮時間EditText傳入值---------------------------------------
+    //設定截止時間EditText傳入值---------------------------------------
     private void showTimePickerDialog() {
         Calendar t = Calendar.getInstance();
         try {
@@ -461,12 +462,22 @@ public class MakePlanListActivity extends AppCompatActivity{
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     edt_list_lastTime.setText(dateAdd0(hourOfDay) + ":" + dateAdd0(minute));
+
+                    //-----設定截止日期初值-----
+                    String sentDate  = edt_list_sentDate.getText().toString();//送禮日期
+                    String dateLast = edt_list_lastDate.getText().toString();//截止日期
+                    String timeLast = edt_list_lastTime.getText().toString();//截止時間
+                    if (!timeLast.equals("") && dateLast.equals("")){
+                        if (!sentDate.equals("")) edt_list_lastDate.setText(sentDate); //截止日期為送禮日期
+                        else edt_list_lastDate.setText(sdf.format(new Date(System.currentTimeMillis()))); //截止日期為當日
+                    }
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false);
 
         TimePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "清除", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                edt_list_lastDate.setText("");
                 edt_list_lastTime.setText("");
             }
         });
@@ -611,7 +622,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
             }else if (!isTimeCheck()){
-                    Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "截止期限不可為過去時間", Toast.LENGTH_SHORT).show();
             }else{
                 uploadPlan("0");
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
