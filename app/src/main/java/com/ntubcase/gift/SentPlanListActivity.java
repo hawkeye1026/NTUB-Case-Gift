@@ -43,7 +43,7 @@ public class SentPlanListActivity extends AppCompatActivity{
     private plan_list_adapter adapter;
     private List<String> mData = new ArrayList<>();
 
-    private Button btn_save, btn_cancel, btnAdd, btnEnt, btnCan ;
+    private Button btn_save, btn_send, btn_cancel, btnAdd, btnEnt, btnCan ;
     String list_message;
 
     @SuppressLint("ResourceType")
@@ -96,6 +96,8 @@ public class SentPlanListActivity extends AppCompatActivity{
         //-----------------------------------------------------------------------
         btn_save = findViewById(R.id.btn_plan_save); //儲存按鈕
         btn_save.setVisibility(View.GONE);
+        btn_send = findViewById(R.id.btn_plan_send); //預送按鈕
+        btn_send.setVisibility(View.GONE);
         btn_cancel = findViewById(R.id.btn_plan_cancel); //取消預送按鈕
         String from = bundle.getString("from");
         if (from.equals("PlanSentFragment")){

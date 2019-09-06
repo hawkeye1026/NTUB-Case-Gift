@@ -41,7 +41,7 @@ public class SentPlanSingleActivity extends AppCompatActivity {
     private plan_single_adapter adapter;
     private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
-    private Button btn_save, btn_cancel, btnAdd, btnEnt, btnCan;
+    private Button btn_save, btn_send, btn_cancel, btnAdd, btnEnt, btnCan;
     private String sender= "1";
 
     @Override
@@ -87,6 +87,8 @@ public class SentPlanSingleActivity extends AppCompatActivity {
         //-----------------------------------------------------------------------
         btn_save = findViewById(R.id.btn_plan_save); //儲存按鈕
         btn_save.setVisibility(View.GONE);
+        btn_send = findViewById(R.id.btn_plan_send); //預送按鈕
+        btn_send.setVisibility(View.GONE);
         btn_cancel = findViewById(R.id.btn_plan_cancel); //取消預送按鈕
         String from = bundle.getString("from");
         if (from.equals("PlanSentFragment")){

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SentPlanMultiActivity extends AppCompatActivity {
-    private Button btn_save, btn_cancel;
+    private Button btn_save, btn_send, btn_cancel;
     private GridView gridView;
     private PlanMultiAdapter planMultiAdapter;
     private TextView tv_receiveFriend, tv_message, tv_sender;
@@ -79,6 +79,8 @@ public class SentPlanMultiActivity extends AppCompatActivity {
         //-----------------------------------------------------------------------
         btn_save = findViewById(R.id.btn_plan_save); //儲存按鈕
         btn_save.setVisibility(View.GONE);
+        btn_send = findViewById(R.id.btn_plan_send); //預送按鈕
+        btn_send.setVisibility(View.GONE);
         btn_cancel = findViewById(R.id.btn_plan_cancel); //取消預送按鈕
         if (from.equals("PlanSentFragment")){
             btn_cancel.setVisibility(View.VISIBLE);
