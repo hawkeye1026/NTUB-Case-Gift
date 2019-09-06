@@ -56,7 +56,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private static String giftName, giftContent;
     private String filename;
     protected static Date date =new Date();
-    protected static String owner = "test";
+    protected static String owner = "wayne";
 //    protected static String owner = googleAccount.getUserName()
     protected static String dateTime, giftType = "1";
     ProgressDialog barProgressDialog;
@@ -103,9 +103,11 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         if (position>=0){
             //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
 //            Uri imageURI = Uri.parse(Common.imgPath + userData.getUserName()+" /" + getGiftList.getGift(position)); google帳號
-            Uri imageURI = Uri.parse(Common.imgPath + "wayne/" + getGiftList.getGift(position));
-            old_giftContent = getGiftList.getGift(position);
-            Log.v("gift",Common.imgPath+ "wayne/" + getGiftList.getGift(position));
+            Uri imageURI = Uri.parse(Common.imgPath  + getGiftList.getGift(position));
+
+            old_giftContent = getGiftList.getGift(position).replace(owner+"/","");
+
+            Log.v("gift",Common.imgPath + getGiftList.getGift(position));
             Picasso.get().load(imageURI).into(iv_image);
             //-------存入禮物詳細的editText
             et_giftName.setText( getGiftList.getGiftName(position));
@@ -344,6 +346,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             if(cam_imageUri == null) {
                 //顯示提示訊息
                 Toast.makeText(v.getContext(), "儲存失敗，請選擇一張照片！", Toast.LENGTH_SHORT).show();
+                return;
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -357,28 +360,19 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         dateTime = sdFormat.format(date);
 
         if(giftid > 0) {
-
-            //                //------------------------------上傳禮物圖片
-            //                giftInsertImg_imageAsyncTask mGiftInsertImgAsyncTask = new giftInsertImg_imageAsyncTask(new giftInsertImg_imageAsyncTask.TaskListener() {
-            //                    @Override
-            //                    public void onFinished(String result) {
-            //
-            //                    }
-            //                }, ImageFilePath.getPath(getApplicationContext(), cam_imageUri));
-            //                mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_image, giftContent, old_giftContent,owner,"img","update");
-            //                //excute( URL , newgiftcontent ,old_filename , userid , file_type , crud  )
             //------------------------------上傳禮物資料
             Log.v("upload", giftid + "");
             new updateGift(String.valueOf(giftid), "wayne/" + giftContent, giftName, owner, giftType);
-            new uploadGiftFile(getApplicationContext(), cam_imageUri, "wayne/" + giftContent, old_giftContent, owner, "img", "update");
+            new uploadGiftFile(getApplicationContext(), cam_imageUri, giftContent, old_giftContent, owner, "img", "update");
         }else {
             if(checkRepeatGift.checkRepeatGift(giftName)) {
                 //------------------------------上傳禮物資料
                 Log.v("upload", giftid + "");
                 new uploadGift("wayne/" + giftContent, giftName, owner, giftType);
-                new uploadGiftFile(getApplicationContext(), cam_imageUri, "wayne/" + giftContent, old_giftContent, owner, "img", "insert");
+                new uploadGiftFile(getApplicationContext(), cam_imageUri, giftContent, old_giftContent, owner, "img", "insert");
             }else{
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+                return;
             }
         }
 
@@ -391,7 +385,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
                 try{
                     //uploadFile(imagepath);
                     getGiftList.getJSON();
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
                 }
                 catch(Exception e){
                     e.printStackTrace();

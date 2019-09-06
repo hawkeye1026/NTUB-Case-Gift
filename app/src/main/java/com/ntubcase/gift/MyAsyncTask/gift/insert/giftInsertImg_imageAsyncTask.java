@@ -87,37 +87,27 @@ public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, Str
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setDoInput(true); // Allow Inputs
                     conn.setDoOutput(true); // Allow Outputs
-                    conn.setUseCaches(false); // Don't use a Cached Copy
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Connection", "Keep-Alive");
                     conn.setRequestProperty("ENCTYPE",
                             "multipart/form-data");
                     conn.setRequestProperty("Content-Type",
                             "multipart/form-data;boundary=" + boundary);
-
-                    switch (params[4]){
+                    switch (params[2]){
                         case "img":
-                            conn.setRequestProperty("image", params[2]);
+                            conn.setRequestProperty("image", params[1]);
                             break;
                         case "vid":
-                            conn.setRequestProperty("video", params[2]);
+                            conn.setRequestProperty("video", params[1]);
                             break;
                     }
-                    String args =
-                            "old_filename=" + URLEncoder.encode(params[2], "UTF-8")+
-                            "&userid=" + URLEncoder.encode(params[3], "UTF-8" )+
-                            "&file_type=" + URLEncoder.encode(params[4], "UTF-8" )+
-                            "&crud=" + URLEncoder.encode(params[5], "UTF-8" );
-
-                    conn.connect();
                     dos = new DataOutputStream(conn.getOutputStream());
                     BufferedWriter writer = new BufferedWriter(
                             new OutputStreamWriter(dos, "UTF-8"));
-                    writer.write(args);
-                    writer.flush();
+                    conn.connect();
 
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
-                    switch (params[4]){
+                    switch (params[2]){
                         case "img":
                             dos.writeBytes("Content-Disposition:form-data; name=\"image\";filename=\""
                                     + params[1] + "\"" + lineEnd);
@@ -127,8 +117,6 @@ public class giftInsertImg_imageAsyncTask extends AsyncTask<String, Integer, Str
                                     + params[1] + "\"" + lineEnd);
                             break;
                     }
-                    dos.writeBytes("Content-Disposition:form-data; name="+ params[2] + ";filename=\""
-                            + params[1] + "\"" + lineEnd);
                     dos.writeBytes(lineEnd);
 
                     // create a buffer of maximum size

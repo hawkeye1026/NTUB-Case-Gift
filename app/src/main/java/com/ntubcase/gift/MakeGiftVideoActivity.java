@@ -57,7 +57,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     int currentapiVersion = android.os.Build.VERSION.SDK_INT; //取得目前版本
 
     private static int giftid;
-
+    private static String old_giftContent = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +95,8 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
         if (position>=0){
             //-------圖片網址 getGift(n) 取得第n筆資料的禮物資料
             Uri viedoURI = Uri.parse(Common.vidPath + getGiftList.getGift(position));
+            old_giftContent = getGiftList.getGift(position).replace(owner+"/","");
+
             Log.v("gift",Common.vidPath + getGiftList.getGift(position));
             vv_content.setVideoURI(viedoURI);
 
@@ -283,53 +285,53 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
             if(cam_videoUri == null) {
                 //顯示提示訊息
                 Toast.makeText(v.getContext(), "儲存失敗，請選擇一個影片！", Toast.LENGTH_SHORT).show();
+                return;
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+        giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
 
-        if(checkRepeatGift.checkRepeatGift(giftName)) {
+        giftContent = getFileName(cam_videoUri);    //取得使用者輸入的禮物內容
+        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
+        Date date =new Date();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        dateTime = sdFormat.format(date);
 
-            giftContent = getFileName(cam_videoUri);        //取得使用者欲上傳的檔案名稱
-            //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-
+        if(giftid > 0) {
             //------------------------------上傳禮物資料
-            if(giftid > 0){
-                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+            Log.v("upload", giftid + "");
+            new updateGift(String.valueOf(giftid), "wayne/" + giftContent, giftName, owner, giftType);
+            new uploadGiftFile(getApplicationContext(), cam_videoUri, giftContent, old_giftContent, owner, "vid", "update");
+        }else {
+            if(checkRepeatGift.checkRepeatGift(giftName)) {
+                //------------------------------上傳禮物資料
+                Log.v("upload", giftid + "");
+                new uploadGift("wayne/" + giftContent, giftName, owner, giftType);
+                new uploadGiftFile(getApplicationContext(), cam_videoUri, giftContent, old_giftContent, owner, "vid", "insert");
             }else{
-                new uploadGift(giftContent, giftName, owner, giftType);
+                Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+                return;
             }
-            //------------------------------上傳禮物圖片
-//            giftInsertVid_viedoAsyncTask mGiftInsertImgAsyncTask = new giftInsertVid_viedoAsyncTask(new giftInsertVid_viedoAsyncTask.TaskListener() {
-//                @Override
-//                public void onFinished(String result) {
-//
-//                }
-//            }, ImageFilePath.getPath(getApplicationContext(), cam_videoUri));
-//            mGiftInsertImgAsyncTask.execute(Common.insertGiftImg_video, String.valueOf(cam_videoUri), giftContent);
-
-            //-------------讀取Dialog-----------
-            barProgressDialog = ProgressDialog.show(MakeGiftVideoActivity.this,
-                    "讀取中", "請等待...", true);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        getGiftList.getJSON();
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        barProgressDialog.dismiss();
-                        finish();
-                    }
-                }
-            }).start();
-
-            Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
         }
+        //-------------讀取Dialog-----------
+        barProgressDialog = ProgressDialog.show(MakeGiftVideoActivity.this,
+                "讀取中", "請等待...", true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getGiftList.getJSON();
+                    Thread.sleep(3000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    barProgressDialog.dismiss();
+                    finish();
+                }
+            }
+        }).start();
+
     }
 
     String getFileName(Uri uri){
