@@ -178,13 +178,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                 if (hasFocus) {
                     showDateEPickerDialog();
                 }
-                String dateLast = edt_list_lastDate.getText().toString();//截止日期
-                String timeLast = edt_list_lastTime.getText().toString();//截止時間
-                if (!dateLast.equals("") && timeLast.equals("")){
-                    edt_list_lastTime.setText("23.59");
-                }else if(dateLast.equals("")){
-                    edt_list_lastTime.setText("");
-                }
+
 
             }
         });
@@ -194,13 +188,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 showDateEPickerDialog();
-                String dateLast = edt_list_lastDate.getText().toString();//截止日期
-                String timeLast = edt_list_lastTime.getText().toString();//截止時間
-                if (!dateLast.equals("") && timeLast.equals("")){
-                    edt_list_lastTime.setText("23.59");
-                }else if(dateLast.equals("")){
-                    edt_list_lastTime.setText("");
-                }
+
             }
         });
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
@@ -426,7 +414,11 @@ public class MakePlanListActivity extends AppCompatActivity{
                         selectStartDate = selectEndDate;
                         edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
                     }
-
+                    String dateLast = edt_list_lastDate.getText().toString();//截止日期
+                    String timeLast = edt_list_lastTime.getText().toString();//截止時間
+                    if (!dateLast.equals("") && timeLast.equals(""))
+                        edt_list_lastTime.setText("23:59");
+                    
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
