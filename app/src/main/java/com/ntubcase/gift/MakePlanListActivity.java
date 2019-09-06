@@ -541,7 +541,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     private boolean isTimeCheck() {
 
         //如果想比较日期则写成"yyyy-MM-dd"就可以了
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat sdft = new SimpleDateFormat("hh:mm");
         Calendar t = Calendar.getInstance();
         String dateSend = edt_list_sentDate.getText().toString();//送禮時間
         String dateLast = edt_list_lastDate.getText().toString();//截止日期
@@ -560,28 +560,23 @@ public class MakePlanListActivity extends AppCompatActivity{
         //将字符串形式的时间转化为Date类型的时间
         Date a = null;
         try {
-            a = sdf.parse(timeLast);
+            a = sdft.parse(timeLast);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         Date b = null;
         try {
-            b = sdf.parse(timeNow);
+            b = sdft.parse(timeNow);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        //任務期限日期為今天的情況下，截止時間不可為今天過去時間
+
         if (dateLast.equals(dateNow)) {
-            if (a.after(b)){
-                return true;//可預送
-            }else{
-                return false;
-            }
-        } else if (dateSend.equals(dateLast) == false){
-            return true;
-        } else{
-            return false;
+            if (a.before(b))
+                return false;//可預送
         }
+        return true;
+
 
     }
 
