@@ -178,6 +178,14 @@ public class MakePlanListActivity extends AppCompatActivity{
                 if (hasFocus) {
                     showDateEPickerDialog();
                 }
+                String dateLast = edt_list_lastDate.getText().toString();//截止日期
+                String timeLast = edt_list_lastTime.getText().toString();//截止時間
+                if (!dateLast.equals("") && timeLast.equals("")){
+                    edt_list_lastTime.setText("23.59");
+                }else if(dateLast.equals("")){
+                    edt_list_lastTime.setText("");
+                }
+
             }
         });
 
@@ -186,6 +194,13 @@ public class MakePlanListActivity extends AppCompatActivity{
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 showDateEPickerDialog();
+                String dateLast = edt_list_lastDate.getText().toString();//截止日期
+                String timeLast = edt_list_lastTime.getText().toString();//截止時間
+                if (!dateLast.equals("") && timeLast.equals("")){
+                    edt_list_lastTime.setText("23.59");
+                }else if(dateLast.equals("")){
+                    edt_list_lastTime.setText("");
+                }
             }
         });
         //點選選擇禮物EditText跳出選擇禮物選擇器------------------------------------------------------------------------
@@ -239,6 +254,8 @@ public class MakePlanListActivity extends AppCompatActivity{
                 if (hasFocus) {
                     showTimePickerDialog();
                 }
+
+
             }
         });
 
@@ -571,8 +588,9 @@ public class MakePlanListActivity extends AppCompatActivity{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        if (dateLast.equals(dateNow)) {
+        if (dateLast.equals("")|| dateSend.equals("")|| timeLast.equals("")){
+            return true;
+        }else if (dateLast.equals(dateNow)){
             if (a.before(b))
                 return false;//可預送
         }
@@ -600,7 +618,7 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
-            }else if (isTimeCheck()==false){
+            }else if (!isTimeCheck()){
                     Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
             }else{
                 uploadPlan("0");
@@ -627,7 +645,7 @@ public class MakePlanListActivity extends AppCompatActivity{
 
                 uploadPlan("1");
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
-            }else if(isTimeCheck() == false){
+            }else if(!isTimeCheck()){
                 Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
