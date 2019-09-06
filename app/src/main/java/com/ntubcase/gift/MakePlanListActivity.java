@@ -605,30 +605,8 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
-            }else if(isTimenull && !isTimeCheck()) {
-                Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
-            }else if(isTimenull && isTimeCheck()){
-                uploadPlan("0");
-                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-            }else if (btn_send.getVisibility()==View.GONE && isDataCompleted() && isTimeCheck()){  //----若預送按鈕尚未出現 並填完必填資料---
-                btn_send.setVisibility(View.VISIBLE);
-                new AlertDialog.Builder(MakePlanListActivity.this)
-                        .setTitle("是否直接預送您的計畫?")
-                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                uploadPlan("1");
-                                Toast.makeText(getApplicationContext(), "已預送!", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNeutralButton("否", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                uploadPlan("0");
-                                Toast.makeText(getApplicationContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();
+            }else if (isTimeCheck()==false){
+                    Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
             }else{
                 uploadPlan("0");
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
@@ -817,9 +795,6 @@ public class MakePlanListActivity extends AppCompatActivity{
                         mData.add(jsonArray.getJSONObject(i).getString("content")); //項目內容
                     }
                     adapter.notifyDataSetChanged();
-
-                    //----------------檢查必填資料是否填完----------------
-                    if (isDataCompleted()) btn_send.setVisibility(View.VISIBLE);
 
                 } catch (Exception e) {
                     Toast.makeText(MakePlanListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();

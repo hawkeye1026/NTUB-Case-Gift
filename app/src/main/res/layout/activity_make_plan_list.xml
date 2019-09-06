@@ -249,8 +249,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="30dp"
-            android:background="@drawable/bg_send"
-            android:visibility="gone"/>
+            android:background="@drawable/bg_send"/>
 
         <Button
             android:id="@+id/btn_plan_cancel"
