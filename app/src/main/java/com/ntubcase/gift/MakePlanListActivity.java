@@ -545,7 +545,6 @@ public class MakePlanListActivity extends AppCompatActivity{
             if (i==mData.size()-1) isMissonHaveContent = true;
         }
 
-
         String planName = edt_list_name.getText().toString();
         String sendPlanDate = edt_list_sentDate.getText().toString();
         String receiveFriend = edt_list_friend.getText().toString();
@@ -558,48 +557,30 @@ public class MakePlanListActivity extends AppCompatActivity{
         return false;
     }
 
-    //--------------檢查時間是否為過去式---------------------------
+    //--------------檢查時間是否不為過去式---------------------------
     private boolean isTimeCheck() {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-        //如果想比较日期则写成"yyyy-MM-dd"就可以了
-        SimpleDateFormat sdft = new SimpleDateFormat("hh:mm");
-        Calendar t = Calendar.getInstance();
-        String dateSend = edt_list_sentDate.getText().toString();//送禮時間
         String dateLast = edt_list_lastDate.getText().toString();//截止日期
         String timeLast = edt_list_lastTime.getText().toString();//截止時間
+        Date nowDateTime = new Date(System.currentTimeMillis()); //現在日期與時間
+        Date lastDateTime;
 
-
-        String dateNow = t.get(Calendar.YEAR) + "-"
-                + dateAdd0(t.get(Calendar.MONTH) + 1) + "-"
-                + dateAdd0(t.get(Calendar.DAY_OF_MONTH));
-
-
-        String timeNow = dateAdd0(t.get(Calendar.HOUR_OF_DAY)) + ":"
-                + dateAdd0(t.get(Calendar.MINUTE));//現在日期
-
-
-        //将字符串形式的时间转化为Date类型的时间
-        Date a = null;
-        try {
-            a = sdft.parse(timeLast);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Date b = null;
-        try {
-            b = sdft.parse(timeNow);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (dateLast.equals("")|| dateSend.equals("")|| timeLast.equals("")){
+        if (dateLast.equals("") && timeLast.equals("")){ //可以沒有截止日期
             return true;
-        }else if (dateLast.equals(dateNow)){
-            if (a.before(b))
-                return false;//可預送
+        }else{
+            try {
+                lastDateTime = sdFormat.parse(dateLast+" "+timeLast); //截止日期與時間
+                //若截止時間比現在時間小
+                if (lastDateTime.before(nowDateTime)){
+                    return false;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+
         return true;
-
-
     }
 
     //-------------------------------儲存按鈕 監聽器----------------------------------------
@@ -615,10 +596,8 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "mis_" + sdFormat_giftContent.format(date);
-            boolean isTimenull = !edt_list_lastTime.getText().toString().equals("") || !edt_list_lastDate.getText().toString().equals("");
 
             //-----檢查是否有輸入計畫名稱-----
-
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
             }else if (!isTimeCheck()){
