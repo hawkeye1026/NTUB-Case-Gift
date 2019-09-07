@@ -73,8 +73,10 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     private List<List<String>> mSelectGiftIds;
 
     //---------------------------------------------------------------------------------------------------------------
+    private SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -253,7 +255,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
         try {
             String oldDate = edt_single_date.getText().toString();  //取得上次選的日期
-            if (!edt_single_date.equals("")) c.setTime(sdf.parse(oldDate));
+            if (!edt_single_date.equals("")) c.setTime(sdfD.parse(oldDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -494,6 +496,21 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         return false;
     }
 
+    //----------------檢查送禮日期是否大於今天----------------
+    private boolean isSendDateCheck(){
+        Date nowDateTime = new Date(System.currentTimeMillis()); //現在日期與時間
+        String sendPlanDate = edt_single_date.getText().toString();
+
+        try {
+            Date sendDateTime = sdFormat.parse(sendPlanDate+" 23:59");
+            if (sendDateTime.after(nowDateTime)) return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
@@ -520,7 +537,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (isDataCompleted()){ //---資料填完才能預送---
+            if (isDataCompleted() && isSendDateCheck()){ //---資料填完才能預送---
                 //取得目前時間：yyyy/MM/dd hh:mm:ss
                 Date date = new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -531,8 +548,10 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
                 uploadPlan("1");
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
-            }else{
+            }else if(!isDataCompleted()){
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
+            }else if (!isSendDateCheck()){  //---若送禮日期小於今天---
+                Toast.makeText(v.getContext(), "送禮日期已過", Toast.LENGTH_SHORT).show();
             }
         }
     };

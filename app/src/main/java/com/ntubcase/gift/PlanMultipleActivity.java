@@ -59,6 +59,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     ProgressDialog barProgressDialog;
 
     private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>();  //選取的時間區段
+    private SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     //-----cutomlayout內物件
@@ -369,6 +370,19 @@ public class PlanMultipleActivity extends AppCompatActivity {
         return false;
     }
 
+    //----------------檢查送禮日期是否大於今天----------------
+    private boolean isSendDateCheck(){
+        Date nowDateTime = new Date(System.currentTimeMillis()); //現在日期與時間
+
+        try {
+            Date sendDateTime = sdFormat.parse(startDate+" 23:59");
+            if (sendDateTime.after(nowDateTime)) return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     //-------------------------------儲存按鈕 監聽器----------------------------------------
     private View.OnClickListener planSaveClickListener = new View.OnClickListener() {
         @Override
@@ -380,7 +394,6 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
             planid = "mul_" + sdFormat_giftContent.format(date);
-            Log.v("receiveFriendId.size", String.valueOf(receiveFriendId.size()));
 
             //-----檢查是否有輸入計畫名稱-----
             if (planName.equals("")) {
@@ -397,7 +410,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (isDataCompleted()){ //---資料填完才能預送---
+            if (isDataCompleted() && isSendDateCheck()){ //---資料填完才能預送---
                 //取得目前時間：yyyy/MM/dd hh:mm:ss
                 Date date = new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -408,8 +421,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
                 uploadPlan("1");
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
-            }else {
+            }else if (!isDataCompleted()){
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
+            }else if (!isSendDateCheck()){  //---若送禮日期小於今天---
+                Toast.makeText(v.getContext(), "送禮日期已過", Toast.LENGTH_SHORT).show();
             }
         }
     };

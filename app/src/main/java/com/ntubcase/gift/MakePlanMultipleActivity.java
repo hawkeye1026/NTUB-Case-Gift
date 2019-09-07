@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +43,8 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     //----------------------------------------------------------------------------------------------
     private EditText add_multi_name,add_multi_message,add_multi_friend,add_multi_dateS,add_multi_dateE;
     private Date selectStartDate, selectEndDate;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
     //----------------------------------------------------------------------------------------
     private List<Map<String, Object>> selectDates; //選取的時間區段
     private List<Map<String, Object>> oldSelectDates = new ArrayList<Map<String, Object>>();; //原有資料
@@ -220,7 +220,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 try {
                     add_multi_dateS.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                    selectStartDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    selectStartDate = sdfD.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -228,7 +228,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
-        if (selectEndDate!=null){
+        if (selectEndDate!=null && isEndDateCheck()){
             datePickerDialog.getDatePicker().setMaxDate(selectEndDate.getTime()); //最大日期為結束日期
         }
         datePickerDialog.show();
@@ -245,7 +245,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 try {
                     add_multi_dateE.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
-                    selectEndDate = sdf.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
+                    selectEndDate = sdfD.parse(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -259,6 +259,18 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
             datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
         }
         datePickerDialog.show();
+    }
+
+    //----------------檢查結束日期是否大於今天----------------
+    private boolean isEndDateCheck(){
+        Date nowDateTime = new Date(System.currentTimeMillis()); //現在日期與時間
+        try {
+            Date endDateTime = sdFormat.parse( add_multi_dateE.getText().toString()+" 23:59");
+            if (endDateTime.after(nowDateTime) ) return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     //-----------------------------------------------------------
@@ -276,7 +288,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     private View.OnClickListener nextPageListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (selectStartDate==null || selectEndDate==null){   //送禮日期或結束日期不能為空值
+            if (selectStartDate==null || selectEndDate==null || selectStartDate.after(selectEndDate)){   //送禮日期或結束日期不能為空值
                 Toast.makeText(MakePlanMultipleActivity.this,
                         "請設定規劃期間", Toast.LENGTH_SHORT).show();
             }else{
@@ -334,7 +346,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     //--------------取得兩個日期間所有日期------------------
     public List<String> findDates(Date dBegin, Date dEnd){
         List<String> lDate = new ArrayList<String>();
-        lDate.add(sdf.format(dBegin));
+        lDate.add(sdfD.format(dBegin));
 
         Calendar calBegin = Calendar.getInstance();
         calBegin.setTime(dBegin);
@@ -345,7 +357,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
         while (dEnd.after(calBegin.getTime())) { // 测试此日期是否在指定日期之后
             // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
             calBegin.add(Calendar.DAY_OF_MONTH, 1);
-            lDate.add(sdf.format(calBegin.getTime()));
+            lDate.add(sdfD.format(calBegin.getTime()));
         }
         return lDate;
     }
@@ -394,9 +406,9 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
 
                     add_multi_name.setText(mulPlanName); //計畫名稱
                     add_multi_dateS.setText(mulStartDate.substring(0,10)); //送禮日期
-                    selectStartDate = sdf.parse(mulStartDate);
+                    selectStartDate = sdfD.parse(mulStartDate);
                     add_multi_dateE.setText(mulEndDate.substring(0,10)); //結束日期
-                    selectEndDate = sdf.parse(mulEndDate);
+                    selectEndDate = sdfD.parse(mulEndDate);
                     add_multi_message.setText(message); //祝福
 
                     //----------------------------取得好友資料----------------------------

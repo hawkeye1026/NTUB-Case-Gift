@@ -3,7 +3,6 @@ package com.ntubcase.gift;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBar;
@@ -38,16 +37,12 @@ import com.ntubcase.gift.data.getGiftList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MakePlanListActivity extends AppCompatActivity{
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
@@ -72,7 +67,9 @@ public class MakePlanListActivity extends AppCompatActivity{
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String list_message;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    private SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     @SuppressLint("ResourceType")
@@ -366,12 +363,12 @@ public class MakePlanListActivity extends AppCompatActivity{
 
         try {
             String oldDate = edt_list_sentDate.getText().toString();  //取得上次選的日期
-            if (!oldDate.equals("")) c.setTime(sdf.parse(oldDate));
+            if (!oldDate.equals("")) c.setTime(sdfD.parse(oldDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MakePlanListActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 edt_list_sentDate.setText(year + "-" + dateAdd0(monthOfYear + 1) + "-" + dateAdd0(dayOfMonth));
@@ -380,8 +377,8 @@ public class MakePlanListActivity extends AppCompatActivity{
 
         datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
         try {
-            if (!edt_list_lastDate.getText().toString().equals("")){
-                Date lastDate =  sdf.parse(edt_list_lastDate.getText().toString());
+            if (!edt_list_lastDate.getText().toString().equals("") && isSendLastDateCheck() ){
+                Date lastDate =  sdfD.parse(edt_list_lastDate.getText().toString());
                 datePickerDialog.getDatePicker().setMaxDate(lastDate.getTime()); //最大日期為截止日期
             }
         } catch (ParseException e) {
@@ -397,7 +394,7 @@ public class MakePlanListActivity extends AppCompatActivity{
 
         try {
             String oldDate = edt_list_lastDate.getText().toString();  //取得上次選的日期
-            if (!oldDate.equals("")) c.setTime(sdf.parse(oldDate));
+            if (!oldDate.equals("")) c.setTime(sdfD.parse(oldDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -426,7 +423,7 @@ public class MakePlanListActivity extends AppCompatActivity{
 
         try {
             if (!edt_list_sentDate.getText().toString().equals("")){
-                Date sentDate =  sdf.parse(edt_list_sentDate.getText().toString());
+                Date sentDate =  sdfD.parse(edt_list_sentDate.getText().toString());
                 datePickerDialog.getDatePicker().setMinDate(sentDate.getTime());  //最小日期為送禮日期
             }else{
                 datePickerDialog.getDatePicker().setMinDate(new Date().getTime());  //最小日期為當日
@@ -469,7 +466,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                     String timeLast = edt_list_lastTime.getText().toString();//截止時間
                     if (!timeLast.equals("") && dateLast.equals("")){
                         if (!sentDate.equals("")) edt_list_lastDate.setText(sentDate); //截止日期為送禮日期
-                        else edt_list_lastDate.setText(sdf.format(new Date(System.currentTimeMillis()))); //截止日期為當日
+                        else edt_list_lastDate.setText(sdfD.format(new Date(System.currentTimeMillis()))); //截止日期為當日
                     }
             }
         }, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), false);
@@ -557,30 +554,48 @@ public class MakePlanListActivity extends AppCompatActivity{
         return false;
     }
 
-    //--------------檢查時間是否不為過去式---------------------------
-    private boolean isTimeCheck() {
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    //----------------datePicker 檢查送禮和截止日期是否大於當日----------------
+    private boolean isSendLastDateCheck(){
+        Date nowDateTime = new Date(System.currentTimeMillis()); //現在日期與時間
 
+        try {
+            Date lastDateTime = sdFormat.parse( edt_list_lastDate.getText().toString()+" 23:59");
+            if (lastDateTime.after(nowDateTime)){ //截止日期大於當日
+                if (!edt_list_sentDate.getText().toString().equals("")){
+                    Date sendDateTime = sdFormat.parse(edt_list_sentDate.getText().toString()+" 23:59");
+                    if (sendDateTime.after(nowDateTime)) return true; //送禮日期大於當日
+                }else {
+                    return true;
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    //--------------預送時 檢查送禮和截止日期是否不為過去式---------------------------
+    private boolean isLastTimeCheck() {
+        String sendDate = edt_list_sentDate.getText().toString();//送禮日期
         String dateLast = edt_list_lastDate.getText().toString();//截止日期
         String timeLast = edt_list_lastTime.getText().toString();//截止時間
         Date nowDateTime = new Date(System.currentTimeMillis()); //現在日期與時間
-        Date lastDateTime;
 
-        if (dateLast.equals("") && timeLast.equals("")){ //可以沒有截止日期
-            return true;
-        }else{
-            try {
-                lastDateTime = sdFormat.parse(dateLast+" "+timeLast); //截止日期與時間
-                //若截止時間比現在時間小
-                if (lastDateTime.before(nowDateTime)){
-                    return false;
+        try {
+            Date sendDateTime = sdFormat.parse(sendDate+" 23:59");
+            if (sendDateTime.after(nowDateTime)){ //送禮日期>=當日
+                if (dateLast.equals("") && timeLast.equals("")){ return true; //若沒有截止期限
+                }else{
+                    Date lastDateTime = sdFormat.parse(dateLast+" "+timeLast);
+                    if (lastDateTime.after(nowDateTime)) return true;  //若截止時間大於當下
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        return true;
+        return false;
     }
 
     //-------------------------------儲存按鈕 監聽器----------------------------------------
@@ -600,8 +615,6 @@ public class MakePlanListActivity extends AppCompatActivity{
             //-----檢查是否有輸入計畫名稱-----
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
-            }else if (!isTimeCheck()){
-                    Toast.makeText(v.getContext(), "截止期限不可為過去時間", Toast.LENGTH_SHORT).show();
             }else{
                 uploadPlan("0");
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
@@ -614,7 +627,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (isDataCompleted() && isTimeCheck()) { //---資料填完才能預送---
+            if (isDataCompleted() && isLastTimeCheck()) { //---資料填完才能預送---
                 //取得目前時間：yyyy/MM/dd hh:mm:ss
                 Date date = new Date();
                 SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -627,10 +640,10 @@ public class MakePlanListActivity extends AppCompatActivity{
 
                 uploadPlan("1");
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
-            }else if(!isTimeCheck()){
-                Toast.makeText(v.getContext(), "送禮期限不可為過去時間", Toast.LENGTH_SHORT).show();
-            }else {
+            }else if (!isDataCompleted()){
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
+            }else if (!isLastTimeCheck()){
+                Toast.makeText(v.getContext(), "送禮日期或截止期限已過", Toast.LENGTH_SHORT).show();
             }
         }
 
