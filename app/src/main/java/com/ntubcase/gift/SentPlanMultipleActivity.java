@@ -34,7 +34,7 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
     private String from;
 
     //--showPlan
-    private String sender="1";
+    private String sender="1", mulPlanid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,7 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
             Intent intent;
             intent = new Intent(SentPlanMultipleActivity.this, SentPlanMultiActivity.class);
             Bundle bundle = new Bundle();
+            bundle.putString("planid", mulPlanid);
             bundle.putString("planName", mulPlanName);
             bundle.putString("receiveFriend", friendName);
             bundle.putString("message", message);
@@ -103,6 +104,7 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("mulPlan");
+                    mulPlanid =jsonArray.getJSONObject(0).getString("mulid");
                     mulPlanName =jsonArray.getJSONObject(0).getString("mulPlanName"); //計畫名稱
                     String mulStartDate = jsonArray.getJSONObject(0).getString("startDate"); //送禮日期
                     String mulEndDate = jsonArray.getJSONObject(0).getString("endDate"); //結束日期

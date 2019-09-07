@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.PlanMultiAdapter;
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.planCancelSentAsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class SentPlanMultiActivity extends AppCompatActivity {
 
     private String planName, receiveFriend, message; //------bundle傳遞的資料
 
-    private String sender= "1";
+    private String sender= "1", planid;
     ProgressDialog barProgressDialog;
 
     private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>();  //選取的時間區段
@@ -51,6 +53,7 @@ public class SentPlanMultiActivity extends AppCompatActivity {
 
         //---------------------------------上一頁資料-----------------------------------
         Bundle bundle = getIntent().getExtras();
+        planid = bundle.getString("planid");
         planName = bundle.getString("planName");    //計畫名稱
         receiveFriend = bundle.getString("receiveFriend");  //收禮人名稱
         message = bundle.getString("message");  //祝福
@@ -139,6 +142,13 @@ public class SentPlanMultiActivity extends AppCompatActivity {
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            planCancelSentAsyncTask planCancelSentAsyncTask = new planCancelSentAsyncTask(new planCancelSentAsyncTask.TaskListener() {
+                                @Override
+                                public void onFinished(String result) {
+
+                                }
+                            });
+                            planCancelSentAsyncTask.execute(Common.planCancelSent, sender, planid, "0");
                             //-----回前頁結束製作計畫-----
                             setResult(FINISH_ACTIVITY);
                             finish();
