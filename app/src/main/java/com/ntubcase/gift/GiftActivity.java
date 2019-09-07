@@ -312,6 +312,7 @@ public class GiftActivity extends AppCompatActivity {
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
             updateSelectedCount();
+            Toast.makeText(GiftActivity.this, "加入成功", Toast.LENGTH_SHORT).show();
             giftListAdapter.notifyDataSetChanged();
         }
 

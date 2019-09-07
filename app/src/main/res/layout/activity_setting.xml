@@ -128,12 +128,13 @@
                 android:layout_height="130dp"
                 android:layout_marginTop="10dp" />
 
-            <!--<Button-->
-                <!--android:id="@+id/iv_logout"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:background="@drawable/logout" />-->
+            <Button
+                android:id="@+id/iv_scanner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="掃描器"
+                />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
