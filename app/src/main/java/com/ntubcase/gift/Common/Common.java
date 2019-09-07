@@ -10,6 +10,7 @@ public class Common {
     //-------------------------------------Received
     public static String giftReceived="http://140.131.114.156/NTUB_gift_server/giftReceived.php/";
     public static String giftReceivedDone="http://140.131.114.156/NTUB_gift_server/giftReceivedDone.php/";
+
     //----------------------------------------------------------------POST
     //-------------------------------------login
     public static String login ="http://140.131.114.156/NTUB_gift_server/login.php?";
@@ -24,6 +25,7 @@ public class Common {
     public static String friendList="http://140.131.114.156/NTUB_gift_server/friendList.php?";
     public static String friendQuery="http://140.131.114.156/NTUB_gift_server/friendQuery.php?";
     public static String insertFriend="http://140.131.114.156/NTUB_gift_server/insertFriend.php?";
+    public static String deleteFriend="http://140.131.114.156/NTUB_gift_server/deleteFriend.php?";
     //-------------------------------------plan
     public static String planningList="http://140.131.114.156/NTUB_gift_server/planningList.php?";
     public static String planSent="http://140.131.114.156/NTUB_gift_server/planSent.php?";
@@ -32,8 +34,8 @@ public class Common {
     public static String insertMulPlan="http://140.131.114.156/NTUB_gift_server/insertMulPlan.php?";
     public static String insertMisPlan="http://140.131.114.156/NTUB_gift_server/insertMisPlan.php?";
     public static String insertSinPlan="http://140.131.114.156/NTUB_gift_server/insertSinPlan.php?";
-    public static String insertPlan="http://140.131.114.156/NTUB_gift_server/insertSpPlan.php?";
-    public static String spPalnDetail="http://140.131.114.156/NTUB_gift_server/spPlanDetail.php?";
+    public static String insertPlan="http://140.131.114.156/NTUB_gift_server/insertSpPlan.php?";  //---old
+    public static String spPalnDetail="http://140.131.114.156/NTUB_gift_server/spPlanDetail.php?";  //---old
     public static String singlePlan="http://140.131.114.156/NTUB_gift_server/singlePlan.php?";
     //-------------------------------------Received
     public static String spGiftReceivedDetail="http://140.131.114.156/NTUB_gift_server/spGiftReceivedDetail.php?";

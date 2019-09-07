@@ -17,9 +17,13 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ntubcase.gift.CircleTransform;
+import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.FriendActivity;
+import com.ntubcase.gift.FriendAddActivity;
+import com.ntubcase.gift.MyAsyncTask.friend.friendInsertAsyncTask;
 import com.ntubcase.gift.R;
 import com.squareup.picasso.Picasso;
 
@@ -214,8 +218,15 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             Collections.sort(selectedItems); //按position排序
 
+            Log.v("mFriendList", String.valueOf(mFriendList));
             for (int i=selectedItems.size()-1; i>=0; i--){
-                mFriendList.remove((int)selectedItems.get(i));
+                //mFriendList.remove((int)selectedItems.get(i));
+                friendInsertAsyncTask friendInsertAsyncTask = new friendInsertAsyncTask(new friendInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                    }
+                });
+                friendInsertAsyncTask.execute(Common.deleteFriend , "1", mFriendList.get(i).get("friendID").toString());
             }
             mode.finish();
             notifyDataSetChanged();
