@@ -7,13 +7,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class updateGiftRecord {
+    String dateTime, dateOnly;
 
-    public updateGiftRecord(String giftid, String giftContent, String giftName, String owner, String giftType){
+    public updateGiftRecord(String senderid, String receiverid, String planid, String store, String planType){
         //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-        Date date =new Date();
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        String dateTime = sdFormat.format(date);
-//        Log.v("gift",giftContent+"||"+giftName+"||"+owner+"||"+giftType);
+        Date date = new Date();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        dateTime = sdFormat.format(date);
+        SimpleDateFormat _sdFormat = new SimpleDateFormat("yyyy-MM-dd ");
+        dateOnly = _sdFormat.format(date);
+
+        SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+        planid = "mis_" + sdFormat_giftContent.format(date);
         //------------------------------上傳禮物資料
         giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
             @Override
@@ -21,7 +26,7 @@ public class updateGiftRecord {
 
             }
         });
-        giftRecordInsertAsyncTask.execute(Common.updateGift,giftid, giftContent, dateTime, giftName, owner, giftType);
+        //giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, store, planType);
     }
 
 }
