@@ -66,7 +66,10 @@ public class singlePlanInsertAsyncTask  extends AsyncTask<String, Integer, Strin
                     "planid=" + URLEncoder.encode(params[1], "UTF-8") +
                             "&planName=" + URLEncoder.encode(params[2], "UTF-8") +
                             "&createDate=" + URLEncoder.encode(params[3], "UTF-8") +
-                            "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8");
+                            "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8")+
+                            "&ownerid=" + URLEncoder.encode(params[5], "UTF-8")+
+                            "&store=" + URLEncoder.encode(params[6], "UTF-8")+
+                            "&planType=" + URLEncoder.encode(params[7], "UTF-8");
             Log.v("singlePlanInsert", args);
 
             OutputStream os = conn.getOutputStream();

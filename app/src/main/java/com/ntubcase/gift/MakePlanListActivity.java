@@ -658,16 +658,8 @@ public class MakePlanListActivity extends AppCompatActivity{
 
                     }
                 });
-                giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, selectFriendIds.get(i), planid, store, planType);
+                giftRecordInsertAsyncTask.execute(Common.insertMisPlan, planid, selectFriendIds.get(i));
             }
-        }else {
-            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            giftRecordInsertAsyncTask.execute(Common.insertMisPlan, sender, "", planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
 
@@ -679,7 +671,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             }
         });
         Log.v("deadline", edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString(), planid, store, planType);
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem
