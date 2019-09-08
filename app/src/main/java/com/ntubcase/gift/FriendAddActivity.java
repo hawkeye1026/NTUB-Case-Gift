@@ -37,6 +37,7 @@ public class FriendAddActivity extends AppCompatActivity {
 
     //---
     private String userid="1", friendid;
+//    private String userid="1", friendid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
