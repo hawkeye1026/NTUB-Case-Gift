@@ -48,7 +48,7 @@ public class GiftActivity extends AppCompatActivity {
     private mMultiChoiceListener multiChoiceListener;  //list多選模式監聽器
     private View actionBarView;  //多選模式中的action bar
     private TextView selectedNum;  //顯示選中個項目個數
-
+    int ItemCheckedStateChangedCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +72,12 @@ public class GiftActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String str = parent.getItemAtPosition(position).toString();
+
+                //清除已選取的Item
+                mListView.clearChoices();
+                if( ItemCheckedStateChangedCount > 0){
+                    selectedNum.setText("" + 0);
+                }
 
                 if (str.equals(getString(R.string.giftPhoto))) str="1";
                 else if(str.equals(getString(R.string.giftVideo))) str="2";
@@ -225,6 +231,7 @@ public class GiftActivity extends AppCompatActivity {
     private void setSearch_function(){
         mSearchView.setSubmitButtonEnabled(true);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String query) {
                 giftListAdapter.getFilter().filter(query);
@@ -234,6 +241,13 @@ public class GiftActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                //清除已選取的Item
+                mListView.clearChoices();
+
+                if( ItemCheckedStateChangedCount > 0){
+                    selectedNum.setText("" + 0);
+                }
+
                 giftListAdapter.getFilter().filter(newText);
                 return true;
             }
@@ -312,14 +326,15 @@ public class GiftActivity extends AppCompatActivity {
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
             updateSelectedCount();
-            Toast.makeText(GiftActivity.this, "加入成功", Toast.LENGTH_SHORT).show();
+            int giftid =  Integer.valueOf(giftListAdapter.getItem().get(position).get("giftid").toString());
+            Log.v("giftid ",giftid + "");
             giftListAdapter.notifyDataSetChanged();
         }
 
         //-----顯示目前選中的項目個數-----
         public void updateSelectedCount() {
-            int count = mListView.getCheckedItemCount();
-            selectedNum.setText("" + count);
+            ItemCheckedStateChangedCount = mListView.getCheckedItemCount();
+            selectedNum.setText("" + ItemCheckedStateChangedCount);
         }
 
         //-----初始化ActionBar-----
