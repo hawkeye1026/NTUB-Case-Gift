@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class getReceiveNew {
-    private static String[] senderid;
+    private static String[] ownerid;
     private static String[] receiverid;
     private static String[] nickname;
     private static String[] planid;
@@ -31,7 +31,7 @@ public class getReceiveNew {
                     //Log.v("plength",jsonArray.length()+"");
                     receiveNewLength = jsonArray.length();
 
-                    senderid = new String[receiveNewLength];
+                    ownerid = new String[receiveNewLength];
                     receiverid = new String[receiveNewLength];
                     nickname = new String[receiveNewLength];
                     planid = new String[receiveNewLength];
@@ -41,7 +41,7 @@ public class getReceiveNew {
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         //Log.v("abc", "10000");
-                        senderid[i] = jsonArray.getJSONObject(i).getString("senderid");
+                        ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         receiverid[i] = jsonArray.getJSONObject(i).getString("receiverid");
                         nickname[i] = jsonArray.getJSONObject(i).getString("nickname");
                         planid[i] = jsonArray.getJSONObject(i).getString("planid");
@@ -72,8 +72,8 @@ public class getReceiveNew {
         myAsyncTask.execute(Common.receiveNew, "1");
     }
 
-    public static String getSenderid(int i){
-        return senderid[i];
+    public static String getOwnerid(int i){
+        return ownerid[i];
     }
     public static String getReceiverid(int i){
         return receiverid[i];
