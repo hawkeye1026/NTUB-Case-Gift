@@ -109,8 +109,6 @@ public class planningListAsyncTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        Log.v("result",
-                result);
         taskListener.onFinished(result);
     }
 

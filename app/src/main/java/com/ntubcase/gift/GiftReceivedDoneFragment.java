@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 import com.ntubcase.gift.Adapter.GiftReceivedDoneAdapter;
 import com.ntubcase.gift.data.getGiftReceived;
+import com.ntubcase.gift.data.getReceiveOpen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,21 +87,21 @@ public class GiftReceivedDoneFragment extends Fragment {
 
     //-----------------取得收禮箱 已接收禮物資料-----------------
     private void getDoneReceivedGiftData() {
-        getGiftReceived.getJSON();
+        getReceiveOpen.getJSON();
 
-        String[][] rGiftsData = new String[getGiftReceived.getGiftLength()][20];
-        for (int i = 0; i < getGiftReceived.getGiftLength(); i++) {
-            rGiftsData[i][0] = getGiftReceived.getType(i);
-            rGiftsData[i][1] = getGiftReceived.getPlanName(i);
-            rGiftsData[i][2] = getGiftReceived.getNickname(i);
-            rGiftsData[i][3] = getGiftReceived.getSendPlanDate(i);
-            rGiftsData[i][4] = getGiftReceived.getPlanid(i);
+        String[][] rGiftsData = new String[getReceiveOpen.getReceiveOpenLength()][20];
+        for (int i = 0; i < getReceiveOpen.getReceiveOpenLength(); i++) {
+            rGiftsData[i][0] = getReceiveOpen.getPlanType(i);
+            rGiftsData[i][1] = getReceiveOpen.getPlanName(i);
+            rGiftsData[i][2] = getReceiveOpen.getNickname(i);
+            rGiftsData[i][3] = getReceiveOpen.getSendPlanDate(i);
+            rGiftsData[i][4] = getReceiveOpen.getPlanid(i);
         }
 
         rGiftsList = new ArrayList<Map<String, Object>>();
         Map<String, Object> rGifts;
 
-        for (int i = 0; i < getGiftReceived.getGiftLength(); i++) {
+        for (int i = 0; i < getReceiveOpen.getReceiveOpenLength(); i++) {
             rGifts = new HashMap<String, Object>();
             rGifts.put("type", rGiftsData[i][0]);
             rGifts.put("title", rGiftsData[i][1]);

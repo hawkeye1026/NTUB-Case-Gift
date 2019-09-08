@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class getPlanSent {
 
-    private static String[] senderid;
+    private static String[] ownerid;
     private static String[] planid;
     private static String[] planType;
     private static String[] planName;
@@ -31,7 +31,7 @@ public class getPlanSent {
                     //Log.v("plength",jsonArray.length()+"");
                     plansentLength = jsonArray.length();
 
-                    senderid = new String[plansentLength];
+                    ownerid = new String[plansentLength];
                     planid = new String[plansentLength];
                     planType = new String[plansentLength];
                     planName = new String[plansentLength];
@@ -40,7 +40,7 @@ public class getPlanSent {
 
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         //Log.v("abc", "10000");
-                        senderid[i] = jsonArray.getJSONObject(i).getString("senderid");
+                        ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         planid[i] = jsonArray.getJSONObject(i).getString("planid");
                         planType[i] = jsonArray.getJSONObject(i).getString("planType");
                         planName[i] = jsonArray.getJSONObject(i).getString("planName");
@@ -70,8 +70,8 @@ public class getPlanSent {
         myAsyncTask.execute(Common.planSent, "1");
     }
 
-    public static String getSenderid(int i){
-        return senderid[i];
+    public static String getOwnerid(int i){
+        return ownerid[i];
     }
     public static String getPlanid(int i){
         return planid[i];

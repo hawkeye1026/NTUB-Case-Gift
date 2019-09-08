@@ -5,7 +5,6 @@ public class Common {
     //-------------------------------------gift
     public static String giftList="http://140.131.114.156/NTUB_gift_server/giftList.php/";
     //-------------------------------------plan
-    public static String planList="http://140.131.114.156/NTUB_gift_server/planList.php/";
 
     //-------------------------------------Received
     public static String giftReceived="http://140.131.114.156/NTUB_gift_server/giftReceived.php/";
@@ -30,6 +29,7 @@ public class Common {
     public static String planningList="http://140.131.114.156/NTUB_gift_server/planningList.php?";
     public static String planSent="http://140.131.114.156/NTUB_gift_server/planSent.php?";
     public static String planGot="http://140.131.114.156/NTUB_gift_server/planGot.php?";
+    public static String planList="http://140.131.114.156/NTUB_gift_server/planList.php?";
     public static String planCancelSent="http://140.131.114.156/NTUB_gift_server/planCancelSent.php?";
     public static String insertMulPlan="http://140.131.114.156/NTUB_gift_server/insertMulPlan.php?";
     public static String insertMisPlan="http://140.131.114.156/NTUB_gift_server/insertMisPlan.php?";

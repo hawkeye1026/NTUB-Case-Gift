@@ -521,7 +521,9 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             dateTime = sdFormat.format(date);
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            planid = "sin_" + sdFormat_giftContent.format(date);
+            if(planid == null){
+                planid = "sin_" + sdFormat_giftContent.format(date);
+            }
 
             //-----檢查是否有輸入計畫名稱-----
             if (edt_single_name.getText().toString().equals("")) {
@@ -570,17 +572,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     }
                 });
                 Log.v("store:::::::",store);
-                giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, selectFriendIds.get(i), planid, store, planType);
+                giftRecordInsertAsyncTask.execute(Common.insertSinPlan, planid, selectFriendIds.get(i));
             }
-        }else {
-            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            Log.v("store:::::::",store);
-            giftRecordInsertAsyncTask.execute(Common.insertSinPlan, sender, "", planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
 
@@ -607,7 +600,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
             }
         });
-        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate);
+        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate, planid, store, planType);
         Log.v("singlePlan", "//---upload singlePlan");
 
 

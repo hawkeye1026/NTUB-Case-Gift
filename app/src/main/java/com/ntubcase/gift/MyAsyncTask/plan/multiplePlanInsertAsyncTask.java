@@ -68,7 +68,10 @@ public class multiplePlanInsertAsyncTask extends AsyncTask<String, Integer, Stri
                     "&createDate=" + URLEncoder.encode(params[3], "UTF-8") +
                     "&startDate=" + URLEncoder.encode(params[4], "UTF-8") +
                     "&endDate=" + URLEncoder.encode(params[5], "UTF-8") +
-                    "&message=" + URLEncoder.encode(params[6], "UTF-8");
+                    "&message=" + URLEncoder.encode(params[6], "UTF-8")+
+                    "&ownerid=" + URLEncoder.encode(params[7], "UTF-8")+
+                    "&store=" + URLEncoder.encode(params[8], "UTF-8")+
+                    "&planType=" + URLEncoder.encode(params[9], "UTF-8");
             Log.v("multiplePlanInsert", args);
 
             OutputStream os = conn.getOutputStream();

@@ -442,16 +442,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
                     }
                 });
-                giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, receiveFriendId.get(i), planid, store, planType);
+                giftRecordInsertAsyncTask.execute(Common.insertMulPlan, planid, receiveFriendId.get(i));
             }
-        }else {
-            giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
-                @Override
-                public void onFinished(String result) {
-
-                }
-            });
-            giftRecordInsertAsyncTask.execute(Common.insertMulPlan, sender, "", planid, store, planType);
         }
         Log.v("giftRecord", "//---upload giftRecord");
 
@@ -462,7 +454,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
             }
         });
-        multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message);
+        multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message, planid, store, planType);
         Log.v("multiplePlan", "//---upload multiplePlan");
 
         //--- upload multipleList

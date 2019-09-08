@@ -19,6 +19,7 @@ import com.ntubcase.gift.data.getPlanList;
 import com.ntubcase.gift.data.getPlanSent;
 import com.ntubcase.gift.data.getPlanningList;
 import com.ntubcase.gift.data.getReceiveNew;
+import com.ntubcase.gift.data.getReceiveOpen;
 import com.ntubcase.gift.login_model.facebookAccount;
 import com.ntubcase.gift.login_model.googleAccount;
 import com.ntubcase.gift.login_model.revokeAccess;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         getFriendList.getJSON();
         getGiftReceived.getJSON();
         getReceiveNew.getJSON();
+        getReceiveOpen.getJSON();
         getGiftReceivedDone.getJSON();
         //----------
 

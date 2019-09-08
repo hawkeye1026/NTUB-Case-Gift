@@ -67,7 +67,10 @@ public class missionPlanInsertAsyncTask extends AsyncTask<String, Integer, Strin
                             "&planName=" + URLEncoder.encode(params[2], "UTF-8") +
                             "&createDate=" + URLEncoder.encode(params[3], "UTF-8") +
                             "&sendPlanDate=" + URLEncoder.encode(params[4], "UTF-8") +
-                            "&deadline=" + URLEncoder.encode(params[5], "UTF-8");
+                            "&deadline=" + URLEncoder.encode(params[5], "UTF-8")+
+                            "&ownerid=" + URLEncoder.encode(params[6], "UTF-8")+
+                            "&store=" + URLEncoder.encode(params[7], "UTF-8")+
+                            "&planType=" + URLEncoder.encode(params[8], "UTF-8");
             Log.v("missionPlanInsert", args);
 
             OutputStream os = conn.getOutputStream();
