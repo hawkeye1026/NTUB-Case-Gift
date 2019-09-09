@@ -82,11 +82,8 @@
             android:name=".SentPlanListActivity"
             android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".PlanDetailActivity" />  <!-- 測試用 -->
-
         <!-- *****收禮箱區***** -->
         <activity android:name=".GiftReceivedActivity" />
-        <activity android:name=".GiftReceivedDetailActivity" />
 
         <!-- *****我的好友區***** -->
         <activity android:name=".FriendActivity" />
