@@ -1,8 +1,10 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.CardView;
@@ -25,6 +27,7 @@ import com.ntubcase.gift.FriendActivity;
 import com.ntubcase.gift.FriendAddActivity;
 import com.ntubcase.gift.MyAsyncTask.friend.friendInsertAsyncTask;
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.data.getFriendList;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -215,21 +218,36 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
         //-----點選ActionBar的item-----
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            Collections.sort(selectedItems); //按position排序
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            new AlertDialog.Builder(context)
+                    .setTitle("確定要刪除選取的好友嗎?")
+                    .setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //-----刪除禮物-----
+                            Collections.sort(selectedItems); //按position排序
 
-            Log.v("mFriendList", String.valueOf(mFriendList));
-            for (int i=selectedItems.size()-1; i>=0; i--){
-                //mFriendList.remove((int)selectedItems.get(i));
-                friendInsertAsyncTask friendInsertAsyncTask = new friendInsertAsyncTask(new friendInsertAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-                    }
-                });
-                friendInsertAsyncTask.execute(Common.deleteFriend , "1", mFriendList.get(i).get("friendID").toString());
-            }
-            mode.finish();
-            notifyDataSetChanged();
+                            Log.v("mFriendList", String.valueOf(mFriendList));
+                            for (int i=selectedItems.size()-1; i>=0; i--){
+                                friendInsertAsyncTask friendInsertAsyncTask = new friendInsertAsyncTask(new friendInsertAsyncTask.TaskListener() {
+                                    @Override
+                                    public void onFinished(String result) {
+                                    }
+                                });
+                                friendInsertAsyncTask.execute(Common.deleteFriend , "1", mFriendList.get(selectedItems.get(i)).get("friendID").toString());
+                                mFriendList.remove((int)selectedItems.get(i));
+                            }
+                            mode.finish();
+                            getFriendList.getJSON();
+                            notifyDataSetChanged();
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .show();
             return true;
         }
 
