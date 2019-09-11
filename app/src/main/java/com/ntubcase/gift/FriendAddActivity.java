@@ -98,7 +98,9 @@ public class FriendAddActivity extends AppCompatActivity {
                     friendInsertAsyncTask friendInsertAsyncTask = new friendInsertAsyncTask(new friendInsertAsyncTask.TaskListener() {
                         @Override
                         public void onFinished(String result) {
-                            Toast.makeText(FriendAddActivity.this, "加入成功", Toast.LENGTH_SHORT).show();
+                            btnAdd.setText("已加入");
+                            btnAdd.setEnabled(false);
+                            getFriendList.getJSON();
                         }
                     });
                     Log.v("friendid", friendid);

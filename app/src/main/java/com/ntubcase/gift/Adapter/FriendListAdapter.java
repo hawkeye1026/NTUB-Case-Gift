@@ -67,6 +67,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
             Picasso.get().load(imageURI)
                     .transform(new CircleTransform())
                     .into(holder.iv_photo);
+        }else{
+            holder.iv_photo.setImageResource(R.drawable.ic_user);
         }
 
         holder.tv_nickname.setText(mFriendList.get(position).get("nickname").toString());
