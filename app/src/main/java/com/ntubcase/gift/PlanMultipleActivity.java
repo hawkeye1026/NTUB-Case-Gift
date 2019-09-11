@@ -29,11 +29,7 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multipleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
-import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -42,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -439,7 +434,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
             }
         });
-        multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message, planid, store, planType);
+        multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message, sender, store, planType);
         Log.v("multiplePlan", "//---upload multiplePlan");
 
         //--- upload multipleList

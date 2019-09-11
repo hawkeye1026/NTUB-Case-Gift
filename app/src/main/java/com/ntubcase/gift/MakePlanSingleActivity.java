@@ -541,7 +541,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     //------------------------------上傳plan資料
     public void uploadPlan(String store){
-
         Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
         //---upload giftRecord
         if(selectFriendIds.size()>0){
@@ -552,7 +551,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
                     }
                 });
-                Log.v("store:::::::",store);
+                Log.v("planid",planid);
+                Log.v("receiverid",selectFriendIds.get(i));
                 giftRecordInsertAsyncTask.execute(Common.insertSinPlan, planid, selectFriendIds.get(i));
             }
         }
@@ -581,9 +581,15 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
             }
         });
-        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate, planid, store, planType);
+        Log.v("planid",planid);
+        Log.v("planid",edt_single_name.getText().toString());
+        Log.v("planid",dateTime);
+        Log.v("planid",sendPlanDate);
+        Log.v("planid",sender);
+        Log.v("planid",store);
+        Log.v("planid",planType);
+        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, "0000-00-00", sender, store, planType);
         Log.v("singlePlan", "//---upload singlePlan");
-
 
         finish(); //結束製作計畫
     }

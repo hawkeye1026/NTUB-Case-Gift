@@ -3,7 +3,6 @@ package com.ntubcase.gift;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBar;
@@ -38,16 +37,12 @@ import com.ntubcase.gift.data.getGiftList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MakePlanListActivity extends AppCompatActivity{
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
@@ -671,7 +666,7 @@ public class MakePlanListActivity extends AppCompatActivity{
             }
         });
         Log.v("deadline", edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString(), planid, store, planType);
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString(), sender, store, planType);
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem

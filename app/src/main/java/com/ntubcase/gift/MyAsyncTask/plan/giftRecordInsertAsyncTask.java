@@ -16,12 +16,12 @@ import java.net.URLEncoder;
 
 public class giftRecordInsertAsyncTask extends AsyncTask<String, Integer, String> {
 
-//----------------------------------------------------
-// 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
-//----------------------------------------------------
-public interface TaskListener {
-    void onFinished(String result);
-}
+    //----------------------------------------------------
+    // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
+    //----------------------------------------------------
+    public interface TaskListener {
+        void onFinished(String result);
+    }
 
     //----------------------
     // 接收回傳值的物件參考
