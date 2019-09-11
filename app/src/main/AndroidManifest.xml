@@ -99,6 +99,9 @@
 
         <!-- *****收禮箱區***** -->
         <activity android:name=".GiftReceivedActivity" />
+        <activity
+            android:name=".ReceivedSingleActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- *****我的好友區***** -->
         <activity android:name=".FriendActivity" />

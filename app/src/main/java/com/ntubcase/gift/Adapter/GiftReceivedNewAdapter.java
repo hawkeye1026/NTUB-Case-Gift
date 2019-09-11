@@ -1,6 +1,7 @@
 package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.ReceivedSingleActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +47,8 @@ public class GiftReceivedNewAdapter extends RecyclerView.Adapter<GiftReceivedNew
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //觸發事件
+                Intent intent = new Intent(context, ReceivedSingleActivity.class); //觸發事件
+                context.startActivity(intent);
             }
         });
     }
