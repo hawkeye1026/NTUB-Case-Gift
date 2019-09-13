@@ -33,7 +33,7 @@ public class SettingActivity extends AppCompatActivity {
 
     ImageView mQrcode,mLogout;
 
-    String ownerid = "1";
+    String ownerEmail = userData.getUserMail();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +96,7 @@ public class SettingActivity extends AppCompatActivity {
 
         int smallerDimension = 15 * 15;
         //---------QRcode產生
-        QRGEncoder qrgEncoder = new QRGEncoder(ownerid, null, QRGContents.Type.TEXT, smallerDimension);
+        QRGEncoder qrgEncoder = new QRGEncoder(ownerEmail, null, QRGContents.Type.TEXT, smallerDimension);
         try {
             // Getting QR-Code as Bitmap
             Bitmap bitmap = qrgEncoder.encodeAsBitmap();

@@ -36,8 +36,8 @@ public class FriendAddActivity extends AppCompatActivity {
     private Button btnAdd, btnSearch, btn_scan;
     private LinearLayout find_friend;
     //---
-    private String userid="1", friendid;
-//    private String userid="1", friendid;
+    private String userid ="1";
+    private String friendid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,8 +178,8 @@ public class FriendAddActivity extends AppCompatActivity {
             if (result.getContents()==null) {
                 Toast.makeText(this, "取消掃描", Toast.LENGTH_SHORT).show();
             }else {
-                String contents = data.getStringExtra("SCAN_RESULT");   //取得QR Code內容
-                searchFriend("linchengway000@gmail.com"); //***測試資料***
+                String scan_email = data.getStringExtra("SCAN_RESULT");   //取得QR Code內容
+                searchFriend(scan_email);
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
