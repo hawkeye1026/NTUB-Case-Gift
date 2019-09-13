@@ -42,6 +42,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     private List<Map<String, Object>> originalitem;
     //----------------------------------------------------------------------------
     private OnItemClickListener mOnItemClickListener;
+    private ActionMode mMode;
     private View actionBarView;  //多選模式中的action bar
     private TextView selectedNum;  //顯示選中個項目個數
     private boolean isCachedBackground = false;
@@ -88,7 +89,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
                 @Override
                 public boolean onLongClick(View v) {
                     multiSelect = true; //開啟多選模式
-                    ((AppCompatActivity)v.getContext()).startSupportActionMode(actionModeCallbacks);
+                    mMode = ((AppCompatActivity)v.getContext()).startSupportActionMode(actionModeCallbacks);
                     selectItem(position);
                     notifyDataSetChanged();
                     return true;
@@ -266,6 +267,11 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         if (multiSelect) {
             if (selectedItems.contains(item)) {
                 selectedItems.remove(item);
+                if (selectedItems.size()==0){ //若已取消所有選取
+                    multiSelect = false;
+                    selectedItems.clear();
+                    mMode.finish(); //關閉多選模式
+                }
             } else {
                 selectedItems.add(item);
             }
