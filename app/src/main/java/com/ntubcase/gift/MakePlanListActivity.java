@@ -665,8 +665,8 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        Log.v("deadline", edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString(), sender, store, planType);
+        String deadline =edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString();
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), deadline, sender, store, planType);
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem
@@ -676,7 +676,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                 public void onFinished(String result) {
                 }
             });
-            missionItemInsertAsyncTask.execute(Common.insertMisPlan, planid, mData.get(i));
+            missionItemInsertAsyncTask.execute(Common.insertMisPlan, planid, String.valueOf(i+1), mData.get(i));
         }
         Log.v("missionItem", "//---upload missionItem");
 

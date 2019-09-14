@@ -64,7 +64,8 @@ public class missionItemInsertAsyncTask extends AsyncTask<String, Integer, Strin
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
                     "planid=" + URLEncoder.encode(params[1], "UTF-8") +
-                            "&content=" + URLEncoder.encode(params[2], "UTF-8") ;
+                            "&itemNumber=" + URLEncoder.encode(params[2], "UTF-8") +
+                            "&content=" + URLEncoder.encode(params[3], "UTF-8");
             Log.v("missionItemInsert", args);
 
             OutputStream os = conn.getOutputStream();

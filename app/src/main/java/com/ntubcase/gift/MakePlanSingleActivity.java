@@ -504,15 +504,20 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             dateTime = sdFormat.format(date);
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            if(planid == null){
-                planid = "sin_" + sdFormat_giftContent.format(date);
-            }
+
 
             //-----檢查是否有輸入計畫名稱-----
             if (edt_single_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
             }else{
-                uploadPlan("0");
+                if(planid == null){
+                    planid = "sin_" + sdFormat_giftContent.format(date);
+                    //uploadPlan("0");
+                    Log.v("planid", planid);
+                }else {
+                    Log.v("planid", planid);
+                    //uploadPlan("0");
+                }
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }
         }
@@ -541,8 +546,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     //------------------------------上傳plan資料
     public void uploadPlan(String store){
-        Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
         //---upload giftRecord
+        Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
         if(selectFriendIds.size()>0){
             for (int i = 0 ; i < selectFriendIds.size(); i++) {
                 giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
@@ -551,9 +556,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
                     }
                 });
-                Log.v("planid",planid);
-                Log.v("receiverid",selectFriendIds.get(i));
-                giftRecordInsertAsyncTask.execute(Common.insertSinPlan, planid, selectFriendIds.get(i));
+                giftRecordInsertAsyncTask.execute(Common.insertMisPlan, planid, selectFriendIds.get(i));
             }
         }
         Log.v("giftRecord", "//---upload giftRecord");
@@ -581,14 +584,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
             }
         });
-        Log.v("planid",planid);
-        Log.v("planid",edt_single_name.getText().toString());
-        Log.v("planid",dateTime);
-        Log.v("planid",sendPlanDate);
-        Log.v("planid",sender);
-        Log.v("planid",store);
-        Log.v("planid",planType);
-        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, "0000-00-00", sender, store, planType);
+        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate, sender, store, planType);
         Log.v("singlePlan", "//---upload singlePlan");
 
         finish(); //結束製作計畫
@@ -642,7 +638,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     }
 
     //------------------------------計畫詳細，顯示plan資料------------------------------
-    private void showPlanDetail(String planid){
+    private void showPlanDetail(String planID){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
@@ -692,7 +688,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     int sinListLength = jsonArray.length();
 
                     for (int i = 0 ; i < sinListLength ; i++){
-                        //String sinListid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
+                        planid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
                         //String sinGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
                         String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
@@ -721,7 +717,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.planList , sender, planid);
+        planDetailAsyncTask.execute(Common.planList , sender, planID);
     }
 
     //-----------------------------------------------------------
