@@ -41,7 +41,8 @@ public class SettingActivity extends AppCompatActivity {
     ImageView mQrcode,mLogout;
     Button mScanner;
 
-    String ownerid = "1";
+//    String ownerid = "1";
+    String ownerid = userData.getUserMail();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
