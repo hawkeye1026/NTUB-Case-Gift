@@ -1,58 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_height="250dp"
+    android:layout_margin="5dp"
+    android:background="@drawable/bg_dialog"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:text="留言："
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
+        <ImageView
+            android:id="@+id/message"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.1"
+            android:background="@drawable/talk" />
 
         <EditText
             android:id="@+id/alert_message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
+            android:layout_margin="10dp"
+            android:layout_weight="0.9"
             android:ems="10"
             android:hint="輸入此日的留言"
             android:maxLines="3"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:text="選擇禮物："
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
+        <ImageView
+            android:id="@+id/gift"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.1"
+            android:background="@drawable/gift" />
 
         <EditText
             android:id="@+id/alert_gifts"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
+            android:layout_margin="10dp"
+            android:layout_weight="0.9"
             android:ems="10"
-            android:hint="選擇要送的禮物"/>
+            android:hint="選擇要送的禮物" />
 
     </LinearLayout>
 
@@ -60,27 +67,29 @@
         android:id="@+id/ll_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:text="送禮時間："
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
+        <ImageView
+
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.1"
+            android:background="@drawable/clock" />
 
         <EditText
             android:id="@+id/alert_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:hint="輸入送禮時間"
-            android:inputType="none"/>
+            android:layout_margin="10dp"
+            android:layout_weight="0.9"
+            android:ems="10"
+            android:hint="輸入送禮時間" />
 
     </LinearLayout>
+
 
 </LinearLayout>
