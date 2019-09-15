@@ -206,7 +206,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="取消預送"
+            android:background="@drawable/bg_cancel_send"
+            android:layout_margin="5dp"
             android:textSize="20dp"
             android:visibility="gone"/>
 

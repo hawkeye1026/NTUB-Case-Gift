@@ -30,19 +30,19 @@
             android:orientation="horizontal"
             android:paddingTop="10dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="計畫名稱："
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/plan"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.1"
+                app:srcCompat="@drawable/plan" />
 
             <EditText
                 android:id="@+id/add_multi_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="0.9"
                 android:ems="10"
                 android:hint="輸入計畫名稱"
                 android:inputType="textPersonName" />
@@ -55,20 +55,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="收禮人："
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/people"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.1"
+                app:srcCompat="@drawable/friend" />
 
             <EditText
                 android:id="@+id/add_multi_friend"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_weight="7"
+                android:layout_weight="0.9"
                 android:hint="選擇收禮人" />
 
         </LinearLayout>
@@ -79,36 +79,34 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="3"
-                android:text="規劃期間："
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/date"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0.1"
+                    app:srcCompat="@drawable/date" />
 
                 <EditText
                     android:id="@+id/add_multi_dateS"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_weight="0.4"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:gravity="center"
-                    android:hint="輸入送禮日期"
+                    android:hint="送禮日期"
                     android:inputType="none" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:gravity="center"
@@ -120,11 +118,11 @@
                     android:id="@+id/add_multi_dateE"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_weight="0.4"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:gravity="center"
-                    android:hint="輸入結束日期"
+                    android:hint="結束日期"
                     android:inputType="none" />
 
             </LinearLayout>
@@ -139,20 +137,19 @@
             android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:text="祝福："
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.1"
+                app:srcCompat="@drawable/talk" />
 
             <EditText
                 android:id="@+id/add_multi_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:layout_weight="7"
+                android:layout_weight="0.9"
                 android:background="@drawable/bg_message"
                 android:ems="10"
                 android:gravity="top|left"

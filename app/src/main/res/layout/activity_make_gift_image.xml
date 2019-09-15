@@ -54,21 +54,31 @@
                 android:background="@drawable/picture"
                 android:padding="10dp" />
 
-            <Button
-                android:id="@+id/btn_selectImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="從相簿選取" />
 
-            <Button
-                android:id="@+id/btn_openCamera"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="從相機拍攝" />
+                android:layout_alignParentBottom="true"
+                android:layout_margin="15dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_openCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/bg_camera"/>
+
+                <Button
+                    android:id="@+id/btn_selectImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/bg_gallery"/>
+
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -87,10 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="直接送禮"
-            android:textSize="18sp"
-            android:textColor="#FFF"
-            android:background="@drawable/bg_normalbutton"/>
+            android:background="@drawable/bg_send_now"/>
 
         <Button
             android:id="@+id/btn_save"

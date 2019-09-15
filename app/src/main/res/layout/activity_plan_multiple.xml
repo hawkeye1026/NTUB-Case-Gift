@@ -4,44 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlanMultipleActivity"
+    android:background="@drawable/bg_plan"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="20dp"
+    tools:context=".PlanMultipleActivity">
 
     <TextView
         android:id="@+id/tv_receiveFriend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="To. "
-        android:textSize="20dp"
+        android:layout_margin="20dp"
         android:layout_marginBottom="10dp"
-        android:textColor="@android:color/black"/>
+        android:text="To. "
+        android:textColor="@android:color/black"
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="選擇禮物:"
-        android:textSize="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
-        android:textColor="@android:color/black"/>
+        android:text="選擇禮物:"
+        android:textColor="@android:color/black"
+        android:textSize="20dp" />
 
     <GridView
+        android:background="@drawable/grid_plan"
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_weight="9"
         android:gravity="center"
-        android:numColumns="3"
-        android:verticalSpacing="1dp"
         android:horizontalSpacing="1dp"
-        android:stretchMode="columnWidth">
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="1dp">
 
     </GridView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -51,7 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="前一頁的祝福" />
+            android:text="前一頁的祝福"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -59,6 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:layout_weight="0.5"
         android:gravity="center|right"
         android:orientation="vertical">
@@ -68,16 +77,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="From. XXX" />
+            android:text="From. XXX"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="2"
-        android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="10dp">
+        android:orientation="horizontal">
 
 
         <Button
@@ -85,26 +95,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:textColor="#FFF"
-            android:background="@drawable/bg_save" />
+            android:background="@drawable/bg_save"
+            android:textColor="#FFF" />
 
         <Button
             android:id="@+id/btn_plan_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:textColor="#FFF"
             android:layout_marginLeft="40dp"
-            android:background="@drawable/bg_send"/>
+            android:background="@drawable/bg_send"
+            android:textColor="#FFF" />
 
         <Button
             android:id="@+id/btn_plan_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="取消預送"
-            android:textSize="20dp"
-            android:visibility="gone"/>
+            android:background="@drawable/bg_cancel_send"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

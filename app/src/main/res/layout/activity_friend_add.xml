@@ -30,18 +30,20 @@
                     android:id="@+id/edt_sEmail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="0.7"
                     android:ems="1"
                     android:hint="請輸入好友Email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    tools:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnSearch"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
                     android:layout_weight="0.3"
-                    android:text="搜尋" />
+                    android:background="@drawable/bg_search" />
             </LinearLayout>
 
             <RelativeLayout
@@ -91,12 +93,13 @@
                 </LinearLayout>
             </RelativeLayout>
 
+
             <Button
                 android:id="@+id/iv_scanner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="掃描器" />
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_scaning"/>
 
         </LinearLayout>
 
