@@ -618,8 +618,8 @@ public class MakePlanListActivity extends AppCompatActivity{
             }else{
                 if(planid == null){
                     planid = "mis_" + sdFormat_giftContent.format(date);
-                    uploadPlan("0");
                     Log.v("planid insert", planid);
+                    uploadPlan("0");
                 }else {
                     Log.v("planid update", planid);
                     deletePlan();
@@ -703,7 +703,11 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        String deadline =edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString();
+        String deadline="";
+        if(!(edt_list_lastDate.getText().toString().equals(""))){
+            deadline =edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString();
+        }
+
         missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), deadline, sender, store, planType);
         Log.v("missionPlan", "//---upload missionPlan");
 
