@@ -32,9 +32,6 @@ import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +82,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
         //---------------------------------上一頁資料-----------------------------------
         Bundle bundle = getIntent().getExtras();
+        planid = bundle.getString("planid");
         planName = bundle.getString("planName");    //計畫名稱
         receiveFriend = bundle.getString("receiveFriend");  //收禮人名稱
         receiveFriendId = bundle.getStringArrayList("receiveFriendId"); //收禮人ID
@@ -393,13 +390,21 @@ public class PlanMultipleActivity extends AppCompatActivity {
             dateTime = sdFormat.format(date);
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            planid = "mul_" + sdFormat_giftContent.format(date);
+
 
             //-----檢查是否有輸入計畫名稱-----
             if (planName.equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
             }else{
-                uploadPlan("0");
+                if(planid == null){
+                    planid = "mul_" + sdFormat_giftContent.format(date);
+                    uploadPlan("0");
+                    Log.v("planid insert", planid);
+                }else {
+                    Log.v("planid update", planid);
+                    deletePlan();
+                    uploadPlan("0");
+                }
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }
         }
@@ -417,9 +422,16 @@ public class PlanMultipleActivity extends AppCompatActivity {
                 dateTime = sdFormat.format(date);
 
                 SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-                planid = "mul_" + sdFormat_giftContent.format(date);
 
-                uploadPlan("1");
+                if(planid == null){
+                    planid = "mul_" + sdFormat_giftContent.format(date);
+                    uploadPlan("1");
+                    Log.v("planid insert", planid);
+                }else {
+                    Log.v("planid update", planid);
+                    deletePlan();
+                    uploadPlan("1");
+                }
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
             }else if (!isDataCompleted()){
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
@@ -429,6 +441,21 @@ public class PlanMultipleActivity extends AppCompatActivity {
         }
     };
     //-------------------------------結束預送禮物按鈕 監聽器----------------------------------------
+
+    //------------------------------刪除plan資料
+    public void deletePlan(){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+
+                } catch (Exception e) {
+                    Toast.makeText(PlanMultipleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.deletePlan , sender, planid);
+    }
 
     //------------------------------上傳plan資料
     public void uploadPlan(String store){
@@ -454,7 +481,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
             }
         });
-        multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message, planid, store, planType);
+        multiplePlanInsertAsyncTask.execute(Common.insertMulPlan, planid, planName, dateTime, startDate, endDate, message, sender, store, planType);
         Log.v("multiplePlan", "//---upload multiplePlan");
 
         //--- upload multipleList

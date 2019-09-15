@@ -137,8 +137,8 @@ public class MakePlanListActivity extends AppCompatActivity{
         //---------------------------------若是計畫詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
-            String planID = bundle.getString("planID");
-            showPlanDetail(planID);  //顯示計畫詳細資料
+            planid = bundle.getString("planID");
+            showPlanDetail(planid);  //顯示計畫詳細資料
         }
         //--------------------------------------------------------------------------------------
 
@@ -610,13 +610,21 @@ public class MakePlanListActivity extends AppCompatActivity{
             dateOnly = _sdFormat.format(date);
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            planid = "mis_" + sdFormat_giftContent.format(date);
+
 
             //-----檢查是否有輸入計畫名稱-----
             if (edt_list_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
             }else{
-                uploadPlan("0");
+                if(planid == null){
+                    planid = "mis_" + sdFormat_giftContent.format(date);
+                    uploadPlan("0");
+                    Log.v("planid insert", planid);
+                }else {
+                    Log.v("planid update", planid);
+                    deletePlan();
+                    uploadPlan("0");
+                }
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }
         }
@@ -636,9 +644,16 @@ public class MakePlanListActivity extends AppCompatActivity{
                 dateOnly = _sdFormat.format(date);
 
                 SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-                planid = "mis_" + sdFormat_giftContent.format(date);
 
-                uploadPlan("1");
+                if(planid == null){
+                    planid = "mis_" + sdFormat_giftContent.format(date);
+                    uploadPlan("1");
+                    Log.v("planid insert", planid);
+                }else {
+                    Log.v("planid update", planid);
+                    deletePlan();
+                    uploadPlan("1");
+                }
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
             }else if (!isDataCompleted()){
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
@@ -648,6 +663,21 @@ public class MakePlanListActivity extends AppCompatActivity{
         }
 
     };
+
+    //------------------------------刪除plan資料
+    public void deletePlan(){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+
+                } catch (Exception e) {
+                    Toast.makeText(MakePlanListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.deletePlan , sender, planid);
+    }
 
     //------------------------------上傳plan資料
     public void uploadPlan(String store){
@@ -673,8 +703,8 @@ public class MakePlanListActivity extends AppCompatActivity{
 
             }
         });
-        Log.v("deadline", edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString());
-        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString(), planid, store, planType);
+        String deadline =edt_list_lastDate.getText().toString()+" "+edt_list_lastTime.getText().toString();
+        missionPlanInsertAsyncTask.execute(Common.insertMisPlan, planid, edt_list_name.getText().toString(), dateTime, edt_list_sentDate.getText().toString(), deadline, sender, store, planType);
         Log.v("missionPlan", "//---upload missionPlan");
 
         //---upload missionItem
@@ -684,7 +714,7 @@ public class MakePlanListActivity extends AppCompatActivity{
                 public void onFinished(String result) {
                 }
             });
-            missionItemInsertAsyncTask.execute(Common.insertMisPlan, planid, mData.get(i));
+            missionItemInsertAsyncTask.execute(Common.insertMisPlan, planid, String.valueOf(i+1), mData.get(i));
         }
         Log.v("missionItem", "//---upload missionItem");
 

@@ -145,8 +145,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         //---------------------------------若是計畫詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
-            String planID = bundle.getString("planID");
-            showPlanDetail(planID);  //顯示計畫詳細資料
+            planid = bundle.getString("planID");
+            showPlanDetail(planid);  //顯示計畫詳細資料
         }
         //--------------------------------------------------------------------------------------
 
@@ -521,15 +521,21 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             dateTime = sdFormat.format(date);
 
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-            if(planid == null){
-                planid = "sin_" + sdFormat_giftContent.format(date);
-            }
+
 
             //-----檢查是否有輸入計畫名稱-----
             if (edt_single_name.getText().toString().equals("")) {
                 Toast.makeText(v.getContext(), "請輸入計畫名稱", Toast.LENGTH_SHORT).show();
             }else{
-                uploadPlan("0");
+                if(planid == null){
+                    planid = "sin_" + sdFormat_giftContent.format(date);
+                    uploadPlan("0");
+                    Log.v("planid insert", planid);
+                }else {
+                    Log.v("planid update", planid);
+                    deletePlan();
+                    uploadPlan("0");
+                }
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }
         }
@@ -546,9 +552,16 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 dateTime = sdFormat.format(date);
 
                 SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-                planid = "sin_" + sdFormat_giftContent.format(date);
 
-                uploadPlan("1");
+                if(planid == null){
+                    planid = "sin_" + sdFormat_giftContent.format(date);
+                    uploadPlan("1");
+                    Log.v("planid insert", planid);
+                }else {
+                    Log.v("planid update", planid);
+                    deletePlan();
+                    uploadPlan("1");
+                }
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
             }else if(!isDataCompleted()){
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
@@ -558,11 +571,25 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         }
     };
 
+    //------------------------------刪除plan資料
+    public void deletePlan(){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+
+                } catch (Exception e) {
+                    Toast.makeText(MakePlanSingleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.deletePlan , sender, planid);
+    }
+
     //------------------------------上傳plan資料
     public void uploadPlan(String store){
-
-        Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
         //---upload giftRecord
+        Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
         if(selectFriendIds.size()>0){
             for (int i = 0 ; i < selectFriendIds.size(); i++) {
                 giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
@@ -571,8 +598,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
                     }
                 });
-                Log.v("store:::::::",store);
-                giftRecordInsertAsyncTask.execute(Common.insertSinPlan, planid, selectFriendIds.get(i));
+                giftRecordInsertAsyncTask.execute(Common.insertMisPlan, planid, selectFriendIds.get(i));
             }
         }
         Log.v("giftRecord", "//---upload giftRecord");
@@ -600,9 +626,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
             }
         });
-        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate, planid, store, planType);
+        singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_single_name.getText().toString(), dateTime, sendPlanDate, sender, store, planType);
         Log.v("singlePlan", "//---upload singlePlan");
-
 
         finish(); //結束製作計畫
     }
@@ -655,7 +680,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     }
 
     //------------------------------計畫詳細，顯示plan資料------------------------------
-    private void showPlanDetail(String planid){
+    private void showPlanDetail(String planID){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
@@ -705,7 +730,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     int sinListLength = jsonArray.length();
 
                     for (int i = 0 ; i < sinListLength ; i++){
-                        //String sinListid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
+                        //String sinPlanid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
                         //String sinGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
                         String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
@@ -734,7 +759,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.planList , sender, planid);
+        planDetailAsyncTask.execute(Common.planList , sender, planID);
     }
 
     //-----------------------------------------------------------
