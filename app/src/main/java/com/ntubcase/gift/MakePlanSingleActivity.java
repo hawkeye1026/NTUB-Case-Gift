@@ -143,8 +143,8 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         //---------------------------------若是計畫詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
-            String planID = bundle.getString("planID");
-            showPlanDetail(planID);  //顯示計畫詳細資料
+            planid = bundle.getString("planID");
+            showPlanDetail(planid);  //顯示計畫詳細資料
         }
         //--------------------------------------------------------------------------------------
 
@@ -512,11 +512,12 @@ public class MakePlanSingleActivity extends AppCompatActivity {
             }else{
                 if(planid == null){
                     planid = "sin_" + sdFormat_giftContent.format(date);
-                    //uploadPlan("0");
-                    Log.v("planid", planid);
+                    uploadPlan("0");
+                    Log.v("planid insert", planid);
                 }else {
-                    Log.v("planid", planid);
-                    //uploadPlan("0");
+                    Log.v("planid update", planid);
+                    deletePlan();
+                    uploadPlan("0");
                 }
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }
@@ -534,15 +535,37 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 dateTime = sdFormat.format(date);
 
                 SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
-                planid = "sin_" + sdFormat_giftContent.format(date);
 
-                uploadPlan("1");
+                if(planid == null){
+                    planid = "sin_" + sdFormat_giftContent.format(date);
+                    uploadPlan("1");
+                    Log.v("planid insert", planid);
+                }else {
+                    Log.v("planid update", planid);
+                    deletePlan();
+                    uploadPlan("1");
+                }
                 Toast.makeText(v.getContext(), "已預送!", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
             }
         }
     };
+
+    //------------------------------刪除plan資料
+    public void deletePlan(){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+
+                } catch (Exception e) {
+                    Toast.makeText(MakePlanSingleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.deletePlan , sender, planid);
+    }
 
     //------------------------------上傳plan資料
     public void uploadPlan(String store){
@@ -688,7 +711,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                     int sinListLength = jsonArray.length();
 
                     for (int i = 0 ; i < sinListLength ; i++){
-                        planid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
+                        //String sinPlanid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
                         //String sinGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
                         String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間

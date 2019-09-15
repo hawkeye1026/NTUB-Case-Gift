@@ -50,7 +50,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     private List<Map<String, Object>> oldSelectDates = new ArrayList<Map<String, Object>>();; //原有資料
 
     //--showPlan
-    private String sender="1";
+    private String sender="1", planid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,6 +285,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                 Intent intent;
                 intent = new Intent(MakePlanMultipleActivity .this, PlanMultipleActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putString("planid", planid);
                 bundle.putString("planName", add_multi_name.getText().toString());
                 bundle.putString("receiveFriend", add_multi_friend.getText().toString());
                 bundle.putStringArrayList("receiveFriendId", selectFriendIds);
@@ -371,7 +372,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     }
 
     //------------------------------計畫詳細，顯示plan資料------------------------------
-    private void showPlanDetail(String planid){
+    private void showPlanDetail(String planID){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
@@ -385,7 +386,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("mulPlan");
-                    //String mulPlanid =jsonArray.getJSONObject(0).getString("mulid"); //計畫ID
+                    planid =jsonArray.getJSONObject(0).getString("mulid"); //計畫ID
                     //String mulCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
                     String mulPlanName =jsonArray.getJSONObject(0).getString("mulPlanName"); //計畫名稱
                     String mulStartDate = jsonArray.getJSONObject(0).getString("startDate"); //送禮日期
@@ -455,7 +456,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.planList , sender, planid);
+        planDetailAsyncTask.execute(Common.planList , sender, planID);
     }
 
     @Override
