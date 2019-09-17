@@ -14,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.gift.delete.giftDeleteAsyncTask;
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.data.getGiftList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,13 +138,26 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         return true ;
     }
 
-    //-----刪除item-----
-    public void deleteItems(){
+    //---------------刪除禮物---------------
+    public void deleteGifts(){
         long[] checkedItems=mListView.getCheckedItemIds(); //取得勾選的項目
+        String deleteGiftId;
+
         for (int i=checkedItems.length-1; i>=0; i--){
-            item.remove((int)checkedItems[i]);
+            deleteGiftId =  item.get((int)checkedItems[i]).get("giftid").toString(); //取得ID
+
+            giftDeleteAsyncTask mgiftDeleteAsyncTask = new giftDeleteAsyncTask(new giftDeleteAsyncTask.TaskListener() {
+                @Override
+                public void onFinished(String result) {
+
+                }
+            });
+            mgiftDeleteAsyncTask.execute(Common.deleteGift, deleteGiftId);
+
+            item.remove((int)checkedItems[i]); //從列表中刪除
         }
         notifyDataSetChanged();
+        getGiftList.getJSON();
     }
 
     @Override

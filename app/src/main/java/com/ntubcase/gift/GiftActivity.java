@@ -20,12 +20,10 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.ntubcase.gift.Adapter.GiftListAdapter;
-import com.ntubcase.gift.data.deleteGiftData;
 import com.ntubcase.gift.data.getGiftList;
 
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ntubcase.gift.Common.Common.deleteGift;
 
 public class GiftActivity extends AppCompatActivity {
 
@@ -179,13 +176,6 @@ public class GiftActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 String type =  giftListAdapter.getItem().get(position).get("type").toString();
                 int giftid =  Integer.valueOf(giftListAdapter.getItem().get(position).get("giftid").toString());
-//                try {
-//                    Log.v("test", GiftListAdapter.getItem().get(position).get("type").toString());
-//                    Log.v("test", GiftListAdapter.getItem().get(position).get("giftid").toString());
-//                    Log.v("test", position + "");
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
 
                 switch (type) {
                     case "1":
@@ -313,9 +303,8 @@ public class GiftActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_enter_delete:  //刪除鈕，進入多選模式
-                mListView.clearChoices();
                 mListView.setItemChecked(0, true);
-                selectedNum.setText("" + 0);
+                mListView.clearChoices();
                 multiChoiceListener.updateSelectedCount();
                 return true;
             default:
@@ -330,9 +319,6 @@ public class GiftActivity extends AppCompatActivity {
         @Override
         public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
             updateSelectedCount();
-            String giftid =  giftListAdapter.getItem().get(position).get("giftid").toString();
-            //Log.v("giftid ",giftid + "");
-            deleteGiftData.setDeleteGiftData(giftid);
             giftListAdapter.notifyDataSetChanged();
         }
 
@@ -365,9 +351,7 @@ public class GiftActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //-----刪除禮物-----
-                                    giftListAdapter.deleteItems();
-                                    deleteGiftData.deleteGift();
-                                    deleteGiftData.setCountDefault();
+                                    giftListAdapter.deleteGifts();
                                     mode.finish();
                                 }
                             })
