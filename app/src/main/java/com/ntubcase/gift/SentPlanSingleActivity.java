@@ -147,11 +147,12 @@ public class SentPlanSingleActivity extends AppCompatActivity {
                             planCancelSentAsyncTask planCancelSentAsyncTask = new planCancelSentAsyncTask(new planCancelSentAsyncTask.TaskListener() {
                                 @Override
                                 public void onFinished(String result) {
-
                                 }
                             });
                             planCancelSentAsyncTask.execute(Common.planCancelSent, sender, sinPlanid, "0");
+
                             Toast.makeText(getApplicationContext(), "已取消預送", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     })
                     .setNeutralButton("否", new DialogInterface.OnClickListener() {
