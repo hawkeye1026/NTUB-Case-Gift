@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +41,7 @@ public class SentPlanMultiActivity extends AppCompatActivity {
 
     //-----cutomlayout內物件
     private EditText alert_message, alert_time, alert_gifts;
-    private LinearLayout ll_time;
+    private TextView tv_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,20 +95,17 @@ public class SentPlanMultiActivity extends AppCompatActivity {
     private void showAlertDialog(int position, final ViewGroup parent) {
         final int gridPosition = position;
 
-        // create an alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String[] mdate = selectDates.get(gridPosition).get("date").toString().split("-");
-        builder.setTitle("請輸入"+ mdate[1] + "月" + mdate[2] +"日規劃");
-
-        // set the custom layout
-        final View customLayout = getLayoutInflater().inflate(R.layout.plan_multi_alert_layout, null);
-        builder.setView(customLayout);
+        final Dialog mDialog = new Dialog(this);
+        mDialog.setContentView(R.layout.plan_multi_alert_layout);
 
         //----------------------------------------設定customLayout內顯示的資料--------------------------------------------------
-        alert_message  = customLayout.findViewById(R.id.alert_message);
-        alert_time  = customLayout.findViewById(R.id.alert_time);
-        alert_gifts  = customLayout.findViewById(R.id.alert_gifts);
-        ll_time = customLayout.findViewById(R.id.ll_time);
+        alert_message  = mDialog.findViewById(R.id.alert_message);
+        alert_time  = mDialog.findViewById(R.id.alert_time);
+        alert_gifts  = mDialog.findViewById(R.id.alert_gifts);
+        tv_title  = mDialog.findViewById(R.id.tv_title);
+
+        String[] mdate = selectDates.get(gridPosition).get("date").toString().split("-");
+        tv_title.setText("請輸入"+ mdate[1] + "月" + mdate[2] +"日規劃");
 
         alert_message.setText(selectDates.get(gridPosition).get("message").toString());
         alert_time.setText(selectDates.get(gridPosition).get("time").toString());
@@ -118,17 +115,22 @@ public class SentPlanMultiActivity extends AppCompatActivity {
         alert_gifts.setInputType(InputType.TYPE_NULL);
 
         if ((alert_gifts.getText().toString()).equals(""))
-            ll_time.setVisibility(View.GONE); //若禮物空白則不能選時間
+            alert_time.setEnabled(false); //若禮物空白則不能選時間
 
-        //-------------alert按鈕-------------
-        builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+        //-------------dialog按鈕-------------
+        TextView btn_ok = mDialog.findViewById(R.id.btn_ok);
+        TextView btn_cancel = mDialog.findViewById(R.id.btn_cancel);
+        TextView btn_delete = mDialog.findViewById(R.id.btn_delete);
+        btn_cancel.setVisibility(View.INVISIBLE);
+        btn_delete.setVisibility(View.INVISIBLE);
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+                mDialog.dismiss();
             }
         });
 
-        // create and show the alert dialog
-        final AlertDialog mDialog = builder.create();
         mDialog.show();
     }
 
