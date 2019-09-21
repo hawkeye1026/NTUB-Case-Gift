@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +52,7 @@ public class PlanNewFragment extends Fragment {
     private mMultiChoiceListener multiChoiceListener;  //list多選模式監聽器
     private View actionBarView;  //多選模式中的action bar
     private TextView selectedNum;  //顯示選中個項目個數
+    private ActionMode mActionMode;
 
     public PlanNewFragment() {
         // Required empty public constructor
@@ -74,9 +76,11 @@ public class PlanNewFragment extends Fragment {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String str = parent.getItemAtPosition(position).toString();
+                if (mActionMode!=null) mActionMode.finish(); //---關閉多選模式---
 
+                String str = parent.getItemAtPosition(position).toString();
                 planListAdapter.selectedType=str;
+
                 String query = mSearchView.getQuery().toString();
                 planListAdapter.getFilter().filter(query);
             }
@@ -158,6 +162,13 @@ public class PlanNewFragment extends Fragment {
         super.onResume();
     }
 
+    @Override
+    public void onDestroyView(){
+        if (mActionMode!=null) mActionMode.finish(); //---關閉多選模式---
+        super.onDestroyView();
+    }
+
+
     // ----------------設定ListView的監聽---------------
     private void setmListViewListener(){
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -213,6 +224,7 @@ public class PlanNewFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (mActionMode!=null) mActionMode.finish(); //---關閉多選模式---
                 planListAdapter.getFilter().filter(newText);
                 return true;
             }
@@ -290,6 +302,8 @@ public class PlanNewFragment extends Fragment {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             getActivity().getMenuInflater().inflate(R.menu.menu_multi_choice, menu);
+            mActionMode = mode;
+
             if (actionBarView == null) {
                 actionBarView = LayoutInflater.from(getActivity()).inflate(R.layout.delete_actionbar_layout, null);
                 selectedNum = (TextView) actionBarView.findViewById(R.id.selected_num);

@@ -48,7 +48,9 @@ public class GiftActivity extends AppCompatActivity {
     private mMultiChoiceListener multiChoiceListener;  //list多選模式監聽器
     private View actionBarView;  //多選模式中的action bar
     private TextView selectedNum;  //顯示選中個項目個數
-    int ItemCheckedStateChangedCount = 0;
+    private int ItemCheckedStateChangedCount = 0;
+    private ActionMode mActionMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,14 +73,9 @@ public class GiftActivity extends AppCompatActivity {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (mActionMode!=null) mActionMode.finish(); //---關閉多選模式---
+
                 String str = parent.getItemAtPosition(position).toString();
-
-                //清除已選取的Item
-                mListView.clearChoices();
-                if( ItemCheckedStateChangedCount > 0){
-                    selectedNum.setText("" + 0);
-                }
-
                 if (str.equals(getString(R.string.giftPhoto))) str="1";
                 else if(str.equals(getString(R.string.giftVideo))) str="2";
                 else if(str.equals(getString(R.string.giftMessage))) str="3";
@@ -234,13 +231,7 @@ public class GiftActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //清除已選取的Item
-                mListView.clearChoices();
-
-                if( ItemCheckedStateChangedCount > 0){
-                    selectedNum.setText("" + 0);
-                }
-
+                if (mActionMode!=null) mActionMode.finish(); //---關閉多選模式---
                 giftListAdapter.getFilter().filter(newText);
                 return true;
             }
@@ -332,6 +323,7 @@ public class GiftActivity extends AppCompatActivity {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             getMenuInflater().inflate(R.menu.menu_multi_choice, menu);
+            mActionMode = mode;
             if (actionBarView == null) {
                 actionBarView = LayoutInflater.from(GiftActivity.this).inflate(R.layout.delete_actionbar_layout, null);
                 selectedNum = (TextView) actionBarView.findViewById(R.id.selected_num);
