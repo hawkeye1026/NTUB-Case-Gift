@@ -257,9 +257,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_cancel_send"
             android:layout_gravity="bottom"
-            android:textSize="20dp"
             android:visibility="gone"/>
-
     </LinearLayout>
 
 
