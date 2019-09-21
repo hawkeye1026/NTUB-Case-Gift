@@ -58,7 +58,7 @@ public class SettingActivity extends AppCompatActivity {
         //-------顯示使用者個人資料
         mNickname.setText(userData.getUserName());
         mMail.setText(userData.getUserMail());
-        mBirthday.setText("");
+        mBirthday.setText(userData.getUserBirthday());
 
 
         //------設置

@@ -16,8 +16,10 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -50,15 +52,11 @@ public class LoginActivity extends AppCompatActivity implements
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    private CallbackManager callbackManager;
-
     private static GoogleSignInClient mGoogleSignInClient;
 
-    private Button btn_main;
-    private static String user_birthday;
-
     //--------fb logiin
-    private String userid;
+    private CallbackManager callbackManager;
+
     //--------
     ProgressDialog barProgressDialog;
 
@@ -67,20 +65,14 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-        //--------取得目前時間：yyyy/MM/dd hh:mm:ss
-        Date date =new Date();
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        user_birthday = sdFormat.format(date);
-
-        //-------------登入按鈕
+        //-------------Google登入
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
-
-        FBLogin();
-
         googleLogin();
+
+        //-------------Facebook登入
+        FacebookLogin();
 
         //---------------------------------------------------------------------------------------------------直接進入
         Button btn_main = (Button) findViewById(R.id.btn_main);
@@ -91,11 +83,11 @@ public class LoginActivity extends AppCompatActivity implements
                 intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-
             }
         });
 
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -104,7 +96,6 @@ public class LoginActivity extends AppCompatActivity implements
         //更新UI，
         updateUI(account);
         //Toast.makeText(this,account.getEmail(),Toast.LENGTH_SHORT);
-
     }
 
     // [START onActivityResult]
@@ -207,108 +198,67 @@ public class LoginActivity extends AppCompatActivity implements
         // [END build_client]
     }
 
-    public void FBLogin(){
-        try {
-            Button loginButton = (Button) findViewById(R.id.login_button);
+    //----------Facebook登入----------
+    private void FacebookLogin(){
+        callbackManager = CallbackManager.Factory.create();
 
-            //--------------facebook 登入
-            final AccessToken accessToken = AccessToken.getCurrentAccessToken();
-            boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        LoginButton fbLoginButton = (LoginButton) findViewById(R.id.login_button);
+        fbLoginButton.setReadPermissions(Arrays.asList(
+                "public_profile", "email", "user_birthday")); //要取得的權限
 
-            //宣告callback Manager
-            callbackManager = CallbackManager.Factory.create();
-            FacebookSdk.sdkInitialize(getApplicationContext());
-            AppEventsLogger.activateApp(getApplication());
+        // Callback registration
+        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) { //登入成功
+                Log.d(TAG,"onSuccess:"+loginResult.toString());
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try{
+                                    //---取得資料---
+                                    long user_id = object.getLong("id");
+                                    String user_mail = object.getString("email");
+                                    String user_name = object.getString("name");
+                                    Log.d(TAG, "Facebook id:" + user_id);
+                                    Log.d(TAG,"email:"+user_mail);
+                                    Log.d(TAG,"name:"+user_name);
 
-            loginButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getInstance()
-                            .logInWithReadPermissions(LoginActivity.this,
-                                    Arrays.asList("public_profile","user_friends","email"));
-
-                }
-            });
-
-            // If using in a fragment
-            LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    //建立google帳戶的物件: googleAccount(使用者名稱,使用者,使用者頭像)
-                    GraphRequest request = GraphRequest.newMeRequest(
-                            accessToken,
-                            new GraphRequest.GraphJSONObjectCallback() {
-                                @Override
-                                public void onCompleted(
-                                        JSONObject object,
-                                        GraphResponse response) {
-                                    //-------------讀取Dialog-----------
-                                    barProgressDialog = ProgressDialog.show(LoginActivity.this,
-                                            "讀取中", "請等待...",true);
-                                    new Thread(new Runnable(){
+                                    //---上傳資料---
+                                    new facebookAccount(user_name, "1991/01/01", user_mail, user_id);
+                                    loginAsyncTask loginAsyncTask = new loginAsyncTask(new loginAsyncTask.TaskListener() {
                                         @Override
-                                        public void run() {
-                                            try{
-                                                Thread.sleep(1000);
-                                            }
-                                            catch(Exception e){
-                                                e.printStackTrace();
-                                            }
-                                            finally{
-                                                barProgressDialog.dismiss();
-                                                finish();
-                                            }
+                                        public void onFinished(String result) {
                                         }
-                                    }).start();
-                                    //-------------結束Dialog-----------
+                                    });
+                                    loginAsyncTask.execute(Common.login , userData.getUserMail(), userData.getUserName() ,userData.getUserBirthday() ,userData.getUserPhotoUri().toString());
 
-                                    try {
-                                        String user_mail = object.getString("email");
-                                        String user_name = object.getString("name");
-                                        String user_birthday = "1998/05/12";
-                                        String user_id = object.getString("id");
-
-                                        //Log.v("abc","10000");
-                                        new facebookAccount(user_name, user_birthday, user_mail, user_id);
-                                        loginAsyncTask loginAsyncTask = new loginAsyncTask(new loginAsyncTask.TaskListener() {
-                                            @Override
-                                            public void onFinished(String result) {
-
-                                            }
-                                        });
-                                        loginAsyncTask.execute(Common.login , userData.getUserMail(), userData.getUserName() ,userData.getUserBirthday() ,userData.getUserPhotoUri().toString());
-                                        //若確認已登入，直接進入首頁
-                                        Intent intent;
-                                        intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                    //若確認已登入，直接進入首頁
+                                    Intent intent;
+                                    intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }catch (JSONException e){
+                                    e.printStackTrace();
                                 }
-                            });
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
 
-                    Bundle parameters = new Bundle();
-                    parameters.putString("fields", "id, name, birthday , email");
-                    request.setParameters(parameters);
-                    request.executeAsync();
-                }
-                @Override
-                public void onCancel() {
-                    // App code
-                }
+            @Override
+            public void onCancel() {
+            }
 
-                @Override
-                public void onError(FacebookException exception) {
-                    // App code
-                    exception.printStackTrace();
-                }
-            });
+            @Override
+            public void onError(FacebookException exception) {
+                exception.printStackTrace();
+            }
+        });
 
-            //--------------facebook 登入結束
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
 }
