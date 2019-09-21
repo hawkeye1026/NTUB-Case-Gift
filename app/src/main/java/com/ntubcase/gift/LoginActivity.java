@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //--------------------------------------------------------------------
 
         //-------------Google登入
         SignInButton signInButton = findViewById(R.id.sign_in_button);
@@ -71,8 +72,38 @@ public class LoginActivity extends AppCompatActivity implements
         signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
         googleLogin();
 
-        //-------------Facebook登入
-        FacebookLogin();
+        // -----Facebook登入-----
+        if (Profile.getCurrentProfile() != null) {  // -----facebook判斷用戶是否登入過-----
+            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            try{
+                                //直接進入首頁
+                                Intent intent;
+                                intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                                long user_id = object.getLong("id");
+                                String user_name = object.getString("name");
+                                String user_mail = object.getString("email");
+                                new facebookAccount(user_name, "1991/01/01", user_mail, user_id);
+
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email,gender");
+            request.setParameters(parameters);
+            request.executeAsync();
+        }else{
+            FacebookLogin();
+        }
+
+
 
         //---------------------------------------------------------------------------------------------------直接進入
         Button btn_main = (Button) findViewById(R.id.btn_main);
@@ -210,7 +241,6 @@ public class LoginActivity extends AppCompatActivity implements
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) { //登入成功
-                Log.d(TAG,"onSuccess:"+loginResult.toString());
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
@@ -220,9 +250,6 @@ public class LoginActivity extends AppCompatActivity implements
                                     long user_id = object.getLong("id");
                                     String user_mail = object.getString("email");
                                     String user_name = object.getString("name");
-                                    Log.d(TAG, "Facebook id:" + user_id);
-                                    Log.d(TAG,"email:"+user_mail);
-                                    Log.d(TAG,"name:"+user_name);
 
                                     //---上傳資料---
                                     new facebookAccount(user_name, "1991/01/01", user_mail, user_id);
