@@ -30,7 +30,7 @@ public class SentPlanMultiActivity extends AppCompatActivity {
     private Button btn_save, btn_send, btn_cancel;
     private GridView gridView;
     private PlanMultiAdapter planMultiAdapter;
-    private TextView tv_receiveFriend, tv_message, tv_sender;
+    private TextView tv_receiveFriend, tv_message;
 
     private String planName, receiveFriend, message; //------bundle傳遞的資料
 
@@ -63,10 +63,8 @@ public class SentPlanMultiActivity extends AppCompatActivity {
         setTitle(planName); //-----標題為計畫名稱-----
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend);
         tv_message = (TextView) findViewById(R.id.tv_message);
-        tv_sender = (TextView) findViewById(R.id.tv_sender);
         tv_receiveFriend.setText("To. " + receiveFriend);   //-----顯示收禮人-----
         tv_message.setText(message); //-----顯示祝福-----
-        tv_sender.setText("From. " + sender); //-----顯示送禮人-----
 
         //---------------------------------GridView---------------------------------------------
         gridView = (GridView) findViewById(R.id.gridView);

@@ -46,7 +46,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private Button btn_plan_save, btn_plan_send;
     private GridView gridView;
     private PlanMultiAdapter planMultiAdapter;
-    private TextView tv_receiveFriend, tv_message, tv_sender;
+    private TextView tv_receiveFriend, tv_message;
 
     private String planName, receiveFriend, startDate, endDate, message; //------bundle傳遞的資料
     private ArrayList<String> receiveFriendId; //------bundle傳遞的資料
@@ -95,10 +95,8 @@ public class PlanMultipleActivity extends AppCompatActivity {
         setTitle(planName); //-----標題為計畫名稱-----
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend);
         tv_message = (TextView) findViewById(R.id.tv_message);
-        tv_sender = (TextView) findViewById(R.id.tv_sender);
         tv_receiveFriend.setText("To. " + receiveFriend);   //-----顯示收禮人-----
         tv_message.setText(message); //-----顯示祝福-----
-        tv_sender.setText("From. " + sender); //-----顯示送禮人-----
 
         //------選擇禮物用-----
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){

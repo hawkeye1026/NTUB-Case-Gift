@@ -102,9 +102,7 @@ public class LoginActivity extends AppCompatActivity implements
         }else{
             FacebookLogin();
         }
-
-
-
+        
         //---------------------------------------------------------------------------------------------------直接進入
         Button btn_main = (Button) findViewById(R.id.btn_main);
         btn_main.setOnClickListener(new View.OnClickListener() {
