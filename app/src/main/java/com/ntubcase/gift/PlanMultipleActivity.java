@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -19,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -60,7 +60,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
     //-----cutomlayout內物件
     private EditText alert_message, alert_time, alert_gifts;
-    private LinearLayout ll_time;
+    private TextView tv_title;
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
     private String[] giftItemList = new String[getGiftList.getGiftLength()];  //所有禮物
@@ -117,28 +117,25 @@ public class PlanMultipleActivity extends AppCompatActivity {
         });
     }
 
-    //-----------------顯示alertDialog-----------------
+    //-----------------顯示Dialog-----------------
     private void showAlertDialog(int position, final ViewGroup parent) {
         final int gridPosition = position;
 
-        // create an alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String[] mdate = selectDates.get(gridPosition).get("date").toString().split("-");
-        builder.setTitle("請輸入"+ mdate[1] + "月" + mdate[2] +"日規劃");
-
-        // set the custom layout
-        final View customLayout = getLayoutInflater().inflate(R.layout.plan_multi_alert_layout, null);
-        builder.setView(customLayout);
+        final Dialog mDialog = new Dialog(this);
+        mDialog.setContentView(R.layout.plan_multi_alert_layout);
 
         //----------------------------------------設定customLayout內顯示的資料--------------------------------------------------
-        alert_message  = customLayout.findViewById(R.id.alert_message);
-        alert_time  = customLayout.findViewById(R.id.alert_time);
-        alert_gifts  = customLayout.findViewById(R.id.alert_gifts);
-        ll_time = customLayout.findViewById(R.id.ll_time);
+        alert_message  = mDialog.findViewById(R.id.alert_message);
+        alert_time  = mDialog.findViewById(R.id.alert_time);
+        alert_gifts  = mDialog.findViewById(R.id.alert_gifts);
+        tv_title  = mDialog.findViewById(R.id.tv_title);
 
         alert_message.setText(selectDates.get(gridPosition).get("message").toString());
         alert_time.setText(selectDates.get(gridPosition).get("time").toString());
         alert_gifts.setText(selectDates.get(gridPosition).get("gifts").toString());
+
+        String[] mdate = selectDates.get(gridPosition).get("date").toString().split("-");
+        tv_title.setText("請輸入"+ mdate[1] + "月" + mdate[2] +"日規劃");
 
         alert_message.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -153,7 +150,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         });
 
         if ((alert_gifts.getText().toString()).equals(""))
-            ll_time.setVisibility(View.GONE); //若禮物空白則不能選時間
+            alert_time.setEnabled(false); //若禮物空白則不能選時間
 
         //----------------選擇禮物---------------
         alert_gifts.setInputType(InputType.TYPE_NULL);
@@ -197,29 +194,31 @@ public class PlanMultipleActivity extends AppCompatActivity {
         });
         //--------------------------------------------------------------------------------------------------------------------------------
 
-        //-------------alert按鈕-------------
-        builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+        //-------------dialog按鈕-------------
+        //---確認---
+        TextView btn_ok = mDialog.findViewById(R.id.btn_ok);
+        btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {   // send data from the AlertDialog to the Activity
+            public void onClick(View v) {
                 //------儲存輸入的資料-----
                 sendDialogDataToActivity(gridPosition, alert_message.getText().toString()
                         , alert_time.getText().toString(), alert_gifts.getText().toString(),mCheckedItems);
+                mDialog.dismiss();
             }
         });
 
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        //---取消---
+        TextView btn_cancel = mDialog.findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+               mDialog.dismiss();
             }
         });
 
-        builder.setNeutralButton("刪除規劃", null);
-
-        // create and show the alert dialog
-        final AlertDialog mDialog = builder.create();
-        mDialog.show();
-
-        mDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+        //---刪除規劃---
+        TextView btn_delete = mDialog.findViewById(R.id.btn_delete);
+        btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(PlanMultipleActivity.this)
@@ -242,6 +241,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
             }
         });
 
+        mDialog.show();
     }
 
     //--------------------- 處理AlertDialog回傳的資料-----------------------------
@@ -288,10 +288,10 @@ public class PlanMultipleActivity extends AppCompatActivity {
 
                 //---禮物有值才可選時間---
                 if (mSelectGifts.equals("")){
-                    ll_time.setVisibility(View.GONE);
+                    alert_time.setEnabled(false);
                     alert_time.setText("");
                 }else{  //時間預設為上午十二點
-                    ll_time.setVisibility(View.VISIBLE);
+                    alert_time.setEnabled(true);
                     if ((alert_time.getText().toString()).equals("")) alert_time.setText("00:00");
                 }
             }
@@ -310,7 +310,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 mCheckedItems = new boolean[giftItemList.length];
                 alert_gifts.setText("");
-                ll_time.setVisibility(View.GONE);  //---沒有禮物不能選時間
+                alert_time.setEnabled(false);  //---沒有禮物不能選時間
                 alert_time.setText("");
             }
         });

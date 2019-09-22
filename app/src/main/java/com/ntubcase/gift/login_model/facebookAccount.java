@@ -14,17 +14,15 @@ public class facebookAccount {
 //    //使用者生日
 //    private static String user_birthday;
 //
-    private static String user_id;
+
 //
 //    //使用者照片位置
 //    private static Uri user_photo_uri;
 
 
-    public facebookAccount(String user_name,String user_birthday , String user_mail, String user_id){
+    public facebookAccount(String user_name,String user_birthday , String user_mail, long user_id){
 
         Uri user_photo_uri = Uri.parse("http://graph.facebook.com/"+user_id+"/picture?type=large");
-
-        facebookAccount.user_id = user_id;
 
         new userData( user_name, user_birthday, user_mail, user_photo_uri,"FB");
 
@@ -33,9 +31,9 @@ public class facebookAccount {
 //        facebookAccount.user_mail = user_mail;
 
     }
-    public static String getUseruserid(){
-        return user_id;
-    }
+//    public static String getUseruserid(){
+//        return user_id;
+//    }
 
 //    public static String getUserName(){
 //        return user_name;

@@ -135,6 +135,9 @@ public class FriendActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                //---關閉多選模式---
+                if (friendListAdapter.mMode!=null) friendListAdapter.mMode.finish();
+
                 friendListAdapter.getFilter().filter(newText);
                 return true;
             }

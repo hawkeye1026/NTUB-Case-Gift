@@ -42,7 +42,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     private List<Map<String, Object>> originalitem;
     //----------------------------------------------------------------------------
     private OnItemClickListener mOnItemClickListener;
-    private ActionMode mMode;
+    public ActionMode mMode;
     private View actionBarView;  //多選模式中的action bar
     private TextView selectedNum;  //顯示選中個項目個數
     private boolean isCachedBackground = false;

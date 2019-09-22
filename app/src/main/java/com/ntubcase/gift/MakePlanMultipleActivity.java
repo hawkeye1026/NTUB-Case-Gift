@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -448,7 +449,10 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                         String mulGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String mulGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
 
-                        if (mulGiftName.equals("null")) mulGiftName="";  //若為null則顯示空值
+                        if (mulGiftName.equals("null")){
+                            mulGiftName = "";  //若為null則顯示空值
+                            sendTime = "";
+                        }
 
                         mDates = new HashMap<String, Object>();
                         mDates.put("date", date); //日期
