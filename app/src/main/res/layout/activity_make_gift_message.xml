@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@drawable/bg_send_now"/>
+            android:background="@drawable/bg_send_enter"/>
 
         <Button
             android:id="@+id/btn_save"

@@ -40,7 +40,7 @@
                 <Button
                     android:id="@+id/btnSearch"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="0.3"
                     android:background="@drawable/bg_search" />

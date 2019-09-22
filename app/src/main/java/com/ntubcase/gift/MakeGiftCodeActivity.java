@@ -221,7 +221,8 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 }
                 btn_add.setVisibility(View.INVISIBLE);
                 btn_addMulti.setVisibility(View.INVISIBLE);
-                btn_remove.setText("關閉刪除鈕");
+
+                btn_remove.setBackgroundResource(R.drawable.back);
 
             }else{ //-----關閉 行刪除鈕-----
                 int lineNum = tableLayout.getChildCount();  //總行數
@@ -232,7 +233,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
                 btn_add.setVisibility(View.VISIBLE);
                 btn_addMulti.setVisibility(View.VISIBLE);
-                btn_remove.setText("顯示刪除鈕");
+                btn_remove.setBackgroundResource(R.drawable.delete);
             }
         }
     };
