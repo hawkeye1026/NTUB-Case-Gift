@@ -36,6 +36,7 @@ public class Common {
     public static String insertMisPlan="http://140.131.114.156/NTUB_gift_server/insertMisPlan.php?";
     public static String insertSinPlan="http://140.131.114.156/NTUB_gift_server/insertSinPlan.php?";
     public static String deletePlan="http://140.131.114.156/NTUB_gift_server/deletePlan.php?";
+    public static String deletedPlan="http://140.131.114.156/NTUB_gift_server/deletedPlan.php?";
     public static String singlePlan="http://140.131.114.156/NTUB_gift_server/singlePlan.php?";
     //-------------------------------------Received
     public static String spGiftReceivedDetail="http://140.131.114.156/NTUB_gift_server/spGiftReceivedDetail.php?";
