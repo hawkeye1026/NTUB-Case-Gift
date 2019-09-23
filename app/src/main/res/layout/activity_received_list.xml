@@ -9,4 +9,10 @@
     android:background="@drawable/bg_giftbox"
     tools:context=".ReceivedListActivity">
 
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:textSize="16sp" />
+
 </LinearLayout>

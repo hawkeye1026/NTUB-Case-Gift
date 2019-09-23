@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class ReceivedSingleActivity extends AppCompatActivity {
 
-    static TextView tv_single_name, tv_single_date, tv_single_friend;
+    private TextView tv_single_name, tv_single_date, tv_single_friend;
     private String sender= "1";
 
     @Override
@@ -39,17 +39,17 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         tv_single_date = findViewById(R.id.add_surprise_date);
         tv_single_friend = findViewById(R.id.add_surprise_friend);
 
+        //---------------------------------取得收禮詳細-----------------------------------
+        Bundle bundle =getIntent().getExtras();
+        if (bundle!=null){
+            String planid = bundle.getString("planID");
+            showPlanDetail(planid);  //顯示收禮詳細資料
+        }
 
     }
 
-    @Override
-    protected void onResume() {
-        showPlanDetail();
-        super.onResume();
-    }
-
-    //------------------------------計畫詳細，顯示plan資料------------------------------
-    private void showPlanDetail(){
+    //------------------------------收禮詳細，顯示plan資料------------------------------
+    private void showPlanDetail(String planid){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
@@ -74,7 +74,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
                     tv_single_name.setText(sinPlanName); //計畫名稱
                     tv_single_date.setText(sinSendPlanDate); //送禮日期
-                    tv_single_friend.setText(nickname); //計畫名稱
+                    tv_single_friend.setText(nickname); //送禮人
 
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("sinList");
@@ -94,7 +94,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.planList , sender, "sin_20190919234325");
+        planDetailAsyncTask.execute(Common.planList , sender, planid);
     }
 
     //------------------------------------------------------------------------------------------
