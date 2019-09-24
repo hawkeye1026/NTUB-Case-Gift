@@ -13,7 +13,7 @@
         android:id="@+id/tv_receiveFriend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:layout_marginBottom="10dp"
         android:text="To. "
         android:textColor="@android:color/black"
@@ -22,46 +22,43 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         android:text="選擇禮物:"
         android:textColor="@android:color/black"
         android:textSize="20dp" />
 
     <GridView
-        android:background="@drawable/grid_plan"
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="9"
         android:gravity="center"
         android:horizontalSpacing="1dp"
         android:numColumns="3"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="1dp">
+        android:verticalSpacing="1dp"
+        android:background="@drawable/grid_plan"/>
 
-    </GridView>
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/tv_message"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="前一頁的祝福"
+            android:text="留言:"
             android:textSize="16sp" />
 
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

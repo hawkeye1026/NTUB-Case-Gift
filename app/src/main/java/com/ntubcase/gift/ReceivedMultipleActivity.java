@@ -3,10 +3,15 @@ package com.ntubcase.gift;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ntubcase.gift.Adapter.PlanMultiAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 
@@ -20,23 +25,27 @@ import java.util.Map;
 
 public class ReceivedMultipleActivity extends AppCompatActivity {
 
-    private TextView tv_multi_name;
+    private TextView tv_name, tv_message, tv_sender;
     private String sender= "1";
-    //----------------------------------------------------------------------------------------------
-    private String mulPlanName, message, friendName, mulPlanid;
-    private List<Map<String, Object>> oldSelectDates = new ArrayList<Map<String, Object>>();; //原有資料
+
+    private PlanMultiAdapter planMultiAdapter;
+    private GridView gridView;
+
+    private String mulPlanName, message;
+    private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>(); //收禮資料
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_received_multiple);
-        setTitle("收禮細節(多日)");
+        setTitle("收禮細節");
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //------------------------------------------------------------------------------------------
-
-        tv_multi_name = findViewById(R.id.tv_name);
+        tv_name = findViewById(R.id.tv_name);
+        tv_message = findViewById(R.id.tv_message);
+        tv_sender = findViewById(R.id.tv_sender);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -44,6 +53,17 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
             String planid = bundle.getString("planID");
             showPlanDetail(planid);  //顯示收禮詳細資料
         }
+
+        //---------------------------------GridView---------------------------------------------
+        gridView = (GridView) findViewById(R.id.gridView);
+        planMultiAdapter = new PlanMultiAdapter(this, selectDates);
+        gridView.setAdapter(planMultiAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //showAlertDialog(position,parent);  //顯示alertDialog
+            }
+        });
     }
 
     //------------------------------收禮詳細，顯示plan資料------------------------------
@@ -61,14 +81,15 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("mulPlan");
-                    mulPlanid =jsonArray.getJSONObject(0).getString("mulid");
+                    //String mulPlanid =jsonArray.getJSONObject(0).getString("mulid");
                     mulPlanName =jsonArray.getJSONObject(0).getString("mulPlanName"); //計畫名稱
                     message =jsonArray.getJSONObject(0).getString("message"); //祝福
 
-                    tv_multi_name.setText(mulPlanName); //計畫名稱
+                    tv_name.setText(mulPlanName); //計畫名稱
+                    tv_message.setText("留言："+message); //祝福
 
 
-                    //----------------------------取得下一頁計畫的資料----------------------------
+                    //----------------------------取得規劃日期內的資料----------------------------
                     jsonArray = object.getJSONArray("mulList");
                     int mulListLength = jsonArray.length();
 
@@ -90,8 +111,10 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                         mDates.put("message", mulGoal); //留言
                         mDates.put("time", sendTime); //時間
                         mDates.put("gifts", mulGiftName); //禮物
-                        oldSelectDates.add(mDates);
+                        selectDates.add(mDates);
                     }
+                    planMultiAdapter.notifyDataSetChanged();
+
                 } catch (Exception e) {
                     Toast.makeText(ReceivedMultipleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
                 }
