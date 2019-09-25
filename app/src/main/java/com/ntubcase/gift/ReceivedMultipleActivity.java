@@ -26,12 +26,12 @@ import java.util.Map;
 public class ReceivedMultipleActivity extends AppCompatActivity {
 
     private TextView tv_name, tv_message, tv_sender;
-    private String sender= "1";
+    private String planID;
 
     private PlanMultiAdapter planMultiAdapter;
     private GridView gridView;
 
-    private String mulPlanName, message;
+    private String mulPlanName, message, sender;
     private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>(); //收禮資料
 
     @Override
@@ -50,8 +50,8 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
-            String planid = bundle.getString("planID");
-            showPlanDetail(planid);  //顯示收禮詳細資料
+            planID = bundle.getString("planID");
+            showPlanDetail(planID);  //顯示收禮詳細資料
         }
 
         //---------------------------------GridView---------------------------------------------
@@ -67,7 +67,7 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
     }
 
     //------------------------------收禮詳細，顯示plan資料------------------------------
-    private void showPlanDetail(String planid){
+    private void showPlanDetail(String planID){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
@@ -84,10 +84,11 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                     //String mulPlanid =jsonArray.getJSONObject(0).getString("mulid");
                     mulPlanName =jsonArray.getJSONObject(0).getString("mulPlanName"); //計畫名稱
                     message =jsonArray.getJSONObject(0).getString("message"); //祝福
+                    sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
 
                     tv_name.setText(mulPlanName); //計畫名稱
                     tv_message.setText("留言："+message); //祝福
-
+                    tv_sender.setText("送禮人："+sender); //送禮人
 
                     //----------------------------取得規劃日期內的資料----------------------------
                     jsonArray = object.getJSONArray("mulList");
@@ -120,7 +121,7 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.planList , sender, planid);
+        planDetailAsyncTask.execute(Common.receiveDetail , "abc", planID);
     }
 
     //------------------------------------------------------------------------------------------

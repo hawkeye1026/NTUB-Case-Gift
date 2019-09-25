@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.ntubcase.gift.Adapter.GiftReceivedNewAdapter;
-import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getReceiveNew;
 
 import java.util.ArrayList;

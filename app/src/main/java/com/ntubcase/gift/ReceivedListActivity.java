@@ -27,12 +27,11 @@ import java.util.Map;
 public class ReceivedListActivity extends AppCompatActivity {
 
     private TextView tv_name, tv_sender, tv_deadline;
-    private String sender= "1";
+    private String planID;
 
     private RecyclerView recycler_view;
     private plan_list_adapter planListAdapter;
     private List<String> mData = new ArrayList<>();
-    private String misPlanid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,8 @@ public class ReceivedListActivity extends AppCompatActivity {
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
-            String planid = bundle.getString("planID");
-            showPlanDetail(planid);  //顯示收禮詳細資料
+            planID = bundle.getString("planID");
+            showPlanDetail(planID);  //顯示收禮詳細資料
         }
 
         //-----------------------------------------------------------------------
@@ -70,7 +69,7 @@ public class ReceivedListActivity extends AppCompatActivity {
     }
 
     //------------------------------收禮詳細，顯示plan資料------------------------------
-    private void showPlanDetail(String planid){
+    private void showPlanDetail(String planID){
         planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
             @Override
             public void onFinished(String result) {
@@ -84,15 +83,16 @@ public class ReceivedListActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("misPlan");
-                    misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
+                    String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
                     //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
                     String misPlanName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
                     //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
                     String deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
+                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
 
                     tv_name.setText(misPlanName); //計畫名稱
                     tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
-
+                    tv_sender.setText(sender); //送禮人
 
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("misList");
@@ -120,7 +120,7 @@ public class ReceivedListActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.planList , sender, planid);
+        planDetailAsyncTask.execute(Common.receiveDetail , "abc", planID);
     }
 
 

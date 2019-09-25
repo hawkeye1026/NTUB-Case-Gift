@@ -54,9 +54,9 @@ public class GiftReceivedNewAdapter extends RecyclerView.Adapter<GiftReceivedNew
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
 
-                String type = re_giftList.get(position).get("type").toString();
                 String planID = re_giftList.get(position).get("planID").toString();
 
+                String type = re_giftList.get(position).get("type").toString();
                 switch (type){
                     case "單日送禮" :
                         intent = new Intent(context, ReceivedSingleActivity.class);
@@ -116,6 +116,7 @@ public class GiftReceivedNewAdapter extends RecyclerView.Adapter<GiftReceivedNew
                         String sender = originalitem.get(i).get("sender").toString();
                         String date = originalitem.get(i).get("date").toString();
                         String planID = originalitem.get(i).get("planID").toString();
+
                         if(sender.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
                             filteredItemContent.put("type", type);

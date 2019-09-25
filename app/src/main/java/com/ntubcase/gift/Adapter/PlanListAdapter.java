@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.data.getPlanningList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,6 +149,7 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
             item.remove((int)checkedItems[i]);
         }
         notifyDataSetChanged();
+        getPlanningList.getJSON();
     }
 
     @Override
