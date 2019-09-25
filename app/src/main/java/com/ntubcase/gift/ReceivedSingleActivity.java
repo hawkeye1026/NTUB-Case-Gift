@@ -94,7 +94,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.planList , sender, "sin_20190919234325");
+        planDetailAsyncTask.execute(Common.receiveDetail , sender, "sin_20190919234325");
     }
 
     //------------------------------------------------------------------------------------------
