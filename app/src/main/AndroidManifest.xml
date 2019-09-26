@@ -55,7 +55,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- *****製作禮物區***** -->
-        <activity android:name=".GiftActivity" />
+        <activity
+            android:name=".GiftActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MakeGiftImageActivity"
             android:screenOrientation="portrait"
@@ -82,7 +84,9 @@
             android:windowSoftInputMode="adjustPan" />
 
         <!-- *****預送計畫區***** -->
-        <activity android:name=".PlanActivity" />
+        <activity
+            android:name=".PlanActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MakePlanSingleActivity"
             android:screenOrientation="portrait"
@@ -117,7 +121,9 @@
             android:windowSoftInputMode="adjustPan" />
 
         <!-- *****收禮箱區***** -->
-        <activity android:name=".GiftReceivedActivity" />
+        <activity
+            android:name=".GiftReceivedActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ReceivedSingleActivity"
             android:screenOrientation="portrait" />
@@ -129,7 +135,9 @@
             android:screenOrientation="portrait"/>
 
         <!-- *****我的好友區***** -->
-        <activity android:name=".FriendActivity" />
+        <activity
+            android:name=".FriendActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".FriendAddActivity"
             android:screenOrientation="portrait"
