@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ public class ReceivedListActivity extends AppCompatActivity {
     private plan_list_adapter planListAdapter;
     private List<String> mData = new ArrayList<>();
 
+    private Button btn_complete;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,7 @@ public class ReceivedListActivity extends AppCompatActivity {
         tv_name = findViewById(R.id.tv_name);
         tv_sender = findViewById(R.id.tv_sender);
         tv_deadline = findViewById(R.id.tv_deadline);
+        btn_complete = findViewById(R.id.btn_complete);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -53,17 +57,24 @@ public class ReceivedListActivity extends AppCompatActivity {
             showPlanDetail(planID);  //顯示收禮詳細資料
         }
 
-        //-----------------------------------------------------------------------
+        //----------------------------清單內容RecyclerView------------------------------
         recycler_view = findViewById(R.id.list_recycle_view);  // 設置RecyclerView為列表型態
         recycler_view.setLayoutManager(new LinearLayoutManager(this));  // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         planListAdapter = new plan_list_adapter(mData);  // 將資料交給adapter
-        planListAdapter.isFromMake=false;
+        planListAdapter.isFromMake=false; //不顯示刪除
+        planListAdapter.isFromReceived=true; //顯示checkbox
         recycler_view.setAdapter(planListAdapter); // 設置adapter給recycler_view
-        planListAdapter.setOnItemClickListener(new plan_list_adapter.OnItemClickListener(){
+
+        //----------------------------完成任務 按鈕------------------------------
+        btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(View view, int position){
-                //showDataDialog(position);
+            public void onClick(View v) {
+                if (planListAdapter.isMissionComplete()){
+                    Toast.makeText(getApplicationContext(),"完成", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"還有任務未完成喔", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
