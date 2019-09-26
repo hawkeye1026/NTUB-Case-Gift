@@ -120,7 +120,7 @@ public class ReceivedListActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.receiveDetail , "abc", planID);
+        planDetailAsyncTask.execute(Common.receiveDetail , "", planID);
     }
 
 

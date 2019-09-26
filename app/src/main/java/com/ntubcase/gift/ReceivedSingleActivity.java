@@ -3,26 +3,33 @@ package com.ntubcase.gift;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
-import com.ntubcase.gift.data.getFriendList;
-import com.ntubcase.gift.data.getGiftList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ReceivedSingleActivity extends AppCompatActivity {
 
-    private TextView tv_single_name, tv_single_date, tv_single_friend;
-    private String sender= "1";
+    private TextView tv_name, tv_sender;
+
+    private RecyclerView recycler_view;
+    private plan_single_adapter adapter;
+    private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +41,23 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //------------------------------------------------------------------------------------------
 
-        //宣告變數------------------------------------------------------------------------------
-        tv_single_name = findViewById(R.id.add_surprise_name);
-        tv_single_date = findViewById(R.id.add_surprise_date);
-        tv_single_friend = findViewById(R.id.add_surprise_friend);
+        tv_name = findViewById(R.id.tv_name);
+        tv_sender = findViewById(R.id.tv_sender);
+
+
+        //-----------------------------------------------------------------------
+        recycler_view = findViewById(R.id.recycler_view);
+        recycler_view.setLayoutManager(new LinearLayoutManager(this)); // 設置RecyclerView為列表型態
+        recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // 設置格線
+        adapter = new plan_single_adapter(mData); // 將資料交給adapter
+        adapter.isFromMake=false;
+        recycler_view.setAdapter(adapter);  // 設置adapter給recycler_view
+        adapter.setOnItemClickListener(new plan_single_adapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View view, int position){
+                //showDataDialog(position);
+            }
+        });
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -72,9 +92,8 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
                     if (sinSendPlanDate.equals("0000-00-00")) sinSendPlanDate="";  //若為0則顯示空值
 
-                    tv_single_name.setText(sinPlanName); //計畫名稱
-                    tv_single_date.setText(sinSendPlanDate); //送禮日期
-                    tv_single_friend.setText(nickname); //送禮人
+                    tv_name.setText(sinPlanName); //計畫名稱
+                    tv_sender.setText(nickname); //送禮人
 
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("sinList");
@@ -87,14 +106,21 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
                         String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
                         String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
+
+                        Map<String, Object> mGiftsData = new HashMap<String, Object>();
+                        mGiftsData.put("giftName", sinGiftName);
+                        mGiftsData.put("sentTime", sinSendGiftDate.substring(11,16));
+                        mGiftsData.put("message", sinMessage);
+                        mData.add(mGiftsData);
                     }
+                    adapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
                     Toast.makeText(ReceivedSingleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.planList , sender, planid);
+        planDetailAsyncTask.execute(Common.planList , "", planid);
     }
 
     //------------------------------------------------------------------------------------------
