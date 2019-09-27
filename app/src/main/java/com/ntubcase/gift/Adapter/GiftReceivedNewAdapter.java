@@ -2,8 +2,10 @@ package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.ReceivedListActivity;
+import com.ntubcase.gift.ReceivedMultipleActivity;
 import com.ntubcase.gift.ReceivedSingleActivity;
 
 import java.util.ArrayList;
@@ -38,7 +42,7 @@ public class GiftReceivedNewAdapter extends RecyclerView.Adapter<GiftReceivedNew
     }
 
     @Override
-    public void onBindViewHolder(GiftReceivedNewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(GiftReceivedNewAdapter.ViewHolder holder, final int position) {
         holder.image.setImageResource(R.drawable.newgift);
         holder.giftName.setText(re_giftList.get(position).get("title").toString());
         holder.sender.setText(re_giftList.get(position).get("sender").toString());
@@ -47,7 +51,26 @@ public class GiftReceivedNewAdapter extends RecyclerView.Adapter<GiftReceivedNew
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ReceivedSingleActivity.class); //觸發事件
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+
+                String planID = re_giftList.get(position).get("planID").toString();
+
+                String type = re_giftList.get(position).get("type").toString();
+                switch (type){
+                    case "單日送禮" :
+                        intent = new Intent(context, ReceivedSingleActivity.class);
+                        break;
+                    case "多日規劃" :
+                        intent = new Intent(context, ReceivedMultipleActivity.class);
+                        break;
+                    case "任務清單" :
+                        intent = new Intent(context, ReceivedListActivity.class);
+                        break;
+                }
+
+                bundle.putString("planID", planID);
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });
@@ -93,6 +116,7 @@ public class GiftReceivedNewAdapter extends RecyclerView.Adapter<GiftReceivedNew
                         String sender = originalitem.get(i).get("sender").toString();
                         String date = originalitem.get(i).get("date").toString();
                         String planID = originalitem.get(i).get("planID").toString();
+
                         if(sender.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
                             filteredItemContent.put("type", type);

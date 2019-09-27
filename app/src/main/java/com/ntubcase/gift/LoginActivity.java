@@ -74,22 +74,28 @@ public class LoginActivity extends AppCompatActivity implements
 
         // -----Facebook登入-----
         if (Profile.getCurrentProfile() != null) {  // -----facebook判斷用戶是否登入過-----
+            Profile profile = Profile.getCurrentProfile();
+
+            String user_id = profile.getId(); //取得ID
+            Uri user_photo_uri = Uri.parse("http://graph.facebook.com/"+user_id+"/picture?type=large");
+            String user_name = profile.getName(); //取得名稱
+            userData.setUserData(user_name,
+                    "1991/01/01", user_photo_uri, "FB"); //建立使用者資料
+
+            //-----進入首頁-----
+            Intent intent;
+            intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+
+            //---取得email資料---
             GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
                         @Override
                         public void onCompleted(JSONObject object, GraphResponse response) {
                             try{
-                                //直接進入首頁
-                                Intent intent;
-                                intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                                long user_id = object.getLong("id");
-                                String user_name = object.getString("name");
                                 String user_mail = object.getString("email");
-                                new facebookAccount(user_name, "1991/01/01", user_mail, user_id);
-
+                                userData.setUserMail(user_mail);
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
@@ -102,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements
         }else{
             FacebookLogin();
         }
-        
+
         //---------------------------------------------------------------------------------------------------直接進入
         Button btn_main = (Button) findViewById(R.id.btn_main);
         btn_main.setOnClickListener(new View.OnClickListener() {

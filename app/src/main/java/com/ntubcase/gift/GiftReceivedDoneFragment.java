@@ -15,7 +15,6 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 
 import com.ntubcase.gift.Adapter.GiftReceivedDoneAdapter;
-import com.ntubcase.gift.data.getGiftReceived;
 import com.ntubcase.gift.data.getReceiveOpen;
 
 import java.util.ArrayList;

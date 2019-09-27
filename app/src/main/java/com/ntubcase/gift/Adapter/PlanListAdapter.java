@@ -3,6 +3,7 @@ package com.ntubcase.gift.Adapter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.gift.delete.giftDeleteAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.data.getPlanningList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +35,9 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
     //------------------------------------
     private boolean isCachedBackground = false;
     private Drawable mBackground;
-
     private ListView mListView;
+
+    private String userid = "1";
 
     public PlanListAdapter(Context context, List<Map<String, Object>> mList){
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -131,7 +133,10 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
     //-----刪除item-----
     public void deleteItems(){
         long[] checkedItems=mListView.getCheckedItemIds(); //取得勾選的項目
+        String deletePlanId;
+
         for (int i=checkedItems.length-1; i>=0; i--){
+            deletePlanId =  item.get((int)checkedItems[i]).get("planID").toString(); //取得ID
 
             planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
                 @Override
@@ -139,11 +144,12 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
 
                 }
             });
-            //planDetailAsyncTask.execute(Common.deletedPlan, userid, planid);
+            planDetailAsyncTask.execute(Common.deletedPlan, userid, deletePlanId);
 
             item.remove((int)checkedItems[i]);
         }
         notifyDataSetChanged();
+        getPlanningList.getJSON();
     }
 
     @Override

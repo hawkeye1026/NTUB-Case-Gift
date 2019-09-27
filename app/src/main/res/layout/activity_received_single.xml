@@ -17,7 +17,6 @@
         android:layout_height="500dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:layout_marginTop="15dp"
         android:background="@drawable/card"
         android:paddingTop="40dp"
         android:paddingBottom="60dp">
@@ -26,30 +25,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_marginLeft="10dp"
             android:orientation="vertical">
 
             <!--計畫名稱-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 tools:layout_marginBottom="20dp">
 
                 <TextView
-                    android:id="@+id/add_surprise_name"
+                    android:id="@+id/tv_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:hint="計畫名稱"
-                    android:inputType="textPersonName"
-                    tools:textSize="24sp" />
+                    android:hint="PlanName"
+                    tools:textSize="20dp" />
 
             </LinearLayout>
-
-
-            <!--收禮人-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,7 +55,6 @@
                 android:paddingBottom="5dp">
 
                 <TextView
-
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
@@ -114,36 +106,16 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="From：" />
 
                 <TextView
-                    android:id="@+id/add_surprise_friend"
+                    android:id="@+id/tv_sender"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:hint="送禮人"
                     android:inputType="textPersonName"
                     tools:textSize="14sp" />
-            </LinearLayout>
-
-            <!--送禮日期-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/add_surprise_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center|right|center_horizontal|center_vertical"
-                    android:hint="收禮日期"
-                    android:inputType="textPersonName"
-                    tools:textSize="14sp" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -151,42 +123,24 @@
 
     </ScrollView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1.7"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--android:gravity="center"-->
-        <!--android:orientation="horizontal">-->
+        <Button
+            android:id="@+id/btn_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:text="填寫回饋"
+            android:textSize="20dp"/>
 
-        <!--<Button-->
-            <!--android:id="@+id/btn_plan_save"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:background="@drawable/bg_save" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/btn_plan_send"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:background="@drawable/bg_send"-->
-            <!--android:layout_marginLeft="30dp"/>-->
-
-        <!--<Button-->
-            <!--android:id="@+id/btn_plan_cancel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:text="取消預送"-->
-            <!--android:textSize="20dp"-->
-            <!--android:visibility="gone"/>-->
-
-    <!--</LinearLayout>-->
-
+    </LinearLayout>
 
 </LinearLayout>
 

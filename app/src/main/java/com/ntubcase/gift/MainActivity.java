@@ -6,24 +6,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
-import com.ntubcase.gift.data.getGiftReceived;
-import com.ntubcase.gift.data.getGiftReceivedDone;
 import com.ntubcase.gift.data.getPlanGot;
-import com.ntubcase.gift.data.getPlanList;
 import com.ntubcase.gift.data.getPlanSent;
 import com.ntubcase.gift.data.getPlanningList;
 import com.ntubcase.gift.data.getReceiveNew;
 import com.ntubcase.gift.data.getReceiveOpen;
-import com.ntubcase.gift.login_model.facebookAccount;
-import com.ntubcase.gift.login_model.googleAccount;
-import com.ntubcase.gift.login_model.revokeAccess;
-import com.ntubcase.gift.login_model.signOut;
 import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
 
@@ -42,10 +34,8 @@ public class MainActivity extends AppCompatActivity {
         getPlanSent.getJSON();
         getPlanGot.getJSON();
         getFriendList.getJSON();
-        getGiftReceived.getJSON();
         getReceiveNew.getJSON();
         getReceiveOpen.getJSON();
-        getGiftReceivedDone.getJSON();
         //----------
 
         //-------顯示使用者頭像
