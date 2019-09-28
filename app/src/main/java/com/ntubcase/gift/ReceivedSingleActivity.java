@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Adapter.plan_single_adapter;
+import com.ntubcase.gift.Adapter.re_plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 
@@ -28,7 +30,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
     private TextView tv_name, tv_sender;
 
     private RecyclerView recycler_view;
-    private plan_single_adapter adapter;
+    private re_plan_single_adapter adapter;
     private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
     @Override
@@ -47,12 +49,13 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
         //-----------------------------------------------------------------------
         recycler_view = findViewById(R.id.recycler_view);
-        recycler_view.setLayoutManager(new LinearLayoutManager(this)); // 設置RecyclerView為列表型態
+        recycler_view.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // 設置格線
-        adapter = new plan_single_adapter(mData); // 將資料交給adapter
+        adapter = new re_plan_single_adapter(mData); // 將資料交給adapter
         adapter.isFromMake=false;
         recycler_view.setAdapter(adapter);  // 設置adapter給recycler_view
-        adapter.setOnItemClickListener(new plan_single_adapter.OnItemClickListener(){
+        adapter.setOnItemClickListener(new re_plan_single_adapter.OnItemClickListener(){
             @Override
             public void onItemClick(View view, int position){
                 //showDataDialog(position);
