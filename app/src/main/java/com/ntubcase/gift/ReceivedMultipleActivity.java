@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.app.Dialog;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +29,7 @@ import java.util.Map;
 public class ReceivedMultipleActivity extends AppCompatActivity {
 
     private TextView tv_name, tv_message, tv_sender;
+    private Button btn_feedback;
     private String planID;
 
     private PlanMultiAdapter planMultiAdapter;
@@ -33,6 +37,9 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
 
     private String mulPlanName, message, sender;
     private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>(); //收禮資料
+
+    private EditText et_feedback;
+    private Button btn_can, btn_ent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,7 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         tv_name = findViewById(R.id.tv_name);
         tv_message = findViewById(R.id.tv_message);
         tv_sender = findViewById(R.id.tv_sender);
+        btn_feedback = findViewById(R.id.btn_feedback);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -62,6 +70,36 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //showAlertDialog(position,parent);  //顯示alertDialog
+            }
+        });
+
+        //---------------------------------填寫回饋 按鈕---------------------------------------------
+        btn_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog mDialog = new Dialog(ReceivedMultipleActivity.this);
+                mDialog.setContentView(R.layout.feedback_layout);
+
+                et_feedback  = mDialog.findViewById(R.id.et_feedback);
+                btn_can  = mDialog.findViewById(R.id.btn_can);
+                btn_ent  = mDialog.findViewById(R.id.btn_ent);
+
+                //-------------dialog按鈕-------------
+                btn_ent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+
+                btn_can.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+
+                mDialog.show();
             }
         });
     }
