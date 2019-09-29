@@ -6,7 +6,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class userData {
 
-
+    //使用者id
+    private static String user_id;
     //使用者名稱
     private static String user_name;
     //使用者生日
@@ -18,14 +19,18 @@ public class userData {
     //登入途徑
     private static String loginProtal;
 
-    private static GoogleSignInClient mGoogleSignInClient;
-
     public userData(String user_name, String user_birthday, String user_mail, Uri user_photo_uri, String loginProtal){
         userData.user_name = user_name;
         userData.user_birthday = user_birthday;
         userData.user_mail = user_mail;
         userData.user_photo_uri = user_photo_uri;
         userData.loginProtal = loginProtal;
+    }
+    public static void setUserID(String userid){
+        user_id = userid;
+    }
+    public static String getUserID(){
+        return user_id;
     }
 
     public static String getUserName(){

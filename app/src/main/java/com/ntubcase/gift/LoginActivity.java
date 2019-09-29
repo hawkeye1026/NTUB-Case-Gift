@@ -41,6 +41,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.ntubcase.gift.login_model.userData;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -177,10 +178,29 @@ public class LoginActivity extends AppCompatActivity implements
             }
 
             new googleAccount(user_name, user_birthday, user_mail, Uri.parse(user_photoUri));
+
             loginAsyncTask loginAsyncTask = new loginAsyncTask(new loginAsyncTask.TaskListener() {
                 @Override
                 public void onFinished(String result) {
+                    try{
+                        if(result==null){ //伺服器連線失敗跳維修頁
+                            Log.v("aaaa",userData.getUserID());
+                            return;
+                        }
+                        JSONObject object = new JSONObject(result);
+                        JSONArray jsonArray = object.getJSONArray("result");
+                        Log.v("TTTT","T1");
+                        for (int i = 0 ; i <jsonArray.length() ; i++) {
+                            //Log.v("abc","10000");
+                            //取得禮物資料
+                            userData.setUserID(jsonArray.getJSONObject(i).getString("userid"));
 
+                            Log.v("insertgiftid",userData.getUserID());
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             });
             loginAsyncTask.execute(Common.login , userData.getUserMail(), userData.getUserName() ,userData.getUserBirthday() ,userData.getUserPhotoUri().toString());

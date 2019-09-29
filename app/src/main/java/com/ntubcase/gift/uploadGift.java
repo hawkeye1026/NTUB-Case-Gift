@@ -1,12 +1,20 @@
 package com.ntubcase.gift;
 
+import android.util.Log;
+
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertAsyncTask;
+import com.ntubcase.gift.login_model.userData;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class uploadGift {
+
+    private static String  giftid ;
 
     public uploadGift(String giftContent, String giftName, String owner, String giftType){
         //--------取得目前時間：yyyy/MM/dd hh:mm:ss
@@ -17,10 +25,32 @@ public class uploadGift {
         //------------------------------上傳禮物資料
         giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
             @Override
-            public void onFinished(String result) {
+            public void onFinished(String result){
+                try{
+                    if(result==null){ //伺服器連線失敗跳維修頁
+                        Log.v("aaaa", userData.getUserID());
+                        return;
+                    }
+                    JSONObject object = new JSONObject(result);
+                    JSONArray jsonArray = object.getJSONArray("result");
+
+                    for (int i = 0 ; i <jsonArray.length() ; i++) {
+                        //Log.v("abc","10000");
+                        //取得禮物資料
+                        giftid = jsonArray.getJSONObject(i).getString("lastID");
+
+                        Log.v("insertgiftid",giftid);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
             }
         });
         mgiftInsertAsyncTask.execute(Common.insertGift, giftContent, dateTime, giftName, owner, giftType);
+    }
+
+    public String getLastGiftid (){
+        return giftid;
     }
 }
