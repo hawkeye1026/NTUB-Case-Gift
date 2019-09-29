@@ -348,7 +348,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                     }
                 });
 //                Log.v("rowNumber",rowNumber);
-                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode, giftContent, rowNumber, maincode_array , matchcode_array);
+                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode,uploadGift.getLastGiftid(), giftContent, rowNumber, maincode_array , matchcode_array);
 
                 //-------------讀取Dialog-----------
                 barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,

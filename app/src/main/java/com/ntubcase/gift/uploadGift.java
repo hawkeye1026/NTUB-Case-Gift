@@ -21,6 +21,7 @@ public class uploadGift {
         Date date =new Date();
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         String dateTime = sdFormat.format(date);
+        Log.v("aaaa", "bbb");
 //        Log.v("gift",giftContent+"||"+giftName+"||"+owner+"||"+giftType);
         //------------------------------上傳禮物資料
         giftInsertAsyncTask mgiftInsertAsyncTask = new giftInsertAsyncTask(new giftInsertAsyncTask.TaskListener() {
@@ -28,18 +29,19 @@ public class uploadGift {
             public void onFinished(String result){
                 try{
                     if(result==null){ //伺服器連線失敗跳維修頁
-                        Log.v("aaaa", userData.getUserID());
+                        Log.v("bbb", "asdaddqwew");
                         return;
                     }
                     JSONObject object = new JSONObject(result);
                     JSONArray jsonArray = object.getJSONArray("result");
 
+                    Log.v("ccc","ASSADASDDQWE");
                     for (int i = 0 ; i <jsonArray.length() ; i++) {
                         //Log.v("abc","10000");
                         //取得禮物資料
                         giftid = jsonArray.getJSONObject(i).getString("lastID");
 
-                        Log.v("insertgiftid",giftid);
+                        Log.v("upgiftid",giftid);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -50,7 +52,7 @@ public class uploadGift {
         mgiftInsertAsyncTask.execute(Common.insertGift, giftContent, dateTime, giftName, owner, giftType);
     }
 
-    public String getLastGiftid (){
+    public static String getLastGiftid (){
         return giftid;
     }
 }
