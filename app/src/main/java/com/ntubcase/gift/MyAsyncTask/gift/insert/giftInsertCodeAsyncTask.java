@@ -1,6 +1,7 @@
 package com.ntubcase.gift.MyAsyncTask.gift.insert;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -62,11 +63,12 @@ public class giftInsertCodeAsyncTask extends AsyncTask<String, Integer, String> 
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "gift=" + URLEncoder.encode(params[1], "UTF-8")+
-                            "&rowNumber=" + URLEncoder.encode(params[2], "UTF-8")+
-                            "&mainCode=" + URLEncoder.encode(params[3], "UTF-8" )+
-                            "&matchCode=" + URLEncoder.encode(params[4], "UTF-8" );
-
+                    "giftid=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&gift=" + URLEncoder.encode(params[2], "UTF-8")+
+                    "&rowNumber=" + URLEncoder.encode(params[3], "UTF-8")+
+                    "&mainCode=" + URLEncoder.encode(params[4], "UTF-8" )+
+                    "&matchCode=" + URLEncoder.encode(params[5], "UTF-8" );
+            Log.v("code",args);
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

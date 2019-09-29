@@ -89,7 +89,7 @@ public class loginAsyncTask extends AsyncTask<String, Integer, String> {
             inputStream = conn.getInputStream();
 
             BufferedReader bufferedReader=new BufferedReader(
-                    new InputStreamReader(inputStream, "UTF-8"));
+                    new InputStreamReader(inputStream, "utf-8"));
 
             data=bufferedReader.readLine();
         } catch(Exception e) {

@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,8 @@ import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertCodeAsyncTask;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
+
+import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +52,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private TableRow tabRow;
     private ArrayList<String> mainCodes = new ArrayList<>();
     private ArrayList<String> matchCodes = new ArrayList<>();
+    private String maincode_array = "";
+    private String matchcode_array = "";
+
     private static int giftid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -322,18 +328,27 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             if(checkRepeatGift.checkRepeatGift(giftName)) {
                 //------------------------------上傳禮物資料
                 new uploadGift(giftContent, giftName, owner, giftType);
-
+                String rowNumber = "";
                 for (int i = 0; i < mainCodes.size(); i++) {
-                    giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
-                        @Override
-                        public void onFinished(String result) {
-
-                        }
-                    });
-                    String rowNumber = String.valueOf(i+1);
-//                Log.v("rowNumber",rowNumber);
-                    mgiftInsertCodAsyncTask.execute(Common.insertGiftCode, giftContent, rowNumber, mainCodes.get(i), matchCodes.get(i));
+                    if( i ==  mainCodes.size() - 1){
+                        rowNumber += i ;
+                        maincode_array += mainCodes.get(i);
+                        matchcode_array += matchCodes.get(i);
+                    }else{
+                        rowNumber += i + ",";
+                        maincode_array += mainCodes.get(i) + ",";
+                        matchcode_array += matchCodes.get(i) + ",";
+                    }
                 }
+
+                giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+//                Log.v("rowNumber",rowNumber);
+                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode,uploadGift.getLastGiftid(), giftContent, rowNumber, maincode_array , matchcode_array);
 
                 //-------------讀取Dialog-----------
                 barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
@@ -348,7 +363,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                             e.printStackTrace();
                         } finally {
                             barProgressDialog.dismiss();
-                            finish();
+                          //  finish();
                         }
                     }
                 }).start();
