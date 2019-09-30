@@ -2,6 +2,7 @@ package com.ntubcase.gift.data;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.friend.friendListAsyncTask;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,7 +47,7 @@ public class getFriendList {
                 }
             }
         });
-        myAsyncTask.execute(Common.friendList,"1");
+        myAsyncTask.execute(Common.friendList, userData.getUserID());
     }
 
     public static int getFriendLength(){

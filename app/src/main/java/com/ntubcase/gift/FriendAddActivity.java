@@ -21,6 +21,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.friend.friendInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.friend.friendSearchAsyncTask;
+import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -36,7 +37,7 @@ public class FriendAddActivity extends AppCompatActivity {
     private Button btnAdd, btnSearch, btn_scan;
     private LinearLayout find_friend;
     //---
-    private String userid ="1";
+    private String userid = userData.getUserID();
     private String friendid;
 
     @Override
@@ -141,6 +142,8 @@ public class FriendAddActivity extends AppCompatActivity {
                         Picasso.get().load(imageURI)
                                 .transform(new CircleTransform())
                                 .into(imgFriend);
+                    }else{
+                        imgFriend.setImageResource(R.drawable.ic_user);
                     }
 
                     txtFriend.setText(nickname);
