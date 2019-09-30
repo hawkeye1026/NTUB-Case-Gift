@@ -66,9 +66,11 @@
                     android:layout_weight="0.9"
                     android:hint="nickname"
                     android:inputType="none"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:textSize="16sp"/>
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

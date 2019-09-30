@@ -71,10 +71,9 @@ public class LoginActivity extends AppCompatActivity implements
         signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        //-----判斷用戶是否登入過-----
-        if (account != null) { //已登入google
+        //---------------判斷用戶是否登入過---------------
+        if (account != null) { //---已登入google---
             mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
-
             String user_name = mSharedPreferences.getString("user_name", "no data");
             String user_birthday = mSharedPreferences.getString("user_birthday", "no data");
             String user_mail = mSharedPreferences.getString("user_mail", "no data");
@@ -84,20 +83,19 @@ public class LoginActivity extends AppCompatActivity implements
             new googleAccount(user_name, user_birthday, user_mail, Uri.parse(user_photo_uri));
             userData.setUserID(user_id);
 
-            //---------------------------------------------------------------
-            Log.e("***", "已登入Google");
-            Log.e("***", "user_name: "+ user_name);
-            Log.e("***", "user_birthday: "+user_birthday);
-            Log.e("***", "user_mail: "+user_mail);
-            Log.e("***", "user_photo_uri: "+user_photo_uri);
-            Log.e("***", "user_id: "+user_id);
+            //-----setGoogleSignInClient-----
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            googleAccount.setGoogleSignInClient(mGoogleSignInClient);
 
-            //-----直接進入首頁-----
+            //-----進入首頁-----
             Intent intent;
             intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-        }else if (Profile.getCurrentProfile() != null) { //已登入fb
+        }else if (Profile.getCurrentProfile() != null) { //---已登入fb---
             mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
             String user_name = mSharedPreferences.getString("user_name", "no data");
             String user_birthday = mSharedPreferences.getString("user_birthday", "no data");
@@ -108,15 +106,7 @@ public class LoginActivity extends AppCompatActivity implements
             new facebookAccount(user_name, user_birthday, user_mail, Uri.parse(user_photo_uri));
             userData.setUserID(user_id);
 
-            //---------------------------------------------------------------
-            Log.e("***", "已登入Facebook");
-            Log.e("***", "user_name: "+ user_name);
-            Log.e("***", "user_birthday: "+user_birthday);
-            Log.e("***", "user_mail: "+user_mail);
-            Log.e("***", "user_photo_uri: "+user_photo_uri);
-            Log.e("***", "user_id: "+user_id);
-
-            //-----直接進入首頁-----
+            //-----進入首頁-----
             Intent intent;
             intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -202,7 +192,7 @@ public class LoginActivity extends AppCompatActivity implements
                         }
                         JSONObject object = new JSONObject(result);
                         JSONArray jsonArray = object.getJSONArray("result");
-                        Log.v("TTTT","T1");
+
                         for (int i = 0 ; i <jsonArray.length() ; i++) {
                             //取得使用者ID
                             userData.setUserID(jsonArray.getJSONObject(i).getString("userid"));
@@ -297,7 +287,7 @@ public class LoginActivity extends AppCompatActivity implements
                                                 }
                                                 JSONObject object = new JSONObject(result);
                                                 JSONArray jsonArray = object.getJSONArray("result");
-                                                Log.v("TTTT","T1");
+
                                                 for (int i = 0 ; i <jsonArray.length() ; i++) {
                                                     //取得使用者ID
                                                     userData.setUserID(jsonArray.getJSONObject(i).getString("userid"));

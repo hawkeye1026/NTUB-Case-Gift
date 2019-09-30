@@ -56,10 +56,8 @@
     <string name="login_failed">"Login failed"</string>
 
     <!-- google 登入-->
-    <!-- TODO(user): replace with your real server client ID -->
-    <!-- Server Client ID.  This should be a valid Web OAuth 2.0 Client ID obtained
-         from https://console.developers.google.com/ -->
-    <string name="server_client_id">958103176081–1mqjgnfvt7ae2266rcfp8i9a16lsqjuq.apps.googleusercontent.com</string>
+    <!--<string name="server_client_id">958103176081–1mqjgnfvt7ae2266rcfp8i9a16lsqjuq.apps.googleusercontent.com</string>--> <!-- Wen -->
+    <string name="server_client_id">958103176081-vcm11qoimi4hm1v0vidvrfqhsfvstp46.apps.googleusercontent.com</string> <!-- Luo -->
 
     <!-- facebook 登入-->
     <string name="facebook_app_id">1749476291862453</string>
