@@ -6,12 +6,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.singleListInsertAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.singlePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 
 import java.text.SimpleDateFormat;
@@ -22,6 +27,8 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
 
     private EditText edt_direct_name, edt_direct_friend, edt_direct_message;
     private Button btn_send;
+
+    private String sender= "1", planid, planType="1", dateTime;
 
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
@@ -142,7 +149,46 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
     private View.OnClickListener planSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Date date = new Date();
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            dateTime = sdFormat.format(date);
+            SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
+
             if (isDataCompleted()){ //---資料填完才能預送---
+                planid = "mis_" + sdFormat_giftContent.format(date);
+
+                //---upload giftRecord
+                Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
+                if(selectFriendIds.size()>0){
+                    for (int i = 0 ; i < selectFriendIds.size(); i++) {
+                        giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                            @Override
+                            public void onFinished(String result) {
+
+                            }
+                        });
+                        giftRecordInsertAsyncTask.execute(Common.insertMisPlan, planid, selectFriendIds.get(i));
+                    }
+                }
+                Log.v("giftRecord", "//---upload giftRecord");
+
+                singlePlanInsertAsyncTask singlePlanInsertAsyncTask = new singlePlanInsertAsyncTask(new singlePlanInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                singlePlanInsertAsyncTask.execute(Common.insertSinPlan, planid, edt_direct_name.getText().toString(), dateTime, dateTime, sender, "1", planType);
+                Log.v("singlePlan", "//---upload singlePlan");
+
+                singleListInsertAsyncTask singleListInsertAsyncTask = new singleListInsertAsyncTask(new singleListInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                singleListInsertAsyncTask.execute(Common.insertSinPlan, planid," "/*giftid*/, dateTime, edt_direct_message.toString());
+
                 Toast.makeText(v.getContext(), "已送禮!", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
