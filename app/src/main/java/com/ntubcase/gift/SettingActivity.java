@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.content.Intent;
@@ -30,10 +31,11 @@ public class SettingActivity extends AppCompatActivity {
 
     ImageView mUserPhoto;
     TextView mNickname,mMail,mBirthday;
-
     ImageView mQrcode,mLogout;
 
     String ownerEmail = userData.getUserMail();
+
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +87,15 @@ public class SettingActivity extends AppCompatActivity {
                         break;
                 }
 
+                //---清除儲存的登入資訊---
+                mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
+                mSharedPreferences.edit().clear().commit();
+
+                //---回登入頁---
                 Intent intent;
                 intent = new Intent(SettingActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
-
             }
         });
 
