@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -46,6 +47,9 @@ public class SettingActivity extends AppCompatActivity {
         mNickname = (TextView) findViewById(R.id.et_nickname);
         mMail = (TextView) findViewById(R.id.et_mail);
         mBirthday = (TextView) findViewById(R.id.et_birthday);
+        mNickname.setInputType(InputType.TYPE_NULL);
+        mMail.setInputType(InputType.TYPE_NULL);
+        mBirthday.setInputType(InputType.TYPE_NULL);
 
         //-------顯示使用者頭像
         Uri imageURI = userData.getUserPhotoUri();
