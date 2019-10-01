@@ -2,8 +2,6 @@ package com.ntubcase.gift.login_model;
 
 import android.net.Uri;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-
 public class userData {
 
     //使用者id
@@ -17,14 +15,14 @@ public class userData {
     //使用者照片位置
     private static Uri user_photo_uri;
     //登入途徑
-    private static String loginProtal;
+    private static String loginPortal;
 
-    public userData(String user_name, String user_birthday, String user_mail, Uri user_photo_uri, String loginProtal){
+    public userData(String user_name, String user_birthday, String user_mail, Uri user_photo_uri, String loginPortal){
         userData.user_name = user_name;
         userData.user_birthday = user_birthday;
         userData.user_mail = user_mail;
         userData.user_photo_uri = user_photo_uri;
-        userData.loginProtal = loginProtal;
+        userData.loginPortal = loginPortal;
     }
 
     public static void setUserID(String userid){
@@ -46,8 +44,8 @@ public class userData {
     public static Uri getUserPhotoUri(){
         return user_photo_uri;
     }
-    public static String getLoginProtal(){
-        return userData.loginProtal;
+    public static String getLoginPortal(){
+        return userData.loginPortal;
     }
 
 

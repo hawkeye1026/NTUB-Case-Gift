@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.google.zxing.WriterException;
-import com.ntubcase.gift.login_model.facebookAccount;
-import com.ntubcase.gift.login_model.googleAccount;
 import com.ntubcase.gift.login_model.signOut;
 import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
@@ -68,17 +66,17 @@ public class SettingActivity extends AppCompatActivity {
         mQrcode = (ImageView)findViewById(R.id.iv_qrcode);
 
 
-        String protal = userData.getLoginProtal();
+        String portal = userData.getLoginPortal();
 
-        if(protal == null){
-            protal = "";
+        if(portal == null){
+            portal = "";
         }
-        final String finalProtal = protal;
+        final String finalPortal = portal;
 
         mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (finalProtal){
+                switch (finalPortal){
                     case "google":
                         new signOut();
                         break;

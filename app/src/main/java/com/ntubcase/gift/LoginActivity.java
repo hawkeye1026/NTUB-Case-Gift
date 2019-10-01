@@ -69,17 +69,18 @@ public class LoginActivity extends AppCompatActivity implements
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         //---------------判斷用戶是否登入過---------------
-        if (account != null) { //---已登入google---
-            mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
-            String user_name = mSharedPreferences.getString("user_name", "no data");
-            String user_birthday = mSharedPreferences.getString("user_birthday", "no data");
-            String user_mail = mSharedPreferences.getString("user_mail", "no data");
-            String user_photo_uri = mSharedPreferences.getString("user_photo_uri", "no data");
-            String user_id = mSharedPreferences.getString("user_id", "no data");
+        mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
+        String user_name = mSharedPreferences.getString("user_name", "no data");
+        String user_birthday = mSharedPreferences.getString("user_birthday", "no data");
+        String user_mail = mSharedPreferences.getString("user_mail", "no data");
+        String user_photo_uri = mSharedPreferences.getString("user_photo_uri", "no data");
+        String user_id = mSharedPreferences.getString("user_id", "no data");
+        String login_portal = mSharedPreferences.getString("login_portal", "no data");
 
+        if (login_portal.equals("google")) { //---已登入google---
+            //-----建立userData-----
             new googleAccount(user_name, user_birthday, user_mail, Uri.parse(user_photo_uri));
             userData.setUserID(user_id);
 
@@ -95,14 +96,8 @@ public class LoginActivity extends AppCompatActivity implements
             intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-        }else if (Profile.getCurrentProfile() != null) { //---已登入fb---
-            mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
-            String user_name = mSharedPreferences.getString("user_name", "no data");
-            String user_birthday = mSharedPreferences.getString("user_birthday", "no data");
-            String user_mail = mSharedPreferences.getString("user_mail", "no data");
-            String user_photo_uri = mSharedPreferences.getString("user_photo_uri", "no data");
-            String user_id = mSharedPreferences.getString("user_id", "no data");
-
+        }else if (login_portal.equals("FB")) { //---已登入fb---
+            //-----建立userData-----
             new facebookAccount(user_name, user_birthday, user_mail, Uri.parse(user_photo_uri));
             userData.setUserID(user_id);
 
@@ -178,6 +173,7 @@ public class LoginActivity extends AppCompatActivity implements
                     .putString("user_birthday", "1998/05/12")
                     .putString("user_mail", user_mail)
                     .putString("user_photo_uri", user_photoUri)
+                    .putString("login_portal","google")
                     .commit();
             new googleAccount(user_name, "1998/05/12", user_mail, Uri.parse(user_photoUri));
 
@@ -273,6 +269,7 @@ public class LoginActivity extends AppCompatActivity implements
                                             .putString("user_birthday", "1991/01/01")
                                             .putString("user_mail", user_mail)
                                             .putString("user_photo_uri", "http://graph.facebook.com/"+user_id+"/picture?type=large")
+                                            .putString("login_portal","FB")
                                             .commit();
                                     new facebookAccount(user_name, "1991/01/01", user_mail, user_photo_uri);
 
