@@ -63,12 +63,6 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //--------------------------------------------------------------------
-
-        //---Google登入用---
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
 
         //---------------判斷用戶是否登入過---------------
         mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
@@ -110,18 +104,6 @@ public class LoginActivity extends AppCompatActivity implements
             googleLogin(); //---Google登入---
             FacebookLogin(); // -----Facebook登入-----
         }
-
-        //---------------------------------------------------------------------------------------------------直接進入
-        Button btn_main = (Button) findViewById(R.id.btn_main);
-        btn_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
     }
 
