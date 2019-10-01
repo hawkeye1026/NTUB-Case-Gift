@@ -3,6 +3,7 @@ package com.ntubcase.gift.data;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.DateFormat;
 import com.ntubcase.gift.MyAsyncTask.receive.receiveNewAsyncTask;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,7 +70,7 @@ public class getReceiveNew {
                 }
             }
         });
-        myAsyncTask.execute(Common.receiveNew, "1");
+        myAsyncTask.execute(Common.receiveNew, userData.getUserID());
     }
 
     public static String getOwnerid(int i){

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +31,8 @@ public class ReceivedSingleActivity extends AppCompatActivity {
     private RecyclerView recycler_view;
     private plan_single_adapter adapter;
     private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
+
+    private String feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,10 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                     tv_name.setText(sinPlanName); //計畫名稱
                     tv_sender.setText(nickname); //送禮人
 
+                    //----------------------------取得feedback----------------------------
+                    jsonArray = object.getJSONArray("record");
+                    feedback =jsonArray.getJSONObject(0).getString("feedback");
+
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("sinList");
                     int sinListLength = jsonArray.length();
@@ -120,7 +127,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.receiveDetail , "", planid);
+        planDetailAsyncTask.execute(Common.receiveDetail , userData.getUserID(), planid);
     }
 
     //------------------------------------------------------------------------------------------
