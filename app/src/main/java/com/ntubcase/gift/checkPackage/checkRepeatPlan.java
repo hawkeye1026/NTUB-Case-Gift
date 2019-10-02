@@ -1,8 +1,6 @@
 package com.ntubcase.gift.checkPackage;
 
-import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getPlanGot;
-import com.ntubcase.gift.data.getPlanList;
 
 public class checkRepeatPlan {
 
