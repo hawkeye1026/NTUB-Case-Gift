@@ -18,6 +18,7 @@ import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.singleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.singlePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
+import com.ntubcase.gift.login_model.userData;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
     private EditText edt_direct_name, edt_direct_friend, edt_direct_message;
     private Button btn_send;
 
-    private String sender= "1", planid, planType="1", dateTime;
+    private String sender= userData.getUserID(), planid, planType="1", dateTime;
 
     //選擇好友 使用的變數宣告---------------------------------------------------------------------------
     String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
@@ -155,7 +156,7 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
 
             if (isDataCompleted()){ //---資料填完才能預送---
-                planid = "mis_" + sdFormat_giftContent.format(date);
+                planid = "sin_" + sdFormat_giftContent.format(date);
 
                 //---upload giftRecord
                 Log.v("selectFriendIds.size", String.valueOf(selectFriendIds.size()));
@@ -167,7 +168,7 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
 
                             }
                         });
-                        giftRecordInsertAsyncTask.execute(Common.insertMisPlan, planid, selectFriendIds.get(i));
+                        giftRecordInsertAsyncTask.execute(Common.insertSinPlan, planid, selectFriendIds.get(i));
                     }
                 }
                 Log.v("giftRecord", "//---upload giftRecord");
@@ -187,19 +188,25 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
 
                     }
                 });
-                singleListInsertAsyncTask.execute(Common.insertSinPlan, planid," "/*giftid*/, dateTime, edt_direct_message.toString());
+                singleListInsertAsyncTask.execute(Common.insertSinPlan, planid," "/*giftid*/, dateTime, edt_direct_message.getText().toString());
 
                 Toast.makeText(v.getContext(), "已送禮!", Toast.LENGTH_SHORT).show();
+
+                //-----回前頁結束製作計畫-----
+                setResult(FINISH_ACTIVITY);
+                finish();
             }else{
                 Toast.makeText(v.getContext(), "您尚有計畫細節未完成喔!", Toast.LENGTH_SHORT).show();
             }
         }
     };
 
+    private static final int FINISH_ACTIVITY = 22;
     //------------------------------------------------------------------------------------------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){ //toolbar返回建
+            setResult(RESULT_OK);
             finish();
             return true;
         }

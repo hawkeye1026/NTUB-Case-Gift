@@ -183,6 +183,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     //-------------------------------結束儲存按鈕 監聽器----------------------------------------
 
     //-------------------------------直接送禮按鈕 監聽器----------------------------------------
+    private static final int REQUEST_CODE=11;
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -191,32 +192,35 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 
             Intent intent;
             intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
-            startActivity(intent);
-            finish();
+            startActivityForResult(intent, REQUEST_CODE);
         }
     };
     //-------------------------------結束直接送禮按鈕 監聽器----------------------------------------
 
+    //-------------------取得回傳的資料---------------------
+    private static final int FINISH_ACTIVITY = 22;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_OK) {
-            return;
-        } else {
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case SELECT_IMAGE:
                     cam_imageUri = data.getData();
-
                     decodeUri(data.getData());
-
                     break;
                 case OPEN_CAMERA:
                     decodeUri(cam_imageUri);
-
                     if (currentapiVersion < 24) delDefaultSavePic(); //刪除相機自動儲存的照片
                     break;
+                case REQUEST_CODE:
+                    break;
             }
+        }else if (resultCode==FINISH_ACTIVITY){
+            finish();  //結束製作禮物
+        }
+        else {
+            return;
         }
     }
 
@@ -398,9 +402,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         }).start();
         //-------------結束Dialog-----------
         Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
-
-
-
     }
 
 }

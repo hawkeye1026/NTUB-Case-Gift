@@ -106,8 +106,6 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
             //--------
         }
 
-
-
         checkPermission();  //確認權限
     }
 
@@ -159,11 +157,11 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
         }
     };
 
+    //-------------------取得回傳的資料---------------------
+    private static final int FINISH_ACTIVITY = 22;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
-            return;
-        } else {
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case SELECT_VIDEO:
                     cam_videoUri = data.getData();
@@ -173,8 +171,14 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
                 case OPEN_CAMERA:
                     vv_content.setVideoURI(cam_videoUri);
                     break;
+                case REQUEST_CODE:
+                    break;
             }
-
+        }else if (resultCode==FINISH_ACTIVITY){
+            finish();  //結束製作禮物
+        }
+        else {
+            return;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -197,6 +201,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     };
 
     //-------------------------------直接送禮按鈕 監聽器----------------------------------------
+    private static final int REQUEST_CODE=11;
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -205,8 +210,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
 
             Intent intent;
             intent = new Intent(MakeGiftVideoActivity.this, SendGiftDirectlyActivity.class);
-            startActivity(intent);
-            finish();
+            startActivityForResult(intent, REQUEST_CODE);
         }
     };
 

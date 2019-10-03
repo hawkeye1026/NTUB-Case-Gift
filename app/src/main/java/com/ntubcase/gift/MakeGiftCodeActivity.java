@@ -278,16 +278,15 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     };
 
     //-------------------------------直接送禮按鈕 監聽器----------------------------------------
+    private static final int REQUEST_CODE=11;
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             //uploadGift(v);
 
             Intent intent;
             intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
-            startActivity(intent);
-            finish();
+            startActivityForResult(intent, REQUEST_CODE);
         }
     };
 
@@ -382,5 +381,20 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    //-------------------取得回傳的資料---------------------
+    private static final int FINISH_ACTIVITY = 22;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case REQUEST_CODE:
+                if (resultCode==FINISH_ACTIVITY){
+                    finish();  //結束製作禮物
+                }else if (resultCode==RESULT_OK){
+                }
+                break;
+        }
     }
 }
