@@ -340,40 +340,47 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 //                giftContent = sdFormat_giftContent.format(date);
         Log.v("MCAgiftid",giftid + "");
         if(giftid > 0){
-            if(rowNumber.equals("")){
-                Toast.makeText(v.getContext(), "內容不可以是空的喔", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+            try{
+                if(rowNumber.equals("")){
+                    Toast.makeText(v.getContext(), "內容不可以是空的喔", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
 
-            new updateGiftCode(decodeid , rowNumber, maincode_array , matchcode_array);
+                new updateGiftCode(decodeid , rowNumber, maincode_array , matchcode_array);
+
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            }catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+            }
             //decodeid
         }else{
             if(checkRepeatGift.checkRepeatGift(giftName)) {
                 //------------------------------上傳禮物資料
                 new uploadGift(giftName, owner, giftType, rowNumber, maincode_array , matchcode_array);
-                //-------------讀取Dialog-----------
-                barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
-                        "讀取中", "請等待...", true);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            getGiftList.getJSON();
-                            Thread.sleep(1000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            barProgressDialog.dismiss();
-                            finish();
-                        }
-                    }
-                }).start();
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
             }
         }
+        //-------------讀取Dialog-----------
+        barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
+                "讀取中", "請等待...", true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getGiftList.getJSON();
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    barProgressDialog.dismiss();
+                    finish();
+                }
+            }
+        }).start();
     }
 }
