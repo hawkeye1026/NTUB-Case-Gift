@@ -29,6 +29,7 @@ import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertCodeAsyncTask;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 
@@ -43,7 +44,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private static String giftName, giftContent;
 
     protected static Date date =new Date();
-    protected static String owner = "wayne";
+    protected static String owner = userData.getUserID();
     protected static String dateTime;
     protected static String giftType="5";
     ProgressDialog barProgressDialog;
@@ -55,7 +56,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private String maincode_array = "";
     private String matchcode_array = "";
 
-    private static int giftid;
+    private static String decodeid = "";
+
+    private static int giftid = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +87,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         btn_addMulti.setOnClickListener(addMultiClickListener); //設置監聽器
         btn_remove.setOnClickListener(removeClickListener); //設置監聽器
         //---------------------------------------------------------------------------------
-        giftid = 0;
+
         //------------判斷禮物是否有初值------------
         Bundle bundle = this.getIntent().getExtras();
         int position ;
@@ -95,9 +98,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             et_giftName.setText( getGiftList.getGiftName(position)); //禮物名稱
 
             //---資料內容放進表格---
-            String giftContent=getGiftList.getGift(position);
+            decodeid=getGiftList.getGift(position);
             for (int i=0; i<(getGiftList.getDecodeLength()); i++){
-                if (getGiftList.getDecodeGift(i).equals(giftContent))
+                if (getGiftList.getDecodeid(i).equals(decodeid))
                     tableAddRow(1,getGiftList.getDecodeMaincode(i),getGiftList.getDecodeMatchCode(i));
             }
 
@@ -319,59 +322,65 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         dateTime = sdFormat.format(date);
         giftContent = "";
+
+        String rowNumber = "";
+        for (int i = 0; i < mainCodes.size(); i++) {
+            if( i ==  mainCodes.size() - 1){
+                rowNumber += i ;
+                maincode_array += mainCodes.get(i);
+                matchcode_array += matchCodes.get(i);
+            }else{
+                rowNumber += i + ",";
+                maincode_array += mainCodes.get(i) + ",";
+                matchcode_array += matchCodes.get(i) + ",";
+            }
+        }
         //--------取得目前時間：yyyy/MM/dd hh:mm:ss
 //                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
 //                giftContent = sdFormat_giftContent.format(date);
+        Log.v("MCAgiftid",giftid + "");
         if(giftid > 0){
-            new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+            try{
+                if(rowNumber.equals("")){
+                    Toast.makeText(v.getContext(), "內容不可以是空的喔", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+
+                new updateGiftCode(decodeid , rowNumber, maincode_array , matchcode_array);
+
+                Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+            }catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+            }
+            //decodeid
         }else{
             if(checkRepeatGift.checkRepeatGift(giftName)) {
                 //------------------------------上傳禮物資料
-                new uploadGift(giftContent, giftName, owner, giftType);
-                String rowNumber = "";
-                for (int i = 0; i < mainCodes.size(); i++) {
-                    if( i ==  mainCodes.size() - 1){
-                        rowNumber += i ;
-                        maincode_array += mainCodes.get(i);
-                        matchcode_array += matchCodes.get(i);
-                    }else{
-                        rowNumber += i + ",";
-                        maincode_array += mainCodes.get(i) + ",";
-                        matchcode_array += matchCodes.get(i) + ",";
-                    }
-                }
-
-                giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
-//                Log.v("rowNumber",rowNumber);
-                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode,uploadGift.getLastGiftid(), giftContent, rowNumber, maincode_array , matchcode_array);
-
-                //-------------讀取Dialog-----------
-                barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
-                        "讀取中", "請等待...", true);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            getGiftList.getJSON();
-                            Thread.sleep(1000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            barProgressDialog.dismiss();
-                          //  finish();
-                        }
-                    }
-                }).start();
+                new uploadGift(giftName, owner, giftType, rowNumber, maincode_array , matchcode_array);
 
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
             }
         }
+        //-------------讀取Dialog-----------
+        barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
+                "讀取中", "請等待...", true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getGiftList.getJSON();
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    barProgressDialog.dismiss();
+                    finish();
+                }
+            }
+        }).start();
     }
 }

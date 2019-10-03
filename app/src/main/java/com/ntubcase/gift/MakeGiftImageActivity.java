@@ -56,7 +56,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private static String giftName, giftContent;
     private String filename;
     protected static Date date =new Date();
-    protected static String owner = "wayne";
+    protected static String owner = userData.getUserID();
 //    protected static String owner = googleAccount.getUserName()
     protected static String dateTime, giftType = "1";
     ProgressDialog barProgressDialog;
@@ -362,13 +362,13 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         if(giftid > 0) {
             //------------------------------上傳禮物資料
             Log.v("upload", giftid + "");
-            new updateGift(String.valueOf(giftid), "wayne/" + giftContent, giftName, owner, giftType);
+            new updateGift(String.valueOf(giftid), userData.getUserID()+"/"  + giftContent, giftName, owner, giftType);
             new uploadGiftFile(getApplicationContext(), cam_imageUri, giftContent, old_giftContent, owner, "img", "update");
         }else {
             if(checkRepeatGift.checkRepeatGift(giftName)) {
                 //------------------------------上傳禮物資料
                 Log.v("upload", giftid + "");
-                new uploadGift("wayne/" + giftContent, giftName, owner, giftType);
+                new uploadGift(userData.getUserID()+"/"  + giftContent, giftName, owner, giftType);
                 new uploadGiftFile(getApplicationContext(), cam_imageUri, giftContent, old_giftContent, owner, "img", "insert");
             }else{
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();

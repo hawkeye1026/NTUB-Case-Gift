@@ -5,6 +5,7 @@ import android.util.Log;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftListAsyncTask;
 import com.ntubcase.gift.DateFormat;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ public class  getGiftList {
     private static String[] ownerid       ;
     private static String[] type          ;
     //-------解碼內容
-    private static String[] decodeGift          ;
+    private static String[] decodeid          ;
     private static String[] decodeMainCode          ;
     private static String[] decodeMatchCode          ;
     private static int giftLength = 0 ;
@@ -34,8 +35,6 @@ public class  getGiftList {
                     JSONObject object = new JSONObject(result);
                     //取得禮物資料
                     JSONArray jsonArray = object.getJSONArray("result");
-
-
 
                     giftLength = jsonArray.length();
 
@@ -61,22 +60,23 @@ public class  getGiftList {
                     jsonArray = object.getJSONArray("decode");
                     decodeLength = jsonArray.length();
 
-                    decodeGift      = new String[giftLength];
-                    decodeMainCode  = new String[giftLength];
-                    decodeMatchCode = new String[giftLength];
+                    decodeid      = new String[decodeLength];
+                    decodeMainCode  = new String[decodeLength];
+                    decodeMatchCode = new String[decodeLength];
 
                     for (int i = 0 ; i < decodeLength ; i++){
                         //Log.v("abc","10000");
-                        decodeGift[i] = jsonArray.getJSONObject(i).getString("gift");
+                        decodeid[i] = jsonArray.getJSONObject(i).getString("decodeid");
                         decodeMainCode[i] = jsonArray.getJSONObject(i).getString("mainCode");
                         decodeMatchCode[i] = jsonArray.getJSONObject(i).getString("matchCode");
+                        Log.v("decodeid",decodeid[i]);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-        myAsyncTask.execute(Common.giftList);
+        myAsyncTask.execute(Common.giftList, userData.getUserID());
     }
     //---------禮物資料
     public static int getGiftLength(){
@@ -95,8 +95,8 @@ public class  getGiftList {
     public static int getDecodeLength(){
         return decodeLength;
     }
-    public static String getDecodeGift(int i){
-        return  decodeGift[i];
+    public static String getDecodeid(int i){
+        return  decodeid[i];
     }
     public static String getDecodeMaincode(int i){
         return decodeMainCode[i];

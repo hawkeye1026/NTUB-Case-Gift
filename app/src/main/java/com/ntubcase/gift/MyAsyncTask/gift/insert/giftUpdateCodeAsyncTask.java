@@ -1,4 +1,4 @@
-package com.ntubcase.gift.MyAsyncTask.gift;
+package com.ntubcase.gift.MyAsyncTask.gift.insert;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -14,8 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
-public class giftListAsyncTask extends AsyncTask<String, Integer, String> {
+public class giftUpdateCodeAsyncTask extends AsyncTask<String, Integer, String> {
 
     //----------------------------------------------------
     // 宣告一個TaskListener介面, 接收回傳值的物件必須實作它
@@ -27,12 +26,12 @@ public class giftListAsyncTask extends AsyncTask<String, Integer, String> {
     //----------------------
     // 接收回傳值的物件參考
     //----------------------
-    private final TaskListener taskListener;
+    private final giftUpdateCodeAsyncTask.TaskListener taskListener;
 
     //---------------------------------------
     // 建構元, 傳入context及接收回傳值的物件
     //---------------------------------------
-    public giftListAsyncTask(TaskListener taskListener) {
+    public giftUpdateCodeAsyncTask(giftUpdateCodeAsyncTask.TaskListener taskListener) {
         this.taskListener = taskListener;
     }
 
@@ -64,8 +63,11 @@ public class giftListAsyncTask extends AsyncTask<String, Integer, String> {
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "userid=" + URLEncoder.encode(params[1], "UTF-8");
-            Log.v("giftList",args);
+                    "decodeid=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&rowNumber=" + URLEncoder.encode(params[2], "UTF-8")+
+                    "&mainCode=" + URLEncoder.encode(params[3], "UTF-8" )+
+                    "&matchCode=" + URLEncoder.encode(params[4], "UTF-8" );
+            Log.v("code",args);
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -87,7 +89,7 @@ public class giftListAsyncTask extends AsyncTask<String, Integer, String> {
             inputStream = conn.getInputStream();
 
             BufferedReader bufferedReader=new BufferedReader(
-                    new InputStreamReader(inputStream, "utf-8"));
+                    new InputStreamReader(inputStream, "UTF-8"));
 
             data=bufferedReader.readLine();
         } catch(Exception e) {
