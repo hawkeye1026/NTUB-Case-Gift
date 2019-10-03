@@ -97,8 +97,11 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
             //---資料內容放進表格---
             String giftContent=getGiftList.getGift(position);
+            Log.v("giftName",giftContent);
             for (int i=0; i<(getGiftList.getDecodeLength()); i++){
-                if (getGiftList.getDecodeGift(i).equals(giftContent))
+                Log.v("giftContent",giftContent);
+                Log.v("getDecodeLength",getGiftList.getDecodeLength() + "");
+                if (getGiftList.getDecodeid(i).equals(giftContent))
                     tableAddRow(1,getGiftList.getDecodeMaincode(i),getGiftList.getDecodeMatchCode(i));
             }
 
