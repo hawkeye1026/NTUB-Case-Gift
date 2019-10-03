@@ -31,6 +31,7 @@ import com.ntubcase.gift.MyAsyncTask.plan.singleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.singlePlanInsertAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,10 +65,10 @@ public class MakePlanSingleActivity extends AppCompatActivity {
 
     private Button btnAdd, btn_ent, btn_can, btn_save, btn_send;
     String single_giftName, single_sentTime, single_message;
-    private String sender= "1", planid, planType="1", dateTime, date_time;
+
+    private String sender=userData.getUserID(), planid, planType="1", dateTime;
 
     //選擇禮物 使用的變數宣告---------------------------------------------------------------------------
-    int a=0;
     String[] single_giftlistItems = new String[getGiftList.getGiftLength()]; //禮物名稱資料
     private boolean[] mCheckedGift;
     private List<List<String>> mSelectGiftIds;
@@ -134,6 +135,7 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         recycler_view.setLayoutManager(new LinearLayoutManager(this)); // 設置RecyclerView為列表型態
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // 設置格線
         adapter = new plan_single_adapter(mData); // 將資料交給adapter
+        adapter.isFromMake=true;
         recycler_view.setAdapter(adapter);  // 設置adapter給recycler_view
         adapter.setOnItemClickListener(new plan_single_adapter.OnItemClickListener(){
             @Override

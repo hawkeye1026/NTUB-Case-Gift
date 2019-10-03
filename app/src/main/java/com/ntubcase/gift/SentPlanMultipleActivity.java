@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,7 +35,7 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
     private String from;
 
     //--showPlan
-    private String sender="1", mulPlanid;
+    private String sender=userData.getUserID(), mulPlanid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

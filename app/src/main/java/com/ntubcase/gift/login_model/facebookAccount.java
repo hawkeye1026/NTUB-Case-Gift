@@ -20,10 +20,7 @@ public class facebookAccount {
 //    private static Uri user_photo_uri;
 
 
-    public facebookAccount(String user_name,String user_birthday , String user_mail, long user_id){
-
-        Uri user_photo_uri = Uri.parse("http://graph.facebook.com/"+user_id+"/picture?type=large");
-
+    public facebookAccount(String user_name,String user_birthday , String user_mail,  Uri user_photo_uri){
         new userData( user_name, user_birthday, user_mail, user_photo_uri,"FB");
 
 //        facebookAccount.user_name = user_name;

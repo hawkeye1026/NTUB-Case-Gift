@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.plan_list_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,6 +36,8 @@ public class ReceivedListActivity extends AppCompatActivity {
     private List<String> mData = new ArrayList<>();
 
     private Button btn_complete;
+
+    private String feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +105,11 @@ public class ReceivedListActivity extends AppCompatActivity {
                     String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
 
                     tv_name.setText(misPlanName); //計畫名稱
-                    tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
+
+                    //截止日期時間
+                    if (deadline.equals("0000-00-00 00:00:00")) tv_deadline.setText("無限制");
+                    else tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
+
                     tv_sender.setText(sender); //送禮人
 
                     //----------------------------取得禮物資料----------------------------
@@ -114,6 +121,10 @@ public class ReceivedListActivity extends AppCompatActivity {
                         if (giftName.equals("")) giftName += jsonArray.getJSONObject(i).getString("giftName");
                         else giftName += " , " + jsonArray.getJSONObject(i).getString("giftName");
                     }
+
+                    //----------------------------取得feedback----------------------------
+                    jsonArray = object.getJSONArray("record");
+                    feedback =jsonArray.getJSONObject(0).getString("feedback");
 
                     //----------------------------取得任務項目----------------------------
                     jsonArray = object.getJSONArray("misItem");
@@ -131,7 +142,7 @@ public class ReceivedListActivity extends AppCompatActivity {
                 }
             }
         });
-        planDetailAsyncTask.execute(Common.receiveDetail , "", planID);
+        planDetailAsyncTask.execute(Common.receiveDetail , userData.getUserID(), planID);
     }
 
 

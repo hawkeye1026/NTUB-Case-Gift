@@ -23,6 +23,7 @@ import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planCancelSentAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,7 +44,7 @@ public class SentPlanSingleActivity extends AppCompatActivity {
     private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
     private Button btn_save, btn_send, btn_cancel, btnAdd, btnEnt, btnCan;
-    private String sender= "1", sinPlanid;
+    private String sender=userData.getUserID(), sinPlanid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

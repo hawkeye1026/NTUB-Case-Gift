@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -16,8 +18,6 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.google.zxing.WriterException;
-import com.ntubcase.gift.login_model.facebookAccount;
-import com.ntubcase.gift.login_model.googleAccount;
 import com.ntubcase.gift.login_model.signOut;
 import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
@@ -30,10 +30,11 @@ public class SettingActivity extends AppCompatActivity {
 
     ImageView mUserPhoto;
     TextView mNickname,mMail,mBirthday;
-
     ImageView mQrcode,mLogout;
 
     String ownerEmail = userData.getUserMail();
+
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,9 @@ public class SettingActivity extends AppCompatActivity {
         mNickname = (TextView) findViewById(R.id.et_nickname);
         mMail = (TextView) findViewById(R.id.et_mail);
         mBirthday = (TextView) findViewById(R.id.et_birthday);
+        mNickname.setInputType(InputType.TYPE_NULL);
+        mMail.setInputType(InputType.TYPE_NULL);
+        mBirthday.setInputType(InputType.TYPE_NULL);
 
         //-------顯示使用者頭像
         Uri imageURI = userData.getUserPhotoUri();
@@ -66,17 +70,17 @@ public class SettingActivity extends AppCompatActivity {
         mQrcode = (ImageView)findViewById(R.id.iv_qrcode);
 
 
-        String protal = userData.getLoginProtal();
+        String portal = userData.getLoginPortal();
 
-        if(protal == null){
-            protal = "";
+        if(portal == null){
+            portal = "";
         }
-        final String finalProtal = protal;
+        final String finalPortal = portal;
 
         mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (finalProtal){
+                switch (finalPortal){
                     case "google":
                         new signOut();
                         break;
@@ -85,11 +89,15 @@ public class SettingActivity extends AppCompatActivity {
                         break;
                 }
 
+                //---清除儲存的登入資訊---
+                mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
+                mSharedPreferences.edit().clear().commit();
+
+                //---回登入頁---
                 Intent intent;
                 intent = new Intent(SettingActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
-
             }
         });
 

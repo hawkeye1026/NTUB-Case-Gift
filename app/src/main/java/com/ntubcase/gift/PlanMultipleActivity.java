@@ -31,6 +31,7 @@ import com.ntubcase.gift.MyAsyncTask.plan.multipleListInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.multiplePlanInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -51,7 +52,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
     private String planName, receiveFriend, startDate, endDate, message; //------bundle傳遞的資料
     private ArrayList<String> receiveFriendId; //------bundle傳遞的資料
 
-    private String sender= "1", planid, planType="2", dateTime, date_time, goal;
+    private String sender= userData.getUserID(), planid, planType="2", dateTime, date_time, goal;
     ProgressDialog barProgressDialog;
 
     private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>();  //選取的時間區段

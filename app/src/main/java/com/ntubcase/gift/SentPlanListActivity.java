@@ -25,6 +25,7 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planCancelSentAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,7 +37,7 @@ public class SentPlanListActivity extends AppCompatActivity{
 
     //----------------------------------------------------------------------------------------------
     static EditText edt_list_name, edt_list_message, edt_list_lastDate,edt_list_friend, edt_list_giftName, edt_list_sentDate,edt_list_lastTime;
-    private String sender= "1", misPlanid;
+    private String sender=userData.getUserID(), misPlanid;
 
     //----------------------------------------------------------------------------------------------
     ProgressDialog barProgressDialog;
@@ -79,6 +80,7 @@ public class SentPlanListActivity extends AppCompatActivity{
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new plan_list_adapter(mData);  // 將資料交給adapter
         adapter.isFromMake=false;
+        adapter.isFromReceived=false;
         recycler_view.setAdapter(adapter); // 設置adapter給recycler_view
         adapter.setOnItemClickListener(new plan_list_adapter.OnItemClickListener(){
             @Override

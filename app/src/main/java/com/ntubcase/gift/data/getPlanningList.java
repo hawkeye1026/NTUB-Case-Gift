@@ -3,6 +3,7 @@ package com.ntubcase.gift.data;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planningListAsyncTask;
 import com.ntubcase.gift.DateFormat;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -67,7 +68,7 @@ public class getPlanningList {
                 }
             }
         });
-        myAsyncTask.execute(Common.planningList, "1");
+        myAsyncTask.execute(Common.planningList, userData.getUserID());
     }
 
     public static String getOwnerid(int i){

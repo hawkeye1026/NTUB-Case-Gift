@@ -28,6 +28,7 @@ import com.ntubcase.gift.FriendAddActivity;
 import com.ntubcase.gift.MyAsyncTask.friend.friendInsertAsyncTask;
 import com.ntubcase.gift.R;
 import com.ntubcase.gift.data.getFriendList;
+import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -237,7 +238,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
                                     public void onFinished(String result) {
                                     }
                                 });
-                                friendInsertAsyncTask.execute(Common.deleteFriend , "1", mFriendList.get(selectedItems.get(i)).get("friendID").toString());
+                                friendInsertAsyncTask.execute(Common.deleteFriend , userData.getUserID(), mFriendList.get(selectedItems.get(i)).get("friendID").toString());
                                 mFriendList.remove((int)selectedItems.get(i));
                             }
                             mode.finish();

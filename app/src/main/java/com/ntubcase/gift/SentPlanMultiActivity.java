@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.PlanMultiAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planCancelSentAsyncTask;
+import com.ntubcase.gift.login_model.userData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class SentPlanMultiActivity extends AppCompatActivity {
 
     private String planName, receiveFriend, message; //------bundle傳遞的資料
 
-    private String sender= "1", planid;
+    private String sender=userData.getUserID(), planid;
     ProgressDialog barProgressDialog;
 
     private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>();  //選取的時間區段

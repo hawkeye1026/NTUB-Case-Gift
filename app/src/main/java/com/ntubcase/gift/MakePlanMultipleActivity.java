@@ -21,6 +21,7 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
     private List<Map<String, Object>> oldSelectDates = new ArrayList<Map<String, Object>>();; //原有資料
 
     //--showPlan
-    private String sender="1", planid;
+    private String sender=userData.getUserID(), planid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

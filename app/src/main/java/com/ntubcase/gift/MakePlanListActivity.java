@@ -33,6 +33,7 @@ import com.ntubcase.gift.MyAsyncTask.plan.missionPlanInsertAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,7 +58,7 @@ public class MakePlanListActivity extends AppCompatActivity{
     ArrayList<String> selectFriendIds = new ArrayList<>(); //選擇的好友ID
     //----------------------------------------------------------------------------------------------
     static EditText edt_list_name, edt_list_message, edt_list_lastDate,edt_list_friend, edt_list_giftName, edt_list_sentDate,edt_list_lastTime;
-    private String sender= "1", planid, planType="3", dateTime, dateOnly;
+    private String sender=userData.getUserID(), planid, planType="3", dateTime, dateOnly;
 
     //----------------------------------------------------------------------------------------------
 
@@ -126,6 +127,8 @@ public class MakePlanListActivity extends AppCompatActivity{
         recycler_view.setLayoutManager(new LinearLayoutManager(this));  // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new plan_list_adapter(mData);  // 將資料交給adapter
+        adapter.isFromMake=true;
+        adapter.isFromReceived=false;
         recycler_view.setAdapter(adapter); // 設置adapter給recycler_view
         adapter.setOnItemClickListener(new plan_list_adapter.OnItemClickListener(){
             @Override

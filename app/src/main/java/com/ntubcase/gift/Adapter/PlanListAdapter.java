@@ -18,6 +18,7 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.R;
 import com.ntubcase.gift.data.getPlanningList;
+import com.ntubcase.gift.login_model.userData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class PlanListAdapter extends BaseAdapter implements Filterable{
     private Drawable mBackground;
     private ListView mListView;
 
-    private String userid = "1";
+    private String userid = userData.getUserID();
 
     public PlanListAdapter(Context context, List<Map<String, Object>> mList){
         mLayout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
