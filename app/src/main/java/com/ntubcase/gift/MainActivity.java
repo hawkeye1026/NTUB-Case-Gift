@@ -3,9 +3,14 @@ package com.ntubcase.gift;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +23,9 @@ import com.ntubcase.gift.data.getReceiveNew;
 import com.ntubcase.gift.data.getReceiveOpen;
 import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         getReceiveNew.getJSON();
         getReceiveOpen.getJSON();
         //----------
-
         //-------顯示使用者頭像
         mSetting = (ImageView)findViewById(R.id.mSetting);
 
@@ -102,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
     }
 
 }
