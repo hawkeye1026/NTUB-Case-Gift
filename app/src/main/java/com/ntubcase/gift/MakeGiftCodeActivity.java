@@ -29,6 +29,7 @@ import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertCodeAsyncTask;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 
@@ -43,7 +44,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private static String giftName, giftContent;
 
     protected static Date date =new Date();
-    protected static String owner = "wayne";
+    protected static String owner = userData.getUserID();
     protected static String dateTime;
     protected static String giftType="5";
     ProgressDialog barProgressDialog;

@@ -30,7 +30,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
 
     protected static Date date =new Date();
 //    protected static String owner = userData.getUserMail();
-    protected static String owner = userData.getUserMail();
+    protected static String owner =userData.getUserID();
     protected static String giftType = "4";
     ProgressDialog barProgressDialog;
     private static int giftid;

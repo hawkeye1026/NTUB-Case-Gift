@@ -56,7 +56,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private static String giftName, giftContent;
     private String filename;
     protected static Date date =new Date();
-    protected static String owner = "wayne";
+    protected static String owner = userData.getUserID();
 //    protected static String owner = googleAccount.getUserName()
     protected static String dateTime, giftType = "1";
     ProgressDialog barProgressDialog;

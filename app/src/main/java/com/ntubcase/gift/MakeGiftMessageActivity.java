@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
     private static String giftName, giftContent;
 
     protected static Date date =new Date();
-    protected static String owner = "wayne";
+    protected static String owner = userData.getUserID();
     protected static String dateTime, giftType = "3";
     ProgressDialog barProgressDialog;
     private static int giftid;

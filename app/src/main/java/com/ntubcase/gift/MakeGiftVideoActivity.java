@@ -34,6 +34,7 @@ import com.ntubcase.gift.MyAsyncTask.gift.insert.giftInsertVid_viedoAsyncTask;
 import com.ntubcase.gift.checkPackage.checkGiftid;
 import com.ntubcase.gift.checkPackage.checkRepeatGift;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.login_model.userData;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -50,7 +51,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     private static String giftName, giftContent;
 
     protected static Date date =new Date();
-    protected static String owner = "wayne";
+    protected static String owner = userData.getUserID();
     protected static String dateTime, giftType = "2";
     ProgressDialog barProgressDialog;
 
