@@ -5,6 +5,7 @@ import android.util.Log;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.giftListAsyncTask;
 import com.ntubcase.gift.DateFormat;
+import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,7 +77,7 @@ public class  getGiftList {
                 }
             }
         });
-        myAsyncTask.execute(Common.giftList);
+        myAsyncTask.execute(Common.giftList, userData.getUserID());
     }
     //---------禮物資料
     public static int getGiftLength(){

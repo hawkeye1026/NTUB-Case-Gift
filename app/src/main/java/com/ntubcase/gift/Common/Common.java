@@ -3,7 +3,7 @@ package com.ntubcase.gift.Common;
 public class Common {
     //----------------------------------------------------------------GET
     //-------------------------------------gift
-    public static String giftList="http://140.131.114.156/NTUB_gift_server/giftList.php/";
+    public static String giftList="http://140.131.114.156/NTUB_gift_server/giftList.php?";
     //-------------------------------------plan
 
     //-------------------------------------Received
