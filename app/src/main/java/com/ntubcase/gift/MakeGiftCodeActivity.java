@@ -56,7 +56,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private String maincode_array = "";
     private String matchcode_array = "";
 
-    private static int giftid;
+    private static String decodeid = "";
+
+    private static int giftid = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +87,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         btn_addMulti.setOnClickListener(addMultiClickListener); //設置監聽器
         btn_remove.setOnClickListener(removeClickListener); //設置監聽器
         //---------------------------------------------------------------------------------
-        giftid = 0;
+
         //------------判斷禮物是否有初值------------
         Bundle bundle = this.getIntent().getExtras();
         int position ;
@@ -96,12 +98,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             et_giftName.setText( getGiftList.getGiftName(position)); //禮物名稱
 
             //---資料內容放進表格---
-            String giftContent=getGiftList.getGift(position);
-            Log.v("giftName",giftContent);
+            decodeid=getGiftList.getGift(position);
             for (int i=0; i<(getGiftList.getDecodeLength()); i++){
-                Log.v("giftContent",giftContent);
-                Log.v("getDecodeLength",getGiftList.getDecodeLength() + "");
-                if (getGiftList.getDecodeid(i).equals(giftContent))
+                if (getGiftList.getDecodeid(i).equals(decodeid))
                     tableAddRow(1,getGiftList.getDecodeMaincode(i),getGiftList.getDecodeMatchCode(i));
             }
 
@@ -323,28 +322,36 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         dateTime = sdFormat.format(date);
         giftContent = "";
+
+        String rowNumber = "";
+        for (int i = 0; i < mainCodes.size(); i++) {
+            if( i ==  mainCodes.size() - 1){
+                rowNumber += i ;
+                maincode_array += mainCodes.get(i);
+                matchcode_array += matchCodes.get(i);
+            }else{
+                rowNumber += i + ",";
+                maincode_array += mainCodes.get(i) + ",";
+                matchcode_array += matchCodes.get(i) + ",";
+            }
+        }
         //--------取得目前時間：yyyy/MM/dd hh:mm:ss
 //                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
 //                giftContent = sdFormat_giftContent.format(date);
+        Log.v("MCAgiftid",giftid + "");
         if(giftid > 0){
+            if(rowNumber.equals("")){
+                Toast.makeText(v.getContext(), "內容不可以是空的喔", Toast.LENGTH_SHORT).show();
+                return;
+            }
             new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
+
+            new updateGiftCode(decodeid , rowNumber, maincode_array , matchcode_array);
+            //decodeid
         }else{
             if(checkRepeatGift.checkRepeatGift(giftName)) {
                 //------------------------------上傳禮物資料
-                String rowNumber = "";
-                for (int i = 0; i < mainCodes.size(); i++) {
-                    if( i ==  mainCodes.size() - 1){
-                        rowNumber += i ;
-                        maincode_array += mainCodes.get(i);
-                        matchcode_array += matchCodes.get(i);
-                    }else{
-                        rowNumber += i + ",";
-                        maincode_array += mainCodes.get(i) + ",";
-                        matchcode_array += matchCodes.get(i) + ",";
-                    }
-                }
                 new uploadGift(giftName, owner, giftType, rowNumber, maincode_array , matchcode_array);
-
                 //-------------讀取Dialog-----------
                 barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
                         "讀取中", "請等待...", true);
