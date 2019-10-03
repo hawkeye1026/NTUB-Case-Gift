@@ -36,8 +36,6 @@ public class  getGiftList {
                     //取得禮物資料
                     JSONArray jsonArray = object.getJSONArray("result");
 
-
-
                     giftLength = jsonArray.length();
 
                     giftid         = new String[giftLength];

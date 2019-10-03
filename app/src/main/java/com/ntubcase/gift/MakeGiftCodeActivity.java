@@ -328,7 +328,6 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         }else{
             if(checkRepeatGift.checkRepeatGift(giftName)) {
                 //------------------------------上傳禮物資料
-                new uploadGift(giftContent, giftName, owner, giftType);
                 String rowNumber = "";
                 for (int i = 0; i < mainCodes.size(); i++) {
                     if( i ==  mainCodes.size() - 1){
@@ -341,15 +340,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                         matchcode_array += matchCodes.get(i) + ",";
                     }
                 }
-
-                giftInsertCodeAsyncTask mgiftInsertCodAsyncTask = new giftInsertCodeAsyncTask(new giftInsertCodeAsyncTask.TaskListener() {
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
-//                Log.v("rowNumber",rowNumber);
-                mgiftInsertCodAsyncTask.execute(Common.insertGiftCode,uploadGift.getLastGiftid(), giftContent, rowNumber, maincode_array , matchcode_array);
+                new uploadGift(giftName, owner, giftType, rowNumber, maincode_array , matchcode_array);
 
                 //-------------讀取Dialog-----------
                 barProgressDialog = ProgressDialog.show(MakeGiftCodeActivity.this,
@@ -364,7 +355,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                             e.printStackTrace();
                         } finally {
                             barProgressDialog.dismiss();
-                          //  finish();
+                            finish();
                         }
                     }
                 }).start();
