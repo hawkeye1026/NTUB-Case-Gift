@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -62,7 +63,7 @@ public class PlanNewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_plan_new, container, false);
-        setHasOptionsMenu(true); //使用actionbar
+
         //---------------------ListView--------------------------------
         mListView = (ListView) view.findViewById(R.id.planList);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
@@ -263,24 +264,6 @@ public class PlanNewFragment extends Fragment {
             startActivity(intent);
         }
     };
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_enter_delete:  //刪除鈕，進入多選模式
-                mListView.setItemChecked(0, true);
-                mListView.clearChoices();
-                multiChoiceListener.updateSelectedCount();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     //----------------------刪除，多選模式的監聽器----------------------
     class mMultiChoiceListener implements AbsListView.MultiChoiceModeListener {

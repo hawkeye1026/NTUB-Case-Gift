@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -293,10 +294,8 @@ public class GiftActivity extends AppCompatActivity {
             case android.R.id.home: //toolbar返回建
                 finish();
                 return true;
-            case R.id.action_enter_delete:  //刪除鈕，進入多選模式
-                mListView.setItemChecked(0, true);
-                mListView.clearChoices();
-                multiChoiceListener.updateSelectedCount();
+            case R.id.action_help:  //說明鈕
+                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

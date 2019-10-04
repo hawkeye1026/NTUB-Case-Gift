@@ -2,9 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_enter_delete"
-        android:icon="@android:drawable/ic_menu_delete"
-        android:title="刪除"
+        android:id="@+id/action_help"
+        android:icon="@drawable/ic_menu_help"
+        android:title="說明"
         app:showAsAction="always" />
 
 </menu>
