@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -79,7 +78,7 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Dialog mDialog = new Dialog(ReceivedMultipleActivity.this);
-                mDialog.setContentView(R.layout.feedback_layout);
+                mDialog.setContentView(R.layout.feedback_write_layout);
 
                 et_feedback  = mDialog.findViewById(R.id.et_feedback);
                 btn_can  = mDialog.findViewById(R.id.btn_can);

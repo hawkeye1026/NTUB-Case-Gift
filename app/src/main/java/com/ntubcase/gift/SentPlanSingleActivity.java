@@ -43,8 +43,11 @@ public class SentPlanSingleActivity extends AppCompatActivity {
     private plan_single_adapter adapter;
     private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
-    private Button btn_save, btn_send, btn_cancel, btnAdd, btnEnt, btnCan;
+    private Button btn_save, btn_send, btn_cancel, btn_feedback, btnAdd, btnEnt, btnCan;
     private String sender=userData.getUserID(), sinPlanid;
+
+    private EditText et_feedback;
+    private Button btn_ent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +95,14 @@ public class SentPlanSingleActivity extends AppCompatActivity {
         btn_send = findViewById(R.id.btn_plan_send); //預送按鈕
         btn_send.setVisibility(View.GONE);
         btn_cancel = findViewById(R.id.btn_plan_cancel); //取消預送按鈕
+        btn_feedback = findViewById(R.id.btn_plan_feedback); //查看回饋按鈕
         String from = bundle.getString("from");
         if (from.equals("PlanSentFragment")){
             btn_cancel.setVisibility(View.VISIBLE);
             btn_cancel.setOnClickListener(planCancelClickListener);
+        }else if (from.equals("PlanDoneFragment")){
+            btn_feedback.setVisibility(View.VISIBLE);
+            btn_feedback.setOnClickListener(checkFeedbackClickListener);
         }
 
     }
@@ -162,6 +169,30 @@ public class SentPlanSingleActivity extends AppCompatActivity {
                         }
                     })
                     .show();
+        }
+    };
+
+    //-------------------------------查看回饋按鈕 監聽器----------------------------------------
+    private View.OnClickListener checkFeedbackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Dialog mDialog = new Dialog(SentPlanSingleActivity.this);
+            mDialog.setContentView(R.layout.feedback_check_layout);
+
+            et_feedback  = mDialog.findViewById(R.id.et_feedback);
+            btn_ent  = mDialog.findViewById(R.id.btn_ent);
+
+            //et_feedback.setText(feedback);
+
+            //-------------dialog按鈕-------------
+            btn_ent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                }
+            });
+
+            mDialog.show();
         }
     };
 

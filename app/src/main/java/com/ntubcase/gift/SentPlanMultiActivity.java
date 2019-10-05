@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SentPlanMultiActivity extends AppCompatActivity {
-    private Button btn_save, btn_send, btn_cancel;
+    private Button btn_save, btn_send, btn_cancel, btn_feedback;
     private GridView gridView;
     private PlanMultiAdapter planMultiAdapter;
     private TextView tv_receiveFriend, tv_message;
@@ -43,6 +43,9 @@ public class SentPlanMultiActivity extends AppCompatActivity {
     //-----cutomlayout內物件
     private EditText alert_message, alert_time, alert_gifts;
     private TextView tv_title;
+
+    private EditText et_feedback;
+    private Button btn_ent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +87,15 @@ public class SentPlanMultiActivity extends AppCompatActivity {
         btn_send = findViewById(R.id.btn_plan_send); //預送按鈕
         btn_send.setVisibility(View.GONE);
         btn_cancel = findViewById(R.id.btn_plan_cancel); //取消預送按鈕
+        btn_feedback = findViewById(R.id.btn_plan_feedback); //查看回饋按鈕
         if (from.equals("PlanSentFragment")){
             btn_cancel.setVisibility(View.VISIBLE);
             btn_cancel.setOnClickListener(planCancelClickListener);
+        }else if (from.equals("PlanDoneFragment")){
+            btn_feedback.setVisibility(View.VISIBLE);
+            btn_feedback.setOnClickListener(checkFeedbackClickListener);
         }
+
     }
 
     //-----------------顯示alertDialog-----------------
@@ -162,6 +170,30 @@ public class SentPlanMultiActivity extends AppCompatActivity {
                         }
                     })
                     .show();
+        }
+    };
+
+    //-------------------------------查看回饋按鈕 監聽器----------------------------------------
+    private View.OnClickListener checkFeedbackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Dialog mDialog = new Dialog(SentPlanMultiActivity.this);
+            mDialog.setContentView(R.layout.feedback_check_layout);
+
+            et_feedback  = mDialog.findViewById(R.id.et_feedback);
+            btn_ent  = mDialog.findViewById(R.id.btn_ent);
+
+            //et_feedback.setText(feedback);
+
+            //-------------dialog按鈕-------------
+            btn_ent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                }
+            });
+
+            mDialog.show();
         }
     };
 

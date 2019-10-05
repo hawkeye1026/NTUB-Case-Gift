@@ -210,6 +210,15 @@
             android:textSize="20dp"
             android:visibility="gone" />
 
+        <Button
+            android:id="@+id/btn_plan_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="查看回饋"
+            android:textSize="20dp"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 
