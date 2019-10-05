@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,6 +114,18 @@ public class GiftReceivedDoneFragment extends Fragment {
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         giftReceivedDoneAdapter = new GiftReceivedDoneAdapter(getActivity(), rGiftsList);
         recyclerView.setAdapter(giftReceivedDoneAdapter);
+
+        giftReceivedDoneAdapter.setOnItemClickListener(new GiftReceivedDoneAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View view, int position) {
+                if (giftReceivedDoneAdapter.multiSelect){ //刪除模式
+                    giftReceivedDoneAdapter.selectItem(position);
+                    giftReceivedDoneAdapter.updateBackground(position, view); //設定背景
+                }else{
+                    Log.e("***","跳頁");
+                }
+            }
+        });
 
         mSpinner.setSelection(0); //spinner預設為全部
         setSearch_function(); // 設定searchView的文字輸入監聽
