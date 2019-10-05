@@ -2,6 +2,7 @@ package com.ntubcase.gift.Adapter;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,23 +62,23 @@ public class re_plan_single_adapter extends RecyclerView.Adapter<re_plan_single_
         String sentTime = mData.get(position).get("sentTime").toString();
         String message = mData.get(position).get("message").toString();
         String type = mData.get(position).get("type").toString();
-
+        Log.v("type", type);
         switch (type) {
-            case "照片":
+            case "1":
                 holder.itemView.setBackgroundResource(R.drawable.image_video);
                 break;
-            case "影片":
+            case "2":
                 holder.itemView.setBackgroundResource(R.drawable.image_video);
                 break;
-            case "悄悄話":
-                holder.itemView.setBackgroundResource(R.drawable.whisper);
+            case "3":
+              holder.itemView.setBackgroundResource(R.drawable.whisper);
                 break;
-            case "兌換卷":
+            case "4":
                 holder.itemView.setBackgroundResource(R.drawable.ticket);
                 break;
-            case "解碼表":
+            case "5":
                 holder.itemView.setBackgroundResource(R.drawable.code);
-                break;
+               break;
         }
 
         holder.txtTime.setText(sentTime);
