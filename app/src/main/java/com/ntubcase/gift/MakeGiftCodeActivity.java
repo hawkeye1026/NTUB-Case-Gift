@@ -215,8 +215,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                         lp.setMargins(3,3,0,0);
                     }else{
                         lp.setMargins(3,3,0,0);
-
-                        imageView.setImageResource(R.drawable.delete);
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(5, 5);
+                        imageView.setLayoutParams(layoutParams);
+                        imageView.setImageResource(R.drawable.clear);
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

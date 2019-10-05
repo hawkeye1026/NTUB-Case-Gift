@@ -115,12 +115,14 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                         String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
                         String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
+                        String sinGiftType = jsonArray.getJSONObject(i).getString("type"); //禮物類型
                         String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
 
                         Map<String, Object> mGiftsData = new HashMap<String, Object>();
                         mGiftsData.put("giftName", sinGiftName);
                         mGiftsData.put("sentTime", sinSendGiftDate.substring(11,16));
                         mGiftsData.put("message", sinMessage);
+                        mGiftsData.put("type", sinGiftType);
                         mData.add(mGiftsData);
                     }
                     adapter.notifyDataSetChanged();

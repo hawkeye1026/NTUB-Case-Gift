@@ -1,5 +1,6 @@
 package com.ntubcase.gift.Adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.ReceivedListActivity;
+import com.ntubcase.gift.ReceivedMultipleActivity;
+import com.ntubcase.gift.ReceivedSingleActivity;
 
 import java.util.List;
 import java.util.Map;
@@ -56,6 +60,25 @@ public class re_plan_single_adapter extends RecyclerView.Adapter<re_plan_single_
         String giftName = mData.get(position).get("giftName").toString();
         String sentTime = mData.get(position).get("sentTime").toString();
         String message = mData.get(position).get("message").toString();
+        String type = mData.get(position).get("type").toString();
+
+        switch (type) {
+            case "照片":
+                holder.itemView.setBackgroundResource(R.drawable.image_video);
+                break;
+            case "影片":
+                holder.itemView.setBackgroundResource(R.drawable.image_video);
+                break;
+            case "悄悄話":
+                holder.itemView.setBackgroundResource(R.drawable.whisper);
+                break;
+            case "兌換卷":
+                holder.itemView.setBackgroundResource(R.drawable.ticket);
+                break;
+            case "解碼表":
+                holder.itemView.setBackgroundResource(R.drawable.code);
+                break;
+        }
 
         holder.txtTime.setText(sentTime);
         holder.txtGift.setText(giftName);
