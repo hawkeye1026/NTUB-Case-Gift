@@ -47,10 +47,10 @@
 
             <EditText
                 android:id="@+id/et_giftContent"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/ticket"
+                android:background="@drawable/gift_ticket"
                 android:ellipsize="end"
                 android:gravity="center|center_horizontal|left"
                 android:hint="請輸入兌換券內容"
