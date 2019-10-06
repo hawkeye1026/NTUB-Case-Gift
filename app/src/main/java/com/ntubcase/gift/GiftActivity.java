@@ -343,7 +343,7 @@ public class GiftActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //-----刪除禮物-----
-                                    giftListAdapter.deleteGifts();
+                                    giftListAdapter.deleteGifts(GiftActivity.this);
                                     mode.finish();
                                 }
                             })

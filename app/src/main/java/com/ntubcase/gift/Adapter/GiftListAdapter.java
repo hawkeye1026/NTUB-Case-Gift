@@ -13,6 +13,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.delete.giftDeleteAsyncTask;
@@ -140,7 +141,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
     }
 
     //---------------刪除禮物---------------
-    public void deleteGifts(){
+    public void deleteGifts(Context giftContext){
         long[] checkedItems=mListView.getCheckedItemIds(); //取得勾選的項目
         String deleteGiftId;
 
@@ -148,11 +149,11 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
             deleteGiftId = item.get((int) checkedItems[i]).get("giftid").toString(); //取得ID
 
             for(int j = 0; j < getPlanSent.getPlansentgLength(); j++){
-                if(deleteGiftId.equals(getPlanSent.getGiftid(j)));
+                if(deleteGiftId.equals(getPlanSent.getGiftid(j)))    Toast.makeText( giftContext, "刪除失敗，該禮物已在預送中 ", Toast.LENGTH_SHORT).show();;
             }
         }
 
-            for (int i=checkedItems.length-1; i>=0; i--){
+        for (int i=checkedItems.length-1; i>=0; i--){
             deleteGiftId =  item.get((int)checkedItems[i]).get("giftid").toString(); //取得ID
 
             giftDeleteAsyncTask mgiftDeleteAsyncTask = new giftDeleteAsyncTask(new giftDeleteAsyncTask.TaskListener() {
@@ -161,7 +162,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
 
                 }
             });
-            mgiftDeleteAsyncTask.execute(Common.deleteGift, deleteGiftId);
+           // mgiftDeleteAsyncTask.execute(Common.deleteGift, deleteGiftId);
 
             item.remove((int)checkedItems[i]); //從列表中刪除
         }

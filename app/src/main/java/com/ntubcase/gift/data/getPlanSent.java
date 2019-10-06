@@ -1,5 +1,7 @@
 package com.ntubcase.gift.data;
 
+import android.util.Log;
+
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planningListAsyncTask;
 import com.ntubcase.gift.DateFormat;
@@ -51,7 +53,7 @@ public class getPlanSent {
                         createDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("createDate"));
                         sendPlanDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
 
-                        //Log.v("pdata",sendGiftDate[i]);
+                        Log.v("Plangiftid",giftid[i]);
                         //Log.v("pdata",spPlanName[i]);
 
                         switch(planType[i]){
