@@ -45,6 +45,7 @@ public class Common {
     public static String receiveOpen="http://140.131.114.156/NTUB_gift_server/receiveOpen.php?";
     public static String openReceiveGift="http://140.131.114.156/NTUB_gift_server/openReceiveGift.php?";
     public static String receiveDetail="http://140.131.114.156/NTUB_gift_server/receiveDetail.php?";
+    public static String writeFeedback="http://140.131.114.156/NTUB_gift_server/writeFeedback.php?";
 
     //------------------------------------image path
     public static String imgPath="http://140.131.114.156/NTUB_gift_server/giftImg/";
