@@ -13,11 +13,15 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.plan.giftRecordInsertAsyncTask;
 import com.ntubcase.gift.R;
 import com.ntubcase.gift.ReceivedListActivity;
 import com.ntubcase.gift.ReceivedMultipleActivity;
 import com.ntubcase.gift.ReceivedSingleActivity;
+import com.ntubcase.gift.login_model.userData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +59,20 @@ public class GiftReceivedNewAdapter extends RecyclerView.Adapter<GiftReceivedNew
                 Bundle bundle = new Bundle();
 
                 String planID = re_giftList.get(position).get("planID").toString();
+
+                giftRecordInsertAsyncTask giftRecordInsertAsyncTask = new giftRecordInsertAsyncTask(new giftRecordInsertAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                        try {
+                            if (result == null) {
+                                return;
+                            }
+
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+                giftRecordInsertAsyncTask.execute(Common.openReceiveGift , planID, userData.getUserID());
 
                 String type = re_giftList.get(position).get("type").toString();
                 switch (type){
