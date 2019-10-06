@@ -1,5 +1,7 @@
 package com.ntubcase.gift.data;
 
+import android.util.Log;
+
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planningListAsyncTask;
 import com.ntubcase.gift.DateFormat;
@@ -11,6 +13,7 @@ import org.json.JSONObject;
 public class getPlanSent {
 
     private static String[] ownerid;
+    private static String[] giftid;
     private static String[] planid;
     private static String[] planType;
     private static String[] planName;
@@ -33,6 +36,7 @@ public class getPlanSent {
                     plansentLength = jsonArray.length();
 
                     ownerid = new String[plansentLength];
+                    giftid = new String[plansentLength];
                     planid = new String[plansentLength];
                     planType = new String[plansentLength];
                     planName = new String[plansentLength];
@@ -42,13 +46,14 @@ public class getPlanSent {
                     for (int i = 0 ; i <jsonArray.length() ; i++){
                         //Log.v("abc", "10000");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
+                        giftid[i] = jsonArray.getJSONObject(i).getString("giftid");
                         planid[i] = jsonArray.getJSONObject(i).getString("planid");
                         planType[i] = jsonArray.getJSONObject(i).getString("planType");
                         planName[i] = jsonArray.getJSONObject(i).getString("planName");
                         createDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("createDate"));
                         sendPlanDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
 
-                        //Log.v("pdata",sendGiftDate[i]);
+                        Log.v("Plangiftid",giftid[i]);
                         //Log.v("pdata",spPlanName[i]);
 
                         switch(planType[i]){
@@ -76,6 +81,9 @@ public class getPlanSent {
     }
     public static String getPlanid(int i){
         return planid[i];
+    }
+    public static String getGiftid(int i){
+        return giftid[i];
     }
     public static String getPlanType(int i){
         return planType[i];
