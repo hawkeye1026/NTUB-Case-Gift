@@ -91,21 +91,19 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                 btn_ent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mDialog.dismiss();
+                        feedback = et_feedback.getText().toString();
+
                         writeFeedbackAsyncTask writeFeedbackAsyncTask = new writeFeedbackAsyncTask(new writeFeedbackAsyncTask.TaskListener() {
                             @Override
                             public void onFinished(String result) {
                                 try {
-                                    if (result == null) {
-                                        return;
-                                    }
-
+                                    if (result == null) { return; }
                                 } catch (Exception e) {
                                 }
                             }
                         });
                         writeFeedbackAsyncTask.execute(Common.writeFeedback , planID, userData.getUserID(), feedback);
-
+                        mDialog.dismiss();
                     }
                 });
 

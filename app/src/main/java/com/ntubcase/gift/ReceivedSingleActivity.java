@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.app.Dialog;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import com.ntubcase.gift.Adapter.plan_single_adapter;
 import com.ntubcase.gift.Adapter.re_plan_single_adapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.writeFeedbackAsyncTask;
 import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
@@ -30,13 +33,15 @@ import java.util.Map;
 public class ReceivedSingleActivity extends AppCompatActivity {
 
     private TextView tv_name, tv_sender,tv_sentTime;
-    private Button btn_Received;
+    private Button btn_feedback, btn_Received;
 
     private RecyclerView recycler_view;
     private re_plan_single_adapter adapter;
     private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
-    private String feedback;
+    private String planID, feedback;
+    private EditText et_feedback;
+    private Button btn_can, btn_ent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +51,13 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
-        //------------------------------------------------------------------------------------------
 
+        //------------------------------------------------------------------------------------------
         tv_name = findViewById(R.id.tv_name);
         tv_sender = findViewById(R.id.tv_sender);
         tv_sentTime = findViewById(R.id.sentTime);
         btn_Received = findViewById(R.id.btnReceived);
-
-
+        btn_feedback = findViewById(R.id.btn_feedback);
 
         //-----------------------------------------------------------------------
         recycler_view = findViewById(R.id.recycler_view);
@@ -73,9 +77,53 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
-            String planid = bundle.getString("planID");
-            showPlanDetail(planid);  //顯示收禮詳細資料
+            planID = bundle.getString("planID");
+            showPlanDetail(planID);  //顯示收禮詳細資料
         }
+
+        //---------------------------------填寫回饋 按鈕---------------------------------------------
+        btn_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog mDialog = new Dialog(ReceivedSingleActivity.this);
+                mDialog.setContentView(R.layout.feedback_write_layout);
+
+                et_feedback  = mDialog.findViewById(R.id.et_feedback);
+                btn_can  = mDialog.findViewById(R.id.btn_can);
+                btn_ent  = mDialog.findViewById(R.id.btn_ent);
+
+                et_feedback.setText(feedback);
+
+                //-------------dialog按鈕-------------
+                btn_ent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        feedback = et_feedback.getText().toString();
+
+                        writeFeedbackAsyncTask writeFeedbackAsyncTask = new writeFeedbackAsyncTask(new writeFeedbackAsyncTask.TaskListener() {
+                            @Override
+                            public void onFinished(String result) {
+                                try {
+                                    if (result == null) { return; }
+                                } catch (Exception e) {
+                                }
+                            }
+                        });
+                        writeFeedbackAsyncTask.execute(Common.writeFeedback , planID, userData.getUserID(), feedback);
+                        mDialog.dismiss();
+                    }
+                });
+
+                btn_can.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+
+                mDialog.show();
+            }
+        });
 
     }
 

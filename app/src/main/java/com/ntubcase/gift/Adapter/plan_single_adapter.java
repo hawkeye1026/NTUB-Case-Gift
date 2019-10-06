@@ -34,7 +34,7 @@ public class plan_single_adapter extends RecyclerView.Adapter<plan_single_adapte
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtGift = (TextView) itemView.findViewById(R.id.txtGift);
             txtMessage = (TextView) itemView.findViewById(R.id.txtMessage);
-            btnRemove= (Button) itemView.findViewById(R.id.btnReceived);
+            btnRemove= (Button) itemView.findViewById(R.id.btnRemove);
 
             if (isFromMake){
                 // 點擊項目中的Button時
