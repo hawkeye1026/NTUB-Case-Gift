@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,8 @@ import java.util.Map;
 
 public class ReceivedSingleActivity extends AppCompatActivity {
 
-    private TextView tv_name, tv_sender;
+    private TextView tv_name, tv_sender,tv_sentTime;
+    private Button btn_Received;
 
     private RecyclerView recycler_view;
     private re_plan_single_adapter adapter;
@@ -48,6 +50,9 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
         tv_name = findViewById(R.id.tv_name);
         tv_sender = findViewById(R.id.tv_sender);
+        tv_sentTime = findViewById(R.id.sentTime);
+        btn_Received = findViewById(R.id.btnReceived);
+
 
 
         //-----------------------------------------------------------------------
@@ -115,12 +120,14 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                         String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
                         String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
+                        String sinGiftType = jsonArray.getJSONObject(i).getString("type"); //禮物類型
                         String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
 
                         Map<String, Object> mGiftsData = new HashMap<String, Object>();
                         mGiftsData.put("giftName", sinGiftName);
                         mGiftsData.put("sentTime", sinSendGiftDate.substring(11,16));
                         mGiftsData.put("message", sinMessage);
+                        mGiftsData.put("type", sinGiftType);
                         mData.add(mGiftsData);
                     }
                     adapter.notifyDataSetChanged();

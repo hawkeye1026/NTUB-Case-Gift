@@ -14,7 +14,7 @@
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="320dp"
-        android:layout_height="450dp"
+        android:layout_height="420dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:background="@drawable/card"
@@ -39,8 +39,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:hint="PlanName"
-                    android:textStyle="bold|italic"
-                    android:textSize="25sp" />
+                    android:textSize="25sp"
+                    android:textStyle="bold|italic" />
 
             </LinearLayout>
 
@@ -61,8 +61,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
                 android:gravity="right|center_vertical"
                 android:orientation="horizontal">
 
@@ -86,9 +86,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1.7"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -97,9 +98,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="5dp"
-            android:text="填寫回饋"
-            android:textSize="20dp"/>
+            android:background="@drawable/bg_write_feedback"
+            android:textSize="20dp" />
 
     </LinearLayout>
 
