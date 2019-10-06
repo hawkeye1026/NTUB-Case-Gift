@@ -186,7 +186,10 @@ public class SentPlanSingleActivity extends AppCompatActivity {
 
             String allFeedback="";
             for (int i=0; i<feedback.size(); i++){
-                allFeedback+= feedback.get(i)[0]+":\n"+feedback.get(i)[1]+"\n";
+                String fNickName = feedback.get(i)[0];
+                String fFeedback = feedback.get(i)[1];
+                if (fFeedback.equals("")) allFeedback+= fNickName + ":\n" + "(尚未填寫回饋)" + "\n\n";
+                else allFeedback+= fNickName + ":\n" + fFeedback + "\n\n";
             }
             et_feedback.setText(allFeedback);
 
