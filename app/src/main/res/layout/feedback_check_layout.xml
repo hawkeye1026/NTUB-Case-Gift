@@ -10,8 +10,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="35dp"
         android:layout_marginRight="40dp"
         android:text="查看收禮人的回饋："
         android:textSize="22dp"
@@ -21,21 +21,20 @@
         android:id="@+id/et_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="40dp"
         android:inputType="textMultiLine"
-        android:lines="5"
+        android:lines="7"
         android:background="@drawable/bg_message"
-        android:gravity="top|left"
-        android:enabled="false"/>
+        android:gravity="top|left"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_gravity="center">

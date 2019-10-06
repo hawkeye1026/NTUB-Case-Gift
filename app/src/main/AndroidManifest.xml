@@ -20,6 +20,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -29,8 +30,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -57,7 +60,7 @@
         <!-- *****製作禮物區***** -->
         <activity
             android:name=".GiftActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MakeGiftImageActivity"
             android:screenOrientation="portrait"
@@ -86,7 +89,7 @@
         <!-- *****預送計畫區***** -->
         <activity
             android:name=".PlanActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MakePlanSingleActivity"
             android:screenOrientation="portrait"
@@ -123,21 +126,25 @@
         <!-- *****收禮箱區***** -->
         <activity
             android:name=".GiftReceivedActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ReceivedSingleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ReceivedListActivity"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".ReceivedMultipleActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReceivedListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReceivedListGiftActivity"
+            android:screenOrientation="portrait" />
+
 
         <!-- *****我的好友區***** -->
         <activity
             android:name=".FriendActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".FriendAddActivity"
             android:screenOrientation="portrait"
@@ -166,7 +173,6 @@
                 android:resource="@xml/provider_paths"
                 android:value="468819707005566" />
         </provider>
-
     </application>
 
 </manifest>

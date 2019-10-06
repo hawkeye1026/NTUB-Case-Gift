@@ -263,8 +263,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="查看回饋"
-            android:textSize="20dp"
+            android:background="@drawable/bg_look_feedback"
             android:visibility="gone" />
 
     </LinearLayout>

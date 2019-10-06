@@ -2,8 +2,10 @@ package com.ntubcase.gift.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -22,6 +24,9 @@ import android.widget.TextView;
 
 import com.ntubcase.gift.GiftReceivedActivity;
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.ReceivedListActivity;
+import com.ntubcase.gift.ReceivedMultipleActivity;
+import com.ntubcase.gift.ReceivedSingleActivity;
 import com.ntubcase.gift.data.getReceiveOpen;
 
 import java.util.ArrayList;
@@ -38,7 +43,6 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
     private ArrayList<String> plansType; //所有計畫種類
     public static String selectedType; //spinner所選取的種類
     //----------------------------------------------------------------------------
-    private GiftReceivedDoneAdapter.OnItemClickListener mOnItemClickListener;
     public ActionMode mMode;
     private View actionBarView;  //多選模式中的action bar
     private TextView selectedNum;  //顯示選中個項目個數
@@ -73,15 +77,6 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
         holder.date.setText(re_giftList.get(position).get("date").toString());
 
         //------------------刪除模式---------------------
-        if (mOnItemClickListener != null){
-            holder.itemView.setOnClickListener(new View.OnClickListener() { //----------item點擊事件----------
-                @Override
-                public void onClick(View v) {
-                    mOnItemClickListener.onItemClick(holder.itemView, position);
-                }
-            });
-        }
-
         if (!multiSelect){
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() { //-----長按事件(刪除多選模式)-----
                 @Override
@@ -103,6 +98,38 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
             mBackground = ((CardView)holder.itemView).getCardBackgroundColor();
         }
         updateBackground(position, holder.itemView); //設定背景
+
+        //--------------item點擊監聽器-------------
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (multiSelect){ //刪除模式
+                    selectItem(position);
+                    updateBackground(position, v); //設定背景
+                }else{  //點擊後跳頁
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+
+                    String planID = re_giftList.get(position).get("planID").toString();
+                    String type = re_giftList.get(position).get("type").toString();
+                    switch (type){
+                        case "單日送禮" :
+                            intent = new Intent(context, ReceivedSingleActivity.class);
+                            break;
+                        case "多日規劃" :
+                            intent = new Intent(context, ReceivedMultipleActivity.class);
+                            break;
+                        case "任務清單" :
+                            intent = new Intent(context, ReceivedListActivity.class);
+                            break;
+                    }
+
+                    bundle.putString("planID", planID);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 
     //-----設定背景-----
@@ -113,14 +140,6 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
         } else {
             cardView.setCardBackgroundColor(mBackground);
         }
-    }
-
-    public void setOnItemClickListener(GiftReceivedDoneAdapter.OnItemClickListener listener) {
-        this.mOnItemClickListener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
     }
 
     @Override

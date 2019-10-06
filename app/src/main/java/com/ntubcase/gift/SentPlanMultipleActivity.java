@@ -33,6 +33,7 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
     //----------------------------------------------------------------------------------------------
     private String mulPlanName, message, friendName;
     private String from;
+    private List<String[]> feedback = new ArrayList<>();
 
     //--showPlan
     private String sender=userData.getUserID(), mulPlanid;
@@ -83,6 +84,7 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
             bundle.putString("planName", mulPlanName);
             bundle.putString("receiveFriend", friendName);
             bundle.putString("message", message);
+            bundle.putSerializable("feedback", (Serializable) feedback);
             bundle.putSerializable("selectDates", (Serializable) oldSelectDates);
             bundle.putString("from", from); //從哪個頁面開啟
             intent.putExtras(bundle);
@@ -116,14 +118,20 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
                     add_multi_dateE.setText(mulEndDate.substring(0,10)); //結束日期
                     add_multi_message.setText(message); //祝福
 
-                    //----------------------------取得好友資料----------------------------
+                    //----------------------------取得收禮人,feedback資料----------------------------
                     jsonArray = object.getJSONArray("record");
-                    int friendsLength = jsonArray.length();
+                    int recordLength = jsonArray.length();
 
                     friendName = "";
-                    for (int i = 0; i < friendsLength; i++) {
-                        if (friendName.equals("")) friendName += jsonArray.getJSONObject(i).getString("nickname");
-                        else friendName += " , " + jsonArray.getJSONObject(i).getString("nickname");
+                    for (int i = 0; i < recordLength; i++) {
+                        String fNickname = jsonArray.getJSONObject(i).getString("nickname");
+                        String fFeedback = jsonArray.getJSONObject(i).getString("feedback");
+                        String[] a ={fNickname,fFeedback};
+
+                        if (friendName.equals("")) friendName += fNickname;
+                        else friendName += " , " + fNickname;
+
+                        feedback.add(a);
                     }
                     add_multi_friend.setText(friendName);
 
