@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ntubcase.gift.Adapter.PlanMultiAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.writeFeedbackAsyncTask;
 import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
@@ -92,6 +93,20 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         mDialog.dismiss();
+                        writeFeedbackAsyncTask writeFeedbackAsyncTask = new writeFeedbackAsyncTask(new writeFeedbackAsyncTask.TaskListener() {
+                            @Override
+                            public void onFinished(String result) {
+                                try {
+                                    if (result == null) {
+                                        return;
+                                    }
+
+                                } catch (Exception e) {
+                                }
+                            }
+                        });
+                        writeFeedbackAsyncTask.execute(Common.writeFeedback , planID, userData.getUserID(), feedback);
+
                     }
                 });
 
