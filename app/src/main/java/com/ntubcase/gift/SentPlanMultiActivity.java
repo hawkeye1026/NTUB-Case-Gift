@@ -33,7 +33,9 @@ public class SentPlanMultiActivity extends AppCompatActivity {
     private PlanMultiAdapter planMultiAdapter;
     private TextView tv_receiveFriend, tv_message;
 
-    private String planName, receiveFriend, message; //------bundle傳遞的資料
+    //------bundle傳遞的資料------
+    private String planName, receiveFriend, message;
+    private List<String[]> feedback = new ArrayList<>();
 
     private String sender=userData.getUserID(), planid;
     ProgressDialog barProgressDialog;
@@ -61,6 +63,7 @@ public class SentPlanMultiActivity extends AppCompatActivity {
         planName = bundle.getString("planName");    //計畫名稱
         receiveFriend = bundle.getString("receiveFriend");  //收禮人名稱
         message = bundle.getString("message");  //祝福
+        feedback = (ArrayList<String[]>) bundle.getSerializable("feedback"); //feedback
         selectDates = (ArrayList<Map<String, Object>>) bundle.getSerializable("selectDates");  //選取的時間區段
         String from = bundle.getString("from"); //從哪個頁面開啟
 
@@ -181,11 +184,16 @@ public class SentPlanMultiActivity extends AppCompatActivity {
             mDialog.setContentView(R.layout.feedback_check_layout);
 
             et_feedback  = mDialog.findViewById(R.id.et_feedback);
-            btn_ent  = mDialog.findViewById(R.id.btn_ent);
+            et_feedback.setKeyListener(null);
 
-            //et_feedback.setText(feedback);
+            String allFeedback="";
+            for (int i=0; i<feedback.size(); i++){
+                allFeedback+= feedback.get(i)[0]+":\n"+feedback.get(i)[1]+"\n";
+            }
+            et_feedback.setText(allFeedback);
 
             //-------------dialog按鈕-------------
+            btn_ent  = mDialog.findViewById(R.id.btn_ent);
             btn_ent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

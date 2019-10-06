@@ -11,6 +11,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class SentPlanSingleActivity extends AppCompatActivity {
     private String sender=userData.getUserID(), sinPlanid;
 
     private EditText et_feedback;
+    private List<String[]> feedback = new ArrayList<>();
     private Button btn_ent;
 
     @Override
@@ -180,11 +182,16 @@ public class SentPlanSingleActivity extends AppCompatActivity {
             mDialog.setContentView(R.layout.feedback_check_layout);
 
             et_feedback  = mDialog.findViewById(R.id.et_feedback);
-            btn_ent  = mDialog.findViewById(R.id.btn_ent);
+            et_feedback.setKeyListener(null);
 
-            //et_feedback.setText(feedback);
+            String allFeedback="";
+            for (int i=0; i<feedback.size(); i++){
+                allFeedback+= feedback.get(i)[0]+":\n"+feedback.get(i)[1]+"\n";
+            }
+            et_feedback.setText(allFeedback);
 
             //-------------dialog按鈕-------------
+            btn_ent  = mDialog.findViewById(R.id.btn_ent);
             btn_ent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -218,16 +225,22 @@ public class SentPlanSingleActivity extends AppCompatActivity {
                     edt_single_name.setText(sinPlanName); //計畫名稱
                     edt_single_date.setText(sinSendPlanDate); //送禮日期
 
-                    //----------------------------取得好友資料----------------------------
+                    //----------------------------取得收禮人,feedback資料----------------------------
                     jsonArray = object.getJSONArray("record");
-                    int friendsLength = jsonArray.length();
+                    int recordLength = jsonArray.length();
 
                     String friendName = "";
-                    for (int i = 0; i < friendsLength; i++) {
-                        if (friendName.equals("")) friendName += jsonArray.getJSONObject(i).getString("nickname");
-                        else friendName += " , " + jsonArray.getJSONObject(i).getString("nickname");
+                    for (int i = 0; i < recordLength; i++) {
+                        String fNickname = jsonArray.getJSONObject(i).getString("nickname");
+                        String fFeedback = jsonArray.getJSONObject(i).getString("feedback");
+                        String[] a ={fNickname,fFeedback};
+
+                        if (friendName.equals("")) friendName += fNickname;
+                        else friendName += " , " + fNickname;
+
+                        feedback.add(a);
                     }
-                    edt_single_friend.setText(friendName); //好友名稱
+                    edt_single_friend.setText(friendName); //收禮人名稱
 
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("sinList");
