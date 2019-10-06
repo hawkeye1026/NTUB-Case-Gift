@@ -18,6 +18,7 @@ import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.gift.delete.giftDeleteAsyncTask;
 import com.ntubcase.gift.R;
 import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getPlanSent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,7 +144,15 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         long[] checkedItems=mListView.getCheckedItemIds(); //取得勾選的項目
         String deleteGiftId;
 
-        for (int i=checkedItems.length-1; i>=0; i--){
+        for (int i=checkedItems.length-1; i>=0; i--) {
+            deleteGiftId = item.get((int) checkedItems[i]).get("giftid").toString(); //取得ID
+
+            for(int j = 0; j < getPlanSent.getPlansentgLength(); j++){
+                if(deleteGiftId.equals(getPlanSent.getGiftid(j)));
+            }
+        }
+
+            for (int i=checkedItems.length-1; i>=0; i--){
             deleteGiftId =  item.get((int)checkedItems[i]).get("giftid").toString(); //取得ID
 
             giftDeleteAsyncTask mgiftDeleteAsyncTask = new giftDeleteAsyncTask(new giftDeleteAsyncTask.TaskListener() {
