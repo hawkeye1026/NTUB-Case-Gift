@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,8 @@ import java.util.Map;
 
 public class ReceivedSingleActivity extends AppCompatActivity {
 
-    private TextView tv_name, tv_sender;
+    private TextView tv_name, tv_sender,tv_sentTime;
+    private Button btn_Received;
 
     private RecyclerView recycler_view;
     private re_plan_single_adapter adapter;
@@ -48,6 +50,9 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
         tv_name = findViewById(R.id.tv_name);
         tv_sender = findViewById(R.id.tv_sender);
+        tv_sentTime = findViewById(R.id.sentTime);
+        btn_Received = findViewById(R.id.btnReceived);
+
 
 
         //-----------------------------------------------------------------------
