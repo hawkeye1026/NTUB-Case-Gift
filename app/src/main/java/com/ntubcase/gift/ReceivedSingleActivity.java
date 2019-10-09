@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +32,7 @@ import java.util.Map;
 public class ReceivedSingleActivity extends AppCompatActivity {
 
     private TextView tv_name, tv_sender,tv_sentTime;
-    private Button btn_feedback, btn_Received;
+    private Button btn_Received;
 
     private RecyclerView recycler_view;
     private ReceivedPlanSingleAdapter adapter;
@@ -55,7 +56,6 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         tv_sender = findViewById(R.id.tv_sender);
         tv_sentTime = findViewById(R.id.sentTime);
         btn_Received = findViewById(R.id.btnReceived);
-        btn_feedback = findViewById(R.id.btn_feedback);
 
         //-----------------------------------------------------------------------
         recycler_view = findViewById(R.id.recycler_view);
@@ -78,50 +78,6 @@ public class ReceivedSingleActivity extends AppCompatActivity {
             planID = bundle.getString("planID");
             showPlanDetail(planID);  //顯示收禮詳細資料
         }
-
-        //---------------------------------填寫回饋 按鈕---------------------------------------------
-        btn_feedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog mDialog = new Dialog(ReceivedSingleActivity.this);
-                mDialog.setContentView(R.layout.feedback_write_layout);
-
-                et_feedback  = mDialog.findViewById(R.id.et_feedback);
-                btn_can  = mDialog.findViewById(R.id.btn_can);
-                btn_ent  = mDialog.findViewById(R.id.btn_ent);
-
-                et_feedback.setText(feedback);
-
-                //-------------dialog按鈕-------------
-                btn_ent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        feedback = et_feedback.getText().toString();
-
-                        writeFeedbackAsyncTask writeFeedbackAsyncTask = new writeFeedbackAsyncTask(new writeFeedbackAsyncTask.TaskListener() {
-                            @Override
-                            public void onFinished(String result) {
-                                try {
-                                    if (result == null) { return; }
-                                } catch (Exception e) {
-                                }
-                            }
-                        });
-                        writeFeedbackAsyncTask.execute(Common.writeFeedback , planID, userData.getUserID(), feedback);
-                        mDialog.dismiss();
-                    }
-                });
-
-                btn_can.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                    }
-                });
-
-                mDialog.show();
-            }
-        });
 
     }
 
@@ -188,11 +144,66 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
     //------------------------------------------------------------------------------------------
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_received, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){ //toolbar返回建
-            finish();
-            return true;
+        switch (item.getItemId()){
+            case android.R.id.home: //toolbar返回建
+                finish();
+                return true;
+            case R.id.action_help:  //說明鈕
+                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_feedback:  //填寫回饋鈕
+                writeFeedback();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    //---------------------------------填寫回饋---------------------------------------------
+    private void writeFeedback(){
+        final Dialog mDialog = new Dialog(ReceivedSingleActivity.this);
+        mDialog.setContentView(R.layout.feedback_write_layout);
+
+        et_feedback  = mDialog.findViewById(R.id.et_feedback);
+        btn_can  = mDialog.findViewById(R.id.btn_can);
+        btn_ent  = mDialog.findViewById(R.id.btn_ent);
+
+        et_feedback.setText(feedback);
+
+        //-------------dialog按鈕-------------
+        btn_ent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedback = et_feedback.getText().toString();
+
+                writeFeedbackAsyncTask writeFeedbackAsyncTask = new writeFeedbackAsyncTask(new writeFeedbackAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                        try {
+                            if (result == null) { return; }
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+                writeFeedbackAsyncTask.execute(Common.writeFeedback , planID, userData.getUserID(), feedback);
+                mDialog.dismiss();
+            }
+        });
+
+        btn_can.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+
+        mDialog.show();
     }
 }

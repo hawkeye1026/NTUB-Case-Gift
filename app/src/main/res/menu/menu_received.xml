@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/ic_menu_help"
+        android:title="說明"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_feedback"
+        android:icon="@drawable/ic_feedback_write"
+        android:title="填寫回饋"
+        app:showAsAction="always" />
+
+</menu>

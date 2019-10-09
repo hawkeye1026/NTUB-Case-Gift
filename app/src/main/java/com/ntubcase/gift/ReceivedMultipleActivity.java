@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +32,6 @@ import java.util.Map;
 public class ReceivedMultipleActivity extends AppCompatActivity {
 
     private TextView tv_name, tv_message, tv_sender;
-    private Button btn_feedback;
     private String planID;
 
     private PlanMultiAdapter planMultiAdapter;
@@ -54,7 +55,6 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         tv_name = findViewById(R.id.tv_name);
         tv_message = findViewById(R.id.tv_message);
         tv_sender = findViewById(R.id.tv_sender);
-        btn_feedback = findViewById(R.id.btn_feedback);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -71,50 +71,6 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //showAlertDialog(position,parent);  //顯示alertDialog
-            }
-        });
-
-        //---------------------------------填寫回饋 按鈕---------------------------------------------
-        btn_feedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog mDialog = new Dialog(ReceivedMultipleActivity.this);
-                mDialog.setContentView(R.layout.feedback_write_layout);
-
-                et_feedback  = mDialog.findViewById(R.id.et_feedback);
-                btn_can  = mDialog.findViewById(R.id.btn_can);
-                btn_ent  = mDialog.findViewById(R.id.btn_ent);
-
-                et_feedback.setText(feedback);
-
-                //-------------dialog按鈕-------------
-                btn_ent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        feedback = et_feedback.getText().toString();
-
-                        writeFeedbackAsyncTask writeFeedbackAsyncTask = new writeFeedbackAsyncTask(new writeFeedbackAsyncTask.TaskListener() {
-                            @Override
-                            public void onFinished(String result) {
-                                try {
-                                    if (result == null) { return; }
-                                } catch (Exception e) {
-                                }
-                            }
-                        });
-                        writeFeedbackAsyncTask.execute(Common.writeFeedback , planID, userData.getUserID(), feedback);
-                        mDialog.dismiss();
-                    }
-                });
-
-                btn_can.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                    }
-                });
-
-                mDialog.show();
             }
         });
     }
@@ -155,22 +111,33 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                     for (int i = 0 ; i < mulListLength ; i++){
                         String mulSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //禮物送禮日期時間
                         String date = mulSendGiftDate.substring(0,10); //日期
-                        String sendTime = mulSendGiftDate.substring(11,16); //送禮時間
-                        String mulGoal = jsonArray.getJSONObject(i).getString("goal"); //禮物留言
+                        String mulGoal = jsonArray.getJSONObject(i).getString("goal"); //留言
+                        String mulGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
                         String mulGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
+                        //String mulGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
+                        String mulGiftType = jsonArray.getJSONObject(i).getString("type"); //禮物類型
+                        String sendTime = mulSendGiftDate.substring(11,16); //送禮時間
 
-                        if (mulGiftName.equals("null")){
-                            mulGiftName = "";  //若為null則顯示空值
+                        if (mulGiftid.equals("null")){ //若為null則顯示空值
+                            mulGiftid ="";
+                            mulGiftName = "";
                             sendTime = "";
+                            mulGiftType="";
                         }
 
                         mDates = new HashMap<String, Object>();
                         mDates.put("date", date); //日期
                         mDates.put("message", mulGoal); //留言
                         mDates.put("time", sendTime); //時間
-                        mDates.put("gifts", mulGiftName); //禮物
+                        mDates.put("gifts", mulGiftName); //禮物名稱
+                        mDates.put("giftID", mulGiftid); //禮物ID
+                        mDates.put("giftType", mulGiftType); //禮物種類
                         selectDates.add(mDates);
+
+                        Log.e("***","date: "+date+"; message: "+mulGoal+"; time: "+sendTime
+                                +"; giftID: "+mulGiftid+"; type: "+mulGiftType);
                     }
+
                     planMultiAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
@@ -183,11 +150,66 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
 
     //------------------------------------------------------------------------------------------
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_received, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){ //toolbar返回建
-            finish();
-            return true;
+        switch (item.getItemId()){
+            case android.R.id.home: //toolbar返回建
+                finish();
+                return true;
+            case R.id.action_help:  //說明鈕
+                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_feedback:  //填寫回饋鈕
+                writeFeedback();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    //---------------------------------填寫回饋---------------------------------------------
+    private void writeFeedback(){
+        final Dialog mDialog = new Dialog(ReceivedMultipleActivity.this);
+        mDialog.setContentView(R.layout.feedback_write_layout);
+
+        et_feedback  = mDialog.findViewById(R.id.et_feedback);
+        btn_can  = mDialog.findViewById(R.id.btn_can);
+        btn_ent  = mDialog.findViewById(R.id.btn_ent);
+
+        et_feedback.setText(feedback);
+
+        //-------------dialog按鈕-------------
+        btn_ent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedback = et_feedback.getText().toString();
+
+                writeFeedbackAsyncTask writeFeedbackAsyncTask = new writeFeedbackAsyncTask(new writeFeedbackAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                        try {
+                            if (result == null) { return; }
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+                writeFeedbackAsyncTask.execute(Common.writeFeedback , planID, userData.getUserID(), feedback);
+                mDialog.dismiss();
+            }
+        });
+
+        btn_can.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+
+        mDialog.show();
     }
 }
