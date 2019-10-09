@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ntubcase.gift.Adapter.plan_list_adapter;
+import com.ntubcase.gift.Adapter.ReceivedPlanListAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.login_model.userData;
@@ -33,7 +33,7 @@ public class ReceivedListActivity extends AppCompatActivity {
     private String planID;
 
     private RecyclerView recycler_view;
-    private plan_list_adapter planListAdapter;
+    private ReceivedPlanListAdapter receivedPlanListAdapter;
     private List<String> mData = new ArrayList<>();
 
     private Button btn_complete;
@@ -64,16 +64,16 @@ public class ReceivedListActivity extends AppCompatActivity {
         recycler_view = findViewById(R.id.list_recycle_view);  // 設置RecyclerView為列表型態
         recycler_view.setLayoutManager(new LinearLayoutManager(this));  // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        planListAdapter = new plan_list_adapter(mData);  // 將資料交給adapter
-        planListAdapter.isFromMake=false; //不顯示刪除
-        planListAdapter.isFromReceived=true; //顯示checkbox
-        recycler_view.setAdapter(planListAdapter); // 設置adapter給recycler_view
+        receivedPlanListAdapter = new ReceivedPlanListAdapter(mData);  // 將資料交給adapter
+        receivedPlanListAdapter.isFromMake=false; //不顯示刪除
+        receivedPlanListAdapter.isFromReceived=true; //顯示checkbox
+        recycler_view.setAdapter(receivedPlanListAdapter); // 設置adapter給recycler_view
 
         //----------------------------完成任務 按鈕------------------------------
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (planListAdapter.isMissionComplete()){
+                if (receivedPlanListAdapter.isMissionComplete()){
                     Intent intent;
                     intent = new Intent(ReceivedListActivity.this, ReceivedListGiftActivity.class);
                     Bundle bundle = new Bundle();
@@ -140,9 +140,11 @@ public class ReceivedListActivity extends AppCompatActivity {
                     for (int i = 0 ; i < misItemLength ; i++){
                         String itemNumber = jsonArray.getJSONObject(i).getString("itemNumber"); //項目編號
                         mData.add(jsonArray.getJSONObject(i).getString("content")); //項目內容
-                        //String itemCheck = jsonArray.getJSONObject(i).getString("itemCheck"); //打勾項目編號
+                        String itemCheck = jsonArray.getJSONObject(i).getString("itemCheck"); //打勾項目編號
+
+                        Log.e("***","no."+itemNumber+" "+itemCheck);
                     }
-                    planListAdapter.notifyDataSetChanged();
+                    receivedPlanListAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
                     Toast.makeText(ReceivedListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();

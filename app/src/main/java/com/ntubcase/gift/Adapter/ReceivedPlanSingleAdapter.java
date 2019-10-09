@@ -17,12 +17,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class re_plan_single_adapter extends RecyclerView.Adapter<re_plan_single_adapter.ViewHolder> {
+public class ReceivedPlanSingleAdapter extends RecyclerView.Adapter<ReceivedPlanSingleAdapter.ViewHolder> {
     private List<Map<String, Object>> mData;
-    private re_plan_single_adapter.OnItemClickListener mOnItemClickListener;
+    private ReceivedPlanSingleAdapter.OnItemClickListener mOnItemClickListener;
     public static boolean isFromMake = true;
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
-    public re_plan_single_adapter(List<Map<String, Object>> data) {
+    public ReceivedPlanSingleAdapter(List<Map<String, Object>> data) {
         mData = data;
     }
     private Button btn_Received;
@@ -45,11 +45,11 @@ public class re_plan_single_adapter extends RecyclerView.Adapter<re_plan_single_
     }
 
     @Override
-    public re_plan_single_adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReceivedPlanSingleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // 連結項目布局檔list_item
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.re_single_item, parent, false);
-        return new re_plan_single_adapter.ViewHolder(view);
+        return new ReceivedPlanSingleAdapter.ViewHolder(view);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class re_plan_single_adapter extends RecyclerView.Adapter<re_plan_single_
     }
 
 
-    public void setOnItemClickListener(re_plan_single_adapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(ReceivedPlanSingleAdapter.OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
 

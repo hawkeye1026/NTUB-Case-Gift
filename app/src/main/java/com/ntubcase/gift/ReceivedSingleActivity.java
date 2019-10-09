@@ -5,7 +5,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
@@ -15,8 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ntubcase.gift.Adapter.plan_single_adapter;
-import com.ntubcase.gift.Adapter.re_plan_single_adapter;
+import com.ntubcase.gift.Adapter.ReceivedPlanSingleAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.writeFeedbackAsyncTask;
@@ -36,7 +34,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
     private Button btn_feedback, btn_Received;
 
     private RecyclerView recycler_view;
-    private re_plan_single_adapter adapter;
+    private ReceivedPlanSingleAdapter adapter;
     private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
     private String planID, feedback;
@@ -64,10 +62,10 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         recycler_view.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
 
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // 設置格線
-        adapter = new re_plan_single_adapter(mData); // 將資料交給adapter
+        adapter = new ReceivedPlanSingleAdapter(mData); // 將資料交給adapter
         adapter.isFromMake=false;
         recycler_view.setAdapter(adapter);  // 設置adapter給recycler_view
-        adapter.setOnItemClickListener(new re_plan_single_adapter.OnItemClickListener(){
+        adapter.setOnItemClickListener(new ReceivedPlanSingleAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(View view, int position){
                 //showDataDialog(position);
