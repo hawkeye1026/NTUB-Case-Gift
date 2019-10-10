@@ -13,7 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.R;
+import com.ntubcase.gift.ReceivedShowGiftActivity;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -56,25 +58,20 @@ public class ReceivedPlanSingleAdapter extends RecyclerView.Adapter<ReceivedPlan
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         String sentTime = mData.get(position).get("sentTime").toString();
         String message = mData.get(position).get("message").toString();
-        List<String> giftContent = (List<String>)mData.get(position).get("giftContent");
-        List<String> giftType = (List<String>)mData.get(position).get("giftType");
-
-        Log.e("***", ""+sentTime);
-        Log.e("***",String.valueOf(giftContent)+" ; "+String.valueOf(giftType));
+        final List<String> giftContent = (List<String>)mData.get(position).get("giftContent");
+        final List<String> giftType = (List<String>)mData.get(position).get("giftType");
 
         if(IsGtTenHours(sentTime)){ //已過領取時間
             holder.itemView.setOnClickListener(new View.OnClickListener() { //領取禮物
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent();
-//                    Bundle bundle = new Bundle();
-//
-//                    String planID = mData.get(position).get("").toString();
-//                    intent = new Intent(context, ReceivedSingleActivity.class);
-//
-//                    bundle.putString("planID", planID);
-//                    intent.putExtras(bundle);
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, ReceivedShowGiftActivity.class);
+                    Bundle bundle = new Bundle();
+
+                    bundle.putSerializable("giftContent", (Serializable) giftContent);
+                    bundle.putSerializable("giftType", (Serializable) giftType);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
                 }
             });
         }else{
@@ -103,14 +100,14 @@ public class ReceivedPlanSingleAdapter extends RecyclerView.Adapter<ReceivedPlan
         String nowTime = t.get(Calendar.HOUR_OF_DAY)+":"+ t.get(Calendar.MINUTE);
         try {
             now = format.parse(nowTime);
-            Log.e("now", String.valueOf(now));
+            //Log.e("now", String.valueOf(now));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         try{
             ten = format.parse(sentTime);
-            Log.e("ten", String.valueOf(ten));
+            //Log.e("ten", String.valueOf(ten));
         } catch(ParseException e){
             e.printStackTrace();
         }

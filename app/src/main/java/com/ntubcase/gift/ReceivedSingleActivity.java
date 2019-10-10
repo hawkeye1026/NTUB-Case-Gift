@@ -123,8 +123,6 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                         //String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinGiftType = jsonArray.getJSONObject(i).getString("type"); //禮物類型
 
-
-                        //------------------------------------
                         //-----同時間 則 更新禮物資料-----
                         int checkSameTime=0;
                         for (checkSameTime=0; checkSameTime<mData.size(); checkSameTime++){
