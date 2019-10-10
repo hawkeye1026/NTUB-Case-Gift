@@ -24,15 +24,19 @@ import com.ntubcase.gift.login_model.userData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ReceivedSingleActivity extends AppCompatActivity {
 
-    private TextView tv_name, tv_sender,tv_sentTime;
-    private Button btn_Received;
+    private TextView tv_name, tv_sender;
 
     private RecyclerView recycler_view;
     private ReceivedPlanSingleAdapter adapter;
@@ -41,6 +45,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
     private String planID, feedback;
     private EditText et_feedback;
     private Button btn_can, btn_ent;
+    private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +59,15 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         //------------------------------------------------------------------------------------------
         tv_name = findViewById(R.id.tv_name);
         tv_sender = findViewById(R.id.tv_sender);
-        tv_sentTime = findViewById(R.id.sentTime);
-        btn_Received = findViewById(R.id.btnReceived);
 
         //-----------------------------------------------------------------------
         recycler_view = findViewById(R.id.recycler_view);
         recycler_view.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
 
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // 設置格線
-        adapter = new ReceivedPlanSingleAdapter(mData); // 將資料交給adapter
+        adapter = new ReceivedPlanSingleAdapter(this, mData); // 將資料交給adapter
         adapter.isFromMake=false;
         recycler_view.setAdapter(adapter);  // 設置adapter給recycler_view
-        adapter.setOnItemClickListener(new ReceivedPlanSingleAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(View view, int position){
-                //showDataDialog(position);
-            }
-        });
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -118,20 +115,65 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
                     for (int i = 0 ; i < sinListLength ; i++){
                         //String sinPlanid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
-                        //String sinGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
-                        String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
-                        String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
+                        String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出日期時間
+                        String sinSendGiftTime =sinSendGiftDate.substring(11,16); //送出時間
                         String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
+                        //String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
+                        String sinGiftContent = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
+                        //String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinGiftType = jsonArray.getJSONObject(i).getString("type"); //禮物類型
-                        String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
 
-                        Map<String, Object> mGiftsData = new HashMap<String, Object>();
-                        mGiftsData.put("giftName", sinGiftName);
-                        mGiftsData.put("sentTime", sinSendGiftDate.substring(11,16));
-                        mGiftsData.put("message", sinMessage);
-                        mGiftsData.put("type", sinGiftType);
-                        mData.add(mGiftsData);
+
+                        //------------------------------------
+                        //-----同時間 則 更新禮物資料-----
+                        int checkSameTime=0;
+                        for (checkSameTime=0; checkSameTime<mData.size(); checkSameTime++){
+                            if (sinSendGiftTime.equals(mData.get(checkSameTime).get("sentTime"))){ //同時間
+                                List<String> giftContent = (List<String>) mData.get(checkSameTime).get("giftContent"); //禮物內容
+                                List<String> giftType = (List<String>) mData.get(checkSameTime).get("giftType"); //禮物類型
+                                giftContent.add(sinGiftContent);
+                                giftType.add(sinGiftType);
+
+                                mData.get(checkSameTime).put("giftContent", giftContent);
+                                mData.get(checkSameTime).put("giftType", giftType);
+
+                                break;
+                            }
+                        }
+
+                        //-----不同時間 則 新增禮物資料-----
+                        if (checkSameTime==mData.size()){
+                            List<String> giftContent=new ArrayList<>();//禮物內容
+                            giftContent.add(sinGiftContent);
+                            List<String> giftType=new ArrayList<>();//禮物類型
+                            giftType.add(sinGiftType);
+
+                            Map<String, Object> mGiftsData = new HashMap<String, Object>();
+                            mGiftsData.put("sentTime", sinSendGiftTime);
+                            mGiftsData.put("message", sinMessage);
+                            mGiftsData.put("giftContent", giftContent);
+                            mGiftsData.put("giftType", giftType);
+
+                            mData.add(mGiftsData);
+                        }
+
                     }
+
+                    //--------按時間排序--------
+                    Collections.sort(mData, new Comparator<Map<String, Object>>() {
+                        @Override
+                        public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                            try {
+                                Date time1 = sdfT.parse((String)o1.get("sentTime"));
+                                Date time2 = sdfT.parse((String)o2.get("sentTime"));
+                                return time1.compareTo(time2);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            return 0;
+                        }
+                    });
+
                     adapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
