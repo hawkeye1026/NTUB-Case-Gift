@@ -34,7 +34,7 @@ public class ReceivedListActivity extends AppCompatActivity {
 
     private RecyclerView recycler_view;
     private ReceivedPlanListAdapter receivedPlanListAdapter;
-    private List<String> mData = new ArrayList<>();
+    private List<Map<String, String>> missionData = new ArrayList<Map<String, String>>(); //任務清單資料
 
     private Button btn_complete;
     private String planName, feedback;
@@ -64,9 +64,7 @@ public class ReceivedListActivity extends AppCompatActivity {
         recycler_view = findViewById(R.id.list_recycle_view);  // 設置RecyclerView為列表型態
         recycler_view.setLayoutManager(new LinearLayoutManager(this));  // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        receivedPlanListAdapter = new ReceivedPlanListAdapter(mData);  // 將資料交給adapter
-        receivedPlanListAdapter.isFromMake=false; //不顯示刪除
-        receivedPlanListAdapter.isFromReceived=true; //顯示checkbox
+        receivedPlanListAdapter = new ReceivedPlanListAdapter(missionData);  // 將資料交給adapter
         recycler_view.setAdapter(receivedPlanListAdapter); // 設置adapter給recycler_view
 
         //----------------------------完成任務 按鈕------------------------------
@@ -104,20 +102,21 @@ public class ReceivedListActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("misPlan");
-                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
-                    //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
-                    planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
-                    //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
-                    String deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
-                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
-
-                    tv_name.setText(planName); //計畫名稱
-
-                    //截止日期時間
-                    if (deadline.equals("0000-00-00 00:00:00")) tv_deadline.setText("無限制");
-                    else tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
-
-                    tv_sender.setText(sender); //送禮人
+//                    Log.e("***",""+jsonArray.length());
+//                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
+//                    //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
+//                    planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
+//                    //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
+//                    String deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
+//                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
+//
+//                    tv_name.setText(planName); //計畫名稱
+//
+//                    //截止日期時間
+//                    if (deadline.equals("0000-00-00 00:00:00")) tv_deadline.setText("無限制");
+//                    else tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
+//
+//                    tv_sender.setText(sender); //送禮人
 
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("misList");
@@ -137,12 +136,19 @@ public class ReceivedListActivity extends AppCompatActivity {
                     jsonArray = object.getJSONArray("misItem");
                     int misItemLength = jsonArray.length();
 
+                    Map<String, String> data;
                     for (int i = 0 ; i < misItemLength ; i++){
                         String itemNumber = jsonArray.getJSONObject(i).getString("itemNumber"); //項目編號
-                        mData.add(jsonArray.getJSONObject(i).getString("content")); //項目內容
-                        String itemCheck = jsonArray.getJSONObject(i).getString("itemCheck"); //打勾項目編號
+                        String itemContent = jsonArray.getJSONObject(i).getString("content"); //項目內容
+//                        String itemCheck = jsonArray.getJSONObject(i).getString("itemCheck"); //打勾項目編號
 
-                        Log.e("***","no."+itemNumber+" "+itemCheck);
+//                        Log.e("***","no."+itemNumber+" "+itemCheck);
+
+                        data = new HashMap<String, String>();
+                        data.put("itemNumber", itemNumber);
+                        data.put("itemContent", itemContent);
+//                        data.put("itemCheck", itemCheck);
+                        missionData.add(data);
                     }
                     receivedPlanListAdapter.notifyDataSetChanged();
 

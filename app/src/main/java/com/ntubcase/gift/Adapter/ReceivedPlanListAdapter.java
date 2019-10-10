@@ -13,18 +13,17 @@ import com.ntubcase.gift.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class ReceivedPlanListAdapter extends RecyclerView.Adapter<ReceivedPlanListAdapter.ViewHolder>{
-    private List<String> mData;
+    private List<Map<String, String>> missionData = new ArrayList<Map<String, String>>(); //任務清單資料
     private List<Boolean> missionCheck = new ArrayList<Boolean>();
 
     private OnItemClickListener mOnItemClickListener;
-    public static boolean isFromMake = true;
-    public static boolean isFromReceived = false;
 
-    public ReceivedPlanListAdapter(List<String> data) {
-        mData = data;
+    public ReceivedPlanListAdapter(List<Map<String, String>> data) {
+        missionData = data;
     }
 
     // 建立ViewHolder
@@ -39,29 +38,9 @@ public class ReceivedPlanListAdapter extends RecyclerView.Adapter<ReceivedPlanLi
             textView = (TextView) itemView.findViewById(R.id.Textview);
             btnRemove= (Button) itemView.findViewById(R.id.btn_delete_item);
             checkBox = (CheckBox) itemView.findViewById(R.id.cb_mission);
-
-            if (isFromMake){ //製作計畫
-                btnRemove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // 移除項目，getAdapterPosition為點擊的項目位置
-                        mData.remove(getAdapterPosition());
-                        notifyDataSetChanged();
-                    }
-                });
-            }else if (isFromReceived){ //收禮
-                if (missionCheck.size()==0){
-                    for (int i=0; i<mData.size(); i++) {
-                        missionCheck.add(false);
-                    }
-                }
-                checkBox.setVisibility(View.VISIBLE);
-                btnRemove.setVisibility(View.INVISIBLE);
-                textView.setVisibility(View.GONE);
-            }else { //已預送
-                btnRemove.setVisibility(View.INVISIBLE); //若是唯讀狀態則不顯示刪除按鈕
-            }
-
+            checkBox.setVisibility(View.VISIBLE);
+            btnRemove.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.GONE);
         }
     }
 
@@ -85,24 +64,33 @@ public class ReceivedPlanListAdapter extends RecyclerView.Adapter<ReceivedPlanLi
             });
         }
 
-        String mission = mData.get(position); //任務清單內容
-        if (isFromReceived){ //收禮, 紀錄checkbox
-            holder.checkBox.setText(mission);
-            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) missionCheck.set(position, true);
-                    else missionCheck.set(position, false);
-                }
-            });
-        }else{
-            holder.textView.setText(mission);
-        }
+        //顯示任務清單內容
+        String mission = missionData.get(position).get("itemContent");
+        holder.checkBox.setText(mission);
+
+//        //設定任務是否勾選
+//        String isCheck = missionData.get(position).get("itemCheck");
+//        if (isCheck.equals("null")){
+//            holder.checkBox.setChecked(false);
+//            missionCheck.add(false);
+//        }else {
+//            holder.checkBox.setChecked(true);
+//            missionCheck.add(true);
+//        }
+        missionCheck.add(false);
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { //點選checkbox
+                if (isChecked) missionCheck.set(position, true);
+                else missionCheck.set(position, false);
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return missionData.size();
     }
 
     public void setOnItemClickListener(ReceivedPlanListAdapter.OnItemClickListener listener) {
