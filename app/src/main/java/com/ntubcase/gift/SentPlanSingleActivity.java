@@ -29,7 +29,12 @@ import com.ntubcase.gift.login_model.userData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +55,7 @@ public class SentPlanSingleActivity extends AppCompatActivity {
     private EditText et_feedback;
     private List<String[]> feedback = new ArrayList<>();
     private Button btn_ent;
+    private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,14 +258,43 @@ public class SentPlanSingleActivity extends AppCompatActivity {
                     for (int i = 0 ; i < sinListLength ; i++){
                         String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
+                        String sinSendGiftTime =sinSendGiftDate.substring(11,16); //送出時間
                         String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
 
-                        Map<String, Object> mGiftsData = new HashMap<String, Object>();
-                        mGiftsData.put("giftName", sinGiftName);
-                        mGiftsData.put("sentTime", sinSendGiftDate.substring(11,16));
-                        mGiftsData.put("message", sinMessage);
-                        mData.add(mGiftsData);
+                        //-----同時間 則 更新禮物資料-----
+                        int checkSameTime=0;
+                        for (checkSameTime=0; checkSameTime<mData.size(); checkSameTime++){
+                            if (sinSendGiftTime.equals(mData.get(checkSameTime).get("sentTime"))){ //同時間
+                                mData.get(checkSameTime).put("giftName",
+                                        mData.get(checkSameTime).get("giftName")+" , "+sinGiftName); //禮物名稱
+                                break;
+                            }
+                        }
+
+                        //-----不同時間 則 新增禮物資料-----
+                        if (checkSameTime==mData.size()){
+                            Map<String, Object> mGiftsData = new HashMap<String, Object>();
+                            mGiftsData.put("sentTime", sinSendGiftTime);
+                            mGiftsData.put("message", sinMessage);
+                            mGiftsData.put("giftName", sinGiftName);
+                            mData.add(mGiftsData);
+                        }
                     }
+
+                    //--------按時間排序--------
+                    Collections.sort(mData, new Comparator<Map<String, Object>>() {
+                        @Override
+                        public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                            try {
+                                Date time1 = sdfT.parse((String)o1.get("sentTime"));
+                                Date time2 = sdfT.parse((String)o2.get("sentTime"));
+                                return time1.compareTo(time2);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            return 0;
+                        }
+                    });
                     adapter.notifyDataSetChanged();
 
                 } catch (Exception e) {

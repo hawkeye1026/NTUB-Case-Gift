@@ -128,7 +128,6 @@ public class MakePlanListActivity extends AppCompatActivity{
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new plan_list_adapter(mData);  // 將資料交給adapter
         adapter.isFromMake=true;
-        adapter.isFromReceived=false;
         recycler_view.setAdapter(adapter); // 設置adapter給recycler_view
         adapter.setOnItemClickListener(new plan_list_adapter.OnItemClickListener(){
             @Override

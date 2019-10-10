@@ -137,7 +137,7 @@
             android:name=".ReceivedListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ReceivedListGiftActivity"
+            android:name=".ReceivedShowGiftActivity"
             android:screenOrientation="portrait" />
 
 

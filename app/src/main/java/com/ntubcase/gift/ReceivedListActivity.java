@@ -1,5 +1,6 @@
 package com.ntubcase.gift;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,15 +9,18 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ntubcase.gift.Adapter.plan_list_adapter;
+import com.ntubcase.gift.Adapter.ReceivedPlanListAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.plan.writeFeedbackAsyncTask;
 import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
@@ -33,11 +37,14 @@ public class ReceivedListActivity extends AppCompatActivity {
     private String planID;
 
     private RecyclerView recycler_view;
-    private plan_list_adapter planListAdapter;
-    private List<String> mData = new ArrayList<>();
+    private ReceivedPlanListAdapter receivedPlanListAdapter;
+    private List<Map<String, String>> missionData = new ArrayList<Map<String, String>>(); //任務清單資料
 
     private Button btn_complete;
     private String planName, feedback;
+
+    private EditText et_feedback;
+    private Button btn_can, btn_ent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,24 +71,22 @@ public class ReceivedListActivity extends AppCompatActivity {
         recycler_view = findViewById(R.id.list_recycle_view);  // 設置RecyclerView為列表型態
         recycler_view.setLayoutManager(new LinearLayoutManager(this));  // 設置格線
         recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        planListAdapter = new plan_list_adapter(mData);  // 將資料交給adapter
-        planListAdapter.isFromMake=false; //不顯示刪除
-        planListAdapter.isFromReceived=true; //顯示checkbox
-        recycler_view.setAdapter(planListAdapter); // 設置adapter給recycler_view
+        receivedPlanListAdapter = new ReceivedPlanListAdapter(missionData);  // 將資料交給adapter
+        recycler_view.setAdapter(receivedPlanListAdapter); // 設置adapter給recycler_view
 
         //----------------------------完成任務 按鈕------------------------------
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (planListAdapter.isMissionComplete()){
-                    Intent intent;
-                    intent = new Intent(ReceivedListActivity.this, ReceivedListGiftActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("planID", planID);
-                    bundle.putString("planName", planName);
-                    bundle.putString("feedback", feedback);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                if (receivedPlanListAdapter.isMissionComplete()){
+//                    Intent intent;
+//                    intent = new Intent(ReceivedListActivity.this, ReceivedShowGiftActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("giftContent", giftContent);
+//                    bundle.putString("giftType", giftType);
+//                    intent.putExtras(bundle);
+//                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(),"完成", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(),"還有任務未完成喔", Toast.LENGTH_SHORT).show();
                 }
@@ -104,20 +109,21 @@ public class ReceivedListActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("misPlan");
-                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
-                    //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
-                    planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
-                    //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
-                    String deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
-                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
-
-                    tv_name.setText(planName); //計畫名稱
-
-                    //截止日期時間
-                    if (deadline.equals("0000-00-00 00:00:00")) tv_deadline.setText("無限制");
-                    else tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
-
-                    tv_sender.setText(sender); //送禮人
+//                    Log.e("***",""+jsonArray.length());
+//                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
+//                    //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
+//                    planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
+//                    //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
+//                    String deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
+//                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
+//
+//                    tv_name.setText(planName); //計畫名稱
+//
+//                    //截止日期時間
+//                    if (deadline.equals("0000-00-00 00:00:00")) tv_deadline.setText("無限制");
+//                    else tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
+//
+//                    tv_sender.setText(sender); //送禮人
 
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("misList");
@@ -128,6 +134,7 @@ public class ReceivedListActivity extends AppCompatActivity {
                         if (giftName.equals("")) giftName += jsonArray.getJSONObject(i).getString("giftName");
                         else giftName += " , " + jsonArray.getJSONObject(i).getString("giftName");
                     }
+                    Log.e("***","gift."+giftName);
 
                     //----------------------------取得feedback----------------------------
                     jsonArray = object.getJSONArray("record");
@@ -137,12 +144,21 @@ public class ReceivedListActivity extends AppCompatActivity {
                     jsonArray = object.getJSONArray("misItem");
                     int misItemLength = jsonArray.length();
 
+                    Map<String, String> data;
                     for (int i = 0 ; i < misItemLength ; i++){
                         String itemNumber = jsonArray.getJSONObject(i).getString("itemNumber"); //項目編號
-                        mData.add(jsonArray.getJSONObject(i).getString("content")); //項目內容
-                        //String itemCheck = jsonArray.getJSONObject(i).getString("itemCheck"); //打勾項目編號
+                        String itemContent = jsonArray.getJSONObject(i).getString("content"); //項目內容
+//                        String itemCheck = jsonArray.getJSONObject(i).getString("itemCheck"); //打勾項目編號
+
+//                        Log.e("***","no."+itemNumber+" "+itemCheck);
+
+                        data = new HashMap<String, String>();
+                        data.put("itemNumber", itemNumber);
+                        data.put("itemContent", itemContent);
+//                        data.put("itemCheck", itemCheck);
+                        missionData.add(data);
                     }
-                    planListAdapter.notifyDataSetChanged();
+                    receivedPlanListAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
                     Toast.makeText(ReceivedListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
@@ -154,11 +170,66 @@ public class ReceivedListActivity extends AppCompatActivity {
 
     //------------------------------------------------------------------------------------------
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_received, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){ //toolbar返回建
-            finish();
-            return true;
+        switch (item.getItemId()){
+            case android.R.id.home: //toolbar返回建
+                finish();
+                return true;
+            case R.id.action_help:  //說明鈕
+                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_feedback:  //填寫回饋鈕
+                writeFeedback();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    //---------------------------------填寫回饋---------------------------------------------
+    private void writeFeedback(){
+        final Dialog mDialog = new Dialog(ReceivedListActivity.this);
+        mDialog.setContentView(R.layout.feedback_write_layout);
+
+        et_feedback  = mDialog.findViewById(R.id.et_feedback);
+        btn_can  = mDialog.findViewById(R.id.btn_can);
+        btn_ent  = mDialog.findViewById(R.id.btn_ent);
+
+        et_feedback.setText(feedback);
+
+        //-------------dialog按鈕-------------
+        btn_ent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedback = et_feedback.getText().toString();
+
+                writeFeedbackAsyncTask writeFeedbackAsyncTask = new writeFeedbackAsyncTask(new writeFeedbackAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                        try {
+                            if (result == null) { return; }
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+                writeFeedbackAsyncTask.execute(Common.writeFeedback , planID, userData.getUserID(), feedback);
+                mDialog.dismiss();
+            }
+        });
+
+        btn_can.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+
+        mDialog.show();
     }
 }
