@@ -47,6 +47,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="4dp"
                 android:text="From"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="#000"
                 android:textSize="14sp" />
 

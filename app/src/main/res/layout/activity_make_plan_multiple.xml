@@ -11,7 +11,7 @@
     tools:context=".MakePlanMultipleActivity">
 
     <LinearLayout
-        android:layout_width="310dp"
+        android:layout_width="match_parent"
         android:layout_height="420dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
@@ -20,8 +20,6 @@
         android:paddingLeft="10dp"
         android:paddingTop="45dp"
         android:paddingRight="10dp">
-        <!--android:focusable="true"-->
-        <!--android:focusableInTouchMode="true"-->
 
         <!--計畫名稱-->
         <LinearLayout

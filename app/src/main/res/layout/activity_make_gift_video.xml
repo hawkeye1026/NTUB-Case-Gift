@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:background="@drawable/bg_camera" />
+                        android:background="@drawable/bg_recorder" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -87,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:background="@drawable/bg_gallery"
+                        android:background="@drawable/bg_video"
                         android:gravity="right|center_vertical" />
 
                 </LinearLayout>

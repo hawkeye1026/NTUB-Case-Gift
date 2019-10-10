@@ -9,62 +9,67 @@
     android:background="@drawable/bg_giftbox"
     tools:context=".ReceivedMultipleActivity">
 
-    <TextView
-        android:id="@+id/tv_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="430dp"
         android:layout_margin="10dp"
-        android:layout_marginBottom="10dp"
-        android:hint="PlanName"
-        android:textColor="@android:color/black"
-        android:textSize="20dp"
-        android:gravity="center"/>
+        android:background="@drawable/multiple"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="3dp"
+        android:paddingRight="10dp">
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_weight="8"
-        android:gravity="center"
-        android:horizontalSpacing="1dp"
-        android:numColumns="3"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="1dp"
-        android:background="@drawable/grid_plan"/>
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:hint="PlanName"
+            android:textColor="@android:color/black"
+            android:textSize="20dp" />
 
-    <TextView
-        android:id="@+id/tv_sender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="送禮人："
-        android:textSize="16sp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:horizontalSpacing="1dp"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="1dp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_weight="1">
+        <TextView
+            android:id="@+id/tv_sender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="right|center_vertical"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
+            android:text="送禮人："
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
             android:text="留言："
             android:textSize="16sp" />
 
-    </ScrollView>
+    </LinearLayout>
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
@@ -73,9 +78,10 @@
 
         <Button
             android:id="@+id/btn_feedback"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:layout_weight="1"
             android:background="@drawable/bg_write_feedback"
             android:textSize="20dp" />
 
