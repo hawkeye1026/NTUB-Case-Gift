@@ -353,32 +353,46 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                 single_sentTime = edt_single_sentTime.getText().toString();
                 single_message = edt_single_message.getText().toString();
 
-                //------儲存輸入的資料-----
-                Map<String, Object> newData = new HashMap<String, Object>();
-                newData.put("giftName", single_giftName);
-                newData.put("sentTime", single_sentTime);
-                newData.put("message", single_message);
-                newData.put("mCheckedGift", mCheckedGift);
-                mData.set(position, newData);
-
-                //--------按時間排序--------
-                Collections.sort(mData, new Comparator<Map<String, Object>>() {
-                    @Override
-                    public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                        try {
-                            Date time1 = sdfT.parse((String)o1.get("sentTime"));
-                            Date time2 = sdfT.parse((String)o2.get("sentTime"));
-                            return time1.compareTo(time2);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        return 0;
+                //檢查時間是否重複
+                int check;
+                for (check=0; check<mData.size(); check++){
+                    if (check==position){ //點選的時間不檢查
+                        continue;
+                    }else if (single_sentTime.equals(mData.get(check).get("sentTime"))){
+                        Toast.makeText(getApplicationContext(),"時間重複囉",Toast.LENGTH_SHORT).show();
+                        break;
                     }
-                });
+                }
 
-                adapter.notifyDataSetChanged();
+                if (check==mData.size()){ //若時間沒有重複
+                    //------儲存輸入的資料-----
+                    Map<String, Object> newData = new HashMap<String, Object>();
+                    newData.put("giftName", single_giftName);
+                    newData.put("sentTime", single_sentTime);
+                    newData.put("message", single_message);
+                    newData.put("mCheckedGift", mCheckedGift);
+                    mData.set(position, newData);
 
-                dialog.cancel();
+                    //--------按時間排序--------
+                    Collections.sort(mData, new Comparator<Map<String, Object>>() {
+                        @Override
+                        public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                            try {
+                                Date time1 = sdfT.parse((String)o1.get("sentTime"));
+                                Date time2 = sdfT.parse((String)o2.get("sentTime"));
+                                return time1.compareTo(time2);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            return 0;
+                        }
+                    });
+
+                    adapter.notifyDataSetChanged();
+
+                    dialog.cancel();
+                }
+
             }
         });
 
@@ -635,10 +649,6 @@ public class MakePlanSingleActivity extends AppCompatActivity {
     }
 
     private void uploadSingleList(String sendGiftDate){
-        //--- upload singleList
-        Log.v("mData.size", String.valueOf(mData.size()));
-
-        //-------------------------------------------------------------------------------------------
         //------取得禮物id-----
         mSelectGiftIds = new ArrayList<List<String>>();
         for (int i = 0 ; i < mData.size(); i++) {
@@ -735,25 +745,64 @@ public class MakePlanSingleActivity extends AppCompatActivity {
                         //String sinPlanid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
                         //String sinGift = jsonArray.getJSONObject(i).getString("gift"); //禮物內容
                         String sinGiftName = jsonArray.getJSONObject(i).getString("giftName"); //禮物名稱
-                        String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出時間
+                        String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出日期時間
+                        String sinSendGiftTime =sinSendGiftDate.substring(11,16); //送出時間
                         String sinMessage = jsonArray.getJSONObject(i).getString("message"); //留言
                         String sinGiftid = jsonArray.getJSONObject(i).getString("giftid"); //禮物ID
 
                         if (sinGiftName.equals("null")) sinGiftName="";  //若為null則顯示空值
 
-                        Map<String, Object> mGiftsData = new HashMap<String, Object>();
-                        mGiftsData.put("giftName", sinGiftName);
-                        mGiftsData.put("sentTime", sinSendGiftDate.substring(11,16));
-                        mGiftsData.put("message", sinMessage);
-                        //---禮物checkbox---
-                        mCheckedGift = new boolean[single_giftlistItems.length];
-                        for (int k=0; k<single_giftlistItems.length; k++){
-                            if (getGiftList.getGiftid(k).equals(sinGiftid)) mCheckedGift[k]=true;
-                        }
-                        mGiftsData.put("mCheckedGift", mCheckedGift);
+                        //-----同時間 則 更新禮物資料-----
+                        int checkSameTime=0;
+                        for (checkSameTime=0; checkSameTime<mData.size(); checkSameTime++){
+                            if (sinSendGiftTime.equals(mData.get(checkSameTime).get("sentTime"))){ //同時間
+                                //禮物名稱
+                                mData.get(checkSameTime).put("giftName",
+                                        mData.get(checkSameTime).get("giftName")+" , "+sinGiftName);
+                                //---禮物checkbox---
+                                mCheckedGift = (boolean[]) mData.get(checkSameTime).get("mCheckedGift");
+                                for (int k=0; k<mCheckedGift.length; k++){
+                                    if (getGiftList.getGiftid(k).equals(sinGiftid)) mCheckedGift[k]=true;
+                                }
+                                mData.get(checkSameTime).put("mCheckedGift", mCheckedGift);
 
-                        mData.add(mGiftsData);
+                                break;
+                            }
+                        }
+
+                        //-----不同時間 則 新增禮物資料-----
+                        if (checkSameTime==mData.size()){
+                            Map<String, Object> mGiftsData = new HashMap<String, Object>();
+                            mGiftsData.put("sentTime", sinSendGiftTime);
+                            mGiftsData.put("message", sinMessage);
+                            mGiftsData.put("giftName", sinGiftName);
+                            //---禮物checkbox---
+                            mCheckedGift = new boolean[single_giftlistItems.length];
+                            for (int k=0; k<single_giftlistItems.length; k++){
+                                if (getGiftList.getGiftid(k).equals(sinGiftid)) mCheckedGift[k]=true;
+                            }
+                            mGiftsData.put("mCheckedGift", mCheckedGift);
+
+                            mData.add(mGiftsData);
+                        }
+
                     }
+
+                    //--------按時間排序--------
+                    Collections.sort(mData, new Comparator<Map<String, Object>>() {
+                        @Override
+                        public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                            try {
+                                Date time1 = sdfT.parse((String)o1.get("sentTime"));
+                                Date time2 = sdfT.parse((String)o2.get("sentTime"));
+                                return time1.compareTo(time2);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            return 0;
+                        }
+                    });
+
                     adapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
