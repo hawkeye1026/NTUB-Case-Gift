@@ -455,18 +455,41 @@ public class MakePlanMultipleActivity extends AppCompatActivity {
                             sendTime = "";
                         }
 
-                        mDates = new HashMap<String, Object>();
-                        mDates.put("date", date); //日期
-                        mDates.put("message", mulGoal); //留言
-                        mDates.put("time", sendTime); //時間
-                        mDates.put("gifts", mulGiftName); //禮物
-                        //---禮物checkbox---
-                        boolean[] mCheckedGift = new boolean[getGiftList.getGiftLength()];
-                        for (int k=0; k<mCheckedGift.length; k++){
-                            if (getGiftList.getGiftid(k).equals(mulGiftid)) mCheckedGift[k]=true;
+                        //-----------------------------------------------------------------
+                        //-----同日期 則 更新禮物資料-----
+                        int checkSameDate=0;
+                        for (checkSameDate=0; checkSameDate<oldSelectDates.size(); checkSameDate++){
+                            if (date.equals(oldSelectDates.get(checkSameDate).get("date"))){ //同日期
+                                //禮物名稱
+                                oldSelectDates.get(checkSameDate).put("gifts",
+                                        oldSelectDates.get(checkSameDate).get("gifts")+" , "+mulGiftName);
+                                //---禮物checkbox---
+                                boolean[] mCheckedGift = (boolean[]) oldSelectDates.get(checkSameDate).get("mCheckedItems");
+                                for (int k=0; k<mCheckedGift.length; k++){
+                                    if (getGiftList.getGiftid(k).equals(mulGiftid)) mCheckedGift[k]=true;
+                                }
+                                oldSelectDates.get(checkSameDate).put("mCheckedItems", mCheckedGift);
+
+                                break;
+                            }
                         }
-                        mDates.put("mCheckedItems", mCheckedGift); //禮物選取的項目
-                        oldSelectDates.add(mDates);
+
+                        //-----不同日期 則 新增資料-----
+                        if (checkSameDate==oldSelectDates.size()){
+                            mDates = new HashMap<String, Object>();
+                            mDates.put("date", date); //日期
+                            mDates.put("message", mulGoal); //留言
+                            mDates.put("time", sendTime); //時間
+                            mDates.put("gifts", mulGiftName); //禮物
+                            //---禮物checkbox---
+                            boolean[] mCheckedGift = new boolean[getGiftList.getGiftLength()];
+                            for (int k=0; k<mCheckedGift.length; k++){
+                                if (getGiftList.getGiftid(k).equals(mulGiftid)) mCheckedGift[k]=true;
+                            }
+                            mDates.put("mCheckedItems", mCheckedGift); //禮物選取的項目
+                            oldSelectDates.add(mDates);
+                        }
+
                     }
                 } catch (Exception e) {
                     Toast.makeText(MakePlanMultipleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();

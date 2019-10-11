@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:paddingBottom="50dp">
+
+    <EditText
+        android:id="@+id/et_giftContent"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/gift_ticket"
+        android:ellipsize="end"
+        android:gravity="center|center_horizontal|left"
+        android:hint="請輸入兌換券內容"
+        android:maxLines="3"
+        android:paddingLeft="30dp"
+        android:paddingRight="80dp"
+        android:textSize="20sp" />
+
+</LinearLayout>

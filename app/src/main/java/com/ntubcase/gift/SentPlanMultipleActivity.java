@@ -14,17 +14,13 @@ import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
-import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +29,7 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
 
     //----------------------------------------------------------------------------------------------
     private EditText add_multi_name,add_multi_message,add_multi_friend,add_multi_dateS,add_multi_dateE;
-    private Date selectStartDate, selectEndDate;
-    private SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
-    private List<Map<String, Object>> selectDates = new ArrayList<Map<String, Object>>();
-    private List<Map<String, Object>> oldSelectDates = new ArrayList<Map<String, Object>>(); //原有資料
+    private List<Map<String, Object>> oldSelectDates = new ArrayList<Map<String, Object>>();; //原有資料
     //----------------------------------------------------------------------------------------------
     private String mulPlanName, message, friendName;
     private String from;
@@ -84,8 +77,6 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
     private View.OnClickListener nextPageListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setNextPageDateData();
-
             Intent intent;
             intent = new Intent(SentPlanMultipleActivity.this, SentPlanMultiActivity.class);
             Bundle bundle = new Bundle();
@@ -94,69 +85,12 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
             bundle.putString("receiveFriend", friendName);
             bundle.putString("message", message);
             bundle.putSerializable("feedback", (Serializable) feedback);
-            bundle.putSerializable("selectDates", (Serializable) selectDates);
+            bundle.putSerializable("selectDates", (Serializable) oldSelectDates);
             bundle.putString("from", from); //從哪個頁面開啟
             intent.putExtras(bundle);
             startActivityForResult(intent, REQUEST_CODE);
         }
     };
-
-    //---------------設定傳入下一頁的日期資料-------------
-    private void setNextPageDateData() {
-        List<String> allDates = findDates(selectStartDate, selectEndDate);  //取得兩個日期間所有日期
-        selectDates = new ArrayList<Map<String, Object>>();
-        Log.v("allDates", String.valueOf(allDates));
-
-        //-----------若有舊資料則設定舊資料-----------
-        if (oldSelectDates.size()>0){
-            //---取得舊資料所有日期---
-            List<String> oldAllDates = new ArrayList<>();
-
-            String mes = " ", time = " ";
-            Map<String, Object> nDates = null;
-            for (int i=0; i<allDates.size(); i++) {
-                List<String> gifts = new ArrayList<>();
-                for (int j=0; j<oldSelectDates.size(); j++) {
-                    Log.v("oldSelectDates", (String) oldSelectDates.get(j).get("date"));
-                    if((((String)oldSelectDates.get(j).get("date")).equals(allDates.get(i)))){
-                        gifts.add((String) oldSelectDates.get(j).get("gifts"));
-                        mes = (String) oldSelectDates.get(j).get("message");
-                        time = (String) oldSelectDates.get(j).get("time");
-                    }
-                }
-                nDates = new HashMap<String, Object>();
-                nDates.put("date", allDates.get(i)); //日期
-                nDates.put("message", mes); //留言
-                nDates.put("time", time); //時間
-
-                if(gifts.isEmpty()) nDates.put("gifts", ""); //禮物
-                else nDates.put("gifts", gifts); //禮物
-
-                selectDates.add(nDates);
-            }
-        }
-        Log.v("selectDates", String.valueOf(selectDates));
-    }
-
-
-    //--------------取得兩個日期間所有日期------------------
-    public List<String> findDates(Date dBegin, Date dEnd){
-        List<String> lDate = new ArrayList<String>();
-        lDate.add(sdfD.format(dBegin));
-
-        Calendar calBegin = Calendar.getInstance();
-        calBegin.setTime(dBegin);
-
-        Calendar calEnd = Calendar.getInstance();
-        calEnd.setTime(dEnd);
-
-        while (dEnd.after(calBegin.getTime())) { // 测试此日期是否在指定日期之后
-            // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
-            calBegin.add(Calendar.DAY_OF_MONTH, 1);
-            lDate.add(sdfD.format(calBegin.getTime()));
-        }
-        return lDate;
-    }
 
     //------------------------------計畫詳細，顯示plan資料------------------------------
     private void showPlanDetail(String planid){
@@ -178,9 +112,6 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
                     String mulStartDate = jsonArray.getJSONObject(0).getString("startDate"); //送禮日期
                     String mulEndDate = jsonArray.getJSONObject(0).getString("endDate"); //結束日期
                     message =jsonArray.getJSONObject(0).getString("message"); //祝福
-
-                    selectStartDate = sdfD.parse(mulStartDate);
-                    selectEndDate = sdfD.parse(mulEndDate);
 
                     add_multi_name.setText(mulPlanName); //計畫名稱
                     add_multi_dateS.setText(mulStartDate.substring(0,10)); //送禮日期
@@ -221,15 +152,28 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
                             sendTime = "";
                         }
 
+                        //-----同日期 則 更新禮物資料-----
+                        int checkSameDate=0;
+                        for (checkSameDate=0; checkSameDate<oldSelectDates.size(); checkSameDate++){
+                            if (date.equals(oldSelectDates.get(checkSameDate).get("date"))){ //同日期
+                                //禮物名稱
+                                oldSelectDates.get(checkSameDate).put("gifts",
+                                        oldSelectDates.get(checkSameDate).get("gifts")+" , "+mulGiftName);
+                                break;
+                            }
+                        }
 
-
-                        mDates = new HashMap<String, Object>();
-                        mDates.put("date", date); //日期
-                        mDates.put("message", mulGoal); //留言
-                        mDates.put("time", sendTime); //時間
-                        mDates.put("gifts", mulGiftName); //禮物
-                        oldSelectDates.add(mDates);
+                        //-----不同日期 則 新增資料-----
+                        if (checkSameDate==oldSelectDates.size()){
+                            mDates = new HashMap<String, Object>();
+                            mDates.put("date", date); //日期
+                            mDates.put("message", mulGoal); //留言
+                            mDates.put("time", sendTime); //時間
+                            mDates.put("gifts", mulGiftName); //禮物
+                            oldSelectDates.add(mDates);
+                        }
                     }
+
                 } catch (Exception e) {
                     Toast.makeText(SentPlanMultipleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
                 }

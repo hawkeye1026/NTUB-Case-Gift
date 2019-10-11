@@ -1,33 +1,46 @@
 package com.ntubcase.gift;
 
-import android.app.Dialog;
+import android.graphics.Color;
+import android.net.Uri;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
-import android.view.Menu;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.VideoView;
 
+import com.ntubcase.gift.Adapter.ReceivedPagerAdapter;
 import com.ntubcase.gift.Common.Common;
-import com.ntubcase.gift.MyAsyncTask.plan.writeFeedbackAsyncTask;
-import com.ntubcase.gift.login_model.userData;
+import com.ntubcase.gift.data.getGiftList;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ReceivedShowGiftActivity extends AppCompatActivity {
+public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
-    private List<String> giftContent, giftType;
-    private TextView tv_name;
+    private List<String> giftContent, giftType; //bundle傳遞的資料
+    private ViewPager mViewPager;
+    private ArrayList<View> mViews; //傳至adapter
+    private View viewCode, viewImage, viewMessage, viewTicket, viewVideo;
+    private ViewGroup mViewGroup;
+    private ImageView[] dots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_received_list_gift);
+        setContentView(R.layout.activity_received_show_gift);
         setTitle("收禮細節");
 
         ActionBar actionBar = getSupportActionBar();
@@ -40,8 +53,146 @@ public class ReceivedShowGiftActivity extends AppCompatActivity {
 
         Log.e("***",String.valueOf(giftContent)+" ; "+String.valueOf(giftType));
 
-        tv_name = findViewById(R.id.tv_name);
-        tv_name.setText("計畫名稱?");
+        //---------------------------------PagerView-----------------------------------
+        mViewPager = (ViewPager) findViewById(R.id.mViewPager);
+
+        //----- 將view加入mViews ------
+        mViews = new ArrayList<View>();
+        for (int i=0; i<giftContent.size(); i++){
+            switch (giftType.get(i)){
+                case "1": //照片
+                    viewImage = getLayoutInflater().inflate(R.layout.received_gift_image,null);
+                    setGiftContent("1", i); //設定禮物內容
+                    mViews.add(viewImage);
+                    break;
+                case "2": //影片
+                    viewVideo = getLayoutInflater().inflate(R.layout.received_gift_video,null);
+                    setGiftContent("2", i); //設定禮物內容
+                    mViews.add(viewVideo);
+                    break;
+                case "3": //悄悄話
+                    viewMessage = getLayoutInflater().inflate(R.layout.received_gift_message,null);
+                    setGiftContent("3", i); //設定禮物內容
+                    mViews.add(viewMessage);
+                    break;
+                case "4": //兌換券
+                    viewTicket = getLayoutInflater().inflate(R.layout.received_gift_ticket,null);
+                    setGiftContent("4", i); //設定禮物內容
+                    mViews.add(viewTicket);
+                    break;
+                case "5": //密碼表
+                    viewCode = getLayoutInflater().inflate(R.layout.received_gift_code,null);
+                    setGiftContent("5", i); //設定禮物內容
+                    mViews.add(viewCode);
+                    break;
+            }
+        }
+
+        mViewPager.setAdapter(new ReceivedPagerAdapter(mViews));
+        mViewPager.addOnPageChangeListener(this);
+
+        //-----加入下方圓點 ------
+        mViewGroup = (ViewGroup) findViewById(R.id.mViewGroup);
+        dots = new ImageView[mViews.size()];
+        for(int i =0;i<mViews.size();i++){
+            ImageView imageView = new ImageView(ReceivedShowGiftActivity.this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(30, 30);
+            layoutParams.setMargins(5,0,5,0);
+            imageView.setLayoutParams(layoutParams);
+
+            dots[i] = imageView;
+
+            if (i == 0) { //預設第一張圖顯示為選中狀態
+                dots[i].setBackgroundResource(R.drawable.ic_dot_red);
+            } else {
+                dots[i].setBackgroundResource(R.drawable.ic_dot_gray);
+            }
+
+            mViewGroup.addView(dots[i]);
+        }
+    }
+
+    //----------------設定禮物內容----------------
+    private void setGiftContent(String type, int position){
+        ImageView iv_image; //照片
+        VideoView vv_content; //影片
+        EditText et_giftContent; //悄悄話,兌換券
+        TableLayout tableLayout; //密碼表
+
+        switch (type){
+            case "1": //-----照片-----
+                iv_image =(ImageView) viewImage.findViewById(R.id.iv_image);
+                Uri imageURI = Uri.parse(Common.imgPath  + giftContent.get(position));
+                Picasso.get().load(imageURI).into(iv_image);
+                break;
+            case "2": //-----影片-----
+                vv_content = (VideoView) viewVideo.findViewById(R.id.vv_content);
+                MediaController mc = new MediaController(this); // 設定影片控制台
+                vv_content.setMediaController(mc);
+                Uri viedoURI = Uri.parse(Common.vidPath + giftContent.get(position));
+                vv_content.setVideoURI(viedoURI);
+                break;
+            case "3": //-----悄悄話-----
+                et_giftContent = (EditText) viewMessage.findViewById(R.id.et_giftContent);
+                et_giftContent.setKeyListener(null);
+                et_giftContent.setText(giftContent.get(position));
+                break;
+            case "4": //-----兌換券-----
+                et_giftContent = (EditText) viewTicket.findViewById(R.id.et_giftContent);
+                et_giftContent.setKeyListener(null);
+                et_giftContent.setText(giftContent.get(position));
+                break;
+            case "5": //-----密碼表-----
+//                tableLayout = (TableLayout) viewCode.findViewById(R.id.tab_01);
+//                TableRow tabRow = new TableRow(viewCode.getContext());
+//
+//                for (int i = 0; i<getGiftList.getDecodeLength(); i++){
+//                    if (getGiftList.getDecodeid(i).equals(giftContent.get(position))){
+//                        tabRow = new TableRow(viewCode.getContext());
+//                        for (int col = 0 ; col< 2; col++){
+//                            EditText editText = new EditText(viewCode.getContext());
+//
+//                            editText.setTextColor(Color.rgb(135,51,36));
+//                            editText.setBackgroundResource(R.drawable.bg_text);
+//                            editText.setGravity(Gravity.CENTER);
+//                            editText.setTextSize(18);
+//                            editText.setPadding(10,10,10,10);
+//                            LinearLayout.LayoutParams lp = new TableRow.LayoutParams(50,100);
+//                            lp.setMargins(3,0,3,3);
+//                            editText.setLayoutParams(lp);
+//                            editText.setKeyListener(null);
+//
+//                            if(col == 0) editText.setText(getGiftList.getDecodeMaincode(i));  //設定mainCode文字
+//                            else if(col == 1) editText.setText(getGiftList.getDecodeMatchCode(i));  //設定matchCode文字
+//
+//                            tabRow.addView(editText);
+//                        }
+//                        tableLayout.addView(tabRow);
+//                    }
+//                }
+                break;
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        dots[position].setBackgroundResource(R.drawable.ic_dot_red); //選中的view的圓點
+
+        for(int i=0;i<mViews.size();i++){
+            if (i != position) { //未選中的view的圓點
+                dots[i].setBackgroundResource(R.drawable.ic_dot_gray);
+            }
+        }
     }
 
     //------------------------------------------------------------------------------------------
@@ -55,5 +206,4 @@ public class ReceivedShowGiftActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }
