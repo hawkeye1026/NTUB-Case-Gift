@@ -152,13 +152,28 @@ public class SentPlanMultipleActivity extends AppCompatActivity {
                             sendTime = "";
                         }
 
-                        mDates = new HashMap<String, Object>();
-                        mDates.put("date", date); //日期
-                        mDates.put("message", mulGoal); //留言
-                        mDates.put("time", sendTime); //時間
-                        mDates.put("gifts", mulGiftName); //禮物
-                        oldSelectDates.add(mDates);
+                        //-----同日期 則 更新禮物資料-----
+                        int checkSameDate=0;
+                        for (checkSameDate=0; checkSameDate<oldSelectDates.size(); checkSameDate++){
+                            if (date.equals(oldSelectDates.get(checkSameDate).get("date"))){ //同日期
+                                //禮物名稱
+                                oldSelectDates.get(checkSameDate).put("gifts",
+                                        oldSelectDates.get(checkSameDate).get("gifts")+" , "+mulGiftName);
+                                break;
+                            }
+                        }
+
+                        //-----不同日期 則 新增資料-----
+                        if (checkSameDate==oldSelectDates.size()){
+                            mDates = new HashMap<String, Object>();
+                            mDates.put("date", date); //日期
+                            mDates.put("message", mulGoal); //留言
+                            mDates.put("time", sendTime); //時間
+                            mDates.put("gifts", mulGiftName); //禮物
+                            oldSelectDates.add(mDates);
+                        }
                     }
+
                 } catch (Exception e) {
                     Toast.makeText(SentPlanMultipleActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
                 }
