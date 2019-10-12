@@ -18,12 +18,18 @@ public class  getGiftList {
     private static String[] giftName      ;
     private static String[] ownerid       ;
     private static String[] type          ;
+    private static String[] senting      ;
+    private static int giftLength = 0;
     //-------解碼內容
-    private static String[] decodeid          ;
-    private static String[] decodeMainCode          ;
-    private static String[] decodeMatchCode          ;
-    private static int giftLength = 0 ;
-    private static int decodeLength = 0 ;
+    private static String[] decodeid;
+    private static String[] decodeMainCode;
+    private static String[] decodeMatchCode;
+    private static int decodeLength = 0;
+    //-------已預送禮物
+    private static String[] sentingGiftid;
+    private static int sentingGiftLength = 0;
+
+
 
     public static void getJSON() {
 
@@ -33,8 +39,21 @@ public class  getGiftList {
             public void onFinished(String result) {
                 try {
                     JSONObject object = new JSONObject(result);
+
+                    //取得已預送禮物資料
+                    JSONArray jsonArray = object.getJSONArray("sentGift");
+                    sentingGiftLength = jsonArray.length();
+
+                    sentingGiftid = new String[sentingGiftLength];
+
+                    for (int i = 0 ; i < sentingGiftLength ; i++){
+                        //Log.v("abc","10000");
+                        sentingGiftid[i] = jsonArray.getJSONObject(i).getString("giftid");
+
+                        Log.v("giftidList",sentingGiftid[i]);
+                    }
                     //取得禮物資料
-                    JSONArray jsonArray = object.getJSONArray("result");
+                    jsonArray = object.getJSONArray("result");
 
                     giftLength = jsonArray.length();
 
@@ -44,8 +63,9 @@ public class  getGiftList {
                     giftName       = new String[giftLength];
                     ownerid        = new String[giftLength];
                     type           = new String[giftLength];
+                    senting        = new String[giftLength];
 
-                    for (int i = 0 ; i <jsonArray.length() ; i++){
+                    for (int i = 0 ; i <giftLength ; i++){
                         //Log.v("abc","10000");
                         //取得禮物資料
                         giftid[i] = jsonArray.getJSONObject(i).getString("giftid");
@@ -54,6 +74,14 @@ public class  getGiftList {
                         giftName[i] = jsonArray.getJSONObject(i).getString("giftName");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
+
+                        for(int j = 0 ; j < sentingGiftLength; j++){
+                            senting[i] = "0";
+                            if(giftid[i].equals(sentingGiftid[j])){
+                                senting[i] = "1";
+                                break;
+                            }
+                        }
                     }
 
                     //取得解碼表資料
@@ -69,8 +97,9 @@ public class  getGiftList {
                         decodeid[i] = jsonArray.getJSONObject(i).getString("decodeid");
                         decodeMainCode[i] = jsonArray.getJSONObject(i).getString("mainCode");
                         decodeMatchCode[i] = jsonArray.getJSONObject(i).getString("matchCode");
-                        Log.v("decodeid",decodeid[i]);
+
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -91,6 +120,19 @@ public class  getGiftList {
     public static String getType(int i){
         return type[i];
     }
+    public static String getGiftName(int i){
+        return giftName[i];
+    }
+    public static String getSenting(int i){
+        return senting[i];
+    }
+    public static String getGiftCreateDate(int i){
+        return giftCreateDate[i];
+    }
+    public static String getOwnerid(int i){
+        return ownerid[0];
+    }
+
     //---------解碼表資料
     public static int getDecodeLength(){
         return decodeLength;
@@ -105,16 +147,11 @@ public class  getGiftList {
         return decodeMatchCode[i];
     }
 
-    public static String getGiftName(int i){
-        return giftName[i];
+    //---------已預送禮物ID
+    public static String getSentingGiftid(int i){
+        return  sentingGiftid[i];
     }
-    public static String getGiftCreateDate(int i){
-        return giftCreateDate[i];
-    }
-    public static String getOwnerid(int i){
-        return ownerid[0];
-    }
-    public static String[] getGiftNmaeArr(){
-        return giftName;
+    public static int getSentingLength(){
+        return  sentingGiftLength;
     }
 }

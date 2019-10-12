@@ -131,6 +131,7 @@ public class GiftActivity extends AppCompatActivity {
             mGiftsData[i][1]= getGiftList.getGiftName(i);
             mGiftsData[i][2]= getGiftList.getGiftCreateDate(i);
             mGiftsData[i][3]= getGiftList.getGiftid(i);
+            mGiftsData[i][4]= getGiftList.getSenting(i);
         }
 
         mGiftsList = new ArrayList<Map<String, Object>>();
@@ -142,6 +143,7 @@ public class GiftActivity extends AppCompatActivity {
             mGifts.put("title", mGiftsData[i][1]);
             mGifts.put("date", mGiftsData[i][2]);
             mGifts.put("giftid", mGiftsData[i][3]);
+            mGifts.put("senting", mGiftsData[i][4]);
             mGiftsList.add(mGifts);
         }
         giftListAdapter = new GiftListAdapter(this, mGiftsList);
