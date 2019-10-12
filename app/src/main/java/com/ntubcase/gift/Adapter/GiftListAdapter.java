@@ -73,6 +73,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
     static class ViewHolder{
         public TextView tvTitle;
         public ImageView ivGiftIcon;
+        public ImageView ivGiftStatusIcon;
         public TextView tvDate;
     }
 
@@ -87,6 +88,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
 
             viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_giftTitle);
             viewHolder.ivGiftIcon = (ImageView) convertView.findViewById(R.id.iv_giftIcon);
+            viewHolder.ivGiftStatusIcon = (ImageView) convertView.findViewById(R.id.iv_sendingGift);
             viewHolder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
 
             convertView.setTag(viewHolder); //設置好的布局保存到緩存中，並將其設置在tag裡
@@ -113,6 +115,13 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
             case "5":
                 viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_decode);
                 break;
+        }
+        switch (item.get(position).get("senting").toString()){
+            case "1":
+                viewHolder.ivGiftStatusIcon.setImageResource(R.drawable.sendgift);
+                break;
+            case "0":
+                viewHolder.ivGiftStatusIcon.setImageDrawable(null);
         }
 
         //---緩存原本的background
@@ -144,12 +153,17 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
     public void deleteGifts(Context giftContext){
         long[] checkedItems=mListView.getCheckedItemIds(); //取得勾選的項目
         String deleteGiftId;
-
+        Log.v("delete?","1");
         for (int i=checkedItems.length-1; i>=0; i--) {
             deleteGiftId = item.get((int) checkedItems[i]).get("giftid").toString(); //取得ID
-
+            Log.v("delete?","2");
             for(int j = 0; j < getPlanSent.getPlansentgLength(); j++){
-                if(deleteGiftId.equals(getPlanSent.getGiftid(j)))    Toast.makeText( giftContext, "刪除失敗，該禮物已在預送中 ", Toast.LENGTH_SHORT).show();;
+                Log.v("delete?","3");
+                if(deleteGiftId.equals(getPlanSent.getGiftid(j))){
+                    Toast.makeText( giftContext, "刪除失敗，該禮物已在預送中 ", Toast.LENGTH_SHORT).show();
+                    Log.v("delete?","4");
+                    return;
+                }
             }
         }
 
@@ -162,7 +176,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
 
                 }
             });
-           // mgiftDeleteAsyncTask.execute(Common.deleteGift, deleteGiftId);
+            //mgiftDeleteAsyncTask.execute(Common.deleteGift, deleteGiftId);
 
             item.remove((int)checkedItems[i]); //從列表中刪除
         }

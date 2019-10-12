@@ -36,11 +36,11 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/iv_sendingGift"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginRight="10dp"
-                app:srcCompat="@drawable/sendgift" />
+                 />
         </LinearLayout>
 
     </LinearLayout>
