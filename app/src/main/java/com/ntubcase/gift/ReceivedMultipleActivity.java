@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +32,7 @@ import java.util.Map;
 
 public class ReceivedMultipleActivity extends AppCompatActivity {
 
-    private TextView tv_name, tv_message, tv_sender;
+    private EditText et_name, et_message, et_sender;
     private String planID;
 
     private PlanMultiAdapter planMultiAdapter;
@@ -54,9 +53,9 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
         //------------------------------------------------------------------------------------------
-        tv_name = findViewById(R.id.tv_name);
-        tv_message = findViewById(R.id.tv_message);
-        tv_sender = findViewById(R.id.tv_sender);
+        et_name = findViewById(R.id.et_name);
+        et_message = findViewById(R.id.et_message);
+        et_sender = findViewById(R.id.et_sender);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -114,9 +113,12 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                     message =jsonArray.getJSONObject(0).getString("message"); //祝福
                     sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
 
-                    tv_name.setText(mulPlanName); //計畫名稱
-                    tv_message.setText("留言："+message); //祝福
-                    tv_sender.setText("送禮人："+sender); //送禮人
+                    et_name.setText(mulPlanName); //計畫名稱
+                    et_name.setKeyListener(null);
+                    et_message.setText("留言："+message); //祝福
+                    et_message.setKeyListener(null);
+                    et_sender.setText("送禮人："+sender); //送禮人
+                    et_sender.setKeyListener(null);
 
                     //----------------------------取得feedback----------------------------
                     jsonArray = object.getJSONArray("record");

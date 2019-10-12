@@ -9,7 +9,8 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".ReceivedSingleActivity">
+    tools:context=".ReceivedSingleActivity"
+    android:gravity="center">
 
     <ScrollView
         android:id="@+id/scrollview"
@@ -80,8 +81,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
     </ScrollView>
 
 </LinearLayout>
