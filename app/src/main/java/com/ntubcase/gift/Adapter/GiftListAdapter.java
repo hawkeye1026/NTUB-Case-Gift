@@ -157,9 +157,9 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
         for (int i=checkedItems.length-1; i>=0; i--) {
             deleteGiftId = item.get((int) checkedItems[i]).get("giftid").toString(); //取得ID
             Log.v("delete?","2");
-            for(int j = 0; j < getPlanSent.getPlansentgLength(); j++){
+            for(int j = 0; j < getGiftList.getSentingLength(); j++){
                 Log.v("delete?","3");
-                if(deleteGiftId.equals(getPlanSent.getGiftid(j))){
+                if(deleteGiftId.equals(getGiftList.getSentingGiftid(j))){
                     Toast.makeText( giftContext, "刪除失敗，該禮物已在預送中 ", Toast.LENGTH_SHORT).show();
                     Log.v("delete?","4");
                     return;

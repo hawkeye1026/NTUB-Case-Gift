@@ -151,4 +151,7 @@ public class  getGiftList {
     public static String getSentingGiftid(int i){
         return  sentingGiftid[i];
     }
+    public static int getSentingLength(){
+        return  sentingGiftLength;
+    }
 }
