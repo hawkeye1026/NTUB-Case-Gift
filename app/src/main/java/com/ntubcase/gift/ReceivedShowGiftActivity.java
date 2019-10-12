@@ -18,15 +18,22 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.ntubcase.gift.Adapter.ReceivedPagerAdapter;
 import com.ntubcase.gift.Common.Common;
+import com.ntubcase.gift.MyAsyncTask.receive.decodeTableAsyncTask;
 import com.ntubcase.gift.data.getGiftList;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
@@ -143,6 +150,7 @@ public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewP
                 et_giftContent.setText(giftContent.get(position));
                 break;
             case "5": //-----密碼表-----
+                decodeContent("9");
 //                tableLayout = (TableLayout) viewCode.findViewById(R.id.tab_01);
 //                TableRow tabRow = new TableRow(viewCode.getContext());
 //
@@ -193,6 +201,46 @@ public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewP
                 dots[i].setBackgroundResource(R.drawable.ic_dot_gray);
             }
         }
+    }
+
+    //----------------------密碼表資料----------------------
+    private void decodeContent(String gift){
+        decodeTableAsyncTask decodeTableAsyncTask = new decodeTableAsyncTask(new decodeTableAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(ReceivedShowGiftActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    JSONObject object = new JSONObject(result);
+
+                    //取得禮物紀錄
+                    JSONArray jsonArray = object.getJSONArray("result");
+                    int resultLength = jsonArray.length();
+                    Log.v("resultLength", String.valueOf(resultLength));
+
+                    ArrayList mDecodeTable = new ArrayList<Map<String, Object>>();
+                    Map<String, Object> mDecodes;
+                    for (int i = 0 ; i < resultLength ; i++){
+                        String decodeid =jsonArray.getJSONObject(i).getString("decodeid");
+                        String rowNumber =jsonArray.getJSONObject(i).getString("rowNumber");
+                        String mainCode =jsonArray.getJSONObject(i).getString("mainCode");
+                        String matchCode =jsonArray.getJSONObject(i).getString("matchCode");
+
+                        mDecodes = new HashMap<String, Object>();
+                        mDecodes.put("rowNumber", rowNumber);
+                        mDecodes.put("mainCode", mainCode);
+                        mDecodes.put("matchCode", matchCode);
+                        mDecodeTable.add(mDecodes);
+                    }
+                    Log.v("///mDecodeTable", String.valueOf(mDecodeTable));
+
+                } catch (Exception e) {
+                }
+            }
+        });
+        decodeTableAsyncTask.execute(Common.decodeTable, gift);  //gift= gift.gift =decode.decodeid
     }
 
     //------------------------------------------------------------------------------------------
