@@ -51,9 +51,6 @@ public class getPlanSent {
                         createDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("createDate"));
                         sendPlanDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
 
-                        Log.v("Plangiftid",giftid[i]);
-                        //Log.v("pdata",spPlanName[i]);
-
                         switch(planType[i]){
                             case "1":
                                 planType[i] = "單日送禮";
