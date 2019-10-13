@@ -179,7 +179,7 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
 
                 }
             });
-            //mgiftDeleteAsyncTask.execute(Common.deleteGift, deleteGiftId);
+            mgiftDeleteAsyncTask.execute(Common.deleteGift, deleteGiftId);
 
             item.remove((int)checkedItems[i]); //從列表中刪除
         }
@@ -208,12 +208,14 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
                         String title = originalitem.get(i).get("title").toString();
                         String date = originalitem.get(i).get("date").toString();
                         String giftid = originalitem.get(i).get("giftid").toString();
+                        String senting = originalitem.get(i).get("senting").toString();
                         if(type.equals(selectedType)){
                             Map<String, Object> itemContent = new HashMap<String, Object>();
                             itemContent.put("type", type);
                             itemContent.put("title", title);
                             itemContent.put("date", date);
                             itemContent.put("giftid", giftid);
+                            itemContent.put("senting", senting);
                             selectedTypeitem.add(itemContent);
                         }
                     }
@@ -233,12 +235,14 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
                         String title = selectedTypeitem.get(i).get("title").toString();
                         String date = selectedTypeitem.get(i).get("date").toString();
                         String giftid = selectedTypeitem.get(i).get("giftid").toString();
+                        String senting = selectedTypeitem.get(i).get("senting").toString();
                         if(title.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
                             filteredItemContent.put("type", type);
                             filteredItemContent.put("title", title);
                             filteredItemContent.put("date", date);
                             filteredItemContent.put("giftid", giftid);
+                            filteredItemContent.put("senting", senting);
                             filteredItem.add(filteredItemContent);
                         }
                     }
