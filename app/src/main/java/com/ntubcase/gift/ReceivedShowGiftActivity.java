@@ -58,8 +58,6 @@ public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewP
         giftContent = (List<String>)bundle.getSerializable("giftContent");
         giftType = (List<String>)bundle.getSerializable("giftType");
 
-        Log.e("***",String.valueOf(giftContent)+" ; "+String.valueOf(giftType));
-
         //---------------------------------PagerView-----------------------------------
         mViewPager = (ViewPager) findViewById(R.id.mViewPager);
 
@@ -124,7 +122,6 @@ public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewP
         ImageView iv_image; //照片
         VideoView vv_content; //影片
         EditText et_giftContent; //悄悄話,兌換券
-        TableLayout tableLayout; //密碼表
 
         switch (type){
             case "1": //-----照片-----
@@ -150,35 +147,7 @@ public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewP
                 et_giftContent.setText(giftContent.get(position));
                 break;
             case "5": //-----密碼表-----
-                decodeContent("9");
-//                tableLayout = (TableLayout) viewCode.findViewById(R.id.tab_01);
-//                TableRow tabRow = new TableRow(viewCode.getContext());
-//
-//                for (int i = 0; i<getGiftList.getDecodeLength(); i++){
-//                    if (getGiftList.getDecodeid(i).equals(giftContent.get(position))){
-//                        tabRow = new TableRow(viewCode.getContext());
-//                        for (int col = 0 ; col< 2; col++){
-//                            EditText editText = new EditText(viewCode.getContext());
-//
-//                            editText.setTextColor(Color.rgb(135,51,36));
-//                            editText.setBackgroundResource(R.drawable.bg_text);
-//                            editText.setGravity(Gravity.CENTER);
-//                            editText.setTextSize(18);
-//                            editText.setPadding(10,10,10,10);
-//                            LinearLayout.LayoutParams lp = new TableRow.LayoutParams(50,100);
-//                            lp.setMargins(3,0,3,3);
-//                            editText.setLayoutParams(lp);
-//                            editText.setKeyListener(null);
-//
-//                            if(col == 0) editText.setText(getGiftList.getDecodeMaincode(i));  //設定mainCode文字
-//                            else if(col == 1) editText.setText(getGiftList.getDecodeMatchCode(i));  //設定matchCode文字
-//
-//                            tabRow.addView(editText);
-//                        }
-//                        tableLayout.addView(tabRow);
-//                    }
-//                }
-                break;
+                decodeContent(giftContent.get(position)); //取得密碼表資料
         }
     }
 
@@ -203,7 +172,7 @@ public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewP
         }
     }
 
-    //----------------------密碼表資料----------------------
+    //----------------------密碼表取得資料----------------------
     private void decodeContent(String gift){
         decodeTableAsyncTask decodeTableAsyncTask = new decodeTableAsyncTask(new decodeTableAsyncTask.TaskListener() {
             @Override
@@ -218,29 +187,47 @@ public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewP
                     //取得禮物紀錄
                     JSONArray jsonArray = object.getJSONArray("result");
                     int resultLength = jsonArray.length();
-                    Log.v("resultLength", String.valueOf(resultLength));
 
-                    ArrayList mDecodeTable = new ArrayList<Map<String, Object>>();
-                    Map<String, Object> mDecodes;
                     for (int i = 0 ; i < resultLength ; i++){
                         String decodeid =jsonArray.getJSONObject(i).getString("decodeid");
                         String rowNumber =jsonArray.getJSONObject(i).getString("rowNumber");
                         String mainCode =jsonArray.getJSONObject(i).getString("mainCode");
                         String matchCode =jsonArray.getJSONObject(i).getString("matchCode");
 
-                        mDecodes = new HashMap<String, Object>();
-                        mDecodes.put("rowNumber", rowNumber);
-                        mDecodes.put("mainCode", mainCode);
-                        mDecodes.put("matchCode", matchCode);
-                        mDecodeTable.add(mDecodes);
+                        tableAddRow(mainCode, matchCode); //tableLayout新增行
                     }
-                    Log.v("///mDecodeTable", String.valueOf(mDecodeTable));
 
                 } catch (Exception e) {
                 }
             }
         });
         decodeTableAsyncTask.execute(Common.decodeTable, gift);  //gift= gift.gift =decode.decodeid
+    }
+
+    //----------------------密碼表tableLayout新增行----------------------
+    private void tableAddRow(String mainCode, String matchCode){
+        TableLayout tableLayout = (TableLayout) viewCode.findViewById(R.id.tab_01);
+        TableRow tabRow = new TableRow(viewCode.getContext());
+
+        for (int col = 0 ; col< 2; col++){
+            EditText editText = new EditText(viewCode.getContext());
+
+            editText.setTextColor(Color.rgb(135,51,36));
+            editText.setBackgroundResource(R.drawable.bg_text);
+            editText.setGravity(Gravity.CENTER);
+            editText.setTextSize(18);
+            editText.setPadding(10,10,10,10);
+            LinearLayout.LayoutParams lp = new TableRow.LayoutParams(50,100);
+            lp.setMargins(3,0,3,3);
+            editText.setLayoutParams(lp);
+            editText.setKeyListener(null);
+
+            if(col == 0) editText.setText(mainCode);  //設定mainCode文字
+            else if(col == 1) editText.setText(matchCode);  //設定matchCode文字
+
+            tabRow.addView(editText);
+        }
+        tableLayout.addView(tabRow);
     }
 
     //------------------------------------------------------------------------------------------
