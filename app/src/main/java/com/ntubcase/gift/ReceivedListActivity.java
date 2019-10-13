@@ -152,27 +152,21 @@ public class ReceivedListActivity extends AppCompatActivity {
                     for (int i = 0 ; i < misItemLength ; i++){
                         String itemNumber = jsonArray.getJSONObject(i).getString("itemNumber"); //項目編號
                         String itemContent = jsonArray.getJSONObject(i).getString("content"); //項目內容
-//                        String itemCheck = jsonArray.getJSONObject(i).getString("itemCheck"); //打勾項目編號
-
-//                        Log.e("***","no."+itemNumber+" "+itemCheck);
 
                         data = new HashMap<String, String>();
                         data.put("itemNumber", itemNumber);
                         data.put("itemContent", itemContent);
-//                        data.put("itemCheck", itemCheck);
+                        data.put("itemChecked", "");
                         missionData.add(data);
                     }
 
-                    //----------------------------取得任務核取方格----------------------------
+                    //----------------------------取得任務勾選項目----------------------------
                     jsonArray = object.getJSONArray("misCheck");
                     int misCheckLength = jsonArray.length();
 
                     for (int i = 0 ; i < misCheckLength ; i++){
-                        String itemChecked = jsonArray.getJSONObject(i).getString("itemChecked"); //項目編號
-                        Log.v("itemCheck",itemChecked);
-                        //data = new HashMap<String, String>();
-                        //data.put("itemChecked", itemChecked);
-                        //missionData.add(data);
+                        String itemChecked = jsonArray.getJSONObject(i).getString("itemChecked"); //勾選項目編號
+                        missionData.get(Integer.parseInt(itemChecked)-1).put("itemChecked", itemChecked);
                     }
                     receivedPlanListAdapter.notifyDataSetChanged();
 
