@@ -109,21 +109,21 @@ public class ReceivedListActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("misPlan");
-//                    Log.e("***",""+jsonArray.length());
-//                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
-//                    //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
-//                    planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
-//                    //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
-//                    String deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
-//                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
-//
-//                    tv_name.setText(planName); //計畫名稱
-//
-//                    //截止日期時間
-//                    if (deadline.equals("0000-00-00 00:00:00")) tv_deadline.setText("無限制");
-//                    else tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
-//
-//                    tv_sender.setText(sender); //送禮人
+                    Log.e("***",""+jsonArray.length());
+                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
+                    //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
+                    planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
+                    //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
+                    String deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
+                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
+
+                    tv_name.setText(planName); //計畫名稱
+
+                    //截止日期時間
+                    if (deadline.equals("0000-00-00 00:00:00")) tv_deadline.setText("無限制");
+                    else tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
+
+                    tv_sender.setText(sender); //送禮人
 
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("misList");
