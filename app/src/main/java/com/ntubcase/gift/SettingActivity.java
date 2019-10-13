@@ -135,7 +135,13 @@ public class SettingActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:  //說明鈕
-                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(this, HelpActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("from", "SettingActivity");
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
