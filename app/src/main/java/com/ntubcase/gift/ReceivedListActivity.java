@@ -26,6 +26,7 @@ import com.ntubcase.gift.login_model.userData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,9 @@ public class ReceivedListActivity extends AppCompatActivity {
 
     private EditText et_feedback;
     private Button btn_can, btn_ent;
+
+    private List<String> giftContent=new ArrayList<>();//禮物內容
+    private List<String> giftType=new ArrayList<>();//禮物類型
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +83,14 @@ public class ReceivedListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (receivedPlanListAdapter.isMissionComplete()){
-//                    Intent intent;
-//                    intent = new Intent(ReceivedListActivity.this, ReceivedShowGiftActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("giftContent", giftContent);
-//                    bundle.putString("giftType", giftType);
-//                    intent.putExtras(bundle);
-//                    startActivity(intent);
-                    Toast.makeText(getApplicationContext(),"完成", Toast.LENGTH_SHORT).show();
+                    Intent intent;
+                    intent = new Intent(ReceivedListActivity.this, ReceivedShowGiftActivity.class);
+                    Bundle bundle = new Bundle();
+
+                    bundle.putSerializable("giftContent", (Serializable) giftContent);
+                    bundle.putSerializable("giftType", (Serializable) giftType);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }else{
                     Toast.makeText(getApplicationContext(),"還有任務未完成喔", Toast.LENGTH_SHORT).show();
                 }
@@ -109,7 +113,6 @@ public class ReceivedListActivity extends AppCompatActivity {
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("misPlan");
-                    Log.e("***",""+jsonArray.length());
                     //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
                     //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
                     planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
@@ -129,12 +132,13 @@ public class ReceivedListActivity extends AppCompatActivity {
                     jsonArray = object.getJSONArray("misList");
                     int misListLength = jsonArray.length();
 
-                    String giftName = "";
+                    giftContent=new ArrayList<>();//禮物內容
+                    giftType=new ArrayList<>();//禮物類型
+
                     for (int i = 0 ; i < misListLength ; i++){
-                        if (giftName.equals("")) giftName += jsonArray.getJSONObject(i).getString("giftName");
-                        else giftName += " , " + jsonArray.getJSONObject(i).getString("giftName");
+                        giftContent.add(jsonArray.getJSONObject(i).getString("gift")); //禮物內容
+                        giftType.add(jsonArray.getJSONObject(i).getString("type")); //禮物類型
                     }
-                    Log.e("***","gift."+giftName);
 
                     //----------------------------取得feedback----------------------------
                     jsonArray = object.getJSONArray("record");
