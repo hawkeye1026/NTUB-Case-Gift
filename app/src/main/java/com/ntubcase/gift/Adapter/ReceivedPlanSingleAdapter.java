@@ -74,6 +74,8 @@ public class ReceivedPlanSingleAdapter extends RecyclerView.Adapter<ReceivedPlan
                     context.startActivity(intent);
                 }
             });
+
+            
         }else{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,6 +84,8 @@ public class ReceivedPlanSingleAdapter extends RecyclerView.Adapter<ReceivedPlan
                 }
             });
         }
+
+
 
         holder.txtTime.setText(sentTime);
         holder.txtMessage.setText(message);
