@@ -158,6 +158,18 @@ public class ReceivedListActivity extends AppCompatActivity {
 //                        data.put("itemCheck", itemCheck);
                         missionData.add(data);
                     }
+
+                    //----------------------------取得任務核取方格----------------------------
+                    jsonArray = object.getJSONArray("misCheck");
+                    int misCheckLength = jsonArray.length();
+
+                    for (int i = 0 ; i < misCheckLength ; i++){
+                        String itemChecked = jsonArray.getJSONObject(i).getString("itemChecked"); //項目編號
+                        Log.v("itemCheck",itemChecked);
+                        //data = new HashMap<String, String>();
+                        //data.put("itemChecked", itemChecked);
+                        //missionData.add(data);
+                    }
                     receivedPlanListAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {

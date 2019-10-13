@@ -116,19 +116,15 @@ public class GiftListAdapter extends BaseAdapter implements Filterable {
                 viewHolder.ivGiftIcon.setImageResource(R.drawable.ic_gift_decode);
                 break;
         }
-        try{
-            if(!item.get(position).get("senting").toString().isEmpty()){
-                switch (item.get(position).get("senting").toString()){
-                    case "1":
-                        viewHolder.ivGiftStatusIcon.setImageResource(R.drawable.sendgift);
-                        break;
-                    case "0":
-                        viewHolder.ivGiftStatusIcon.setImageDrawable(null);
-                }
-            }
 
-        }catch (Exception e){
-            e.printStackTrace();
+        if(!item.get(position).get("senting").toString().isEmpty()){
+            switch (item.get(position).get("senting").toString()){
+                case "1":
+                    viewHolder.ivGiftStatusIcon.setImageResource(R.drawable.sendgift);
+                    break;
+                case "0":
+                    viewHolder.ivGiftStatusIcon.setImageDrawable(null);
+            }
         }
 
         //---緩存原本的background
