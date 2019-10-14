@@ -222,7 +222,6 @@ public class GiftActivity extends AppCompatActivity {
 
     // ----------------設定searchView的文字輸入監聽---------------
     private void setSearch_function(){
-        mSearchView.setSubmitButtonEnabled(true);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
