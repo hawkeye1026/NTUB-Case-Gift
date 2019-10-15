@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +36,14 @@ public class ReceivedListActivity extends AppCompatActivity {
 
     private TextView tv_name, tv_sender, tv_deadline;
     private String planID;
+    private LinearLayout ll_complete;
+    private Button btn_complete;
 
     private RecyclerView recycler_view;
     private ReceivedPlanListAdapter receivedPlanListAdapter;
     private List<Map<String, String>> missionData = new ArrayList<Map<String, String>>(); //任務清單資料
 
-    private Button btn_complete;
+    private Button btn_reward;
     private String planName, feedback;
 
     private EditText et_feedback;
@@ -62,14 +64,29 @@ public class ReceivedListActivity extends AppCompatActivity {
         tv_name = findViewById(R.id.tv_name);
         tv_sender = findViewById(R.id.tv_sender);
         tv_deadline = findViewById(R.id.tv_deadline);
+        btn_reward = findViewById(R.id.btn_reward);
+        ll_complete = findViewById(R.id.ll_complete);
         btn_complete = findViewById(R.id.btn_complete);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
+            String from = bundle.getString("from");
+            if (from!=null){
+                ll_complete.setVisibility(View.VISIBLE); //進行中禮物才會顯示按鈕
+            }
+
             planID = bundle.getString("planID");
             showPlanDetail(planID);  //顯示收禮詳細資料
         }
+
+        //---------------------------------完成禮物按鈕-----------------------------------
+        btn_complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //----------------------------清單內容RecyclerView------------------------------
         recycler_view = findViewById(R.id.list_recycle_view);  // 設置RecyclerView為列表型態
@@ -78,8 +95,8 @@ public class ReceivedListActivity extends AppCompatActivity {
         receivedPlanListAdapter = new ReceivedPlanListAdapter(missionData);  // 將資料交給adapter
         recycler_view.setAdapter(receivedPlanListAdapter); // 設置adapter給recycler_view
 
-        //----------------------------完成任務 按鈕------------------------------
-        btn_complete.setOnClickListener(new View.OnClickListener() {
+        //----------------------------領取禮物 按鈕------------------------------
+        btn_reward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (receivedPlanListAdapter.isMissionComplete()){
@@ -152,27 +169,21 @@ public class ReceivedListActivity extends AppCompatActivity {
                     for (int i = 0 ; i < misItemLength ; i++){
                         String itemNumber = jsonArray.getJSONObject(i).getString("itemNumber"); //項目編號
                         String itemContent = jsonArray.getJSONObject(i).getString("content"); //項目內容
-//                        String itemCheck = jsonArray.getJSONObject(i).getString("itemCheck"); //打勾項目編號
-
-//                        Log.e("***","no."+itemNumber+" "+itemCheck);
 
                         data = new HashMap<String, String>();
                         data.put("itemNumber", itemNumber);
                         data.put("itemContent", itemContent);
-//                        data.put("itemCheck", itemCheck);
+                        data.put("itemChecked", "");
                         missionData.add(data);
                     }
 
-                    //----------------------------取得任務核取方格----------------------------
+                    //----------------------------取得任務勾選項目----------------------------
                     jsonArray = object.getJSONArray("misCheck");
                     int misCheckLength = jsonArray.length();
 
                     for (int i = 0 ; i < misCheckLength ; i++){
-                        String itemChecked = jsonArray.getJSONObject(i).getString("itemChecked"); //項目編號
-                        Log.v("itemCheck",itemChecked);
-                        //data = new HashMap<String, String>();
-                        //data.put("itemChecked", itemChecked);
-                        //missionData.add(data);
+                        String itemChecked = jsonArray.getJSONObject(i).getString("itemChecked"); //勾選項目編號
+                        missionData.get(Integer.parseInt(itemChecked)-1).put("itemChecked", itemChecked);
                     }
                     receivedPlanListAdapter.notifyDataSetChanged();
 

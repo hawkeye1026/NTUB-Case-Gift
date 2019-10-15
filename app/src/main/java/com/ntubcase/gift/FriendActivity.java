@@ -107,8 +107,8 @@ public class FriendActivity extends AppCompatActivity {
                     friendListAdapter.selectItem(position);
                     friendListAdapter.updateBackground(position, view); //設定背景
                 }else{
-                    TextView tv = view.findViewById(R.id.tv_nickname);
-                    Toast.makeText(FriendActivity.this, tv.getText().toString(), Toast.LENGTH_SHORT).show();
+//                    TextView tv = view.findViewById(R.id.tv_nickname);
+//                    Toast.makeText(FriendActivity.this, tv.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -125,7 +125,6 @@ public class FriendActivity extends AppCompatActivity {
 
     // ----------------設定searchView的文字輸入監聽---------------
     private void setSearch_function(){
-        mSearchView.setSubmitButtonEnabled(true);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

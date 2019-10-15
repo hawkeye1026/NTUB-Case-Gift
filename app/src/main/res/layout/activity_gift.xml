@@ -41,7 +41,7 @@
                 android:focusable="false"
                 android:queryHint="禮物名稱"
                 android:textSize="16sp"
-                android:paddingLeft="-16dp"/>
+                android:paddingLeft="-20dp"/>
 
         </LinearLayout>
 

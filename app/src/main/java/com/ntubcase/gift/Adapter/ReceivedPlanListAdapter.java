@@ -68,16 +68,16 @@ public class ReceivedPlanListAdapter extends RecyclerView.Adapter<ReceivedPlanLi
         String mission = missionData.get(position).get("itemContent");
         holder.checkBox.setText(mission);
 
-//        //設定任務是否勾選
-//        String isCheck = missionData.get(position).get("itemCheck");
-//        if (isCheck.equals("null")){
-//            holder.checkBox.setChecked(false);
-//            missionCheck.add(false);
-//        }else {
-//            holder.checkBox.setChecked(true);
-//            missionCheck.add(true);
-//        }
-        missionCheck.add(false);
+        //設定任務是否勾選
+        String isCheck = missionData.get(position).get("itemChecked");
+        if (isCheck.equals("")){
+            holder.checkBox.setChecked(false);
+            missionCheck.add(false);
+        }else {
+            holder.checkBox.setChecked(true);
+            missionCheck.add(true);
+        }
+
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { //點選checkbox
