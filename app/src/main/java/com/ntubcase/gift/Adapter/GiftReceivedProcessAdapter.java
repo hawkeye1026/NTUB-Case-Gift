@@ -90,6 +90,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
                 }
 
                 bundle.putString("planID", planID);
+                bundle.putString("from", "GiftReceivedProcess");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

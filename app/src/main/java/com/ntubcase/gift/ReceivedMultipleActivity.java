@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,8 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
 
     private EditText et_name, et_message, et_sender;
     private String planID;
+    private LinearLayout ll_button;
+    private Button btn_complete;
 
     private PlanMultiAdapter planMultiAdapter;
     private GridView gridView;
@@ -56,13 +59,28 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         et_name = findViewById(R.id.et_name);
         et_message = findViewById(R.id.et_message);
         et_sender = findViewById(R.id.et_sender);
+        ll_button = findViewById(R.id.ll_button);
+        btn_complete = findViewById(R.id.btn_complete);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
+            String from = bundle.getString("from");
+            if (from!=null){
+                ll_button.setVisibility(View.VISIBLE); //進行中禮物才會顯示按鈕
+            }
+
             planID = bundle.getString("planID");
             showPlanDetail(planID);  //顯示收禮詳細資料
         }
+
+        //---------------------------------完成禮物按鈕-----------------------------------
+        btn_complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //---------------------------------GridView---------------------------------------------
         gridView = (GridView) findViewById(R.id.gridView);

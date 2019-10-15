@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,81 +9,76 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".ReceivedSingleActivity"
-    android:gravity="center">
+    tools:context=".ReceivedSingleActivity">
 
-    <ScrollView
-        android:id="@+id/scrollview"
+    <RelativeLayout
         android:layout_width="320dp"
         android:layout_height="420dp"
-        android:layout_gravity="center"
         android:layout_margin="10dp"
         android:background="@drawable/card"
         android:paddingTop="40dp"
-        android:paddingBottom="60dp">
+        android:paddingBottom="50dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="PlanName"
+            android:textSize="25sp"
+            android:textStyle="bold|italic" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_below="@id/tv_name"
+            android:layout_above="@id/tv_sender">
 
-            <!--計畫名稱-->
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:hint="PlanName"
-                    android:textSize="25sp"
-                    android:textStyle="bold|italic" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="right|center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="From：" />
-
-                <TextView
-                    android:id="@+id/tv_sender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:inputType="textPersonName"
-                    tools:textSize="14sp" />
-            </LinearLayout>
-
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
         </LinearLayout>
-    </ScrollView>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            tools:textSize="14sp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/btn_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_finish" />
+
+    </LinearLayout>
+
+</RelativeLayout>
 
 
 
