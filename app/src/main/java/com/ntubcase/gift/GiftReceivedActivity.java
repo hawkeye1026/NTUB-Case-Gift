@@ -34,8 +34,8 @@ public class GiftReceivedActivity extends AppCompatActivity {
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new GiftReceivedNewFragment(), "新禮物");
-        //adapter.addFragment(new GiftReceivedProcessFragment(), "進行中禮物");
-        adapter.addFragment(new GiftReceivedDoneFragment(), "已接收禮物");
+        adapter.addFragment(new GiftReceivedProcessFragment(), "進行中禮物");
+        adapter.addFragment(new GiftReceivedDoneFragment(), "完成的禮物");
 
         viewPager.setAdapter(adapter);
     }
