@@ -151,7 +151,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                             mGiftsData.put("message", sinMessage);
                             mGiftsData.put("giftContent", giftContent);
                             mGiftsData.put("giftType", giftType);
-
+                            mGiftsData.put("sinSendPlanDate", sinSendPlanDate);
                             mData.add(mGiftsData);
                         }
 

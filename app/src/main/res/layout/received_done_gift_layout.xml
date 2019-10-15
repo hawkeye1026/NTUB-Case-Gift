@@ -41,6 +41,8 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="giftname"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textSize="14sp" />
 
             <LinearLayout
