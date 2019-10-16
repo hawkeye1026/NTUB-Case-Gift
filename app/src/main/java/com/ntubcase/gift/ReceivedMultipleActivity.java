@@ -33,10 +33,11 @@ import java.util.Map;
 
 public class ReceivedMultipleActivity extends AppCompatActivity {
 
-    private EditText et_name, et_message, et_sender;
+    private EditText et_name, et_message, et_sender, et_gift_message;
     private String planID;
     private LinearLayout ll_button;
-    private Button btn_complete;
+    private Button btn_complete, btn_reward;
+    private TextView tv_date, tv_reward_time;
 
     private PlanMultiAdapter planMultiAdapter;
     private GridView gridView;
@@ -90,25 +91,58 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final List<String> giftContent = (List<String>)selectDates.get(position).get("giftContent");
-                final List<String> giftType = (List<String>)selectDates.get(position).get("giftType");
+                showAlertDialog(position);
 
-                if(true){ //檢查是否已過領取時間----------------------------還沒做
-                    if (giftContent.size()>0){ //若有禮物
-                        Intent intent = new Intent(ReceivedMultipleActivity.this, ReceivedShowGiftActivity.class);
-                        Bundle bundle = new Bundle();
-
-                        bundle.putSerializable("giftContent", (Serializable) giftContent);
-                        bundle.putSerializable("giftType", (Serializable) giftType);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }else{
-                    Toast.makeText(ReceivedMultipleActivity.this,"領取時間還沒到喔",Toast.LENGTH_SHORT).show();
-                }
+//                final List<String> giftContent = (List<String>)selectDates.get(position).get("giftContent");
+//                final List<String> giftType = (List<String>)selectDates.get(position).get("giftType");
+//
+//                if(true){ //檢查是否已過領取時間----------------------------還沒做
+//                    if (giftContent.size()>0){ //若有禮物
+//                        Intent intent = new Intent(ReceivedMultipleActivity.this, ReceivedShowGiftActivity.class);
+//                        Bundle bundle = new Bundle();
+//
+//                        bundle.putSerializable("giftContent", (Serializable) giftContent);
+//                        bundle.putSerializable("giftType", (Serializable) giftType);
+//                        intent.putExtras(bundle);
+//                        startActivity(intent);
+//                    }
+//                }else{
+//                    Toast.makeText(ReceivedMultipleActivity.this,"領取時間還沒到喔",Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
+    }
+
+    //-----------------顯示Dialog-----------------
+    private void showAlertDialog(int position) {
+        final int gridPosition = position;
+
+        final Dialog mDialog = new Dialog(this);
+        mDialog.setContentView(R.layout.received_multi_grid_layout);
+
+        //----------------------------------------設定customLayout內顯示的資料--------------------------------------------------
+        tv_date  = mDialog.findViewById(R.id.tv_date);
+        et_gift_message  = mDialog.findViewById(R.id.et_gift_message);
+        tv_reward_time  = mDialog.findViewById(R.id.tv_reward_time);
+        btn_reward  = mDialog.findViewById(R.id.btn_reward);
+
+        String[] mdate = selectDates.get(gridPosition).get("date").toString().split("-");
+        tv_date.setText(mdate[0] +"-"+ mdate[1] +"-"+ mdate[2]);
+
+        et_gift_message.setText(selectDates.get(gridPosition).get("message").toString());
+        tv_reward_time.setText(selectDates.get(gridPosition).get("time").toString());
+
+        //--------------------------------領取禮物 按鈕--------------------------------
+        btn_reward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ReceivedMultipleActivity.this,"領取禮物", Toast.LENGTH_SHORT).show();
+                mDialog.dismiss();
+            }
+        });
+
+        mDialog.show();
     }
 
     //------------------------------收禮詳細，顯示plan資料------------------------------
