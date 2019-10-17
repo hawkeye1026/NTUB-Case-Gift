@@ -52,6 +52,8 @@ public class  getGiftList {
 
                         Log.v("giftidList",sentingGiftid[i]);
                     }
+
+
                     //取得禮物資料
                     jsonArray = object.getJSONArray("result");
 
@@ -75,11 +77,15 @@ public class  getGiftList {
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         type[i] = jsonArray.getJSONObject(i).getString("type");
 
-                        for(int j = 0 ; j < sentingGiftLength; j++){
+                        if(sentingGiftLength == 0){
                             senting[i] = "0";
-                            if(giftid[i].equals(sentingGiftid[j])){
-                                senting[i] = "1";
-                                break;
+                        }else {
+                            for (int j = 0; j < sentingGiftLength; j++) {
+                                senting[i] = "0";
+                                if (giftid[i].equals(sentingGiftid[j])) {
+                                    senting[i] = "1";
+                                    break;
+                                }
                             }
                         }
                     }
