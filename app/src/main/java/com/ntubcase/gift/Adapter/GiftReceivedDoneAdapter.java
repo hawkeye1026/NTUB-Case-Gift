@@ -75,6 +75,18 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
         holder.giftName.setText(re_giftList.get(position).get("title").toString());
         holder.sender.setText(re_giftList.get(position).get("sender").toString());
         holder.date.setText(re_giftList.get(position).get("date").toString());
+        String type = re_giftList.get(position).get("type").toString();
+        switch (type){
+            case "單日送禮" :
+                holder.image.setImageResource(R.drawable.s_received_right);
+                break;
+            case "多日規劃" :
+                holder.image.setImageResource(R.drawable.c_received_right);
+                break;
+            case "任務清單" :
+                holder.image.setImageResource(R.drawable.l_received_right);
+                break;
+        }
 
         //------------------刪除模式---------------------
         if (!multiSelect){

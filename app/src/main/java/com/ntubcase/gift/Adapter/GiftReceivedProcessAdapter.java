@@ -57,7 +57,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
 
     @Override
     public GiftReceivedProcessAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.received_done_gift_layout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.received_process_gift_layout, parent, false);
         return new GiftReceivedProcessAdapter.ViewHolder(view);
     }
 
@@ -67,7 +67,18 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
         holder.giftName.setText(re_giftList.get(position).get("title").toString());
         holder.sender.setText(re_giftList.get(position).get("sender").toString());
         holder.date.setText(re_giftList.get(position).get("date").toString());
-
+        String type = re_giftList.get(position).get("type").toString();
+        switch (type){
+            case "單日送禮" :
+                holder.image.setImageResource(R.drawable.s_received_mid);
+                break;
+            case "多日規劃" :
+                holder.image.setImageResource(R.drawable.c_received_mid);
+                break;
+            case "任務清單" :
+                holder.image.setImageResource(R.drawable.l_received_mid);
+                break;
+        }
         //--------------item點擊監聽器-------------
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
