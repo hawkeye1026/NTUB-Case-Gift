@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -78,6 +79,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
                 uploadGift(v);
+                Log.v("uploadGiftid", uploadGift.getLastGiftID());
             }
         }
     };
