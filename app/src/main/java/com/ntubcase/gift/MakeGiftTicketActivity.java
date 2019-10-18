@@ -35,6 +35,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     protected static String giftType = "4";
     ProgressDialog barProgressDialog;
     private static int giftid;
+    private static int lastGiftid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +80,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
                 uploadGift(v);
-                Log.v("uploadGiftid", uploadGift.getLastGiftID());
+
             }
         }
     };
@@ -89,11 +90,15 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            //uploadGift(v);
-
+            if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
+                Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
+            }else{
+                uploadGift(v);
+            }
             Intent intent;
             intent = new Intent(MakeGiftTicketActivity.this, SendGiftDirectlyActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
+
         }
     };
 

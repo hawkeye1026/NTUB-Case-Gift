@@ -94,4 +94,7 @@ public class uploadGift {
     public static String getLastGiftID(){
         return lastGiftID;
     }
+    public static void resetLastGiftID(){
+        lastGiftID = "";
+    }
 }

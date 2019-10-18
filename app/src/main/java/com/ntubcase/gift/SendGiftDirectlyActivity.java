@@ -35,7 +35,7 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
     String[] single_friendlistItems = new String[getFriendList.getFriendLength()];
     boolean[] single_friendcheckedItems, tempFriendChecked;
     private ArrayList<String> selectFriendIds = new ArrayList<>();
-
+    private String giftid = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +44,8 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //啟用返回建
+
+        //取得目前這份禮物的giftid
 
         //---------------------------------------------------------------------------------
         edt_direct_name = findViewById(R.id.add_direct_name);
@@ -155,6 +157,8 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
             dateTime = sdFormat.format(date);
             SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
 
+            giftid =  uploadGift.getLastGiftID();
+
             if (isDataCompleted()){ //---資料填完才能預送---
                 planid = "sin_" + sdFormat_giftContent.format(date);
 
@@ -188,7 +192,7 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
 
                     }
                 });
-                singleListInsertAsyncTask.execute(Common.insertSinPlan, planid," "/*giftid*/, dateTime, edt_direct_message.getText().toString());
+                singleListInsertAsyncTask.execute(Common.insertSinPlan, planid,giftid/*giftid*/, dateTime, edt_direct_message.getText().toString());
 
                 Toast.makeText(v.getContext(), "已送禮!", Toast.LENGTH_SHORT).show();
 
@@ -211,5 +215,10 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onStop() {
+        uploadGift.resetLastGiftID();
+        super.onStop();
     }
 }
