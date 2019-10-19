@@ -47,7 +47,8 @@ public class Common {
     public static String receiveDetail="http://140.131.114.156/NTUB_gift_server/receiveDetail.php?";
     public static String writeFeedback="http://140.131.114.156/NTUB_gift_server/writeFeedback.php?";
     public static String decodeTable="http://140.131.114.156/NTUB_gift_server/decodeTable.php?";
-
+    public static String insertMisCheck="http://140.131.114.156/NTUB_gift_server/insertMisCheck.php?";
+    public static String deleteMisCheck="http://140.131.114.156/NTUB_gift_server/deleteMisCheck.php?";
     //------------------------------------image path
     public static String imgPath="http://140.131.114.156/NTUB_gift_server/giftImg/";
     //------------------------------------video path
