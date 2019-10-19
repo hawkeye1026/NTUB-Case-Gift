@@ -35,7 +35,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     protected static String giftType = "4";
     ProgressDialog barProgressDialog;
     private static int giftid;
-    private static int lastGiftid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

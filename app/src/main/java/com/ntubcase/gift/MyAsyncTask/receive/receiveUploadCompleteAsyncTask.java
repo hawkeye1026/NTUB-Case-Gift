@@ -62,7 +62,8 @@ public class receiveUploadCompleteAsyncTask extends AsyncTask<String, Integer, S
             //----------------------------------------------
             //params[1] 是myNavigationAsyncTask.execute(Common.updateUrl, getId);的第二個參數
             String args =
-                    "planid=" + URLEncoder.encode(params[1], "UTF-8");
+                    "planid=" + URLEncoder.encode(params[1], "UTF-8")+
+                    "&receiverid=" + URLEncoder.encode(params[2], "UTF-8");
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
