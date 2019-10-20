@@ -21,6 +21,7 @@ import com.ntubcase.gift.Adapter.ReceivedPlanListAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.writeFeedbackAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.receive.missionInsertCheckAsyncTask;
 import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
@@ -195,6 +196,43 @@ public class ReceivedListActivity extends AppCompatActivity {
         planDetailAsyncTask.execute(Common.receiveDetail , userData.getUserID(), planID);
     }
 
+    //------------------------------先刪除舊的勾選------------------------------
+    private void deleteCheck(){
+        planDetailAsyncTask planDetailAsyncTask = new planDetailAsyncTask(new planDetailAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(ReceivedListActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(ReceivedListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        planDetailAsyncTask.execute(Common.deleteMisCheck , userData.getUserID(), planID); // receiveid , planid
+    }
+
+    //------------------------------再新增新的勾選------------------------------
+    private void insertCheck(){
+        missionInsertCheckAsyncTask missionInsertCheckAsyncTask = new missionInsertCheckAsyncTask(new missionInsertCheckAsyncTask.TaskListener() {
+            @Override
+            public void onFinished(String result) {
+                try {
+                    if (result == null) {
+                        Toast.makeText(ReceivedListActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(ReceivedListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        missionInsertCheckAsyncTask.execute(Common.insertMisCheck , userData.getUserID(), planID); //planid, itemNumber, receiveid
+    }
     //------------------------------------------------------------------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
