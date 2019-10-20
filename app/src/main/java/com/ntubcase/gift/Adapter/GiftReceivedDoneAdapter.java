@@ -125,6 +125,7 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
                     }
 
                     bundle.putString("planID", planID);
+                    bundle.putString("from", "GiftReceivedDone");
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }

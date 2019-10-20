@@ -88,6 +88,7 @@ public class GiftReceivedNewAdapter extends RecyclerView.Adapter<GiftReceivedNew
                 }
 
                 bundle.putString("planID", planID);
+                bundle.putString("from", "GiftReceivedNew");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

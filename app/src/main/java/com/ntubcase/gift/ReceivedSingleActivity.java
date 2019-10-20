@@ -78,8 +78,8 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
             String from = bundle.getString("from");
-            if (from!=null){
-                ll_button.setVisibility(View.VISIBLE); //進行中禮物才會顯示按鈕
+            if (!from.equals("GiftReceivedDone")){
+                ll_button.setVisibility(View.VISIBLE); //非完成禮物才會顯示按鈕
             }
 
             planID = bundle.getString("planID");
