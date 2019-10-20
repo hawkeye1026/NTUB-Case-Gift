@@ -83,6 +83,7 @@ public class ReceivedListActivity extends AppCompatActivity {
             showPlanDetail(planID);  //顯示收禮詳細資料
         }
         Log.v("uploadP",planID +"||"+ userData.getUserID());
+
         //---------------------------------完成禮物按鈕-----------------------------------
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,22 +230,29 @@ public class ReceivedListActivity extends AppCompatActivity {
 
     //------------------------------再新增新的勾選------------------------------
     private void insertCheck(){
-        missionInsertCheckAsyncTask missionInsertCheckAsyncTask = new missionInsertCheckAsyncTask(new missionInsertCheckAsyncTask.TaskListener() {
-            @Override
-            public void onFinished(String result) {
-                try {
-                    if (result == null) {
-                        Toast.makeText(ReceivedListActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+        List<Boolean> misstionCheck = receivedPlanListAdapter.getMissionCheck();
 
-                } catch (Exception e) {
-                    Toast.makeText(ReceivedListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
-                }
+        for (int i=0; i<missionData.size(); i++){
+            if (misstionCheck.get(i)){
+                missionInsertCheckAsyncTask missionInsertCheckAsyncTask = new missionInsertCheckAsyncTask(new missionInsertCheckAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+                        try {
+                            if (result == null) {
+                                Toast.makeText(ReceivedListActivity.this,"無資料!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                        } catch (Exception e) {
+                            Toast.makeText(ReceivedListActivity.this, "連線失敗!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                missionInsertCheckAsyncTask.execute(Common.insertMisCheck, planID, String.valueOf(i+1) , userData.getUserID()); //planid, itemNumber, receiveid
             }
-        });
-        missionInsertCheckAsyncTask.execute(Common.insertMisCheck , userData.getUserID(), planID); //planid, itemNumber, receiveid
+        }
     }
+
     //------------------------------------------------------------------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -256,6 +264,10 @@ public class ReceivedListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home: //toolbar返回建
+                //---上傳勾選紀錄---
+                deleteCheck();
+                insertCheck();
+
                 finish();
                 return true;
             case R.id.action_help:  //說明鈕
