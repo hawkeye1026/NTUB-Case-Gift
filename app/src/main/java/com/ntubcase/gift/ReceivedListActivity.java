@@ -75,7 +75,7 @@ public class ReceivedListActivity extends AppCompatActivity {
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
             String from = bundle.getString("from");
-            if (from!=null){
+            if (!from.equals("GiftReceivedDone")){
                 ll_complete.setVisibility(View.VISIBLE); //進行中禮物才會顯示按鈕
             }
 

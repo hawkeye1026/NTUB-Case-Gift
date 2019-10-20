@@ -2,9 +2,13 @@ package com.ntubcase.gift;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LightingColorFilter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,17 +31,21 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ReceivedMultipleActivity extends AppCompatActivity {
 
-    private EditText et_name, et_message, et_sender;
+    private EditText et_name, et_message, et_sender, et_gift_message;
     private String planID;
     private LinearLayout ll_button;
-    private Button btn_complete;
+    private Button btn_complete, btn_reward;
+    private TextView tv_date, tv_reward_time;
 
     private PlanMultiAdapter planMultiAdapter;
     private GridView gridView;
@@ -67,7 +75,7 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
             String from = bundle.getString("from");
-            if (from!=null){
+            if (!from.equals("GiftReceivedDone")){
                 ll_button.setVisibility(View.VISIBLE); //進行中禮物才會顯示按鈕
             }
 
@@ -100,12 +108,40 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showAlertDialog(position);  //顯示Dialog
+            }
+        });
+    }
 
-                final List<String> giftContent = (List<String>)selectDates.get(position).get("giftContent");
-                final List<String> giftType = (List<String>)selectDates.get(position).get("giftType");
+    //-----------------顯示Dialog-----------------
+    private void showAlertDialog(int position) {
+        final int gridPosition = position;
 
-                if(true){ //檢查是否已過領取時間----------------------------還沒做
-                    if (giftContent.size()>0){ //若有禮物
+        final Dialog mDialog = new Dialog(this);
+        mDialog.setContentView(R.layout.received_multi_grid_layout);
+
+        //--------------------------------設定顯示的資料--------------------------------
+        tv_date  = mDialog.findViewById(R.id.tv_date);
+        et_gift_message  = mDialog.findViewById(R.id.et_gift_message);
+        btn_reward  = mDialog.findViewById(R.id.btn_reward);
+        tv_reward_time  = mDialog.findViewById(R.id.tv_reward_time);
+
+        tv_date.setText(""+selectDates.get(gridPosition).get("date"));
+
+        et_gift_message.setText(selectDates.get(gridPosition).get("message").toString());
+        et_gift_message.setKeyListener(null);
+        tv_reward_time.setText("領取時間："+selectDates.get(gridPosition).get("time").toString());
+
+        //--------------------------------判斷是否能領取禮物--------------------------------
+        final List<String> giftContent = (List<String>)selectDates.get(position).get("giftContent");
+        final List<String> giftType = (List<String>)selectDates.get(position).get("giftType");
+
+        if (giftContent.size()>0){  //若有禮物
+            if(checkRewardTime(position)){  //已過領取時間
+                btn_reward.getBackground().clearColorFilter(); //-----按鈕顯示正常-----
+                btn_reward.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         Intent intent = new Intent(ReceivedMultipleActivity.this, ReceivedShowGiftActivity.class);
                         Bundle bundle = new Bundle();
 
@@ -113,13 +149,47 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                         bundle.putSerializable("giftType", (Serializable) giftType);
                         intent.putExtras(bundle);
                         startActivity(intent);
-                    }
-                }else{
-                    Toast.makeText(ReceivedMultipleActivity.this,"領取時間還沒到喔",Toast.LENGTH_SHORT).show();
-                }
 
+                        mDialog.dismiss();
+                    }
+                });
+            }else{  //還沒到領取時間
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                btn_reward.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
+
+                btn_reward.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(ReceivedMultipleActivity.this,"領取時間還沒到喔",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-        });
+
+        }else{ //沒有禮物僅顯示留言
+            btn_reward.setVisibility(View.GONE);
+            tv_reward_time.setVisibility(View.GONE);
+        }
+
+        mDialog.show();
+    }
+
+    //------------------------------檢查是否已過領取時間------------------------------
+    private boolean checkRewardTime(int position){
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date nowDateTime = new Date(System.currentTimeMillis()); //現在日期與時間
+
+        try {
+            Date rewardTime = sdFormat.parse(selectDates.get(position).get("date")+" "+selectDates.get(position).get("time"));
+
+            if (nowDateTime.before(rewardTime)) return false; //還沒到領取時間
+            else return true;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     //------------------------------收禮詳細，顯示plan資料------------------------------
@@ -225,30 +295,6 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         planDetailAsyncTask.execute(Common.receiveDetail , userData.getUserID(), planID);
     }
 
-    //------------------------------------------------------------------------------------------
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_received, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home: //toolbar返回建
-                finish();
-                return true;
-            case R.id.action_help:  //說明鈕
-                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_feedback:  //填寫回饋鈕
-                writeFeedback();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     //---------------------------------填寫回饋---------------------------------------------
     private void writeFeedback(){
         final Dialog mDialog = new Dialog(ReceivedMultipleActivity.this);
@@ -288,5 +334,29 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         });
 
         mDialog.show();
+    }
+
+    //------------------------------------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_received, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home: //toolbar返回建
+                finish();
+                return true;
+            case R.id.action_help:  //說明鈕
+                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_feedback:  //填寫回饋鈕
+                writeFeedback();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
