@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class uploadGift {
 
-    private static String giftid ="0";
+    private static String lastGiftID ="0";
 
     public uploadGift(String giftContent, String giftName, String owner, String giftType){
         //--------取得目前時間：yyyy/MM/dd hh:mm:ss
@@ -36,9 +36,9 @@ public class uploadGift {
                     for (int i = 0 ; i <jsonArray.length() ; i++) {
                         //Log.v("abc","10000");
                         //取得禮物資料
-                        giftid = jsonArray.getJSONObject(i).getString("lastID");
+                        lastGiftID = jsonArray.getJSONObject(i).getString("lastID");
 
-                        Log.v("upgiftid",giftid);
+                        Log.v("uplastGiftID",lastGiftID);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -67,9 +67,9 @@ public class uploadGift {
                     for (int i = 0 ; i <jsonArray.length() ; i++) {
                         //Log.v("abc","10000");
                         //取得禮物資料
-                        giftid = jsonArray.getJSONObject(i).getString("lastID");
+                        lastGiftID = jsonArray.getJSONObject(i).getString("lastID");
 
-                        Log.v("upgiftid",giftid);
+                        Log.v("uplastGiftID",lastGiftID);
                     }
 
                     //--------上傳code
@@ -79,8 +79,8 @@ public class uploadGift {
 
                         }
                     });
-                    // Log.v("Mupgiftid",uploadGift.getLastGiftid());
-                    mgiftInsertCodAsyncTask.execute(Common.insertGiftCode,giftid, rowNumber, maincode_array , matchcode_array);
+                    // Log.v("MuplastGiftID",uploadGift.getLastGiftid());
+                    mgiftInsertCodAsyncTask.execute(Common.insertGiftCode,lastGiftID, rowNumber, maincode_array , matchcode_array);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -89,5 +89,12 @@ public class uploadGift {
         });
         mgiftInsertAsyncTask.execute(Common.insertGift, "", dateTime, giftName, owner, giftType);
 
+    }
+
+    public static String getLastGiftID(){
+        return lastGiftID;
+    }
+    public static void resetLastGiftID(){
+        lastGiftID = "";
     }
 }

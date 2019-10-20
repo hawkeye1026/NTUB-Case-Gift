@@ -20,6 +20,7 @@ import com.ntubcase.gift.Adapter.PlanMultiAdapter;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.plan.planDetailAsyncTask;
 import com.ntubcase.gift.MyAsyncTask.plan.writeFeedbackAsyncTask;
+import com.ntubcase.gift.MyAsyncTask.receive.receiveUploadCompleteAsyncTask;
 import com.ntubcase.gift.login_model.userData;
 
 import org.json.JSONArray;
@@ -78,6 +79,16 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                receiveUploadCompleteAsyncTask myAsyncTask = new receiveUploadCompleteAsyncTask(new receiveUploadCompleteAsyncTask.TaskListener() {
+
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+
+                myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
+
                 Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
             }
         });

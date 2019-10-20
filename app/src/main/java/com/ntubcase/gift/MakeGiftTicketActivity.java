@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     protected static String giftType = "4";
     ProgressDialog barProgressDialog;
     private static int giftid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
                 uploadGift(v);
+
             }
         }
     };
@@ -87,11 +90,15 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            //uploadGift(v);
-
+            if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
+                Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
+            }else{
+                uploadGift(v);
+            }
             Intent intent;
             intent = new Intent(MakeGiftTicketActivity.this, SendGiftDirectlyActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
+
         }
     };
 

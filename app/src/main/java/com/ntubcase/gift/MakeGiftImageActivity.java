@@ -187,9 +187,12 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //上傳圖片
-            //uploadImage(v);
-
+         
+            if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
+                Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
+            }else{
+                uploadImage(v);
+            }
             Intent intent;
             intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
