@@ -78,7 +78,7 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:background="@drawable/gift_code"
-            android:padding="30dp">
+            android:padding="25dp">
 
             <TableLayout
                 android:id="@+id/tab_01"
@@ -90,8 +90,8 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_text"
                         android:gravity="center"
                         android:text="秘密代碼"
@@ -100,13 +100,14 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_text"
                         android:gravity="center"
                         android:text="對應訊息"
                         android:textColor="@color/text"
                         android:textSize="20sp" />
+
                 </TableRow>
 
             </TableLayout>
@@ -122,8 +123,6 @@
         android:layout_margin="15dp"
         android:gravity="center"
         android:layout_alignParentBottom="true">
-
-
 
         <Button
             android:id="@+id/btn_save"

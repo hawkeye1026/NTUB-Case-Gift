@@ -16,12 +16,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntubcase.gift.Common.Common;
@@ -204,19 +206,22 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
                 for (int row=0; row<lineNum; row++){
                     tabRow = (TableRow) tableLayout.getChildAt(row);
-                    //int rowHeight = tabRow.getHeight()-3;  //減掉marginBottom
+                    int rowHeight = tabRow.getHeight()-3;  //減掉marginBottom
 
                     ImageView imageView = new ImageView(getApplicationContext());
 
                     //imageView.setBackgroundColor(Color.WHITE);
-                    LinearLayout.LayoutParams lp = new TableRow.LayoutParams(30, 90);
+                    LinearLayout.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, rowHeight);
+
+                    LinearLayout.LayoutParams layoutParams = new TableRow.LayoutParams(0, rowHeight, 1f);
+                    LinearLayout.LayoutParams layoutParams2 = new TableRow.LayoutParams(0, rowHeight, 0.5f);
 
                     if (row==0){
                         lp.setMargins(3,3,0,0);
                     }else{
                         lp.setMargins(3,3,0,0);
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(5, 5);
-                        imageView.setLayoutParams(layoutParams);
+
+                        imageView.setPadding(20,20,20,20);
                         imageView.setImageResource(R.drawable.clear);
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -226,9 +231,12 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                         });
                     }
                     imageView.setLayoutParams(lp);
-
                     tabRow.addView(imageView);
+                    tabRow.getChildAt(0).setLayoutParams(layoutParams);
+                    tabRow.getChildAt(1).setLayoutParams(layoutParams);
+                    tabRow.getChildAt(2).setLayoutParams(layoutParams2);
                 }
+
                 btn_add.setVisibility(View.INVISIBLE);
                 btn_addMulti.setVisibility(View.INVISIBLE);
 
