@@ -1,6 +1,8 @@
 package com.ntubcase.gift;
 
 import android.app.Dialog;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,7 +52,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
     private EditText et_feedback;
     private Button btn_can, btn_ent;
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
-
+    private int sinListLength = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,8 +141,10 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
                     //----------------------------取得禮物資料----------------------------
                     jsonArray = object.getJSONArray("sinList");
-                    int sinListLength = jsonArray.length();
+                    sinListLength = jsonArray.length();
 
+                    String lastSentTime = jsonArray.getJSONObject(sinListLength -1).getString("sendGiftDate");
+                    whatColor(lastSentTime);
                     for (int i = 0 ; i < sinListLength ; i++){
                         //String sinPlanid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出日期時間
@@ -257,6 +261,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                         try {
                             if (result == null) { return; }
                         } catch (Exception e) {
+
                         }
                     }
                 });
@@ -273,5 +278,18 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         });
 
         mDialog.show();
+    }
+    public void whatColor(String lastSentTime){
+        //欲轉換的日期字串
+        if(checkReceivedTime.checkReceivedTime(lastSentTime)){
+            //-----------解除灰色
+            btn_complete.getBackground().clearColorFilter();
+        }else{
+            //-----------灰色模糊
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            btn_complete.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
+        }
     }
 }

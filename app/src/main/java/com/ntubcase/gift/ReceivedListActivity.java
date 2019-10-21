@@ -2,6 +2,8 @@ package com.ntubcase.gift;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +32,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +59,11 @@ public class ReceivedListActivity extends AppCompatActivity {
 
     private List<String> giftContent=new ArrayList<>();//禮物內容
     private List<String> giftType=new ArrayList<>();//禮物類型
+
+    private String deadline;
+
+    //用來判斷是否為無期限，isDate = 1 為正常日期,isDate = 0 為無期限
+    private boolean isDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +105,8 @@ public class ReceivedListActivity extends AppCompatActivity {
                     }
                 });
 
-                myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
+
+
 
                 Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
             }
@@ -147,14 +158,21 @@ public class ReceivedListActivity extends AppCompatActivity {
                     //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
                     planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
                     //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
-                    String deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
+                    deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
                     String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
 
                     tv_name.setText(planName); //計畫名稱
 
+                    Log.v("deadline",deadline);
                     //截止日期時間
-                    if (deadline.equals("0000-00-00 00:00:00")) tv_deadline.setText("無限制");
-                    else tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
+                    if (deadline.equals("0000-00-00 00:00:00")){
+                        whatColor(false);
+                        tv_deadline.setText("無限制");
+                    }
+                    else {
+                        whatColor(true);
+                        tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
+                    }
 
                     tv_sender.setText(sender); //送禮人
 
@@ -308,5 +326,27 @@ public class ReceivedListActivity extends AppCompatActivity {
         });
 
         mDialog.show();
+    }
+    public void whatColor(Boolean isDate){
+        //欲轉換的日期字串
+        if(isDate){
+            if(checkReceivedTime.checkReceivedTime(deadline)){
+                //-----------灰色模糊
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                btn_complete.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
+
+            }else{
+                //-----------解除灰色
+                btn_complete.getBackground().clearColorFilter();
+            }
+        }else{
+            //------------------檢查打勾是否全部完成
+
+            //------------------上傳資料
+            //myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
+        }
+
     }
 }
