@@ -56,6 +56,7 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
     private EditText et_feedback;
     private Button btn_can, btn_ent;
 
+    private String endDate;
     //-------判斷按鈕是否可按 true = 可
     private Boolean isClick;
     @Override
@@ -213,8 +214,11 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                     jsonArray = object.getJSONArray("mulPlan");
                     //String mulPlanid =jsonArray.getJSONObject(0).getString("mulid");
                     mulPlanName =jsonArray.getJSONObject(0).getString("mulPlanName"); //計畫名稱
+                    endDate =jsonArray.getJSONObject(0).getString("endDate"); //計畫名稱
                     message =jsonArray.getJSONObject(0).getString("message"); //祝福
                     sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
+
+                    isClick = whatColor(endDate);
 
                     et_name.setText(mulPlanName); //計畫名稱
                     et_name.setKeyListener(null);
@@ -362,5 +366,24 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    public Boolean whatColor(String lastSentTime){
+
+        Log.v("deadline",endDate);
+        //截止日期時間
+
+        if(checkReceivedTime.checkReceivedTime(lastSentTime)){
+            //-----------解除灰色
+            btn_complete.getBackground().clearColorFilter();
+            return true;
+        }else{
+            //-----------灰色模糊
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            btn_complete.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
+            return false;
+        }
+
     }
 }

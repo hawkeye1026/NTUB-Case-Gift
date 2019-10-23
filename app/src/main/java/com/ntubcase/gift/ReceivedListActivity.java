@@ -328,6 +328,7 @@ public class ReceivedListActivity extends AppCompatActivity {
         if (deadline.equals("0000-00-00 00:00:00")){
             tv_deadline.setText("無限制");
             //---------------判斷是否勾完
+
             //---------------
             return true;
         }
