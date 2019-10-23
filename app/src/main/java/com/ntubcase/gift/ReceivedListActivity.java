@@ -62,8 +62,8 @@ public class ReceivedListActivity extends AppCompatActivity {
 
     private String deadline;
 
-    //用來判斷是否為無期限，isDate = 1 為正常日期,isDate = 0 為無期限
-    private boolean isDate;
+    //-------判斷按鈕是否可按 true = 可
+    private Boolean isClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class ReceivedListActivity extends AppCompatActivity {
         tv_deadline = findViewById(R.id.tv_deadline);
         btn_reward = findViewById(R.id.btn_reward);
         ll_complete = findViewById(R.id.ll_complete);
-        btn_complete = findViewById(R.id.btn_complete);
+        btn_complete = findViewById(R.id.list_btn_complete);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -104,11 +104,13 @@ public class ReceivedListActivity extends AppCompatActivity {
 
                     }
                 });
+                if(isClick){
+                    myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
+                    Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"禮物還沒全部領取完喔", Toast.LENGTH_SHORT).show();
+                }
 
-
-
-
-                Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -163,16 +165,8 @@ public class ReceivedListActivity extends AppCompatActivity {
 
                     tv_name.setText(planName); //計畫名稱
 
-                    Log.v("deadline",deadline);
-                    //截止日期時間
-                    if (deadline.equals("0000-00-00 00:00:00")){
-                        whatColor(false);
-                        tv_deadline.setText("無限制");
-                    }
-                    else {
-                        whatColor(true);
-                        tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
-                    }
+                    //判斷按鈕顏色
+                    isClick = whatColor(deadline);
 
                     tv_sender.setText(sender); //送禮人
 
@@ -327,26 +321,31 @@ public class ReceivedListActivity extends AppCompatActivity {
 
         mDialog.show();
     }
-    public void whatColor(Boolean isDate){
-        //欲轉換的日期字串
-        if(isDate){
-            if(checkReceivedTime.checkReceivedTime(deadline)){
+    public Boolean whatColor(String lastSentTime){
+
+        Log.v("deadline",deadline);
+        //截止日期時間
+        if (deadline.equals("0000-00-00 00:00:00")){
+            tv_deadline.setText("無限制");
+            //---------------判斷是否勾完
+            //---------------
+            return true;
+        }
+        else {
+            tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
+
+            if(checkReceivedTime.checkReceivedTime(lastSentTime)){
+                //-----------解除灰色
+                btn_complete.getBackground().clearColorFilter();
+                return true;
+            }else{
                 //-----------灰色模糊
                 ColorMatrix matrix = new ColorMatrix();
                 matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
                 btn_complete.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
-
-            }else{
-                //-----------解除灰色
-                btn_complete.getBackground().clearColorFilter();
+                return false;
             }
-        }else{
-            //------------------檢查打勾是否全部完成
-
-            //------------------上傳資料
-            //myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
         }
-
     }
 }

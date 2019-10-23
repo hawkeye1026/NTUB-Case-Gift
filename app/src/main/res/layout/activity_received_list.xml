@@ -131,7 +131,7 @@
             android:visibility="gone">
 
             <Button
-                android:id="@+id/btn_complete"
+                android:id="@+id/list_btn_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_finish"

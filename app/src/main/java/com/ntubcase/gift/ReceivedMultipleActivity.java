@@ -56,6 +56,8 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
     private EditText et_feedback;
     private Button btn_can, btn_ent;
 
+    //-------判斷按鈕是否可按 true = 可
+    private Boolean isClick;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,7 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
         et_message = findViewById(R.id.et_message);
         et_sender = findViewById(R.id.et_sender);
         ll_button = findViewById(R.id.ll_button);
-        btn_complete = findViewById(R.id.btn_complete);
+        btn_complete = findViewById(R.id.muti_btn_complete);
 
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
@@ -94,10 +96,12 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
 
                     }
                 });
-
-                myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
-
-                Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
+                if(isClick){
+                    myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
+                    Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"禮物還沒全部領取完喔", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

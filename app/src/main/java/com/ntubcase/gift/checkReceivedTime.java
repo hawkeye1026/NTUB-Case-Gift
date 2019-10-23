@@ -19,8 +19,11 @@ public class checkReceivedTime {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.v("testtime111", deadline_d + "");
         Date now =new Date();
+
+        Log.v("testtime111", deadline_d + "");
+        Log.v("testtime111", deadline_d.before(now) + "");
+
         //deadline_d < now 為true 否則為false
         if(deadline_d.before(now)){
             Log.v("testtime1", deadline_d + "");

@@ -53,6 +53,10 @@ public class ReceivedSingleActivity extends AppCompatActivity {
     private Button btn_can, btn_ent;
     private SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm");
     private int sinListLength = 0;
+
+    //-------判斷按鈕是否可按 true = 可
+    private Boolean isClick;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +70,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
         tv_name = findViewById(R.id.tv_name);
         tv_sender = findViewById(R.id.tv_sender);
         ll_button = findViewById(R.id.ll_button);
-        btn_complete = findViewById(R.id.btn_complete);
+        btn_complete = findViewById(R.id.sin_btn_complete);
 
         //-----------------------------------------------------------------------
         recycler_view = findViewById(R.id.recycler_view);
@@ -100,10 +104,14 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
                     }
                 });
+                if(isClick){
+                    myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
+                    Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"禮物還沒全部領取完喔", Toast.LENGTH_SHORT).show();
+                }
 
-                myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
 
-                Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -144,7 +152,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                     sinListLength = jsonArray.length();
 
                     String lastSentTime = jsonArray.getJSONObject(sinListLength -1).getString("sendGiftDate");
-                    whatColor(lastSentTime);
+                    isClick = whatColor(lastSentTime);
                     for (int i = 0 ; i < sinListLength ; i++){
                         //String sinPlanid = jsonArray.getJSONObject(i).getString("sinid"); //計畫ID
                         String sinSendGiftDate = jsonArray.getJSONObject(i).getString("sendGiftDate"); //送出日期時間
@@ -279,17 +287,19 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
         mDialog.show();
     }
-    public void whatColor(String lastSentTime){
+    public Boolean whatColor(String lastSentTime){
         //欲轉換的日期字串
         if(checkReceivedTime.checkReceivedTime(lastSentTime)){
             //-----------解除灰色
             btn_complete.getBackground().clearColorFilter();
+            return true;
         }else{
             //-----------灰色模糊
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             btn_complete.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
+            return false;
         }
     }
 }
