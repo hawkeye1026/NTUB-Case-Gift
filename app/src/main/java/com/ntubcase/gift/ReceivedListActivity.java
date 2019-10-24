@@ -1,10 +1,12 @@
 package com.ntubcase.gift;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -92,28 +94,6 @@ public class ReceivedListActivity extends AppCompatActivity {
             planID = bundle.getString("planID");
             showPlanDetail(planID);  //顯示收禮詳細資料
         }
-        Log.v("uploadP",planID +"||"+ userData.getUserID());
-
-        //---------------------------------完成禮物按鈕-----------------------------------
-        btn_complete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                receiveUploadCompleteAsyncTask myAsyncTask = new receiveUploadCompleteAsyncTask(new receiveUploadCompleteAsyncTask.TaskListener() {
-
-                    @Override
-                    public void onFinished(String result) {
-
-                    }
-                });
-                if(isClick){
-                    myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
-                    Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(),"禮物還沒全部領取完喔", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
 
         //----------------------------清單內容RecyclerView------------------------------
         recycler_view = findViewById(R.id.list_recycle_view);  // 設置RecyclerView為列表型態
@@ -140,6 +120,40 @@ public class ReceivedListActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //---------------------------------收禮完成按鈕-----------------------------------
+        btn_complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final receiveUploadCompleteAsyncTask myAsyncTask = new receiveUploadCompleteAsyncTask(new receiveUploadCompleteAsyncTask.TaskListener() {
+                    @Override
+                    public void onFinished(String result) {
+
+                    }
+                });
+                if(isClick){
+                    new AlertDialog.Builder(ReceivedListActivity.this)
+                            .setTitle("您確定要完成收禮嗎?")
+                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
+                                    finish();
+                                }
+                            })
+                            .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"禮物還沒全部領取完喔", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
     }
 
     //------------------------------收禮詳細，顯示plan資料------------------------------
@@ -154,6 +168,31 @@ public class ReceivedListActivity extends AppCompatActivity {
                     }
                     JSONObject object = new JSONObject(result);
                     JSONArray jsonArray;
+
+                    //----------------------------取得任務項目----------------------------
+                    jsonArray = object.getJSONArray("misItem");
+                    int misItemLength = jsonArray.length();
+
+                    Map<String, String> data;
+                    for (int i = 0 ; i < misItemLength ; i++){
+                        String itemNumber = jsonArray.getJSONObject(i).getString("itemNumber"); //項目編號
+                        String itemContent = jsonArray.getJSONObject(i).getString("content"); //項目內容
+
+                        data = new HashMap<String, String>();
+                        data.put("itemNumber", itemNumber);
+                        data.put("itemContent", itemContent);
+                        data.put("itemChecked", "");
+                        missionData.add(data);
+                    }
+
+                    //----------------------------取得任務勾選項目----------------------------
+                    jsonArray = object.getJSONArray("misCheck");
+                    int misCheckLength = jsonArray.length();
+
+                    for (int i = 0 ; i < misCheckLength ; i++){
+                        String itemChecked = jsonArray.getJSONObject(i).getString("itemChecked"); //勾選項目編號
+                        missionData.get(Integer.parseInt(itemChecked)-1).put("itemChecked", itemChecked);
+                    }
 
                     //----------------------------取得計畫資料----------------------------
                     jsonArray = object.getJSONArray("misPlan");
@@ -187,30 +226,6 @@ public class ReceivedListActivity extends AppCompatActivity {
                     jsonArray = object.getJSONArray("record");
                     feedback =jsonArray.getJSONObject(0).getString("feedback");
 
-                    //----------------------------取得任務項目----------------------------
-                    jsonArray = object.getJSONArray("misItem");
-                    int misItemLength = jsonArray.length();
-
-                    Map<String, String> data;
-                    for (int i = 0 ; i < misItemLength ; i++){
-                        String itemNumber = jsonArray.getJSONObject(i).getString("itemNumber"); //項目編號
-                        String itemContent = jsonArray.getJSONObject(i).getString("content"); //項目內容
-
-                        data = new HashMap<String, String>();
-                        data.put("itemNumber", itemNumber);
-                        data.put("itemContent", itemContent);
-                        data.put("itemChecked", "");
-                        missionData.add(data);
-                    }
-
-                    //----------------------------取得任務勾選項目----------------------------
-                    jsonArray = object.getJSONArray("misCheck");
-                    int misCheckLength = jsonArray.length();
-
-                    for (int i = 0 ; i < misCheckLength ; i++){
-                        String itemChecked = jsonArray.getJSONObject(i).getString("itemChecked"); //勾選項目編號
-                        missionData.get(Integer.parseInt(itemChecked)-1).put("itemChecked", itemChecked);
-                    }
                     receivedPlanListAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
@@ -333,26 +348,31 @@ public class ReceivedListActivity extends AppCompatActivity {
 
         mDialog.show();
     }
+
     public Boolean whatColor(String lastSentTime){
 
-        Log.v("deadline",deadline);
-        //截止日期時間
-        if (deadline.equals("0000-00-00 00:00:00")){
+        if (deadline.equals("0000-00-00 00:00:00")){ //----------無時限----------
             tv_deadline.setText("無限制");
-            //---------------判斷是否勾完
 
-            //---------------
+            if (checkIsMissionComplete()) { //判斷是否勾完
+                btn_complete.getBackground().clearColorFilter();
+            }
             return true;
-        }
-        else {
+        }else { //----------有時限----------
             tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
 
             if(checkReceivedTime.checkReceivedTime(lastSentTime)){
-                //-----------解除灰色
-                btn_complete.getBackground().clearColorFilter();
+                //-----時限已過-----
+                btn_complete.getBackground().clearColorFilter(); //解除灰色
                 return true;
             }else{
-                //-----------灰色模糊
+                //-----時限還沒過-----
+
+                if (checkIsMissionComplete()) { //判斷是否勾完
+
+                    btn_complete.getBackground().clearColorFilter();
+                }
+
                 ColorMatrix matrix = new ColorMatrix();
                 matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
@@ -360,5 +380,18 @@ public class ReceivedListActivity extends AppCompatActivity {
                 return false;
             }
         }
+    }
+
+    //-----檢查任務清單是否都完成---
+    private boolean checkIsMissionComplete(){
+        int count=0;
+        for (int i=0; i<missionData.size(); i++){
+            String isCheck = missionData.get(i).get("itemChecked");
+            if (!isClick.equals("")) count++;
+        }
+
+        if (count==missionData.size()) return true;
+
+        return false;
     }
 }
