@@ -111,4 +111,8 @@ public class ReceivedPlanListAdapter extends RecyclerView.Adapter<ReceivedPlanLi
         if (count == missionCheck.size()) return true;
         return false;
     }
+
+    public List<Boolean> getMissionCheck(){
+        return missionCheck;
+    }
 }
