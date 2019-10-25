@@ -45,7 +45,7 @@ import java.util.Map;
 public class ReceivedListActivity extends AppCompatActivity {
 
     private TextView tv_name, tv_sender, tv_deadline;
-    private String planID;
+    private String planID, from;
     private LinearLayout ll_complete;
     private Button btn_complete;
 
@@ -86,7 +86,7 @@ public class ReceivedListActivity extends AppCompatActivity {
         //---------------------------------取得收禮詳細-----------------------------------
         Bundle bundle =getIntent().getExtras();
         if (bundle!=null){
-            String from = bundle.getString("from");
+            from = bundle.getString("from");
             if (!from.equals("GiftReceivedDone")){
                 ll_complete.setVisibility(View.VISIBLE); //進行中禮物才會顯示按鈕
             }
@@ -115,6 +115,8 @@ public class ReceivedListActivity extends AppCompatActivity {
                     bundle.putSerializable("giftType", (Serializable) giftType);
                     intent.putExtras(bundle);
                     startActivity(intent);
+                }else if (receivedPlanListAdapter.isCheckDisable){
+                    Toast.makeText(getApplicationContext(),"任務時限已過", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(),"還有任務未完成喔", Toast.LENGTH_SHORT).show();
                 }
@@ -148,7 +150,7 @@ public class ReceivedListActivity extends AppCompatActivity {
                             })
                             .show();
                 }else{
-                    Toast.makeText(getApplicationContext(),"禮物還沒全部領取完喔", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"尚未完成任務喔", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -168,6 +170,34 @@ public class ReceivedListActivity extends AppCompatActivity {
                     }
                     JSONObject object = new JSONObject(result);
                     JSONArray jsonArray;
+
+                    //----------------------------取得計畫資料----------------------------
+                    jsonArray = object.getJSONArray("misPlan");
+                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
+                    //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
+                    planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
+                    //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
+                    deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
+                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
+
+                    tv_name.setText(planName); //計畫名稱
+                    tv_sender.setText(sender); //送禮人
+
+                    //----------------------------取得禮物資料----------------------------
+                    jsonArray = object.getJSONArray("misList");
+                    int misListLength = jsonArray.length();
+
+                    giftContent=new ArrayList<>();//禮物內容
+                    giftType=new ArrayList<>();//禮物類型
+
+                    for (int i = 0 ; i < misListLength ; i++){
+                        giftContent.add(jsonArray.getJSONObject(i).getString("gift")); //禮物內容
+                        giftType.add(jsonArray.getJSONObject(i).getString("type")); //禮物類型
+                    }
+
+                    //----------------------------取得feedback----------------------------
+                    jsonArray = object.getJSONArray("record");
+                    feedback =jsonArray.getJSONObject(0).getString("feedback");
 
                     //----------------------------取得任務項目----------------------------
                     jsonArray = object.getJSONArray("misItem");
@@ -194,38 +224,7 @@ public class ReceivedListActivity extends AppCompatActivity {
                         missionData.get(Integer.parseInt(itemChecked)-1).put("itemChecked", itemChecked);
                     }
 
-                    //----------------------------取得計畫資料----------------------------
-                    jsonArray = object.getJSONArray("misPlan");
-                    //String misPlanid =jsonArray.getJSONObject(0).getString("misid"); //計畫ID
-                    //String misCreateDate = jsonArray.getJSONObject(0).getString("createDate"); //計畫建立日期
-                    planName =jsonArray.getJSONObject(0).getString("misPlanName"); //計畫名稱
-                    //String misSendPlanDate = jsonArray.getJSONObject(0).getString("sendPlanDate").substring(0,10); //送禮日期
-                    deadline = jsonArray.getJSONObject(0).getString("deadline"); //截止日期時間
-                    String sender = jsonArray.getJSONObject(0).getString("nickname"); //送禮人
-
-                    tv_name.setText(planName); //計畫名稱
-
-                    //判斷按鈕顏色
-                    isClick = whatColor(deadline);
-
-                    tv_sender.setText(sender); //送禮人
-
-                    //----------------------------取得禮物資料----------------------------
-                    jsonArray = object.getJSONArray("misList");
-                    int misListLength = jsonArray.length();
-
-                    giftContent=new ArrayList<>();//禮物內容
-                    giftType=new ArrayList<>();//禮物類型
-
-                    for (int i = 0 ; i < misListLength ; i++){
-                        giftContent.add(jsonArray.getJSONObject(i).getString("gift")); //禮物內容
-                        giftType.add(jsonArray.getJSONObject(i).getString("type")); //禮物類型
-                    }
-
-                    //----------------------------取得feedback----------------------------
-                    jsonArray = object.getJSONArray("record");
-                    feedback =jsonArray.getJSONObject(0).getString("feedback");
-
+                    isClick = whatColor(deadline); //判斷按鈕顏色
                     receivedPlanListAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
@@ -349,37 +348,60 @@ public class ReceivedListActivity extends AppCompatActivity {
         mDialog.show();
     }
 
-    public Boolean whatColor(String lastSentTime){
+    //----------------------------判斷按鈕顏色----------------------------
+    private boolean whatColor(String lastSentTime){
 
-        if (deadline.equals("0000-00-00 00:00:00")){ //----------無時限----------
+        btn_reward.getBackground().clearColorFilter();
+
+        if (from.equals("GiftReceivedDone")){
+            receivedPlanListAdapter.isCheckDisable=true; //checkbox不可選取
+            if (!checkIsMissionComplete()) btn_reward.setVisibility(View.INVISIBLE);
+        }
+
+        if (lastSentTime.equals("0000-00-00 00:00:00")){ //---------------無時限---------------
             tv_deadline.setText("無限制");
 
             if (checkIsMissionComplete()) { //判斷是否勾完
                 btn_complete.getBackground().clearColorFilter();
-            }
-            return true;
-        }else { //----------有時限----------
-            tv_deadline.setText(deadline.substring(0,16)); //截止日期時間
-
-            if(checkReceivedTime.checkReceivedTime(lastSentTime)){
-                //-----時限已過-----
-                btn_complete.getBackground().clearColorFilter(); //解除灰色
                 return true;
             }else{
-                //-----時限還沒過-----
-
-                if (checkIsMissionComplete()) { //判斷是否勾完
-
-                    btn_complete.getBackground().clearColorFilter();
-                }
-
                 ColorMatrix matrix = new ColorMatrix();
                 matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
                 btn_complete.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
                 return false;
             }
+        }else { //---------------有時限---------------
+            tv_deadline.setText(lastSentTime.substring(0,16));
+
+            if(checkReceivedTime.checkReceivedTime(lastSentTime)){
+                //----------時限已過----------
+                btn_complete.getBackground().clearColorFilter(); //解除灰色
+                receivedPlanListAdapter.isCheckDisable=true; //checkbox不可選取
+
+                if (!checkIsMissionComplete()) { //判斷是否勾完
+                    ColorMatrix matrix = new ColorMatrix();
+                    matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
+                    ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                    btn_reward.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
+                }
+                return true;
+
+            }else{
+                //----------時限還沒過----------
+                if (checkIsMissionComplete()) { //判斷是否勾完
+                    btn_complete.getBackground().clearColorFilter();
+                    return true;
+                }else{
+                    ColorMatrix matrix = new ColorMatrix();
+                    matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
+                    ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                    btn_complete.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
+                    return false;
+                }
+            }
         }
+
     }
 
     //-----檢查任務清單是否都完成---
@@ -387,11 +409,12 @@ public class ReceivedListActivity extends AppCompatActivity {
         int count=0;
         for (int i=0; i<missionData.size(); i++){
             String isCheck = missionData.get(i).get("itemChecked");
-            if (!isClick.equals("")) count++;
+            if (!isCheck.equals("")) count++;
         }
 
         if (count==missionData.size()) return true;
 
         return false;
     }
+
 }
