@@ -345,6 +345,7 @@ public class ReceivedListActivity extends AppCompatActivity {
                 matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
                 btn_complete.getBackground().setColorFilter(filter);  //-----按鈕顯示灰階-----
+
                 return false;
             }
         }

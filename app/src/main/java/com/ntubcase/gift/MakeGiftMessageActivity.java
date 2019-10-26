@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,7 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
     private Button btn_save, btn_directly_send;
     private static EditText et_giftName, et_giftContent;
 
-    private static String giftName, giftContent;
+    private static String giftName, giftContent = "";
 
     protected static Date date =new Date();
     protected static String owner = userData.getUserID();
@@ -73,6 +74,10 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(giftContent.trim().equals("")){
+                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
@@ -86,14 +91,19 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(giftContent.trim().equals("")){
+                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
                 uploadGift(v);
+                Intent intent;
+                intent = new Intent(MakeGiftMessageActivity.this, SendGiftDirectlyActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
-            Intent intent;
-            intent = new Intent(MakeGiftMessageActivity.this, SendGiftDirectlyActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+
         }
     };
 
@@ -122,6 +132,8 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
     public void uploadGift(View v) {
         giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
         giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
+
+
 
         if(giftid > 0){
             //------------------------------更新禮物資料

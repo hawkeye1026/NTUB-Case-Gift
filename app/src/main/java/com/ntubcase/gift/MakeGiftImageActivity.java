@@ -107,7 +107,8 @@ public class MakeGiftImageActivity extends AppCompatActivity {
 
             old_giftContent = getGiftList.getGift(position).replace(owner+"/","");
 
-            Log.v("gift",Common.imgPath + getGiftList.getGift(position));
+            cam_imageUri = imageURI;
+
             Picasso.get().load(imageURI).into(iv_image);
             //-------存入禮物詳細的editText
             et_giftName.setText( getGiftList.getGiftName(position));
@@ -173,6 +174,10 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(cam_imageUri == null){
+                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
@@ -187,15 +192,19 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-         
+            if(cam_imageUri == null){
+                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
                 uploadImage(v);
+                Intent intent;
+                intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
-            Intent intent;
-            intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+
         }
     };
     //-------------------------------結束直接送禮按鈕 監聽器----------------------------------------
