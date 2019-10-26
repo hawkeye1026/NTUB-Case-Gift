@@ -97,7 +97,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend);
         tv_message = (TextView) findViewById(R.id.tv_message);
         tv_receiveFriend.setText("To. " + receiveFriend);   //-----顯示收禮人-----
-        tv_message.setText("留言: "+message); //-----顯示祝福-----
+        tv_message.setText("祝福: "+message); //-----顯示祝福-----
 
         //------選擇禮物用-----
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){

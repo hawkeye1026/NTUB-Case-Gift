@@ -48,8 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/bg_finish_received"
-            android:text="領取禮物"/>
+            android:background="@drawable/bg_reward"/>
 
         <TextView
             android:id="@+id/tv_reward_time"

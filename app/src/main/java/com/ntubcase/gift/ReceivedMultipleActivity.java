@@ -235,7 +235,7 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
 
                     et_name.setText(mulPlanName); //計畫名稱
                     et_name.setKeyListener(null);
-                    et_message.setText("留言："+message); //祝福
+                    et_message.setText("祝福："+message); //祝福
                     et_message.setKeyListener(null);
                     et_sender.setText("送禮人："+sender); //送禮人
                     et_sender.setKeyListener(null);
