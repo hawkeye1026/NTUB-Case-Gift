@@ -63,7 +63,6 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
 
     @Override
     public void onBindViewHolder(final GiftReceivedProcessAdapter.ViewHolder holder, final int position) {
-        holder.image.setImageResource(R.drawable.opengift);
         holder.giftName.setText(re_giftList.get(position).get("title").toString());
         holder.sender.setText(re_giftList.get(position).get("sender").toString());
         holder.date.setText(re_giftList.get(position).get("date").toString());

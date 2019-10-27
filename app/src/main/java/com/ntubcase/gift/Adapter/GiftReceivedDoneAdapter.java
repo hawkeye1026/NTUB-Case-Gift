@@ -71,7 +71,6 @@ public class GiftReceivedDoneAdapter extends RecyclerView.Adapter<com.ntubcase.g
 
     @Override
     public void onBindViewHolder(final com.ntubcase.gift.Adapter.GiftReceivedDoneAdapter.ViewHolder holder, final int position) {
-        holder.image.setImageResource(R.drawable.opengift);
         holder.giftName.setText(re_giftList.get(position).get("title").toString());
         holder.sender.setText(re_giftList.get(position).get("sender").toString());
         holder.date.setText(re_giftList.get(position).get("date").toString());
