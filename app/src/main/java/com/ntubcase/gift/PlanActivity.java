@@ -1,6 +1,7 @@
 package com.ntubcase.gift;
 
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -54,7 +55,13 @@ public class PlanActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:  //說明鈕
-                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(this, HelpActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("from", "PlanActivity");
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
