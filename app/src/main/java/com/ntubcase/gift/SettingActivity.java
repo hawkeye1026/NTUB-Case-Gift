@@ -31,7 +31,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 public class SettingActivity extends AppCompatActivity {
 
     ImageView mUserPhoto;
-    TextView mNickname,mMail,mBirthday;
+    TextView mNickname,mMail;
     ImageView mQrcode,mLogout;
 
     String ownerEmail = userData.getUserMail();
@@ -48,10 +48,8 @@ public class SettingActivity extends AppCompatActivity {
         mUserPhoto = (ImageView) findViewById(R.id.iv_pic);
         mNickname = (TextView) findViewById(R.id.et_nickname);
         mMail = (TextView) findViewById(R.id.et_mail);
-        mBirthday = (TextView) findViewById(R.id.et_birthday);
         mNickname.setInputType(InputType.TYPE_NULL);
         mMail.setInputType(InputType.TYPE_NULL);
-        mBirthday.setInputType(InputType.TYPE_NULL);
 
         //-------顯示使用者頭像
         Uri imageURI = userData.getUserPhotoUri();
@@ -64,13 +62,10 @@ public class SettingActivity extends AppCompatActivity {
         //-------顯示使用者個人資料
         mNickname.setText(userData.getUserName());
         mMail.setText(userData.getUserMail());
-        mBirthday.setText(userData.getUserBirthday());
-
 
         //------設置
         mLogout = (ImageView)findViewById(R.id.iv_logout);
         mQrcode = (ImageView)findViewById(R.id.iv_qrcode);
-
 
         String portal = userData.getLoginPortal();
 

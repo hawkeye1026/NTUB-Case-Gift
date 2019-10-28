@@ -16,8 +16,8 @@ public class googleAccount {
 
     private static GoogleSignInClient mGoogleSignInClient;
 
-    public googleAccount(String user_name, String user_birthday, String user_mail, Uri user_photo_uri){
-        new userData( user_name, user_birthday,  user_mail, user_photo_uri,"google");
+    public googleAccount(String user_name, String user_mail, Uri user_photo_uri){
+        new userData( user_name,  user_mail, user_photo_uri,"google");
           googleAccount.user_name = user_name;
           googleAccount.user_mail = user_mail;
           googleAccount.user_photo_uri = user_photo_uri;

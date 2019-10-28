@@ -98,37 +98,11 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/birthday" />
-
-                <EditText
-                    android:id="@+id/et_birthday"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:hint="birthday"
-                    android:inputType="none"
-                    android:textSize="16sp"/>
-
-            </LinearLayout>
-
-
             <ImageView
                 android:id="@+id/iv_qrcode"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_marginTop="10dp" />
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="15dp" />
 
         </LinearLayout>
     </ScrollView>

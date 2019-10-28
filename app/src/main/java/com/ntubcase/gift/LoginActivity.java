@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements
         //---------------判斷用戶是否登入過---------------
         mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
         String user_name = mSharedPreferences.getString("user_name", "no data");
-        String user_birthday = mSharedPreferences.getString("user_birthday", "no data");
         String user_mail = mSharedPreferences.getString("user_mail", "no data");
         String user_photo_uri = mSharedPreferences.getString("user_photo_uri", "no data");
         String user_id = mSharedPreferences.getString("user_id", "no data");
@@ -75,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         if (login_portal.equals("google")) { //---已登入google---
             //-----建立userData-----
-            new googleAccount(user_name, user_birthday, user_mail, Uri.parse(user_photo_uri));
+            new googleAccount(user_name, user_mail, Uri.parse(user_photo_uri));
             userData.setUserID(user_id);
 
             //-----setGoogleSignInClient-----
@@ -92,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements
             finish();
         }else if (login_portal.equals("FB")) { //---已登入fb---
             //-----建立userData-----
-            new facebookAccount(user_name, user_birthday, user_mail, Uri.parse(user_photo_uri));
+            new facebookAccount(user_name, user_mail, Uri.parse(user_photo_uri));
             userData.setUserID(user_id);
 
             //-----進入首頁-----
@@ -152,12 +151,11 @@ public class LoginActivity extends AppCompatActivity implements
             mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
             mSharedPreferences.edit()
                     .putString("user_name", user_name)
-                    .putString("user_birthday", "1998/05/12")
                     .putString("user_mail", user_mail)
                     .putString("user_photo_uri", user_photoUri)
                     .putString("login_portal","google")
                     .commit();
-            new googleAccount(user_name, "1998/05/12", user_mail, Uri.parse(user_photoUri));
+            new googleAccount(user_name, user_mail, Uri.parse(user_photoUri));
 
             //---上傳資料---
             loginAsyncTask loginAsyncTask = new loginAsyncTask(new loginAsyncTask.TaskListener() {
@@ -184,7 +182,7 @@ public class LoginActivity extends AppCompatActivity implements
                     }
                 }
             });
-            loginAsyncTask.execute(Common.login , userData.getUserMail(), userData.getUserName() ,userData.getUserBirthday() ,userData.getUserPhotoUri().toString());
+            loginAsyncTask.execute(Common.login , userData.getUserMail(), userData.getUserName(), userData.getUserPhotoUri().toString());
 
             //-----若確認已登入，直接進入首頁-----
             Intent intent;
@@ -227,7 +225,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         LoginButton fbLoginButton = (LoginButton) findViewById(R.id.login_button);
         fbLoginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email", "user_birthday")); //要取得的權限
+                "public_profile", "email")); //要取得的權限
 
         // Callback registration
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -248,12 +246,11 @@ public class LoginActivity extends AppCompatActivity implements
                                     mSharedPreferences = getSharedPreferences("LoginData", MODE_PRIVATE);
                                     mSharedPreferences.edit()
                                             .putString("user_name", user_name)
-                                            .putString("user_birthday", "1991/01/01")
                                             .putString("user_mail", user_mail)
                                             .putString("user_photo_uri", "http://graph.facebook.com/"+user_id+"/picture?type=large")
                                             .putString("login_portal","FB")
                                             .commit();
-                                    new facebookAccount(user_name, "1991/01/01", user_mail, user_photo_uri);
+                                    new facebookAccount(user_name, user_mail, user_photo_uri);
 
                                     //---上傳資料---
                                     loginAsyncTask loginAsyncTask = new loginAsyncTask(new loginAsyncTask.TaskListener() {
@@ -280,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements
                                             }
                                         }
                                     });
-                                    loginAsyncTask.execute(Common.login , userData.getUserMail(), userData.getUserName() ,userData.getUserBirthday() ,userData.getUserPhotoUri().toString());
+                                    loginAsyncTask.execute(Common.login , userData.getUserMail(), userData.getUserName(), userData.getUserPhotoUri().toString());
 
                                     //-----若確認已登入，直接進入首頁-----
                                     Intent intent;
