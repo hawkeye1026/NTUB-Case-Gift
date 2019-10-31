@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -813,13 +815,31 @@ public class MakePlanSingleActivity extends AppCompatActivity {
         planDetailAsyncTask.execute(Common.planList , sender, planID);
     }
 
+    //-----------------------------------------------------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     //-----------------------------------------------------------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { //toolbar返回建
-            finish();
-            return true;
+        switch (item.getItemId()){
+            case android.R.id.home: //toolbar返回建
+                finish();
+                return true;
+            case R.id.action_help:  //說明鈕
+                Intent intent;
+                intent = new Intent(this, HelpActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("from", "PlanSingleActivity");
+                intent.putExtras(bundle);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -153,6 +153,7 @@ public class FriendActivity extends AppCompatActivity {
         });
     }
 
+    //-----------------------------------------------------------------------------------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -166,7 +167,13 @@ public class FriendActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:  //說明鈕
-                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(this, HelpActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("from", "FriendActivity");
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

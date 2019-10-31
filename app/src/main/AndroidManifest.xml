@@ -159,7 +159,8 @@
         <!-- 說明頁 -->
         <activity
             android:name=".HelpActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!-- QRcode掃描 -->
         <activity

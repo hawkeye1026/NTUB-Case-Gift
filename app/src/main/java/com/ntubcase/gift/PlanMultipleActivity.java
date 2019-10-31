@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +98,7 @@ public class PlanMultipleActivity extends AppCompatActivity {
         tv_receiveFriend = (TextView) findViewById(R.id.tv_receiveFriend);
         tv_message = (TextView) findViewById(R.id.tv_message);
         tv_receiveFriend.setText("To. " + receiveFriend);   //-----顯示收禮人-----
-        tv_message.setText("留言: "+message); //-----顯示祝福-----
+        tv_message.setText("祝福: "+message); //-----顯示祝福-----
 
         //------選擇禮物用-----
         for(int i = 0 ; i < getGiftList.getGiftLength();i++){
@@ -532,18 +533,36 @@ public class PlanMultipleActivity extends AppCompatActivity {
     }
 
     private static final int FINISH_ACTIVITY = 2;
+
+    //-----------------------------------------------------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){ //toolbar返回建
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("selectDates", (Serializable) selectDates);
-            intent.putExtras(bundle);
+        switch (item.getItemId()){
+            case android.R.id.home: //toolbar返回建
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("selectDates", (Serializable) selectDates);
+                intent.putExtras(bundle);
 
-            setResult(RESULT_OK, intent);    //-----回傳資料-----
-            finish();
-            return true;
+                setResult(RESULT_OK, intent);    //-----回傳資料-----
+                finish();
+                return true;
+            case R.id.action_help:  //說明鈕
+                Intent help_intent = new Intent(this, HelpActivity.class);
+                Bundle help_bundle = new Bundle();
+
+                help_bundle.putString("from", "PlanMultiActivity");
+                help_intent.putExtras(help_bundle);
+                startActivity(help_intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

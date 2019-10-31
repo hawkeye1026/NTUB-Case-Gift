@@ -8,8 +8,6 @@ public class userData {
     private static String user_id;
     //使用者名稱
     private static String user_name;
-    //使用者生日
-    private static String user_birthday;
     //使用者MAIL
     private static String user_mail;
     //使用者照片位置
@@ -17,9 +15,8 @@ public class userData {
     //登入途徑
     private static String loginPortal;
 
-    public userData(String user_name, String user_birthday, String user_mail, Uri user_photo_uri, String loginPortal){
+    public userData(String user_name, String user_mail, Uri user_photo_uri, String loginPortal){
         userData.user_name = user_name;
-        userData.user_birthday = user_birthday;
         userData.user_mail = user_mail;
         userData.user_photo_uri = user_photo_uri;
         userData.loginPortal = loginPortal;
@@ -34,9 +31,6 @@ public class userData {
     }
     public static String getUserName(){
         return user_name;
-    }
-    public static String getUserBirthday(){
-        return user_birthday;
     }
     public static String getUserMail(){
         return user_mail;

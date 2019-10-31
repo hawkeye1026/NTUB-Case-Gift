@@ -21,6 +21,7 @@ public class ReceivedPlanListAdapter extends RecyclerView.Adapter<ReceivedPlanLi
     private List<Boolean> missionCheck = new ArrayList<Boolean>();
 
     private OnItemClickListener mOnItemClickListener;
+    public boolean isCheckDisable=false; //checkbox是否取消可選取
 
     public ReceivedPlanListAdapter(List<Map<String, String>> data) {
         missionData = data;
@@ -77,6 +78,8 @@ public class ReceivedPlanListAdapter extends RecyclerView.Adapter<ReceivedPlanLi
             holder.checkBox.setChecked(true);
             missionCheck.add(true);
         }
+
+        if (isCheckDisable) holder.checkBox.setEnabled(false); //checkbox是否可選取
 
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

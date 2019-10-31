@@ -1,9 +1,11 @@
 package com.ntubcase.gift;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -93,11 +95,11 @@ public class ReceivedSingleActivity extends AppCompatActivity {
             showPlanDetail(planID);  //顯示收禮詳細資料
         }
 
-        //---------------------------------完成禮物按鈕-----------------------------------
+        //---------------------------------收禮完成按鈕-----------------------------------
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                receiveUploadCompleteAsyncTask myAsyncTask = new receiveUploadCompleteAsyncTask(new receiveUploadCompleteAsyncTask.TaskListener() {
+                final receiveUploadCompleteAsyncTask myAsyncTask = new receiveUploadCompleteAsyncTask(new receiveUploadCompleteAsyncTask.TaskListener() {
 
                     @Override
                     public void onFinished(String result) {
@@ -105,8 +107,21 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                     }
                 });
                 if(isClick){
-                    myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
-                    Toast.makeText(getApplicationContext(),"完成此份禮物", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(ReceivedSingleActivity.this)
+                            .setTitle("您確定要完成收禮嗎?")
+                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    myAsyncTask.execute(Common.updateComplete, planID, userData.getUserID());
+                                    finish();
+                                }
+                            })
+                            .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
                 }else{
                     Toast.makeText(getApplicationContext(),"禮物還沒全部領取完喔", Toast.LENGTH_SHORT).show();
                 }
@@ -287,6 +302,7 @@ public class ReceivedSingleActivity extends AppCompatActivity {
 
         mDialog.show();
     }
+
     public Boolean whatColor(String lastSentTime){
         //欲轉換的日期字串
         if(checkReceivedTime.checkReceivedTime(lastSentTime)){

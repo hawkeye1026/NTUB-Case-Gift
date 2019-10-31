@@ -1,12 +1,14 @@
 package com.ntubcase.gift;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -206,15 +208,33 @@ public class SendGiftDirectlyActivity extends AppCompatActivity {
     };
 
     private static final int FINISH_ACTIVITY = 22;
-    //------------------------------------------------------------------------------------------
+
+    //-----------------------------------------------------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){ //toolbar返回建
-            setResult(RESULT_OK);
-            finish();
-            return true;
+        switch (item.getItemId()){
+            case android.R.id.home: //toolbar返回建
+                setResult(RESULT_OK);
+                finish();
+                return true;
+            case R.id.action_help:  //說明鈕
+                Intent intent;
+                intent = new Intent(this, HelpActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("from", "SendGiftDirectlyActivity");
+                intent.putExtras(bundle);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     public void onStop() {

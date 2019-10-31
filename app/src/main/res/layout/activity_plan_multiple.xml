@@ -67,7 +67,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="15dp"
-            android:hint="留言"
+            android:hint="祝福"
             android:textSize="16sp"
             android:singleLine="true"/>
 

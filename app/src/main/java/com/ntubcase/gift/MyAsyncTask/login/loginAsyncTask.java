@@ -66,8 +66,7 @@ public class loginAsyncTask extends AsyncTask<String, Integer, String> {
             String args =
                     "mail=" + URLEncoder.encode(params[1], "UTF-8")+
                     "&nickname=" + URLEncoder.encode(params[2], "UTF-8" )+
-                    "&birthday=" + URLEncoder.encode(params[3], "UTF-8" )+
-                    "&image=" + URLEncoder.encode(params[4], "UTF-8" );
+                    "&image=" + URLEncoder.encode(params[3], "UTF-8" );
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
