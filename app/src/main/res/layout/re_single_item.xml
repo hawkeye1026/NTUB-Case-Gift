@@ -29,16 +29,23 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
+
+        <EditText
             android:id="@+id/txtMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="10dp"
             android:layout_weight="0.35"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="#5471FD"
-            android:textSize="16sp" />
+            android:paddingRight="10dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:hint="無留言"
+            android:maxLines="3"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:background="@null"/>
 
         <TextView
             android:id="@+id/txtLockTime"
