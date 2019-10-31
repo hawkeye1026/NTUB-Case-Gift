@@ -278,6 +278,10 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if( maincode_array.trim().equals("") || matchcode_array.trim().equals("")){
+                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
@@ -291,14 +295,20 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if( maincode_array.trim().equals("") || matchcode_array.trim().equals("")){
+                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
-                Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "請輸入禮物名稱", Toast.LENGTH_SHORT).show();
             }else{
                 uploadGift(v);
+                Intent intent;
+                intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
-            Intent intent;
-            intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+
         }
     };
 
