@@ -59,6 +59,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:orientation="horizontal">
 
@@ -79,10 +80,11 @@
                     android:hint="選擇收禮人" />
             </LinearLayout>
 
-            <!--收禮人-->
+            <!--留言-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:orientation="horizontal">
 
@@ -97,9 +99,14 @@
                     android:id="@+id/add_direct_message"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_weight="0.9"
-                    android:hint="留言" />
+                    android:hint="留言"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:scrollbars="vertical"
+                    android:singleLine="false"
+                    android:background="@drawable/bg_message"/>
             </LinearLayout>
 
         </LinearLayout>
