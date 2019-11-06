@@ -26,11 +26,11 @@ public class HelpActivity extends AppCompatActivity implements ViewPager.OnPageC
     private ImageView[] dots;
 
     //------------說明圖------------
-    //禮物 清單
+    //禮物清單
     private static int[] giftPics = { R.drawable.help_gift_1,R.drawable.help_gift_2,R.drawable.help_gift_3};
-//    //禮物 直接送禮
-//    private static int[] giftDirectPics = { R.drawable.help_gift_direct_1,R.drawable.help_gift_direct_2};
-    //計畫 清單
+    //禮物 直接送禮
+    private static int[] giftDirectPics = { R.drawable.help_gift_direct_1};
+    //計畫清單
     private static int[] planPics = { R.drawable.help_plan_1,R.drawable.help_plan_2,R.drawable.help_plan_3,R.drawable.help_plan_4};
     //計畫 單日
     private static int[] planSinPics = { R.drawable.help_plan_sin_1,R.drawable.help_plan_sin_2};
@@ -38,12 +38,20 @@ public class HelpActivity extends AppCompatActivity implements ViewPager.OnPageC
     private static int[] planMulPics = { R.drawable.help_plan_mul_1,R.drawable.help_plan_mul_2,R.drawable.help_plan_mul_3};
     //計畫 任務
     private static int[] planMisPics = { R.drawable.help_plan_mis_1,R.drawable.help_plan_mis_2};
-//    //收禮
-//    private static int[] receivedPics = { R.drawable.help_received_1,R.drawable.help_received_2};
-//    //好友
-//    private static int[] friendPics = { R.drawable.help_friend_1,R.drawable.help_friend_2};
-//    //設定
-//    private static int[] settingPics = { R.drawable.help_setting_1,R.drawable.help_setting_2};
+    //收禮清單
+    private static int[] receivedPics = { R.drawable.help_received_1,R.drawable.help_received_2,R.drawable.help_received_3};
+    //收禮 單日
+    private static int[] receivedSinPics = { R.drawable.help_received_sin_1,R.drawable.help_received_sin_2,R.drawable.help_received_sin_3};
+    //收禮 多日
+    private static int[] receivedMulPics = { R.drawable.help_received_mul_1,R.drawable.help_received_mul_2,R.drawable.help_received_mul_3};
+    //收禮 任務
+    private static int[] receivedMisPics = { R.drawable.help_received_mis_1,R.drawable.help_received_mis_2};
+    //好友
+    private static int[] friendPics = { R.drawable.help_friend_1};
+    //加好友
+    private static int[] friendAddPics = {R.drawable.help_friend_2};
+    //設定
+    private static int[] settingPics = { R.drawable.help_setting_1};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +78,16 @@ public class HelpActivity extends AppCompatActivity implements ViewPager.OnPageC
                     mViews.add(iv);
                 }
                 break;
-//            case "SendGiftDirectlyActivity": //禮物 直接送禮
-//                for (int i=0; i<giftDirectPics.length; i++){
-//                    ImageView iv = new ImageView(this);
-//                    iv.setLayoutParams(mParams);
-//                    iv.setImageResource(giftDirectPics[i]);
-//                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//
-//                    mViews.add(iv);
-//                }
-//                break;
+            case "SendGiftDirectlyActivity": //禮物 直接送禮
+                for (int i=0; i<giftDirectPics.length; i++){
+                    ImageView iv = new ImageView(this);
+                    iv.setLayoutParams(mParams);
+                    iv.setImageResource(giftDirectPics[i]);
+                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    mViews.add(iv);
+                }
+                break;
             case "PlanActivity":  //計畫 清單
                 for (int i=0; i<planPics.length; i++){
                     ImageView iv = new ImageView(this);
@@ -120,36 +128,76 @@ public class HelpActivity extends AppCompatActivity implements ViewPager.OnPageC
                     mViews.add(iv);
                 }
                 break;
-//            case "GiftReceivedActivity":  //收禮
-//                for (int i=0; i<receivedPics.length; i++){
-//                    ImageView iv = new ImageView(this);
-//                    iv.setLayoutParams(mParams);
-//                    iv.setImageResource(receivedPics[i]);
-//                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//
-//                    mViews.add(iv);
-//                }
-//                break;
-//            case "FriendActivity":  //好友
-//                for (int i=0; i<friendPics.length; i++){
-//                    ImageView iv = new ImageView(this);
-//                    iv.setLayoutParams(mParams);
-//                    iv.setImageResource(friendPics[i]);
-//                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//
-//                    mViews.add(iv);
-//                }
-//                break;
-//            case "SettingActivity":  //設定
-//                for (int i=0; i<settingPics.length; i++){
-//                    ImageView iv = new ImageView(this);
-//                    iv.setLayoutParams(mParams);
-//                    iv.setImageResource(settingPics[i]);
-//                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//
-//                    mViews.add(iv);
-//                }
-//                break;
+            case "GiftReceivedActivity":  //收禮
+                for (int i=0; i<receivedPics.length; i++){
+                    ImageView iv = new ImageView(this);
+                    iv.setLayoutParams(mParams);
+                    iv.setImageResource(receivedPics[i]);
+                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    mViews.add(iv);
+                }
+                break;
+            case "ReceivedSingleActivity":  //收禮 單日
+                for (int i=0; i<receivedSinPics.length; i++){
+                    ImageView iv = new ImageView(this);
+                    iv.setLayoutParams(mParams);
+                    iv.setImageResource(receivedSinPics[i]);
+                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    mViews.add(iv);
+                }
+                break;
+            case "ReceivedMultipleActivity":  //收禮 多日
+                for (int i=0; i<receivedMulPics.length; i++){
+                    ImageView iv = new ImageView(this);
+                    iv.setLayoutParams(mParams);
+                    iv.setImageResource(receivedMulPics[i]);
+                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    mViews.add(iv);
+                }
+                break;
+            case "ReceivedListActivity":  //收禮 任務
+                for (int i=0; i<receivedMisPics.length; i++){
+                    ImageView iv = new ImageView(this);
+                    iv.setLayoutParams(mParams);
+                    iv.setImageResource(receivedMisPics[i]);
+                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    mViews.add(iv);
+                }
+                break;
+            case "FriendActivity":  //好友
+                for (int i=0; i<friendPics.length; i++){
+                    ImageView iv = new ImageView(this);
+                    iv.setLayoutParams(mParams);
+                    iv.setImageResource(friendPics[i]);
+                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    mViews.add(iv);
+                }
+                break;
+            case "FriendAddActivity":  //加好友
+                for (int i=0; i<friendAddPics.length; i++){
+                    ImageView iv = new ImageView(this);
+                    iv.setLayoutParams(mParams);
+                    iv.setImageResource(friendAddPics[i]);
+                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    mViews.add(iv);
+                }
+                break;
+            case "SettingActivity":  //設定
+                for (int i=0; i<settingPics.length; i++){
+                    ImageView iv = new ImageView(this);
+                    iv.setLayoutParams(mParams);
+                    iv.setImageResource(settingPics[i]);
+                    iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    mViews.add(iv);
+                }
+                break;
         }
 
         mViewPager.setAdapter(new ReceivedPagerAdapter(mViews));

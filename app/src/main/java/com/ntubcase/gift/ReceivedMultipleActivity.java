@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.LightingColorFilter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -371,7 +370,13 @@ public class ReceivedMultipleActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:  //說明鈕
-                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(this, HelpActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("from", "ReceivedMultipleActivity");
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
             case R.id.action_feedback:  //填寫回饋鈕
                 writeFeedback();

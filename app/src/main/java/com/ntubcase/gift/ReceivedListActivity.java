@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,10 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -297,7 +293,13 @@ public class ReceivedListActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:  //說明鈕
-                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(this, HelpActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("from", "ReceivedListActivity");
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
             case R.id.action_feedback:  //填寫回饋鈕
                 writeFeedback();

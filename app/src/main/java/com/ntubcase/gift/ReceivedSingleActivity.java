@@ -2,6 +2,7 @@ package com.ntubcase.gift;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.app.ActionBar;
@@ -251,7 +252,13 @@ public class ReceivedSingleActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:  //說明鈕
-                Toast.makeText(this, "顯示說明圖", Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(this, HelpActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("from", "ReceivedSingleActivity");
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
             case R.id.action_feedback:  //填寫回饋鈕
                 writeFeedback();
