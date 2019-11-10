@@ -161,6 +161,11 @@ public class ReceivedShowGiftActivity extends AppCompatActivity implements ViewP
 
     }
 
+    public void onStop(){
+
+        super.onStop();
+    }
+
     @Override
     public void onPageSelected(int position) {
         dots[position].setBackgroundResource(R.drawable.ic_dot_red); //選中的view的圓點
