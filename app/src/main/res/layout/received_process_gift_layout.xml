@@ -13,6 +13,12 @@
     app:cardCornerRadius="5dp"
     app:cardElevation="0px">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/checked" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
