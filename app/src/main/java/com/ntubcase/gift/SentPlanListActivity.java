@@ -137,12 +137,7 @@ public class SentPlanListActivity extends AppCompatActivity{
             }
         });
         btnCan = dialog.findViewById(R.id.btn_can);
-        btnCan.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
+        btnCan.setVisibility(View.INVISIBLE);
 
         dialog.show();
     }
