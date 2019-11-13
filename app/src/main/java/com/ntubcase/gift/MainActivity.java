@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.Task;
 import com.ntubcase.gift.data.getFriendList;
 import com.ntubcase.gift.data.getGiftList;
 import com.ntubcase.gift.data.getPlanGot;
@@ -29,16 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //----------取得禮物、計畫、收禮、好友資料
-        getGiftList.getJSON();
-        getPlanningList.getJSON();
-        getPlanSent.getJSON();
-        getPlanGot.getJSON();
-        getFriendList.getJSON();
-        getReceiveNew.getJSON();
-        getReceiveOpen.getJSON();
-        //----------
-//        Log.v("loginid",userData.getUserID());
 
         //-------顯示使用者頭像
         mSetting = (ImageView)findViewById(R.id.mSetting);
@@ -102,8 +95,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , SettingActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
+
+
 
 }

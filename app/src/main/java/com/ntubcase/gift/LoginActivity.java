@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,6 +32,13 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.MyAsyncTask.login.loginAsyncTask;
+import com.ntubcase.gift.data.getFriendList;
+import com.ntubcase.gift.data.getGiftList;
+import com.ntubcase.gift.data.getPlanGot;
+import com.ntubcase.gift.data.getPlanSent;
+import com.ntubcase.gift.data.getPlanningList;
+import com.ntubcase.gift.data.getReceiveNew;
+import com.ntubcase.gift.data.getReceiveOpen;
 import com.ntubcase.gift.login_model.facebookAccount;
 
 import com.ntubcase.gift.login_model.googleAccount;
@@ -83,7 +92,14 @@ public class LoginActivity extends AppCompatActivity implements
                     .build();
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
             googleAccount.setGoogleSignInClient(mGoogleSignInClient);
-
+            //----------取得禮物、計畫、收禮、好友資料
+            getGiftList.getJSON();
+            getPlanningList.getJSON();
+            getPlanSent.getJSON();
+            getPlanGot.getJSON();
+            getFriendList.getJSON();
+            getReceiveNew.getJSON();
+            getReceiveOpen.getJSON();
             //-----進入首頁-----
             Intent intent;
             intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -93,7 +109,8 @@ public class LoginActivity extends AppCompatActivity implements
             //-----建立userData-----
             new facebookAccount(user_name, user_mail, Uri.parse(user_photo_uri));
             userData.setUserID(user_id);
-
+            //----------取得禮物、計畫、收禮、好友資料
+            getAllData();
             //-----進入首頁-----
             Intent intent;
             intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -162,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements
                 @Override
                 public void onFinished(String result) {
                     try{
-                        if(result==null){ //伺服器連線失敗跳維修頁
+                        if(result==null){
                             Log.v("aaaa",userData.getUserID());
                             return;
                         }
@@ -176,6 +193,8 @@ public class LoginActivity extends AppCompatActivity implements
 
                             Log.v("insertgiftid",userData.getUserID());
                         }
+                        //----------取得禮物、計畫、收禮、好友資料
+                        getAllData();
 
                     }catch (Exception e){
                         e.printStackTrace();
@@ -271,13 +290,14 @@ public class LoginActivity extends AppCompatActivity implements
 
                                                     Log.v("insertgiftid",userData.getUserID());
                                                 }
-
+                                                getAllData();
                                             }catch (Exception e){
                                                 e.printStackTrace();
                                             }
                                         }
                                     });
                                     loginAsyncTask.execute(Common.login , userData.getUserMail(), userData.getUserName(), userData.getUserPhotoUri().toString());
+
 
                                     //-----若確認已登入，直接進入首頁-----
                                     Intent intent;
@@ -307,4 +327,14 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
+    public void getAllData(){
+        //----------取得禮物、計畫、收禮、好友資料
+        getGiftList.getJSON();
+        getPlanningList.getJSON();
+        getPlanSent.getJSON();
+        getPlanGot.getJSON();
+        getFriendList.getJSON();
+        getReceiveNew.getJSON();
+        getReceiveOpen.getJSON();
+    }
 }

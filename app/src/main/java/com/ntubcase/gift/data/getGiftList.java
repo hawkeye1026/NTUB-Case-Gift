@@ -53,7 +53,6 @@ public class  getGiftList {
                         Log.v("giftidList",sentingGiftid[i]);
                     }
 
-
                     //取得禮物資料
                     jsonArray = object.getJSONArray("result");
 
