@@ -1,33 +1,28 @@
 package com.ntubcase.gift;
 
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.ntubcase.gift.Common.Common;
@@ -43,9 +38,7 @@ import com.ntubcase.gift.login_model.facebookAccount;
 
 import com.ntubcase.gift.login_model.googleAccount;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -336,5 +329,26 @@ public class LoginActivity extends AppCompatActivity implements
         getFriendList.getJSON();
         getReceiveNew.getJSON();
         getReceiveOpen.getJSON();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回鍵
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            AlertDialog.Builder ad=new AlertDialog.Builder(this);
+            ad.setTitle("離開");
+            ad.setMessage("確定要離開預送你嗎?");
+            ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
+                public void onClick(DialogInterface dialog, int i) {
+                    finish();
+                }
+            });
+            ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int i) {
+                }
+            });
+            ad.show();//顯示對話框
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

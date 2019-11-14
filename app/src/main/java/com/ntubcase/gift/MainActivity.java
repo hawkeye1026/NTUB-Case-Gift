@@ -6,20 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.Task;
-import com.ntubcase.gift.data.getFriendList;
-import com.ntubcase.gift.data.getGiftList;
-import com.ntubcase.gift.data.getPlanGot;
-import com.ntubcase.gift.data.getPlanSent;
-import com.ntubcase.gift.data.getPlanningList;
-import com.ntubcase.gift.data.getReceiveNew;
-import com.ntubcase.gift.data.getReceiveOpen;
 import com.ntubcase.gift.login_model.userData;
 import com.squareup.picasso.Picasso;
 
@@ -42,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
                     .transform(new CircleTransform())
                     .into(mSetting);
         }
-
 
         //-------禮物區 按鈕------
         mGift = findViewById(R.id.mGift);
@@ -95,11 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this , SettingActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
-
-
-
 }

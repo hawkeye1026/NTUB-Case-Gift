@@ -93,12 +93,11 @@ public class SettingActivity extends AppCompatActivity {
                 //---回登入頁---
                 Intent intent;
                 intent = new Intent(SettingActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
             }
         });
-
-
+        
         int smallerDimension = 15 * 15;
         //---------QRcode產生
         QRGEncoder qrgEncoder = new QRGEncoder(ownerEmail, null, QRGContents.Type.TEXT, smallerDimension);
