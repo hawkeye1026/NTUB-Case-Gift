@@ -6,11 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -36,7 +38,7 @@ public class GiftReceivedProcessFragment extends Fragment {
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private ImageView mgiftDoneCheck ;
     public GiftReceivedProcessFragment() {
         // Required empty public constructor
     }
@@ -48,6 +50,7 @@ public class GiftReceivedProcessFragment extends Fragment {
         rGiftsList = new ArrayList<Map<String, Object>>();
         recyclerView = view.findViewById(R.id.recyclerView);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
+        mgiftDoneCheck = (ImageView) view.findViewById(R.id.giftDoneCheck);
 
         //-----------------------------spinner----------------------
         mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
@@ -95,6 +98,10 @@ public class GiftReceivedProcessFragment extends Fragment {
             rGiftsData[i][2] = getReceiving.getNickname(i);
             rGiftsData[i][3] = getReceiving.getSendPlanDate(i);
             rGiftsData[i][4] = getReceiving.getPlanid(i);
+            Log.v("testdata",rGiftsData[i][4]);
+            if(checkComplete(getReceiving.getPlanid(i))){
+                mgiftDoneCheck.setImageResource(R.drawable.checked);
+            }
         }
 
         rGiftsList = new ArrayList<Map<String, Object>>();
@@ -150,6 +157,15 @@ public class GiftReceivedProcessFragment extends Fragment {
             }
         });
 
+    }
+
+    public boolean checkComplete(String planid){
+        for(int i = 0 ; i < getReceiving.getComLength();i++){
+            if(planid.equals(getReceiving.getComPlanid(i)) && getReceiving.getComplete(i).equals("1") ){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

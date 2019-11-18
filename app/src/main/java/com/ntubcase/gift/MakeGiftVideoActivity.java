@@ -193,14 +193,11 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(cam_videoUri == null){
-                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
-                return;
-            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                uploadViedo(v);
+                if(uploadViedo(v))finish();
+
             }
         }
     };
@@ -210,17 +207,11 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(cam_videoUri == null){
-                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
-                return;
-            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
                 uploadViedo(v);
-                Intent intent;
-                intent = new Intent(MakeGiftVideoActivity.this, SendGiftDirectlyActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                finish();
             }
 
 
@@ -264,14 +255,14 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
         }
     }
 
-    public void uploadViedo(View v) {
+    public boolean uploadViedo(View v) {
         giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
         //--------若沒有選擇照片，跳出提醒
         try{
             if(cam_videoUri == null) {
                 //顯示提示訊息
                 Toast.makeText(v.getContext(), "儲存失敗，請選擇一個影片！", Toast.LENGTH_SHORT).show();
-                return;
+                return false;
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -297,7 +288,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
                 new uploadGiftFile(getApplicationContext(), cam_videoUri, giftContent, old_giftContent, owner, "vid", "insert");
             }else{
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
-                return;
+                return false;
             }
         }
         //-------------讀取Dialog-----------
@@ -317,7 +308,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
                 }
             }
         }).start();
-
+        return true;
     }
 
     String getFileName(Uri uri){

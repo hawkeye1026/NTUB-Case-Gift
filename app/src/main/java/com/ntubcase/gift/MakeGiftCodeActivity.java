@@ -56,7 +56,9 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private ArrayList<String> mainCodes = new ArrayList<>();
     private ArrayList<String> matchCodes = new ArrayList<>();
     private String maincode_array = "";
+    private int maincode_array_length = 0;
     private String matchcode_array = "";
+    private int matchcode_array_length = 0;
 
     private static String decodeid = "";
 
@@ -101,9 +103,22 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
 
             //---資料內容放進表格---
             decodeid=getGiftList.getGift(position);
-            for (int i=0; i<(getGiftList.getDecodeLength()); i++){
-                if (getGiftList.getDecodeid(i).equals(decodeid))
+            for (int i=0; i < (getGiftList.getDecodeLength()); i++){
+                if (getGiftList.getDecodeid(i).equals(decodeid)){
                     tableAddRow(1,getGiftList.getDecodeMaincode(i),getGiftList.getDecodeMatchCode(i));
+
+//                    if( i == getGiftList.getDecodeLength() - 1){
+//                        rowNumber += i ;
+//                        maincode_array += mainCodes.get(i);
+//                        matchcode_array += matchCodes.get(i);
+//
+//                    }else{
+//                        rowNumber += i + ",";
+//                        maincode_array += mainCodes.get(i) + ",";
+//                        matchcode_array += matchCodes.get(i) + ",";
+//                    }
+                }
+
             }
 
         }else{  //-----若為新增則顯示範例行-----
@@ -278,14 +293,13 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if( maincode_array.trim().equals("") || matchcode_array.trim().equals("")){
-                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
-                return;
-            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
-                Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "請輸入禮物名稱", Toast.LENGTH_SHORT).show();
             }else{
-                uploadGift(v);
+                //-------判斷禮物內容是否為空白
+                if(uploadGift(v)){
+                    finish();
+                }
             }
         }
     };
@@ -295,18 +309,18 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            if( maincode_array.trim().equals("") || matchcode_array.trim().equals("")){
-                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
-                return;
-            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱", Toast.LENGTH_SHORT).show();
             }else{
-                uploadGift(v);
-                Intent intent;
-                intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                //-------判斷禮物內容是否為空白
+                if(uploadGift(v)){
+                    Intent intent;
+                    intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+                    finish();
+                }else{
+                    Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+                }
             }
 
         }
@@ -334,7 +348,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         return false;
     }
 
-    public void uploadGift(View v) {
+    public boolean uploadGift(View v) {
 
         getCodeData(); //取得使用者輸入的資料
 
@@ -356,16 +370,16 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 matchcode_array += matchCodes.get(i) + ",";
             }
         }
+        if( maincode_array.replace(",","").trim().equals("") || matchcode_array.replace(",","").trim().equals("")){
+            Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         //--------取得目前時間：yyyy/MM/dd hh:mm:ss
 //                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");
 //                giftContent = sdFormat_giftContent.format(date);
-        Log.v("MCAgiftid",giftid + "");
         if(giftid > 0){
             try{
-                if(rowNumber.equals("")){
-                    Toast.makeText(v.getContext(), "內容不可以是空的喔", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
 
                 new updateGiftCode(decodeid , rowNumber, maincode_array , matchcode_array);
@@ -403,6 +417,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 }
             }
         }).start();
+        return true;
     }
 
     //-------------------取得回傳的資料---------------------

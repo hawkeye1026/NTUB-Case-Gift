@@ -1,5 +1,7 @@
 package com.ntubcase.gift.data;
 
+import android.util.Log;
+
 import com.ntubcase.gift.Common.Common;
 import com.ntubcase.gift.DateFormat;
 import com.ntubcase.gift.MyAsyncTask.receive.receiveNewAsyncTask;
@@ -16,8 +18,13 @@ public class getReceiving {
     private static String[] planType;
     private static String[] planName;
     private static String[] sendPlanDate;
+    //------已完成的planid
+    private static String[] comPlaid;
+    //------是否完成
+    private static String[] complete;
 
     private static int receiveOpenLength = 0 ;
+    private static int completeLength = 0 ;
 
     public static void getJSON() {
 
@@ -40,7 +47,7 @@ public class getReceiving {
                     planName = new String[receiveOpenLength];
                     sendPlanDate = new String[receiveOpenLength];
 
-                    for (int i = 0 ; i <jsonArray.length() ; i++){
+                    for (int i = 0 ; i <receiveOpenLength ; i++){
                         //Log.v("abc", "10000");
                         ownerid[i] = jsonArray.getJSONObject(i).getString("ownerid");
                         receiverid[i] = jsonArray.getJSONObject(i).getString("receiverid");
@@ -50,7 +57,7 @@ public class getReceiving {
                         planName[i] = jsonArray.getJSONObject(i).getString("planName");
                         sendPlanDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
 
-                        //Log.v("pdata",sendGiftDate[i]);
+                        Log.v("pdata",planid[i]);
                         //Log.v("pdata",spPlanName[i]);
 
                         switch(planType[i]){
@@ -64,6 +71,19 @@ public class getReceiving {
                                 planType[i] = "任務清單";
                                 break;
                         }
+                    }
+                    //--------取得禮物是否能夠點選收禮完成
+                    jsonArray = object.getJSONArray("deadline");
+
+                    completeLength = jsonArray.length();
+
+                    comPlaid = new String[completeLength];
+                    complete = new String[completeLength];
+
+                    for (int i = 0 ; i <completeLength ; i++) {
+                        //Log.v("abc", "10000");
+                        comPlaid[i] = jsonArray.getJSONObject(i).getString("planid");
+                        complete[i] = jsonArray.getJSONObject(i).getString("complete");
                     }
 
                 } catch (Exception e) {
@@ -96,5 +116,15 @@ public class getReceiving {
     }
     public static int getReceivingLength(){
         return receiveOpenLength;
+    }
+    //---------------
+    public static String getComPlanid(int i){
+        return comPlaid[i];
+    }
+    public static String getComplete(int i){
+        return complete[i];
+    }
+    public static int getComLength(){
+        return completeLength;
     }
 }

@@ -65,6 +65,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
             //-------存入禮物詳細的editText
             et_giftName.setText( getGiftList.getGiftName(position));
             et_giftContent.setText(getGiftList.getGift(position));
+            giftContent = getGiftList.getGift(position);
             //--------
         }
         //------------禮物詳細結束
@@ -76,15 +77,14 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(giftContent.trim().equals("")){
-                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
-                return;
-            }
+
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                uploadGift(v);
-
+                //-------判斷禮物內容是否為空白
+                if(uploadGift(v)){
+                    finish();
+                }
             }
         }
     };
@@ -93,18 +93,16 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            if(giftContent.trim().equals("")){
-                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
-                return;
-            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                uploadGift(v);
-                Intent intent;
-                intent = new Intent(MakeGiftTicketActivity.this, SendGiftDirectlyActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                //-------判斷禮物內容是否為空白
+                if(uploadGift(v)){
+                    Intent intent;
+                    intent = new Intent(MakeGiftTicketActivity.this, SendGiftDirectlyActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+                    finish();
+                }
             }
 
 
@@ -133,10 +131,14 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
         return false;
     }
 
-    public void uploadGift(View v) {
+    public boolean uploadGift(View v) {
         giftName = et_giftName.getText().toString().trim();    //取得使用者輸入的禮物名稱
         giftContent = et_giftContent.getText().toString();    //取得使用者輸入的禮物內容
 
+        if(giftContent.trim().equals("")){
+            Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if(giftid > 0){
             //------------------------------更新禮物資料
             new updateGift(String.valueOf(giftid),giftContent, giftName, owner, giftType);
@@ -148,7 +150,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
-                return;
+                return false;
             }
 
         }
@@ -170,6 +172,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
                 }
             }
         }).start();
+        return true;
     }
 
     //-------------------取得回傳的資料---------------------
