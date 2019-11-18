@@ -99,7 +99,6 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftTicketActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
-                    finish();
                 }
             }
 

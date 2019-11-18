@@ -99,7 +99,6 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftMessageActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
-                    finish();
                 }
             }
 

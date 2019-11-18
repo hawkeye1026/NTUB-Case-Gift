@@ -203,7 +203,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
-                    finish();
                 }
             }
 
@@ -363,7 +362,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         try{
             if(cam_imageUri == null) {
                 //顯示提示訊息
-                Toast.makeText(v.getContext(), "請選擇一張照片！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "儲存失敗，請選擇一張照片！", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }catch (Exception e){

@@ -196,7 +196,7 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                uploadViedo(v);
+                if(uploadViedo(v))finish();
 
             }
         }
@@ -210,8 +210,12 @@ public class MakeGiftVideoActivity extends AppCompatActivity  implements MediaPl
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                uploadViedo(v);
-                finish();
+                if(uploadViedo(v)){
+                    Intent intent;
+                    intent = new Intent(MakeGiftVideoActivity.this, SendGiftDirectlyActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+
+                }
             }
 
 
