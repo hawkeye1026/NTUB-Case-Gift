@@ -56,11 +56,12 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     private ArrayList<String> mainCodes = new ArrayList<>();
     private ArrayList<String> matchCodes = new ArrayList<>();
     private String maincode_array = "";
-    private int maincode_array_length = 0;
     private String matchcode_array = "";
-    private int matchcode_array_length = 0;
 
     private static String decodeid = "";
+
+    private String mainCode ;
+    private String matchCode;
 
     private static int giftid = 0;
     @Override
@@ -81,6 +82,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         btn_save.setOnClickListener(saveClickListener); //設置監聽器
         btn_directly_send.setOnClickListener(directlySendClickListener); //設置監聽器
         tableLayout = (TableLayout) findViewById(R.id.tab_01);
+
 
         btn_add.setOnClickListener(new View.OnClickListener() { //設置 新增一行按鈕 監聽器
             @Override
@@ -106,23 +108,13 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             for (int i=0; i < (getGiftList.getDecodeLength()); i++){
                 if (getGiftList.getDecodeid(i).equals(decodeid)){
                     tableAddRow(1,getGiftList.getDecodeMaincode(i),getGiftList.getDecodeMatchCode(i));
-
-//                    if( i == getGiftList.getDecodeLength() - 1){
-//                        rowNumber += i ;
-//                        maincode_array += mainCodes.get(i);
-//                        matchcode_array += matchCodes.get(i);
-//
-//                    }else{
-//                        rowNumber += i + ",";
-//                        maincode_array += mainCodes.get(i) + ",";
-//                        matchcode_array += matchCodes.get(i) + ",";
-//                    }
                 }
 
             }
 
         }else{  //-----若為新增則顯示範例行-----
             tabRow = new TableRow(getApplicationContext()); //---範例行
+
             for (int col = 0 ; col< 2; col++){
                 EditText editText = new EditText(getApplicationContext());
 
@@ -274,7 +266,6 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
     //------------------------取得使用者輸入的資料--------------------------------
     private void getCodeData(){
         int lineNum = tableLayout.getChildCount();  //總行數
-        String mainCode, matchCode;
 
         for (int row=1; row<lineNum; row++){ //首行不算
             tabRow = (TableRow) tableLayout.getChildAt(row);
@@ -297,7 +288,15 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "請輸入禮物名稱", Toast.LENGTH_SHORT).show();
             }else{
                 //-------判斷禮物內容是否為空白
-                uploadGift(v);
+                if(uploadGift(v)){
+
+                }else{
+                    mainCodes = new ArrayList<>();
+                    matchCodes = new ArrayList<>();
+                    maincode_array = "";
+                    matchcode_array = "";
+                }
+
             }
         }
     };
@@ -315,6 +314,11 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
+                }else{
+                    mainCodes = new ArrayList<>();
+                    matchCodes = new ArrayList<>();
+                    maincode_array = "";
+                    matchcode_array = "";
                 }
             }
 
@@ -356,6 +360,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
         String rowNumber = "";
         for (int i = 0; i < mainCodes.size(); i++) {
             if( i ==  mainCodes.size() - 1){
+
                 rowNumber += i ;
                 maincode_array += mainCodes.get(i);
                 matchcode_array += matchCodes.get(i);
@@ -364,7 +369,10 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 maincode_array += mainCodes.get(i) + ",";
                 matchcode_array += matchCodes.get(i) + ",";
             }
+            Log.v("testTable",rowNumber);
+
         }
+        Log.v("testTable",mainCodes.size()+"");
         if( maincode_array.replace(",","").trim().equals("") || matchcode_array.replace(",","").trim().equals("")){
             Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
             return false;
