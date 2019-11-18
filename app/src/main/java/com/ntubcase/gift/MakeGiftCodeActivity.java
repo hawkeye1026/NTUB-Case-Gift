@@ -298,11 +298,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             }else{
                 //-------判斷禮物內容是否為空白
                 if(uploadGift(v)){
-                    Intent intent;
-                    intent = new Intent(MakeGiftCodeActivity.this, GiftActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE);
-                }else{
-                    Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         }
@@ -321,6 +317,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
+                    finish();
                 }else{
                     Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
                 }
@@ -373,7 +370,10 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 matchcode_array += matchCodes.get(i) + ",";
             }
         }
-        if( maincode_array.replace(",","").trim().equals("") || matchcode_array.replace(",","").trim().equals("")) return false;
+        if( maincode_array.replace(",","").trim().equals("") || matchcode_array.replace(",","").trim().equals("")){
+            Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         //--------取得目前時間：yyyy/MM/dd hh:mm:ss
 //                SimpleDateFormat sdFormat_giftContent = new SimpleDateFormat("yyyyMMddHHmmss");

@@ -80,9 +80,7 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
             }else{
                 //-------判斷禮物內容是否為空白
                 if(uploadGift(v)){
-                    Intent intent;
-                    intent = new Intent(MakeGiftMessageActivity.this, GiftActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE);
+                    finish();
                 }
             }
 
@@ -103,6 +101,7 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftMessageActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
+                    finish();
                 }
             }
 

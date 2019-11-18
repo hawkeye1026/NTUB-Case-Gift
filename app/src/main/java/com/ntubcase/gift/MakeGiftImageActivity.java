@@ -174,14 +174,14 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(cam_imageUri == null){
-                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            if(cam_imageUri == null){
+//                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                uploadImage(v);
+                if(uploadImage(v))finish();
             }
         }
     };
@@ -192,17 +192,19 @@ public class MakeGiftImageActivity extends AppCompatActivity {
     private View.OnClickListener directlySendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(cam_imageUri == null){
-                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            if(cam_imageUri == null){
+//                Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                uploadImage(v);
-                Intent intent;
-                intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                if(uploadImage(v)){
+                    Intent intent;
+                    intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+                    finish();
+                }
             }
 
         }
@@ -355,14 +357,14 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         }
     }
 
-    public void uploadImage(View v){
+    public boolean uploadImage(View v){
 
         //--------若沒有選擇照片，跳出提醒
         try{
             if(cam_imageUri == null) {
                 //顯示提示訊息
-                Toast.makeText(v.getContext(), "儲存失敗，請選擇一張照片！", Toast.LENGTH_SHORT).show();
-                return;
+                Toast.makeText(v.getContext(), "請選擇一張照片！", Toast.LENGTH_SHORT).show();
+                return false;
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -388,7 +390,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
                 new uploadGiftFile(getApplicationContext(), cam_imageUri, giftContent, old_giftContent, owner, "img", "insert");
             }else{
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
-                return;
+                return false;
             }
         }
 
@@ -414,6 +416,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         }).start();
         //-------------結束Dialog-----------
         Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
+        return true;
     }
 
 }
