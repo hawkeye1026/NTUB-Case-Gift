@@ -82,9 +82,7 @@ public class MakeGiftTicketActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
                 //-------判斷禮物內容是否為空白
-                if(uploadGift(v)){
-                    finish();
-                }
+                uploadGift(v);
             }
         }
     };

@@ -181,7 +181,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                if(uploadImage(v))finish();
+                uploadImage(v);
             }
         }
     };

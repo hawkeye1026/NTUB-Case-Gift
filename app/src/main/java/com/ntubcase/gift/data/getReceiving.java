@@ -71,6 +71,7 @@ public class getReceiving {
                                 planType[i] = "任務清單";
                                 break;
                         }
+
                     }
                     //--------取得禮物是否能夠點選收禮完成
                     jsonArray = object.getJSONArray("deadline");
@@ -84,6 +85,7 @@ public class getReceiving {
                         //Log.v("abc", "10000");
                         comPlaid[i] = jsonArray.getJSONObject(i).getString("planid");
                         complete[i] = jsonArray.getJSONObject(i).getString("complete");
+                        Log.v("pdata",complete[i]);
                     }
 
                 } catch (Exception e) {
