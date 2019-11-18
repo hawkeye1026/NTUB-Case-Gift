@@ -297,9 +297,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "請輸入禮物名稱", Toast.LENGTH_SHORT).show();
             }else{
                 //-------判斷禮物內容是否為空白
-                if(uploadGift(v)){
-                    finish();
-                }
+                uploadGift(v);
             }
         }
     };
@@ -317,9 +315,6 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftCodeActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
-                    finish();
-                }else{
-                    Toast.makeText(v.getContext(), "禮物內容不可以空白", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -388,6 +383,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
             }catch (Exception e){
                 e.printStackTrace();
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+                return false;
             }
             //decodeid
         }else{
@@ -398,6 +394,7 @@ public class MakeGiftCodeActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "儲存成功", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(v.getContext(), "儲存失敗，禮物名稱重複囉", Toast.LENGTH_SHORT).show();
+                return false;
             }
         }
         //-------------讀取Dialog-----------

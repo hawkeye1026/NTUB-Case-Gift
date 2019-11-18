@@ -181,7 +181,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
             if ( et_giftName.getText().toString().trim().equals("")){ //檢查是否有輸入禮物名稱
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
-                if(uploadImage(v))finish();
+                uploadImage(v);
             }
         }
     };
@@ -203,7 +203,6 @@ public class MakeGiftImageActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftImageActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
-                    finish();
                 }
             }
 
@@ -363,7 +362,7 @@ public class MakeGiftImageActivity extends AppCompatActivity {
         try{
             if(cam_imageUri == null) {
                 //顯示提示訊息
-                Toast.makeText(v.getContext(), "請選擇一張照片！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "儲存失敗，請選擇一張照片！", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }catch (Exception e){

@@ -79,9 +79,7 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "請輸入禮物名稱!", Toast.LENGTH_SHORT).show();
             }else{
                 //-------判斷禮物內容是否為空白
-                if(uploadGift(v)){
-                    finish();
-                }
+                uploadGift(v);
             }
 
 
@@ -101,7 +99,6 @@ public class MakeGiftMessageActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MakeGiftMessageActivity.this, SendGiftDirectlyActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
-                    finish();
                 }
             }
 
