@@ -168,6 +168,11 @@ public class GiftReceivedProcessFragment extends Fragment {
                 return true;
             }
         }
+        for(int i = 0 ; i < getReceiving.getMisComLength();i++){
+            if(planid.equals(getReceiving.getMisComid(i)) && getReceiving.getMisCom(i).equals("1") ){
+                return true;
+            }
+        }
         return false;
     }
 

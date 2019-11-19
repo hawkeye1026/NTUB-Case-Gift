@@ -61,9 +61,6 @@ public class getReceiving {
                         planName[i] = jsonArray.getJSONObject(i).getString("planName");
                         sendPlanDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
 
-
-                        //Log.v("pdata",spPlanName[i]);
-
                         switch(planType[i]){
                             case "1":
                                 planType[i] = "單日送禮";
@@ -102,8 +99,7 @@ public class getReceiving {
 
                         comPlaid[i] = jsonArray.getJSONObject(i).getString("planid");
                         complete[i] = jsonArray.getJSONObject(i).getString("complete");
-                        Log.v("checkcomplete",comPlaid[i]);
-                        Log.v("checkcomplete",complete[i]);
+
                         for(int j = 0 ; j < misComLength; j++){
                             if(misComid[j].equals(comPlaid[i]) && misComplete[j].equals("1")){
                                 complete[i] = "1";
@@ -112,10 +108,6 @@ public class getReceiving {
                             }
                         }
                     }
-
-
-
-
                 } catch (Exception e) {
                 }
             }
@@ -154,7 +146,18 @@ public class getReceiving {
     public static String getComplete(int i){
         return complete[i];
     }
+    //---------------
+    public static String getMisComid(int i){
+        return misComid[i];
+    }
+    public static String getMisCom(int i){
+        return misComplete[i];
+    }
+
     public static int getComLength(){
         return completeLength;
+    }
+    public static int getMisComLength(){
+        return misComLength;
     }
 }
