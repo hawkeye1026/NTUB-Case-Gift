@@ -102,6 +102,7 @@ public class GiftReceivedProcessFragment extends Fragment {
             }else{
                 rGiftsData[i][5] = "0";
             }
+
             Log.v("testplanid",""+checkComplete(getReceiving.getPlanid(i)));
         }
 

@@ -93,20 +93,11 @@ public class getReceiving {
 
                     comPlaid = new String[completeLength];
                     complete = new String[completeLength];
-
+                    //-----------------------
                     for (int i = 0 ; i <completeLength ; i++) {
                         //Log.v("abc", "10000");
-
                         comPlaid[i] = jsonArray.getJSONObject(i).getString("planid");
                         complete[i] = jsonArray.getJSONObject(i).getString("complete");
-
-                        for(int j = 0 ; j < misComLength; j++){
-                            if(misComid[j].equals(comPlaid[i]) && misComplete[j].equals("1")){
-                                complete[i] = "1";
-                            }else{
-                                complete[i] = jsonArray.getJSONObject(i).getString("complete");
-                            }
-                        }
                     }
                 } catch (Exception e) {
                 }
