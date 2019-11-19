@@ -40,6 +40,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
     private List<Map<String, Object>> selectedTypeitem;
     private ArrayList<String> plansType; //所有計畫種類
     public static String selectedType; //spinner所選取的種類
+    private ImageView mgiftDoneCheck ;
 
     public GiftReceivedProcessAdapter(Context context, List<Map<String, Object>> re_giftList){
         this.context = context;
@@ -58,6 +59,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
     @Override
     public GiftReceivedProcessAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.received_process_gift_layout, parent, false);
+
         return new GiftReceivedProcessAdapter.ViewHolder(view);
     }
 
@@ -77,6 +79,11 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
             case "任務清單" :
                 holder.image.setImageResource(R.drawable.l_received_mid);
                 break;
+        }
+        if(re_giftList.get(position).get("checked").toString().equals("1") ){
+            mgiftDoneCheck.setImageResource(R.drawable.checked);
+        }else{
+            mgiftDoneCheck.setImageBitmap(null);
         }
         //--------------item點擊監聽器-------------
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +129,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
             sender=(TextView) itemView.findViewById(R.id.tv_sender);
             date=(TextView) itemView.findViewById(R.id.tv_date);
             image = (ImageView) itemView.findViewById(R.id.iv_photo);
+            mgiftDoneCheck = (ImageView) itemView.findViewById(R.id.giftDoneCheck);
         }
     }
 

@@ -23,8 +23,12 @@ public class getReceiving {
     //------是否完成
     private static String[] complete;
 
+    private static String[] misComid;
+    private static String[] misComplete;
+
     private static int receiveOpenLength = 0 ;
     private static int completeLength = 0 ;
+    private static int misComLength = 0 ;
 
     public static void getJSON() {
 
@@ -57,7 +61,7 @@ public class getReceiving {
                         planName[i] = jsonArray.getJSONObject(i).getString("planName");
                         sendPlanDate[i] = DateFormat.dateFormat(jsonArray.getJSONObject(i).getString("sendPlanDate"));
 
-                        Log.v("pdata",planid[i]);
+
                         //Log.v("pdata",spPlanName[i]);
 
                         switch(planType[i]){
@@ -73,6 +77,18 @@ public class getReceiving {
                         }
 
                     }
+                    jsonArray = object.getJSONArray("misCom");
+                    misComLength = jsonArray.length();
+
+                    misComid = new String[misComLength];
+                    misComplete = new String[misComLength];
+
+                    for (int i = 0 ; i <misComLength ; i++) {
+                        //Log.v("abc", "10000");
+                        misComid[i] = jsonArray.getJSONObject(i).getString("misid");
+                        misComplete[i] = jsonArray.getJSONObject(i).getString("complete");
+
+                    }
                     //--------取得禮物是否能夠點選收禮完成
                     jsonArray = object.getJSONArray("deadline");
 
@@ -83,10 +99,22 @@ public class getReceiving {
 
                     for (int i = 0 ; i <completeLength ; i++) {
                         //Log.v("abc", "10000");
+
                         comPlaid[i] = jsonArray.getJSONObject(i).getString("planid");
                         complete[i] = jsonArray.getJSONObject(i).getString("complete");
-                        Log.v("pdata",complete[i]);
+                        Log.v("checkcomplete",comPlaid[i]);
+                        Log.v("checkcomplete",complete[i]);
+                        for(int j = 0 ; j < misComLength; j++){
+                            if(misComid[j].equals(comPlaid[i]) && misComplete[j].equals("1")){
+                                complete[i] = "1";
+                            }else{
+                                complete[i] = jsonArray.getJSONObject(i).getString("complete");
+                            }
+                        }
                     }
+
+
+
 
                 } catch (Exception e) {
                 }

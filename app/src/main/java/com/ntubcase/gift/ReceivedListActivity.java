@@ -61,7 +61,7 @@ public class ReceivedListActivity extends AppCompatActivity {
     private String deadline;
 
     //-------判斷按鈕是否可按 true = 可
-    private Boolean isClick;
+    public static Boolean isClick = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -38,7 +38,6 @@ public class GiftReceivedProcessFragment extends Fragment {
     private Spinner mSpinner;
     private ArrayAdapter spinnerAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ImageView mgiftDoneCheck ;
     public GiftReceivedProcessFragment() {
         // Required empty public constructor
     }
@@ -50,7 +49,6 @@ public class GiftReceivedProcessFragment extends Fragment {
         rGiftsList = new ArrayList<Map<String, Object>>();
         recyclerView = view.findViewById(R.id.recyclerView);
         mSearchView = (SearchView) view.findViewById(R.id.mSearch);
-        mgiftDoneCheck = (ImageView) view.findViewById(R.id.giftDoneCheck);
 
         //-----------------------------spinner----------------------
         mSpinner = (Spinner) view.findViewById(R.id.mSpinner);
@@ -100,8 +98,11 @@ public class GiftReceivedProcessFragment extends Fragment {
             rGiftsData[i][4] = getReceiving.getPlanid(i);
             Log.v("testdata",rGiftsData[i][4]);
             if(checkComplete(getReceiving.getPlanid(i))){
-                mgiftDoneCheck.setImageResource(R.drawable.checked);
+                rGiftsData[i][5] = "1";
+            }else{
+                rGiftsData[i][5] = "0";
             }
+            Log.v("testplanid",""+checkComplete(getReceiving.getPlanid(i)));
         }
 
         rGiftsList = new ArrayList<Map<String, Object>>();
@@ -114,6 +115,8 @@ public class GiftReceivedProcessFragment extends Fragment {
             rGifts.put("sender", rGiftsData[i][2]);
             rGifts.put("date", rGiftsData[i][3]);
             rGifts.put("planID", rGiftsData[i][4]);
+            rGifts.put("checked", rGiftsData[i][5]);
+
             rGiftsList.add(rGifts);
         }
 
