@@ -34,6 +34,7 @@ import com.ntubcase.gift.data.getPlanSent;
 import com.ntubcase.gift.data.getPlanningList;
 import com.ntubcase.gift.data.getReceiveNew;
 import com.ntubcase.gift.data.getReceiveOpen;
+import com.ntubcase.gift.data.getReceiving;
 import com.ntubcase.gift.login_model.facebookAccount;
 
 import com.ntubcase.gift.login_model.googleAccount;
@@ -93,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements
             getFriendList.getJSON();
             getReceiveNew.getJSON();
             getReceiveOpen.getJSON();
+            getReceiving.getJSON();
             //-----進入首頁-----
             Intent intent;
             intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -329,6 +331,7 @@ public class LoginActivity extends AppCompatActivity implements
         getFriendList.getJSON();
         getReceiveNew.getJSON();
         getReceiveOpen.getJSON();
+        getReceiving.getJSON();
     }
 
     @Override
