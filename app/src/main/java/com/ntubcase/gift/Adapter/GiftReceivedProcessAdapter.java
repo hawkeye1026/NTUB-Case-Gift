@@ -155,6 +155,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
                         String sender = originalitem.get(i).get("sender").toString();
                         String date = originalitem.get(i).get("date").toString();
                         String planID = originalitem.get(i).get("planID").toString();
+                        String checked = originalitem.get(i).get("checked").toString();
 
                         if(type.equals(selectedType)){
                             Map<String, Object> itemContent = new HashMap<String, Object>();
@@ -163,6 +164,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
                             itemContent.put("sender", sender);
                             itemContent.put("date", date);
                             itemContent.put("planID", planID);
+                            itemContent.put("checked", checked);
                             selectedTypeitem.add(itemContent);
                         }
                     }
@@ -183,6 +185,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
                         String sender = selectedTypeitem.get(i).get("sender").toString();
                         String date = selectedTypeitem.get(i).get("date").toString();
                         String planID = selectedTypeitem.get(i).get("planID").toString();
+                        String checked = selectedTypeitem.get(i).get("checked").toString();
 
                         if(sender.contains(constraint)){
                             Map<String, Object> filteredItemContent = new HashMap<String, Object>();
@@ -191,6 +194,7 @@ public class GiftReceivedProcessAdapter extends RecyclerView.Adapter<GiftReceive
                             filteredItemContent.put("sender", sender);
                             filteredItemContent.put("date", date);
                             filteredItemContent.put("planID", planID);
+                            filteredItemContent.put("checked", checked);
                             filteredItem.add(filteredItemContent);
                         }
                     }
